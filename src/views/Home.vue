@@ -373,17 +373,6 @@ export default {
             }
           }
         },
-        // geo3D: {
-        //   map: mapName,
-        //   roam: true,
-        //   itemStyle: {
-        //     areaColor: "red",
-        //     borderColor: "#1180c7",
-        //     borderWidth: 0.4,
-        //     opacity: 1,
-        //   },
-        //   label: {show: false},
-        // },
         series: [
           {
             name: "散点",
@@ -409,36 +398,36 @@ export default {
               }
             }
           },
-          {
-            type: "map",
-            map: mapName,
-            geoIndex: 0,
-            aspectScale: 0.75, //长宽比
-            showLegendSymbol: false, // 存在legend时显示
-            label: {
-              normal: {
-                show: true
-              },
-              emphasis: {
-                show: false,
-                textStyle: {
-                  color: "#fff"
-                }
-              }
-            },
-            roam: true,
-            itemStyle: {
-              normal: {
-                areaColor: "#031525",
-                borderColor: "#3B5077"
-              },
-              emphasis: {
-                areaColor: "#2B91B7"
-              }
-            },
-            animation: false,
-            data: data
-          },
+          // {
+          //   type: "map",
+          //   map: mapName,
+          //   geoIndex: 0,
+          //   aspectScale: 0.75, //长宽比
+          //   showLegendSymbol: false, // 存在legend时显示
+          //   label: {
+          //     normal: {
+          //       show: true
+          //     },
+          //     emphasis: {
+          //       show: false,
+          //       textStyle: {
+          //         color: "#fff"
+          //       }
+          //     }
+          //   },
+          //   roam: true,
+          //   itemStyle: {
+          //     normal: {
+          //       areaColor: "#031525",
+          //       borderColor: "#3B5077"
+          //     },
+          //     emphasis: {
+          //       areaColor: "#2B91B7"
+          //     }
+          //   },
+          //   animation: false,
+          //   data: data
+          // },
           {
             name: "点",
             type: "scatter",
