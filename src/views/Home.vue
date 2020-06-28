@@ -129,6 +129,8 @@
 import "@/assets/js/echarts.min.js";
 import "@/assets/js/china.js";
 import echarts from "echarts";
+// import 'echarts/map/js/china.js';
+// import 'echarts-gl';
 
 export default {
   name: "Home",
@@ -351,6 +353,36 @@ export default {
             return tipHtml;
           }
         },
+        // geo3D: {
+        //   map: 'china',
+        //   roam: false,
+        //   itemStyle: {
+        //     areaColor: '#1d5e98',
+        //     borderColor: "#1180c7",
+        //     opacity: 1,
+        //     borderWidth: 0.4,
+        //   },
+        //   label: { show: false, },
+        //   emphasis: { // change area color when mouse on
+        //     label: { show: false, },
+        //     itemStyle: {
+        //       areaColor: "#ff0",
+        //     },
+        //   },
+        //   light: {
+        //     main: {
+        //       color: '#fff', //光照颜色
+        //       intensity: 1.2, //光照强度
+        //       //shadowQuality: 'high', //阴影亮度
+        //       shadow: false, //是否显示阴影
+        //       alpha:55,
+        //       beta:10
+        //     },
+        //     ambient: {
+        //       intensity: 0.3
+        //     }
+        //   },
+        // },
         geo: {
           show: true,
           map: mapName,
@@ -398,36 +430,36 @@ export default {
               }
             }
           },
-          // {
-          //   type: "map",
-          //   map: mapName,
-          //   geoIndex: 0,
-          //   aspectScale: 0.75, //长宽比
-          //   showLegendSymbol: false, // 存在legend时显示
-          //   label: {
-          //     normal: {
-          //       show: true
-          //     },
-          //     emphasis: {
-          //       show: false,
-          //       textStyle: {
-          //         color: "#fff"
-          //       }
-          //     }
-          //   },
-          //   roam: true,
-          //   itemStyle: {
-          //     normal: {
-          //       areaColor: "#031525",
-          //       borderColor: "#3B5077"
-          //     },
-          //     emphasis: {
-          //       areaColor: "#2B91B7"
-          //     }
-          //   },
-          //   animation: false,
-          //   data: data
-          // },
+          {
+            type: "map",
+            map: mapName,
+            geoIndex: 0,
+            aspectScale: 0.75, //长宽比
+            showLegendSymbol: false, // 存在legend时显示
+            label: {
+              normal: {
+                show: true
+              },
+              emphasis: {
+                show: false,
+                textStyle: {
+                  color: "#fff"
+                }
+              }
+            },
+            roam: true,
+            itemStyle: {
+              normal: {
+                areaColor: "#031525",
+                borderColor: "#3B5077"
+              },
+              emphasis: {
+                areaColor: "#2B91B7"
+              }
+            },
+            animation: false,
+            data: data
+          },
           {
             name: "点",
             type: "scatter",
