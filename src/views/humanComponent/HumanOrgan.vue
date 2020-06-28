@@ -58,7 +58,8 @@ export default {
           name: "中铁大桥局第七工程有限公司",
           children: [
             {
-              name: "公司领导"
+              name: "公司领导",
+              children: [{ name: '领导直属', value: 10 }],
             },
             {
               name: "机关部门",
@@ -121,29 +122,8 @@ export default {
           ]
         }
       ];
-      const json = {
-        series: [
-          {
-            type: "tree",
-            data: struData,
-            top: "10%",
-            left: "20%",
-            bottom: "10%",
-            right: "20%",
-            symbolSize: [250, 30],
-            itemStyle: {
-              color: "white"
-            },
-            expandAndCollapse: true,
-            animationDuration: 550,
-            animationDurationUpdate: 750,
-            orient: "horizontal",
-            symbol: "roundRect"
-          }
-        ]
-      };
 
-      const json1 = {
+      const option = {
         tooltip: {
           //提示框组件
           trigger: "item", //触发类型，默认：item（数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用）。可选：'axis'：坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用。'none':什么都不触发。
@@ -154,13 +134,20 @@ export default {
           {
             type: "tree", //树形结构
             data: struData, //上面从flare.json中得到的数据
-            top: 50,
-            bottom: 160,
+            // change the link line from curvy to broken
+            edgeShape: 'polyline',
+            edgeForkPosition: '60%',
+            top: 30,
+            bottom: 180,
             left: "10%%", //左
             right: "10%%", //右的距离
             // change the tree orient from default 'horizontal' to 'vertical'
             orient: 'vertical',
-            symbolSize: 7, //标记的大小，就是那个小圆圈，默认7
+            symbolSize: 1, //标记的大小，就是那个小圆圈，默认7
+            itemStyle: {
+              borderWidth: 20,
+              color: 'transparent',
+            },
             label: {
               //每个节点所对应的标签的样式
               normal: {
@@ -168,8 +155,8 @@ export default {
                 verticalAlign: "middle", //文字垂直对齐方式，默认自动。可选：top，middle，bottom
                 align: "center", //文字水平对齐方式，默认自动。可选：top，center，bottom
                 fontSize: 12, //标签文字大小
-                color: 'white',
-                distance: 10,
+                color: '#000',
+                distance: -20,
                 formatter: function(params) {
                   return params.name === struData[0].name ? params.name : params.name.split('').join('\n');
                 },
@@ -177,12 +164,9 @@ export default {
                 padding: [12, 8],
                 borderWidth: 1,
                 borderColor: '#000',
+                backgroundColor: '#fff',
               }
             },
-            lineStyle: {
-              curveness: 1,
-            },
-
             leaves: {
               //叶子节点的特殊配置，如上面的树图示例中，叶子节点和非叶子节点的标签位置不同
               label: {
@@ -190,11 +174,10 @@ export default {
                   position: "bottom",
                   verticalAlign: "top",
                   align: "center",
-                  color: "white"
+                  color: "#000"
                 }
               }
             },
-
             expandAndCollapse: true, //子树折叠和展开的交互，默认打开
             animationDuration: 550, //初始动画的时长，支持回调函数,默认1000
             animationDurationUpdate: 750
@@ -211,7 +194,7 @@ export default {
           this.goPro();
         }
       };
-      groupStructure.setOption(json1);
+      groupStructure.setOption(option);
       groupStructure.on("click", clickFun);
 
       window.addEventListener('resize', () => {

@@ -132,15 +132,36 @@ export default {
         ]
       };
 
-      option.timeTicket = setInterval(function() {
-        var data0 = option.series[0].data;
-        var p2 = data0.shift();
-        data0.push(p2);
+      const data = [
+        {
+          projectNames: ["项目一", "项目二", "项目三", "项目四", "项目五", "项目六"],
+          data: [[320, 332, 301, 334, 390, 330, 320], [150, 232, 201, 154, 190, 330, 410], [120, 132, 101, 134, 90, 230, 210], [220, 182, 191, 234, 290, 330, 310]],
+        },
+        {
+          projectNames: ["项目One", "项目two", "项目three", "项目four", "项目five", "项目six"],
+          data: [[220, 232, 201, 234, 290, 230, 120], [50, 132, 101, 54, 90, 230, 410], [120, 132, 101, 134, 90, 230, 210], [220, 182, 191, 234, 290, 330, 310]],
+        },
+        {
+          projectNames: ["项目壹", "项目贰", "项目叁", "项目肆", "项目伍", "项目陆"],
+          data: [[420, 432, 401, 434, 490, 430, 420], [250, 332, 301, 254, 290, 230, 510], [120, 132, 101, 134, 90, 230, 210], [220, 182, 191, 234, 290, 330, 310]],
+        },
+      ]
 
-        var kl = option.xAxis[0].data.shift();
-        option.xAxis[0].data.push(kl);
+      let count = 0;
+      option.timeTicket = setInterval(function() {
+        const timesOneTurn = data.length;
+        count += 1;
+        if (count >= timesOneTurn) {
+          count = 0;
+        }
+
+        option.xAxis[0].data = data[count].projectNames;
+        data[count].data.forEach((item, index) => {
+          option.series[index].data = item;
+        });
+
         humanDetails.setOption(option);
-      }, 3000);
+      }, 5000);
       window.addEventListener('resize', () => {
         humanDetails.resize();
       });
