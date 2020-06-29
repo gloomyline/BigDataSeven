@@ -51,8 +51,8 @@ export default {
     },
     drawCertificateReserve() {
       // simulate data
-      const usings = [320, 332, 301, 334, 390, 330, 320, 320,  332,  301,  334,  390,  330,  320];
-      const unuseds = [150, 232, 201, 154, 190, 330, 410, 320, 332, 301, 334, 390, 330, 320];
+      const usings = [4, 5, 6, 1, 0, 0, 0, 8, 0, 1, 1, 0, 2, 1, 1, 1, 1,];
+      const unuseds = [5, 10, 4, 4, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0];
       const total = usings.map((item, index) => (item + unuseds[index]));
       const certificateReserve = echarts.init(this.$refs.certificateReserve);
       const option = {

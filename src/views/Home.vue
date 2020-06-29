@@ -56,9 +56,9 @@
           <div class="barbox" @click="goRouter('HumanNew')">
             <div class="alltitle" @click="goRouter('HumanNew')">人力资源管理</div>
             <ul class="clearfix">
-              <li class="pulll_left counter">1035</li>
-              <li class="pulll_left counter">649</li>
-              <li class="pulll_left counter">386</li>
+              <li class="pulll_left counter">{{ manPower.total }}</li>
+              <li class="pulll_left counter">{{ manPower.bureau }}</li>
+              <li class="pulll_left counter">{{ manPower.class }}</li>
             </ul>
           </div>
           <div class="barbox2">
@@ -135,6 +135,11 @@ export default {
   components: {},
   data() {
     return {
+      manPower: {
+        total: 1033,
+        bureau: 646,
+        class: 387,
+      },
       time: null,
       isShow: false,
       isShowLoad: false,
