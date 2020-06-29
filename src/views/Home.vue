@@ -116,7 +116,9 @@
         </dv-border-box-1>
         <dv-border-box-1 class="section-box">
           <div class="alltitle" @click="goRouter('Engineering')">工程经济</div>
-          <div class="allnav" id="echart6"></div>
+          <div class="sb" id="jj1"></div>
+          <div class="sb" id="jj2"></div>
+          
         </dv-border-box-1>
       </li>
     </ul>
@@ -129,6 +131,8 @@
 import "@/assets/js/echarts.min.js";
 import "@/assets/js/china.js";
 import echarts from "echarts";
+import 'echarts/map/js/china.js';
+import "echarts-gl" //3D地图插件
 
 export default {
   name: "Home",
@@ -162,11 +166,11 @@ export default {
         data: [
           {
             name: "大型设备",
-            value: 255
+            value: 155
           },
           {
             name: "其他在场设备",
-            value: 67
+            value: 125
           }
         ],
         color: [],
@@ -356,8 +360,7 @@ export default {
             return tipHtml;
           }
         },
-        geo: {
-          show: true,
+        geo3D: {
           map: mapName,
           label: {
             normal: {
@@ -367,22 +370,34 @@ export default {
               show: false
             }
           },
-          roam: false,
+          roam: true,
           itemStyle: {
-            normal: {
-              areaColor: "#023677",
-              borderColor: "#1180c7"
-            },
-            emphasis: {
-              areaColor: "#4499d0"
-            }
-          }
+             areaColor: '#013C62',
+             opacity: 1,
+             borderWidth: 0.4,
+             borderColor: '#000'
+         },
+          //shading: 'lambert',
+         light: { //光照阴影
+             main: {
+                 color: '#12235c', //光照颜色
+                 intensity: 1.8, //光照强度
+                 //shadowQuality: 'high', //阴影亮度
+                 shadow: true, //是否显示阴影
+                 alpha:55,
+                 beta:10
+ 
+             },
+              ambient: {
+                 intensity: 0.3
+             }
+         }
         },
         series: [
           {
             name: "散点",
-            type: "scatter",
-            coordinateSystem: "geo",
+            type: "scatter3D",
+            coordinateSystem: "geo3D",
             data: convertData(data),
             symbolSize: function(val) {
               return val[2] / 10;
@@ -399,7 +414,9 @@ export default {
             },
             itemStyle: {
               normal: {
-                color: "#fff"
+                color: "yellow",
+                shadowBlur: 10,
+                shadowColor: "yellow"
               }
             }
           },
@@ -436,43 +453,8 @@ export default {
           {
             name: "点",
             type: "scatter",
-            coordinateSystem: "geo",
+            coordinateSystem: "geo3D",
             zlevel: 6
-          },
-          {
-            name: "Top 5",
-            type: "effectScatter",
-            coordinateSystem: "geo",
-            data: convertData(
-              data
-                .sort(function(a, b) {
-                  return b.value - a.value;
-                })
-                .slice(0, 10)
-            ),
-            symbolSize: function(val) {
-              return val[2] / 10;
-            },
-            showEffectOn: "render",
-            rippleEffect: {
-              brushType: "stroke"
-            },
-            hoverAnimation: true,
-            label: {
-              normal: {
-                formatter: "{b}",
-                position: "left",
-                show: false
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: "yellow",
-                shadowBlur: 10,
-                shadowColor: "yellow"
-              }
-            },
-            zlevel: 1
           }
         ]
       };
@@ -865,7 +847,7 @@ export default {
       var option = {
         title: [
           {
-            text: "项目机械设备总体情况",
+            text: "项目机械设备总体情况（台套）",
             x: "center",
             y: "top",
             textStyle: {
@@ -932,7 +914,7 @@ export default {
       var option = {
         title: [
           {
-            text: "自有机械设备使用情况",
+            text: "自有机械设备使用情况（台套）",
             x: "center",
             y: "top",
             textStyle: {
@@ -1000,6 +982,13 @@ export default {
             }
           }
         },
+        title: [
+          {
+            text: '单位：万元',
+            x: '80%',
+            textStyle: { color: '#ffffff', fontSize: 12, fontWeight: 300, }
+          }
+        ],
         legend: {
           top: "0%",
           data: [
@@ -1258,7 +1247,7 @@ export default {
         myChart.resize();
       });
     },
-    echarts_6() {
+    echarts_61() {
       // 基于准备好的dom，初始化echarts实例
       // 绘制左侧面
       const CubeLeft = echarts.graphic.extendShape({
@@ -1328,9 +1317,9 @@ export default {
       echarts.graphic.registerShape("CubeRight", CubeRight);
       echarts.graphic.registerShape("CubeTop", CubeTop);
 
-      const MAX = [300, 200];
-      const VALUE = [200, 150];
-      var myChart = echarts.init(document.getElementById("echart6"));
+      const MAX = [122];
+      const VALUE = [103];
+      var myChart = echarts.init(document.getElementById("jj1"));
 
       var option = (option = {
         tooltip: {
@@ -1341,12 +1330,12 @@ export default {
           formatter: function(params, ticket, callback) {
             const item = params[0];
             const item1 = params[1];
-            return item1.name + "<br/>计划：" + item.value + "<br/>完成：" + item1.value;
+            return item1.name + "<br/>产值：" + item.value + "<br/>计价：" + item1.value;
           }
         },
         xAxis: {
           type: "category",
-          data: ["开累计价（亿元）", "年度变更索赔（亿元）"],
+          data: ["开累计价（亿元）"],
           axisLine: {
             show: true,
             lineStyle: {
@@ -1383,7 +1372,336 @@ export default {
               show: true,
               textStyle: {
                 color: "rgba(255,255,255,.6)",
-                fontSize: "12"
+                fontSize: "8"
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "rgba(255,255,255,.1	)",
+                width: 1,
+                type: "solid"
+              }
+            },
+            splitLine: {
+              lineStyle: {
+                color: "rgba(255,255,255,.1)"
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: "产值",
+            type: "custom",
+            renderItem: function(params, api) {
+              const location = api.coord([api.value(0), api.value(1)]);
+              return {
+                type: "group",
+                children: [
+                  {
+                    type: "CubeLeft",
+                    shape: {
+                      api,
+                      x: location[0],
+                      y: location[1],
+                      w: 25,
+                      xAxisPoint: api.coord([api.value(0), 0])
+                    },
+                    style: {
+                      fill: "rgba(47,102,192,.27)"
+                    }
+                  },
+                  {
+                    type: "CubeRight",
+                    shape: {
+                      api,
+                      x: location[0],
+                      y: location[1],
+                      w: 25,
+                      xAxisPoint: api.coord([api.value(0), 0])
+                    },
+                    style: {
+                      fill: "rgba(59,128,226,.27)"
+                    }
+                  },
+                  {
+                    type: "CubeTop",
+                    shape: {
+                      api,
+                      x: location[0],
+                      y: location[1],
+                      w: 25,
+                      xAxisPoint: api.coord([api.value(0), 0])
+                    },
+                    style: {
+                      fill: "rgba(72,156,221,.27)"
+                    }
+                  }
+                ]
+              };
+            },
+            data: MAX
+          },
+          {
+            name: "计价",
+            type: "custom",
+            renderItem: (params, api) => {
+              const location = api.coord([api.value(0), api.value(1)]);
+              return {
+                type: "group",
+                children: [
+                  {
+                    type: "CubeLeft",
+                    shape: {
+                      api,
+                      xValue: api.value(0),
+                      yValue: api.value(1),
+                      x: location[0],
+                      y: location[1],
+                      w: -25,
+                      xAxisPoint: api.coord([api.value(0), 0])
+                    },
+                    style: {
+                      fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                          offset: 0,
+                          color: "#3B80E2"
+                        },
+                        {
+                          offset: 1,
+                          color: "#49BEE5"
+                        }
+                      ])
+                    }
+                  },
+                  {
+                    type: "CubeRight",
+                    shape: {
+                      api,
+                      xValue: api.value(0),
+                      yValue: api.value(1),
+                      x: location[0],
+                      y: location[1],
+                      w: -25,
+                      xAxisPoint: api.coord([api.value(0), 0])
+                    },
+                    style: {
+                      fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                          offset: 0,
+                          color: "#3B80E2"
+                        },
+                        {
+                          offset: 1,
+                          color: "#49BEE5"
+                        }
+                      ])
+                    }
+                  },
+                  {
+                    type: "CubeTop",
+                    shape: {
+                      api,
+                      xValue: api.value(0),
+                      yValue: api.value(1),
+                      x: location[0],
+                      y: location[1],
+                      w: -25,
+                      xAxisPoint: api.coord([api.value(0), 0])
+                    },
+                    style: {
+                      fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                          offset: 0,
+                          color: "#3B80E2"
+                        },
+                        {
+                          offset: 1,
+                          color: "#49BEE5"
+                        }
+                      ])
+                    }
+                  }
+                ]
+              };
+            },
+            data: VALUE
+          },
+          {
+            type: "bar",
+            barWidth: 40,
+            label: {
+              normal: {
+                show: true,
+                position: "top",
+                fontSize: 16,
+                color: "#fff",
+                offset: [2, -25]
+              }
+            },
+            itemStyle: {
+              color: "transparent"
+            },
+            tooltip: {},
+            data: MAX
+          },
+          {
+            type: "bar",
+            barWidth: 40,
+            label: {
+              normal: {
+                show: true,
+                position: "top",
+                fontSize: 16,
+                color: "#fff",
+                offset: [2, -25]
+              }
+            },
+            itemStyle: {
+              color: "transparent"
+            },
+            tooltip: {},
+            data: VALUE
+          }
+        ]
+      });
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    echarts_62() {
+      // 基于准备好的dom，初始化echarts实例
+      // 绘制左侧面
+      const CubeLeft = echarts.graphic.extendShape({
+        shape: {
+          x: 0,
+          y: 0,
+          w: 0
+        },
+        buildPath: function(ctx, shape) {
+          // 会canvas的应该都能看得懂，shape是从custom传入的
+          const xAxisPoint = shape.xAxisPoint;
+          const c0 = [shape.x - shape.w, shape.y];
+          const c1 = [shape.x - 13 - shape.w, shape.y - 13];
+          const c2 = [xAxisPoint[0] - 13 - shape.w, xAxisPoint[1] - 13];
+          const c3 = [xAxisPoint[0] - shape.w, xAxisPoint[1]];
+          ctx
+            .moveTo(c0[0], c0[1])
+            .lineTo(c1[0], c1[1])
+            .lineTo(c2[0], c2[1])
+            .lineTo(c3[0], c3[1])
+            .closePath();
+        }
+      });
+      // 绘制右侧面
+      const CubeRight = echarts.graphic.extendShape({
+        shape: {
+          x: 0,
+          y: 0,
+          w: 0
+        },
+        buildPath: function(ctx, shape) {
+          const xAxisPoint = shape.xAxisPoint;
+          const c1 = [shape.x - shape.w, shape.y];
+          const c2 = [xAxisPoint[0] - shape.w, xAxisPoint[1]];
+          const c3 = [xAxisPoint[0] - shape.w + 18, xAxisPoint[1] - 9];
+          const c4 = [shape.x - shape.w + 18, shape.y - 9];
+          ctx
+            .moveTo(c1[0], c1[1])
+            .lineTo(c2[0], c2[1])
+            .lineTo(c3[0], c3[1])
+            .lineTo(c4[0], c4[1])
+            .closePath();
+        }
+      });
+      // 绘制顶面
+      const CubeTop = echarts.graphic.extendShape({
+        shape: {
+          x: 0,
+          y: 0,
+          w: 0
+        },
+        buildPath: function(ctx, shape) {
+          const c1 = [shape.x - shape.w, shape.y];
+          const c2 = [shape.x - shape.w + 18, shape.y - 9];
+          const c3 = [shape.x - shape.w + 5, shape.y - 22];
+          const c4 = [shape.x - shape.w - 13, shape.y - 13];
+          ctx
+            .moveTo(c1[0], c1[1])
+            .lineTo(c2[0], c2[1])
+            .lineTo(c3[0], c3[1])
+            .lineTo(c4[0], c4[1])
+            .closePath();
+        }
+      });
+      // 注册三个面图形
+      echarts.graphic.registerShape("CubeLeft", CubeLeft);
+      echarts.graphic.registerShape("CubeRight", CubeRight);
+      echarts.graphic.registerShape("CubeTop", CubeTop);
+
+      const MAX = [9];
+      const VALUE = [1];
+      var myChart = echarts.init(document.getElementById("jj2"));
+
+      var option = (option = {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow"
+          },
+          formatter: function(params, ticket, callback) {
+            const item = params[0];
+            const item1 = params[1];
+            return item1.name + "<br/>计划：" + item.value + "<br/>完成：" + item1.value;
+          }
+        },
+        xAxis: {
+          type: "category",
+          data: ["年度变更索赔（亿元）"],
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: "rgba(255,255,255,.1)",
+              width: 1,
+              type: "solid"
+            }
+          },
+          offset: 25,
+          axisTick: {
+            show: false,
+            length: 9,
+            alignWithLabel: true,
+            lineStyle: {
+              color: "#7DFFFD"
+            }
+          },
+          axisLabel: {
+            interval: 0,
+            // rotate:50,
+            show: true,
+            splitNumber: 15,
+            textStyle: {
+              color: "rgba(255,255,255,.6)",
+              fontSize: "12"
+            }
+          }
+        },
+        yAxis: [
+          {
+            type: "value",
+            axisLabel: {
+              //formatter: '{value} %'
+              show: true,
+              textStyle: {
+                color: "rgba(255,255,255,.6)",
+                fontSize: "8"
               }
             },
             axisTick: {
@@ -1875,7 +2193,8 @@ export default {
       this.echarts_33();
       this.echarts_5();
       this.echarts_51();
-      this.echarts_6();
+      this.echarts_61();
+      this.echarts_62();
       this.echarts();
     });
   },

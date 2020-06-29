@@ -301,18 +301,18 @@ export default {
             itemStyle: {
               normal: {
                 color: function(params) {
-                  if (params.data >= 3) {
+                  if (params.dataIndex >= 2) {
                     return ["rgb(236, 128, 141)"];
-                  } else if (params.data == 2) {
+                  } else if (params.dataIndex === 1) {
                     return ["rgb(250, 205, 145)"];
-                  } else if (params.data == 1) {
+                  } else if (params.dataIndex === 0) {
                     return ["rgb(202, 249, 130)"];
                   }
                   // return colorList[params.dataIndex];
                 },
                 label: {
                   show: true, //开启显示
-                  position: "top", //在上方显示
+                  position: 'top', //在上方显示
                   textStyle: {
                     //数值样式
                     color: "#fff",
@@ -383,9 +383,10 @@ export default {
             name: "占比",
             type: "pie",
             radius: "55%",
-            center: ["50%", "60%"],
+            center: ["45%", "60%"],
             label: {
               fontSize: 16,
+              formatter: '{b}:{c}',
             },
             data: dataOpcton,
             emphasis: {

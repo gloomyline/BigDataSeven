@@ -17,21 +17,22 @@
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
-          <div class="chartTit1">A类材料</div>
-          <div class="chartCont1" id="barChartA"></div>
+          <div class="chartTit1">A类材料(单位：吨)</div>
+          <div class="pie-material-a" ref="materialAPie"></div>
+          <div class="chartCont1 material-a" id="barChartA"></div>
         </div>
       </dv-border-box-10>
 
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
-          <div class="chartTit1">B类材料</div>
+          <div class="chartTit1">B类材料(单位：吨)</div>
           <div class="chartCont1" id="barChartB"></div>
         </div>
       </dv-border-box-10>
 
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
-          <div class="chartTit1">C类材料</div>
+          <div class="chartTit1">C类材料(单位：吨)</div>
           <div class="chartCont1" id="barChartC"></div>
         </div>
       </dv-border-box-10>
@@ -54,14 +55,14 @@ export default {
   mounted() {
     this.$nextTick(() => {
       const barChartAOption = {
-        xData: ["项目一", "项目二", "项目三", "项目四", "项目五", "项目六"],
+        xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
         legendData: [
           {
             name: "在用",
           },
-          {
-            name: "闲置",
-          },
+          // {
+          //   name: "闲置",
+          // },
           {
             name: "封存",
           },
@@ -70,7 +71,7 @@ export default {
           {
             name: "在用",
             type: "bar",
-            data: [5, 20, 36, 10, 10, 20],
+            data: [17983-3364, 0, 2705, 7367, 0, 513, 81, 87, 0, 0, 1083, 2607,],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -88,31 +89,31 @@ export default {
               barBorderRadius: [15, 15, 0, 0],
             },
           },
-          {
-            name: "闲置",
-            type: "bar",
-            data: [40, 22, 18, 35, 42, 40],
-            // stack: "使用情况",
-            barWidth: "30", //---柱形宽度
-            barCategoryGap: "20%", //---柱形间距
-            label: {
-              //---图形上的文本标签
-              show: true,
-              position: "top", //---相对位置
-              rotate: 0, //---旋转角度
-              color: "#ffffff",
-              fontSize: 16,
-            },
-            itemStyle: {
-              //---图形形状
-              color: "rgb(202,249,130)",
-              barBorderRadius: [15, 15, 0, 0],
-            },
-          },
+          // {
+          //   name: "闲置",
+          //   type: "bar",
+          //   data: [40, 22, 18, 35, 42, 40],
+          //   // stack: "使用情况",
+          //   barWidth: "30", //---柱形宽度
+          //   barCategoryGap: "20%", //---柱形间距
+          //   label: {
+          //     //---图形上的文本标签
+          //     show: true,
+          //     position: "top", //---相对位置
+          //     rotate: 0, //---旋转角度
+          //     color: "#ffffff",
+          //     fontSize: 16,
+          //   },
+          //   itemStyle: {
+          //     //---图形形状
+          //     color: "rgb(202,249,130)",
+          //     barBorderRadius: [15, 15, 0, 0],
+          //   },
+          // },
           {
             name: "封存",
             type: "bar",
-            data: [40, 22, 18, 35, 42, 40],
+            data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -134,7 +135,7 @@ export default {
       };
 
       const barChartBOption = {
-        xData: ["项目一", "项目二", "项目三", "项目四", "项目五", "项目六"],
+        xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
         legendData: [
           {
             name: "在用",
@@ -147,7 +148,7 @@ export default {
           {
             name: "在用",
             type: "bar",
-            data: [5, 20, 36, 10, 10, 20],
+            data: [0, 0, 7844, 25516, 460, 5004, 747, 4413, 0, 0, 5711, 4544,],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -168,7 +169,7 @@ export default {
           {
             name: "闲置",
             type: "bar",
-            data: [40, 22, 18, 35, 42, 40],
+            data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -186,11 +187,31 @@ export default {
               barBorderRadius: [15, 15, 0, 0],
             },
           },
+          {
+            name: '利用率',
+            type: 'line',
+            smooth: true,
+            yAxisIndex: 1,
+            showAllSymbol: true, //显示所有图形。
+            symbol: "circle", //标记的图形为实心圆
+            symbolSize: 10, //标记的大小
+            itemStyle: {
+                //折线拐点标志的样式
+                color: "#058cff"
+            },
+            lineStyle: {
+                color: "#058cff"
+            },
+            areaStyle:{
+                color: "rgba(5,140,255, 0.2)"
+            },
+            data: [100, 97, 100, 100, 100, 0, 0, 100, 85, 70, 60, 85],
+          }
         ],
       };
 
       const barChartCOption = {
-        xData: ["项目一", "项目二", "项目三", "项目四", "项目五", "项目六"],
+        xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
         legendData: [
           {
             name: "在用",
@@ -203,7 +224,7 @@ export default {
           {
             name: "在用",
             type: "bar",
-            data: [5, 20, 36, 10, 10, 20],
+            data: [0, 0, 7844, 25516, 460, 5004, 747, 4413, 0, 0, 5711, 4544,],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -224,7 +245,7 @@ export default {
           {
             name: "闲置",
             type: "bar",
-            data: [40, 22, 18, 35, 42, 40],
+            data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -242,6 +263,26 @@ export default {
               barBorderRadius: [15, 15, 0, 0],
             },
           },
+          {
+            name: '利用率',
+            type: 'line',
+            smooth: true,
+            yAxisIndex: 1,
+            showAllSymbol: true, //显示所有图形。
+            symbol: "circle", //标记的图形为实心圆
+            symbolSize: 10, //标记的大小
+            itemStyle: {
+                //折线拐点标志的样式
+                color: "#058cff"
+            },
+            lineStyle: {
+                color: "#058cff"
+            },
+            areaStyle:{
+                color: "rgba(5,140,255, 0.2)"
+            },
+            data: [100, 97, 100, 100, 100, 0, 0, 100, 85, 70, 60, 85],
+          }
         ],
       };
 
@@ -257,15 +298,19 @@ export default {
         barChartBOption.xData,
         barChartBOption.legendData,
         barChartBOption.seriesData,
-        "数量"
+        "数量",
+        true
       );
       this.drawDoubleBarChart(
         "barChartC",
         barChartCOption.xData,
         barChartCOption.legendData,
         barChartCOption.seriesData,
-        "数量"
+        "数量",
+        true
       );
+
+      this._drawPie();
     });
   },
   created() {
@@ -286,7 +331,61 @@ export default {
     goBack() {
       this.$router.push({ path: "/" });
     },
-    drawDoubleBarChart(id, xData, legendData, seriesData, yTitle) {
+    _drawPie() {
+      const pie = echarts.init(this.$refs.materialAPie);
+      const option = {
+        title: [
+          {
+            text: "整体利用率",
+            x: "center",
+            y: "top",
+            textStyle: {
+              color: "#2f89cf",
+              fontSize: "14"
+            }
+          }
+        ],
+        color: ["#27d08a", "#0f63d6", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
+        series: [
+          {
+            type: "pie",
+            radius: "45%",
+            center: ["52%", "50%"],
+            selectedMode: "single",
+            data: [
+              {
+                value: 14443,
+                name: "在用",
+              },
+              { value: 3636, name: "闲置", },
+              { value: 177, name: '封存', },
+            ],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  formatter: "{b} : {c}\n({d}%)",
+                  // position: "inner"
+                },
+                labelLine: { show: true }
+              },
+            },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)"
+              }
+            }
+          }
+        ]
+      };
+      pie.setOption(option);
+      window.addEventListener('resize', () => {
+        pie.resize();
+      });
+    },
+    drawDoubleBarChart(id, xData, legendData, seriesData, yTitle, isDouble) {
       var myChart = echarts.init(document.getElementById(id));
       var _that = this;
       var option = {
@@ -432,6 +531,20 @@ export default {
         },
         series: seriesData,
       };
+      if(isDouble) {
+        const oldYAxis = option.yAxis;
+        option.yAxis = [
+          oldYAxis,
+          {
+            type: 'value',
+            name: '利用率',
+            position: 'right',
+            splitLine: { show: true, color: '#fff',},
+            axisLine: { show:true, color: '#fff',},
+            axisLabel: { show: true, formatter: '{value} %', color: '#fff',},
+          }
+        ]
+      }
       myChart.setOption(option);
       myChart.on("click", function(params) {
         if (params.componentType == "xAxis") {
@@ -501,6 +614,17 @@ export default {
       .chartCont1 {
         width: 100%;
         height: 3.4rem;
+        &.material-a {
+          display: inline-block;
+          vertital-align: top;
+          width: 80%;
+        }
+      }
+      .pie-material-a {
+        display: inline-block;
+        vertital-align: top;
+        width: 20%;
+        height: 3.4rem
       }
     }
   }

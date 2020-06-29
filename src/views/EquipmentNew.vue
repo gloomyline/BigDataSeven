@@ -21,7 +21,7 @@
           <div class="chartCont" id="barChart1"></div>
         </div>
         <div class="chartContentSon">
-          <div class="chartTit" @click="jumpTzDetail()">机械设备使用情况</div>
+          <div class="chartTit" @click="jumpTzDetail()">主要机械设备使用情况</div>
           <div class="chartCont" id="circlePieChart"></div>
         </div>
       </dv-border-box-10>
@@ -51,32 +51,26 @@ export default {
     this.$nextTick(() => {
       const singleBarOption = {
         xData: [
-          "类型1",
-          "类型2",
-          "类型3",
-          "类型4",
-          "类型5",
-          "类型6",
-          "类型7",
-          "类型8",
-          "类型9",
-          "类型10",
-          "类型11",
-          "类型12",
+          "架梁起重机",
+          "履带起重机",
+          "门式起重机",
+          "汽车起重机",
+          "施工电梯",
+          "施工升降机",
+          "塔式起重机",
+          "桅杆起重机",
+          "移动模架",
         ],
         seriesData: [
-          3020,
-          4800,
-          3600,
-          6050,
-          4320,
-          6200,
-          5050,
-          7200,
-          4521,
-          6700,
-          8000,
-          5020,
+          2,
+          7,
+          4,
+          2,
+          1,
+          10,
+          69,
+          2,
+          1,
         ],
       };
       this.drawSingleBarChart(
@@ -86,14 +80,6 @@ export default {
       );
 
       const pieOption = {
-        legendData: [
-          "直达",
-          "营销广告",
-          "搜索引擎",
-          "邮件营销",
-          "联盟广告",
-          "视频广告",
-        ],
         seriesData: [
           { value: 300, name: "长期闲置" },
           { value: 350, name: "在用" },
@@ -110,17 +96,21 @@ export default {
 
       const barChartBOption = {
         xData: [
-          "项目一",
-          "项目二",
-          "项目三",
-          "项目四",
-          "项目五",
-          "项目六",
-          "项目七",
-          "项目八",
-          "项目九",
-          "项目十",
-          "项目十一",
+          "安九",
+          "地铁7号线",
+          "东峰路南延二标",
+          "房建分公司",
+          "建安街",
+          "汉江七桥",
+          "靖远",
+          "昆仑路",
+          "沈海高速",
+          "童庄河",
+          "武大高速",
+          "武嘉高速",
+          '萧何桥',
+          '中兰客专',
+          '献珍路'
         ],
         legendData: [
           {
@@ -134,7 +124,7 @@ export default {
           {
             name: "大型机械设备",
             type: "bar",
-            data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10],
+            data: [8, 0, 0, 10, 10, 20, 5, 20, 36, 10, 10, 4, 1, 7, 2, 0],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -155,7 +145,7 @@ export default {
           {
             name: "其他机械设备",
             type: "bar",
-            data: [40, 22, 18, 35, 42, 40, 40, 22, 18, 35, 42],
+            data: [102, 11, , 35, 42, 40, 40, 22, 18, 35, 42, 15, 2, 26, 8, 18],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -210,6 +200,10 @@ export default {
       var option = {
         tooltip: {
           trigger: "axis",
+          formatter:(params)=>{
+            // console.log(params);
+            return params[0].axisValue+'<br>所属项目：'+params[0].data.name+' 数量：'+params[0].data.value;
+          }
         },
         //-------------   x轴   -------------------
         xAxis: {
@@ -512,13 +506,11 @@ export default {
         },
         series: [
           {
-            name: "自有机械设备",
             type: "pie",
             selectedMode: "single",
-            radius: [0, "30%"],
-
+            itemStyle: { opacity: 0 },
             label: {
-              position: "inner",
+              position: "center",
             },
             labelLine: {
               show: false,
@@ -526,7 +518,7 @@ export default {
             data: innerCircleData,
           },
           {
-            name: "自有机械设备",
+            name: "自有主要机械设备",
             type: "pie",
             radius: ["40%", "55%"],
             label: {

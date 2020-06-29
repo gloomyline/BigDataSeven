@@ -34,34 +34,60 @@ export default {
     this.$nextTick(() => {
       const singleBarOption = {
         xData: [
-          "项目1",
-          "项目2",
-          "项目3",
-          "项目4",
-          "项目5",
-          "项目6",
-          "项目7",
-          "项目8",
-          "项目9",
-          "项目10",
-          "项目11",
-          "项目12",
+          "童庄河渡改桥工程",
+          "\n武汉至大悟高速公路工程",
+          "靖远金滩黄河大桥工程",
+          "\n黄石奥山星城莱茵郡项目",
+          "十堰世纪山水项目（一期）",
+          "\n十堰世纪山水项目（二期）",
+          "汉中创智谷",
+          "\n南桥新城15-04地块",
+          "南桥新城18单元02-10地块",
+          "\n武汉市江汉七桥工程PPP项目",
+          // "项目11",
+          // "项目12",
         ],
-        seriesData: [90, 88, 79, 75, 70, 65, 64, 58, 55, 50, 45, 40],
+        seriesData: [{name:'产值',value:[19474.93, 15597.48, 25243.2, 8779, 28165, 8913, 21242, 1933, 34221, 64312]},
+        {name:'计价金额',value:[18819,0,21091,8727,12809,0,15307,897,32238,59379]},
+        {name:'计价比例',value:[97,0,84,99,45,0,72,46,94,92]}
+        ]
+  
       };
       this.drawSingleBarChart(
         "barChart1",
         singleBarOption.xData,
-        "计价率",
+        "计价比例（%）",
         singleBarOption.seriesData
       );
 
-      this.drawSingleBarChart(
+            const singleBarOption2 = {
+        xData: [
+          "童庄河渡改桥工程",
+          "\n武汉至大悟高速公路工程",
+          "靖远金滩黄河大桥工程",
+          "\n黄石奥山星城莱茵郡项目",
+          "十堰世纪山水项目（一期）",
+          "\n十堰世纪山水项目（二期）",
+          "汉中创智谷",
+          "\n南桥新城15-04地块",
+          "南桥新城18单元02-10地块",
+          "\n武汉市江汉七桥工程PPP项目",
+          // "项目11",
+          // "项目12",
+        ],
+        seriesData: [{name:'计划',value:[1553, 3872, 2499, 293, 626, 1618, 0, 0, 164, 3105]},
+        {name:'完成',value:[731,0,0,0,0,0,0,0,0,0]},
+        {name:'索赔完成率',value:[47,0,0,0,0,0,0,0,0,0]}
+        ]
+      };
+      setTimeout(() => {
+        this.drawSingleBarChart(
         "barChart2",
-        singleBarOption.xData,
-        "索赔完成率",
-        singleBarOption.seriesData
+        singleBarOption2.xData,
+        "索赔完成率（%）",
+        singleBarOption2.seriesData
       );
+      }, 0);
     });
   },
   methods: {
@@ -107,7 +133,9 @@ export default {
             //---坐标轴 刻度
             show: false, //---是否显示
           },
+          
           axisLabel: {
+            'interval':0,
             //---坐标轴 标签
             show: true, //---是否显示
             inside: false, //---是否朝内
@@ -132,12 +160,12 @@ export default {
         },
 
         //----------------------  y轴  ------------------------
-        yAxis: {
+        yAxis: [{
           show: true, //---是否显示
           position: "left", //---y轴位置
           offset: 0, //---y轴相对于默认位置的偏移
           type: "value", //---轴类型，默认'category'
-          name: yTitle, //---轴名称
+          name: '金额（万元）', //---轴名称
           nameLocation: "end", //---轴名称相对位置value
           nameTextStyle: {
             //---坐标轴名称样式
@@ -183,11 +211,63 @@ export default {
             show: false, //---是否显示，默认false
           },
         },
+        {
+          show: true, //---是否显示
+          position: "right", //---y轴位置
+          offset: 0, //---y轴相对于默认位置的偏移
+          type: "value", //---轴类型，默认'category'
+          name: seriesData[2].name+'（%）', //---轴名称
+          nameLocation: "end", //---轴名称相对位置value
+          nameTextStyle: {
+            //---坐标轴名称样式
+            color: "#fff",
+            padding: [5, 0, 0, 5], //---坐标轴名称相对位置
+          },
+          nameGap: 15, //---坐标轴名称与轴线之间的距离
+          //nameRotate:270,			//---坐标轴名字旋转
+
+          axisLine: {
+            //---坐标轴 轴线
+            show: true, //---是否显示
+            //------------------- 线 -------------------------
+            lineStyle: {
+              color: "#fff",
+              width: 1,
+              type: "solid",
+            },
+          },
+          axisTick: {
+            //---坐标轴 刻度
+            show: false, //---是否显示
+          },
+          axisLabel: {
+            //---坐标轴 标签
+            show: false, //---是否显示
+            inside: false, //---是否朝内
+            rotate: 0, //---旋转角度
+            margin: 8, //---刻度标签与轴线之间的距离
+            //color:'red',				//---默认取轴线的颜色
+          },
+          splitLine: {
+            //---grid 区域中的分隔线
+            show: true, //---是否显示，'category'类目轴不显示，此时我的y轴为类目轴，splitLine属性是有意义的
+            lineStyle: {
+              color: "#666",
+              width: 1,
+              type: "dashed", //---类型
+            },
+          },
+          splitArea: {
+            //--网格区域
+            show: false, //---是否显示，默认false
+          },
+        }
+        ],
 
         //------------ 内容数据  -----------------
         series: [
           {
-            name: "数量", //---系列名称
+            name: seriesData[0].name, //---系列名称
             type: "bar", //---类型
             legendHoverLink: true, //---是否启用图例 hover 时的联动高亮
             label: {
@@ -197,7 +277,7 @@ export default {
               rotate: 0, //---旋转角度
               color: "#ffffff",
               fontSize: 16,
-              formatter: "{c}%",
+              formatter: "{c}",
             },
             itemStyle: {
               //---图形形状
@@ -224,8 +304,55 @@ export default {
             },
             barWidth: "20", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
-            data: seriesData,
+            data: seriesData[0].value,
           },
+          {
+            name: seriesData[1].name, //---系列名称
+            type: "bar", //---类型
+            legendHoverLink: true, //---是否启用图例 hover 时的联动高亮
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: "top", //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 16,
+              formatter: "{c}",
+            },
+            itemStyle: {
+              //---图形形状
+              color: "#27d08a",
+              barBorderRadius: [18, 18, 0, 0],
+            },
+            markLine: {
+              symbol: "none", //去掉警戒线最后面的箭头
+              label: {
+                position: "start",
+                formatter: "{c}%",
+              },
+              data: [
+                {
+                  silent: false, //鼠标悬停事件  true没有，false有
+                  lineStyle: {
+                    //警戒线的样式  ，虚实  颜色
+                    type: "solid",
+                    color: "rgb(214,142,45)"
+                  },
+                  yAxis: 8, // 警戒线的标注值，可以有多个yAxis,多条警示线   或者采用   {type : 'average', name: '平均值'}，type值有  max  min  average，分为最大，最小，平均值
+                },
+              ],
+            },
+            barWidth: "20", //---柱形宽度
+            barCategoryGap: "20%", //---柱形间距
+            data: seriesData[1].value,
+          },
+          {
+            name: seriesData[2].name,
+            type: 'line',
+            smooth: true,
+            yAxisIndex: 1,
+            data: seriesData[2].value
+        }
         ],
       };
       myChart.setOption(option);

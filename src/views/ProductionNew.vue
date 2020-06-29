@@ -64,8 +64,8 @@
                 <p>
                   公司在建项目总数<span class="sred">41</span>个，自营项目<span
                     class="sred"
-                    >14</span
-                  >个，联营项目<span class="sred">27</span>个，其中：<span
+                    >16</span
+                  >个，联营项目<span class="sred">25</span>个，其中：<span
                     class="sred"
                     >3</span
                   >个停工项目，<span class="sred">2</span>个新上项目。
@@ -95,28 +95,36 @@
       <dv-border-box-10 class="chartContainer">
         <div class="chartTitle">自营</div>
         <div class="chartContent">
-          <div class="chartContentSon">
+          <div class="chartContentSon triples">
             <div class="chartTit">产值情况（万元）</div>
             <div class="chartCont" id="barChart1"></div>
           </div>
-          <div class="chartContentSon">
+          <div class="chartContentSon triples">
             <div class="chartTit">人均产值排名</div>
             <dv-capsule-chart :config="rjczConfig" class="chartCont" />
             <!-- <div class="chartCont" id="rowBarChart1"></div> -->
+          </div>
+          <div class="chartContentSon triples">
+            <div class="chartTit">产值排名</div>
+            <dv-capsule-chart :config="rjczConfig" class="chartCont"></dv-capsule-chart>
           </div>
         </div>
       </dv-border-box-10>
       <dv-border-box-10 class="chartContainer">
         <div class="chartTitle">联营</div>
         <div class="chartContent">
-          <div class="chartContentSon">
+          <div class="chartContentSon triples">
             <div class="chartTit">产值情况（万元）</div>
             <div class="chartCont" id="barChart2"></div>
           </div>
-          <div class="chartContentSon">
+          <div class="chartContentSon triples">
             <div class="chartTit">人均产值排名</div>
             <dv-capsule-chart :config="rjczConfig2" class="chartCont" />
             <!-- <div class="chartCont" id="rowBarChart2"></div> -->
+          </div>
+          <div class="chartContentSon triples">
+            <div class="chartTit">产值排名</div>
+            <dv-capsule-chart :config="rjczConfig" class="chartCont"></dv-capsule-chart>
           </div>
         </div>
       </dv-border-box-10>
@@ -153,19 +161,22 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      const total = 195004 +38109+169481+231123+233597+450515
       const pieOption = {
         pieData: [
-          { value: 98, name: "A公司" },
-          { value: 250, name: "B公司" },
-          { value: 50, name: "C公司" },
-          { value: 100, name: "D公司" },
-          { value: 280, name: "E公司" },
+          
+          { value: 195004, name: "城轨分公司195004元（"+Number(195004/total*100).toFixed(2)+'%）' },
+          { value: 38109, name:  "湖北分公司38109元（"+Number(38109/total*100).toFixed(2)+'%）' },
+          { value: 169481, name: "华北分公司169481元（"+Number(169481/total*100).toFixed(2)+'%）' },
+          { value: 231123, name: "武汉分公司231123元（"+Number(231123/total*100).toFixed(2)+'%）' },
+          { value: 233597, name: "西北分公司233597元（"+Number(233597/total*100).toFixed(2)+'%）' },
+          { value: 450515, name: "房建分公司450515元（"+Number(450515/total*100).toFixed(2)+'%）' },
         ],
       };
 
-      this.drawPieChart("pieChart", pieOption.pieData);
+      this.drawPieChart("pieChart", pieOption.pieData,'片区公司产值情况');
 
-      const barChartBOption = {
+      const barChartZYOption = {
         xData: ["月度", "年度", "开累"],
         legendData: [
           {
@@ -179,7 +190,7 @@ export default {
           {
             name: "计划",
             type: "bar",
-            data: [5, 20, 36],
+            data: [36425, 311061, 827210],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -200,7 +211,63 @@ export default {
           {
             name: "完成",
             type: "bar",
-            data: [40, 22, 18],
+            data: [30911, 85897, 336029],
+            // stack: "使用情况",
+            barWidth: "30", //---柱形宽度
+            barCategoryGap: "20%", //---柱形间距
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: "top", //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 16,
+            },
+            itemStyle: {
+              //---图形形状
+              color: "rgb(202,249,130)",
+              barBorderRadius: [15, 15, 0, 0],
+            },
+          },
+        ],
+      };
+
+      const barChartLYOption = {
+        xData: ["月度", "年度", "开累"],
+        legendData: [
+          {
+            name: "计划",
+          },
+          {
+            name: "完成",
+          },
+        ],
+        seriesData: [
+          {
+            name: "计划",
+            type: "bar",
+            data: [50319, 401455, 878069],
+            // stack: "使用情况",
+            barWidth: "30", //---柱形宽度
+            barCategoryGap: "20%", //---柱形间距
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: "top", //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 16,
+            },
+            itemStyle: {
+              //---图形形状
+              color: "rgb(54,169,206)",
+              barBorderRadius: [15, 15, 0, 0],
+            },
+          },
+          {
+            name: "完成",
+            type: "bar",
+            data: [40059, 125792, 347374],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -222,17 +289,17 @@ export default {
       };
       this.drawDoubleBarChart(
         "barChart1",
-        barChartBOption.xData,
-        barChartBOption.legendData,
-        barChartBOption.seriesData,
+        barChartZYOption.xData,
+        barChartZYOption.legendData,
+        barChartZYOption.seriesData,
         "产值"
       );
 
       this.drawDoubleBarChart(
         "barChart2",
-        barChartBOption.xData,
-        barChartBOption.legendData,
-        barChartBOption.seriesData,
+        barChartLYOption.xData,
+        barChartLYOption.legendData,
+        barChartLYOption.seriesData,
         "产值"
       );
 
@@ -253,31 +320,32 @@ export default {
       //   option1.seriesData
       // );
 
+      // 人均产值排名，在项目名称前增加排序，数字为在所有自营或联营项目中进行排名(客户需求)
       this.rjczConfig = {
         data: [
           {
-            name: "项目一",
-            value: 167,
+            name: "1-武嘉高速",
+            value: 131,
           },
           {
-            name: "项目二",
-            value: 123,
+            name: "2-潇河大桥",
+            value: 94,
           },
           {
-            name: "项目三",
-            value: 98,
+            name: "3-左云十里河桥",
+            value: 57,
           },
           {
-            name: "项目四",
-            value: 75,
+            name: "14-七号线",
+            value: 11,
           },
           {
-            name: "项目五",
-            value: 66,
+            name: "15-太原节点改造",
+            value: 0,
           },
           {
-            name: "项目六",
-            value: 46,
+            name: "16-中北路停车场",
+            value: 0,
           },
         ],
         colors: [
@@ -292,31 +360,32 @@ export default {
         showValue: true,
       };
 
+      // 人均产值排名，在项目名称前增加排序，数字为在所有自营或联营项目中进行排名(客户需求)
       this.rjczConfig2 = {
         data: [
           {
-            name: "项目一",
-            value: 167,
+            name: "1-黄石宏维天地",
+            value: 788,
           },
           {
-            name: "项目二",
-            value: 123,
+            name: "2-奥山星城",
+            value: 788,
           },
           {
-            name: "项目三",
-            value: 98,
+            name: "3-十堰世纪山水一期",
+            value: 788,
           },
           {
-            name: "项目四",
+            name: "23-靖远黄河桥",
+            value: 79,
+          },
+          {
+            name: "24-G15沈海高速",
             value: 75,
           },
           {
-            name: "项目五",
-            value: 66,
-          },
-          {
-            name: "项目六",
-            value: 46,
+            name: "25-郧县献珍路",
+            value: 34,
           },
         ],
         colors: [
@@ -331,31 +400,59 @@ export default {
         showValue: true,
       };
 
+      let zhb = [
+        ["太原节点改造", "434.08%"],
+        ["常青花园道路改造", "163.98%"],
+        ["西安西三环", "99.05%"],
+        ["左云十里河桥", "87.83%"],
+        ["虎峪河道路改造", "55.61%"],
+        ["建安街", "47.94%"],
+        ["芳草路公园停车场", "32.30%"],
+        ["江汉七桥", "25.45%"],
+        ["靖远黄河桥", "24.71%"],
+        ["十堰世纪山水一期", "17.78%"],
+        ["南桥新城02-10地块", "13.83%"],
+        ["童庄河", "12.54%"], 
+        ["理工大学南校区基础设施维修", "2.71%"],
+        ["奥山星城", "0.82%"],
+        ["地铁八号线", "-0.25%"],
+        ["汉中经开区基础设施", "-5.02%"],
+        ["黄石宏维天地", "-19.71%"],
+        ["奉贤区庄行镇", "-27.00%"],
+        ["潇河大桥", "-27.09%"],
+        
+        ["武嘉高速", "-29.52%"],
+        
+        ["安九铁路", "-31.49%"],
+        ["阳逻百瑞景", "-34.90%"],
+        ["五里界中学", "-36.34%"],
+        ["南桥新城15-04地块", "-50.27%"],
+        ["郧县献珍路", "-52.62%"],
+        ["恩施玺悦", "-53.27%"],
+        ["中兰客专", "-54.38%"],
+        ["美兰机场", "-58.86%"],
+        ["世纪山水小区二期（十堰）", "-61.68%"],
+        ["海口公交专用线", "-65.89%"],
+        ["东峰路南延", "-66.46%"],
+        ["西宁昆仑路", "-67.19%"],
+        ["新征四路", "-68.13%"],
+        ["中北路停车场", "-68.67%"],
+        ["吉首天麓城", "-69.02%"],
+        ["武大高速", "-71.62%"],
+        ["新武金堤", "-77.66%"],
+        ["汉中创智谷", "-80.11%"],
+        ["神农架", "-80.28%"],
+        ["汉中创智家园", "-80.37%"],
+        ["G15沈海高速", "-80.69%"],
+        ["七号线", "-86.17%"],
+        ["宜昌世纪山水2区", "-87.93%"],
+
+        ];
+      
+
       this.config = {
         header: ["项目", "滞后比"],
-        data: [
-          ["项目1", "80%"],
-          ["项目2", "70%"],
-          ["项目3", "60%"],
-          ["项目4", "59%"],
-          ["项目5", "56%"],
-          ["项目6", "53%"],
-          ["项目7", "45%"],
-          ["项目8", "32%"],
-          ["项目9", "30%"],
-          ["项目10", "26%"],
-          ["项目11", "23%"],
-          ["项目12", "22%"],
-          ["项目13", "21%"],
-          ["项目14", "20%"],
-          ["项目15", "19%"],
-          ["项目16", "18%"],
-          ["项目17", "17%"],
-          ["项目18", "16%"],
-          ["项目19", "15%"],
-          ["项目20", "14%"],
-          ["项目21", "13%"],
-        ],
+        data: zhb,
         index: true,
         indexHeader: "排名",
         columnWidth: [50],
@@ -385,34 +482,44 @@ export default {
     onTableClick(e) {
       this.$router.push({ name: "DispatchNew" });
     },
-    drawPieChart(id, pieData) {
+    drawPieChart(id, pieData,seriesName) {
       var myChart = echarts.init(document.getElementById(id));
 
       var option = {
         // title: [
         //   {
-        //     text: "自有机械设备使用情况",
+        //     text: "片区公司产值情况",
         //     x: "center",
         //     y: "top",
         //     textStyle: {
-        //       color: "#2f89cf",
+        //       color: "#fff",
         //       fontSize: "14",
         //     },
+        //     show:false
         //   },
         // ],
-        color: ["#2f89cf", "#0f63d6", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
+        color: ["#2f89cf", "#0f63d6", "#0f8cd6", "#0fa0d6", "#0fb4d6","#0fc1d6"],
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)",
+          formatter: (params)=>{
+            // return "{a} <br/>{b}.slice(0,4) : {c}元 ({d}%)"
+            return seriesName+'<br>'+params.name.slice(0,4)+'：'+params.data.value+'元（'+ params.percent+"%）"
+          },
         },
-
+        grid:{
+          top:'50'
+        },
         series: [
           {
+            name:seriesName,
             type: "pie",
-            radius: "70%",
+            radius: "65%",
             center: ["50%", "42%"],
             selectedMode: "single",
             data: pieData,
+            label: {
+              formatter: '{b} : {c}万元 ({d}%)',
+            },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -748,20 +855,21 @@ export default {
         color: #ffffff;
         p {
           padding: 0.2rem;
+          padding-top: 0.35rem;
           span.sred {
-            font-size: 0.3rem;
+            // font-size: 0.3rem;
             color: red;
           }
           span.sgreen {
-            font-size: 0.3rem;
+            // font-size: 0.3rem;
             color: green;
           }
           span.syellow {
-            font-size: 0.3rem;
+            // font-size: 0.3rem;
             color: yellow;
           }
           span.spurple {
-            font-size: 0.3rem;
+            // font-size: 0.3rem;
             color: purple;
           }
         }
@@ -771,6 +879,9 @@ export default {
       width: 50%;
       height: 100%;
       float: left;
+      &.triples {
+        width: 33%;
+      }
       .chartTit {
         padding: 0.1rem;
         color: #ffffff;
