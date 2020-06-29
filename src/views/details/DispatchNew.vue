@@ -13,6 +13,22 @@
         >
       </div>
     </div>
+    
+    <div class="table boxall">
+      <p class="thead">
+        <img class="img" src="@/assets/images/u563.png" />
+        <span class="tilte">项目简介</span>
+      </p>
+      <div class="chartContent">
+          <div class="chartContentSon">
+            <img style="max-height:100%" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593346438644&di=53dc449845b342b41a056b0ea9a95485&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1410%2F20%2Fc1%2F39878059_39878059_1413773506307.jpg" class="image">
+          </div>
+          <div class="chartContentSon">
+            <img style="max-height:100%" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593346438644&di=53dc449845b342b41a056b0ea9a95485&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1410%2F20%2Fc1%2F39878059_39878059_1413773506307.jpg" class="image">
+          </div>
+        </div>
+
+    </div>
 
     <div class="table boxall">
       <p class="thead">
@@ -51,6 +67,16 @@
         <el-table-column
           prop="date"
           label="附件"
+          min-width="150"
+        ></el-table-column>
+        <el-table-column
+          prop="date"
+          label="计划评审时间"
+          min-width="150"
+        ></el-table-column>
+        <el-table-column
+          prop="date"
+          label="评审时间"
           min-width="150"
         ></el-table-column>
       </el-table>
@@ -402,6 +428,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.white{
+
+  margin-bottom: 30px;
+  h1{
+    font-size: 30px;
+  }
+  p{
+    font-size: 18px;
+    text-align: left;
+    text-indent: 25px;
+    line-height: 25p;
+  }
+}
 .dispatch {
   .head {
     height: 1.05rem;
@@ -472,6 +511,56 @@ export default {
       min-width: 800px;
       margin: 0 auto;
     }
+    .chartContent {
+      height: 3.2rem;
+      .chartContChild {
+        height: 1.3rem;
+        // line-height: 1.2rem;
+        width: 90%;
+        margin: 0 auto;
+        font-size: 0.2rem;
+        font-weight: bold;
+        color: #ffffff;
+        p {
+          padding: 0.2rem;
+          padding-top: 0.35rem;
+          span.sred {
+            // font-size: 0.3rem;
+            color: red;
+          }
+          span.sgreen {
+            // font-size: 0.3rem;
+            color: green;
+          }
+          span.syellow {
+            // font-size: 0.3rem;
+            color: yellow;
+          }
+          span.spurple {
+            // font-size: 0.3rem;
+            color: purple;
+          }
+        }
+      }
+    }
+    .chartContentSon {
+      width: 50%;
+      height: 100%;
+      float: left;
+      .chartTit {
+        padding: 0.1rem;
+        color: #ffffff;
+        font-size: 0.15rem;
+        font-weight: bold;
+      }
+      .chartCont {
+        width: 100%;
+        height: 2.8rem;
+      }
+    }
   }
 }
+// .boxall{
+
+// }
 </style>

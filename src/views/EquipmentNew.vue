@@ -17,17 +17,17 @@
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon">
-          <div class="chartTit">项目大型机械设备</div>
+          <div class="chartTit">项目大型机械设备(单位:台套)</div>
           <div class="chartCont" id="barChart1"></div>
         </div>
         <div class="chartContentSon">
-          <div class="chartTit" @click="jumpTzDetail()">主要机械设备使用情况</div>
+          <div class="chartTit" @click="jumpTzDetail()">主要机械设备使用情况(单位:台套)</div>
           <div class="chartCont" id="circlePieChart"></div>
         </div>
       </dv-border-box-10>
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
-          <div class="chartTit1">项目机械设备</div>
+          <div class="chartTit1">项目机械设备(单位:台套)</div>
           <div class="chartCont1" id="barChart2"></div>
         </div>
       </dv-border-box-10>

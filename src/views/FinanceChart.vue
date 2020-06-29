@@ -10,7 +10,7 @@
       </dv-border-box-10>
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
-          <div class="chartTit1">人月均经费情况</div>
+          <div class="chartTit1">人月均经费情况(单位:元)</div>
           <div class="chartCont1" id="barChart2"></div>
         </div>
       </dv-border-box-10>
@@ -33,7 +33,18 @@ export default {
   mounted() {
     this.$nextTick(() => {
       const barChartBOption = {
-        xData: ["项目一", "项目二", "项目三", "项目四", "项目五", "项目六", "项目七"],
+        xData: [
+          "安九",
+          "建安街",
+          "汉江七桥",
+          "靖远",
+          "昆仑路",
+          "沈海高速",
+          "童庄河",
+          "武大高速",
+          "武嘉高速",
+          '献珍路'
+        ],
         legendData: [
           {
             name: "计价回款率",
@@ -46,7 +57,7 @@ export default {
           {
             name: "计价回款率",
             type: "bar",
-            data: [5, 20, 36,90,80,70,60],
+            data: [7, 10, 5,6,5,7,48,16,70,60],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -68,7 +79,7 @@ export default {
           {
             name: "收入计价率",
             type: "bar",
-            data: [40, 22, 18,80,70,60,50],
+            data: [90, 97, 90,85,0,90,48,16,60,50],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -99,20 +110,18 @@ export default {
 
       const singleBarOption = {
         xData: [
-          "项目1",
-          "项目2",
-          "项目3",
-          "项目4",
-          "项目5",
-          "项目6",
-          "项目7",
-          "项目8",
-          "项目9",
-          "项目10",
-          "项目11",
-          "项目12",
+          "安九",
+          "建安街",
+          "汉江七桥",
+          "靖远",
+          "昆仑路",
+          "沈海高速",
+          "童庄河",
+          "武大高速",
+          "武嘉高速",
+          '献珍路'
         ],
-        seriesData: [90, 88, 79, 75, 70, 65, 64, 58, 55, 50, 45, 40],
+        seriesData: [9000, 8800, 7900, 7500, 7000, 6500, 6400, 5800, 5500, 5000, 4500, 4000],
       };
 
       this.drawSingleBarChart(
@@ -190,6 +199,7 @@ export default {
           axisLabel: {
             //---坐标轴 标签
             show: true, //---是否显示
+            interval: 0,
             inside: false, //---是否朝内
             rotate: 0, //---旋转角度
             margin: 5, //---刻度标签与轴线之间的距离
