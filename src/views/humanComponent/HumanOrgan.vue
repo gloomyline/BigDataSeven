@@ -62,7 +62,6 @@ export default {
               children: [
                 { name: '安九铁路', value: 107 },
                 { name: '江汉七桥', value: 63 },
-                { name: '安九铁路', value: 107 },
               ],
             },
             {

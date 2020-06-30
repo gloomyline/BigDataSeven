@@ -4,7 +4,7 @@
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
-          <div class="chartTit1">各单位人员情况</div>
+          <div class="chartTit1">各单位人员情况({{ companyName }})</div>
           <div class="chartCont1" id="barChart1" ref="humanDetails"></div>
         </div>
       </dv-border-box-10>
@@ -19,9 +19,10 @@ export default {
   name: "Production",
   data() {
     return {
+      companyName: '',
       formInline: {
         user: "",
-        region: ""
+        region: "",
       }
     };
   },
@@ -78,7 +79,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: ['安九铁路', '测绘公司', '常青园改造', '城轨分公司', '地铁八号线', '房建分公司'],
+            data: ['安九铁路', '江汉七桥',],
             axisLabel: {
               textStyle: {
                 color: "rgba(255,255,255,.6)",
@@ -111,48 +112,59 @@ export default {
             name: "一类劳务人员",
             type: "bar",
             stack: "outside",
-            data: [26, 332, 301, 334, 390, 330, 320]
+            data: [51, 21]
           },
           {
             name: "局聘",
             type: "bar",
             stack: "outside",
-            data: [56, 232, 201, 154, 190, 330, 410]
+            data: [56, 33],
           },
           {
             name: "实际人数",
             type: "bar",
-            data: [120, 132, 101, 134, 90, 230, 210]
+            data: [107, 54,],
           },
           {
             name: "定聘人数",
             type: "bar",
-            data: [220, 182, 191, 234, 290, 330, 310]
+            data: [85, 48,],
           }
         ]
       };
 
       const data = [
         {
-          projectNames: ['安九铁路', '测绘公司', '常青园改造', '城轨分公司', '地铁八号线', '房建分公司',],
-          data: [[320, 332, 301, 334, 390, 330, 320], [150, 232, 201, 154, 190, 330, 410], [120, 132, 101, 134, 90, 230, 210], [220, 182, 191, 234, 290, 330, 310]],
+          companyName: '独立项目',
+          projectNames: ['安九铁路', '江汉七桥',],
+          data: [[51, 21], [56, 33], [107, 54,], [85, 48,],],
         },
         {
-          projectNames: ['海口公交专用道', '湖北分公司', '虎峪河项目', '华北分公司', '机关部门', '机械设备租赁公司',],
-          data: [[220, 232, 201, 234, 290, 230, 120], [50, 132, 101, 54, 90, 230, 410], [120, 132, 101, 134, 90, 230, 210], [220, 182, 191, 234, 290, 330, 310]],
+          companyName: '华北分公司',
+          projectNames: ['太原节点改造', '虎峪河道路改造', '西安西三环', '潇河大桥', '左云十里河桥', '东峰路南延',],
+          data: [[0, 5, 5, 20, 7, 8], [4, 15, 8, 57, 10, 9], [4, 20, 13, 77, 17, 17], [4, 15, 8, 57, 10, 9],],
         },
         {
-          projectNames: ['建安街项目部', '江北铁路项目部', '江夏五里界中学项目部', '靖远金滩项目部', '军运会项目部', '空中威亚'],
-          data: [[420, 432, 401, 434, 490, 430, 420], [250, 332, 301, 254, 290, 230, 510], [120, 132, 101, 134, 90, 230, 210], [220, 182, 191, 234, 290, 330, 310]],
+          companyName: '城轨分公司',
+          projectNames: ['建安街','地铁八号线','中北路停车场','武嘉高速','武大高速','新武金堤','七号线','常青花园道路改造',],
+          data: [[15, 10, 5, 10, 25, 2, 32, 0,], [20, 12, 5, 34, 110, 16, 34, 5], [35, 22, 10, 44, 135, 18, 66, 5],[15, 14, 6, 40, 125, 12, 54, 3], ],
         },
         {
-          projectNames: ['昆仑路快速改造项目', '美兰机场', '三环北整治', '三金滩项目', '沈海高速公路', '苏岭山大桥项目', '太原十号线',],
-          data: [[420, 432, 401, 434, 490, 430, 420], [250, 332, 301, 254, 290, 230, 510], [120, 132, 101, 134, 90, 230, 210], [220, 182, 191, 234, 290, 330, 310]],
-        }
+          companyName: '西北分公司',
+          projectNames: ['中兰客专', '靖远黄河桥', '西宁昆仑路',],
+          data: [[20, 4, 10], [40, 8, 10], [60, 12, 20], [45, 10, 15],],
+        },
+        {
+          companyName: '房建分公司',
+          projectNames: ['房建项目部', '海口公交专用线', '美兰机场', 'G15沈海高速',],
+          data: [[2, 0, 4, 6], [27, 10, 9, 20], [29, 10, 13, 26], [18, 5, 8, 20]],
+        },
       ]
       // first render echart
+      this.companyName = data[0].companyName;
       humanDetails.setOption(option);
 
+      const self = this;
       let count = 0;
       option.timeTicket = setInterval(function() {
         const timesOneTurn = data.length;
@@ -166,8 +178,9 @@ export default {
           option.series[index].data = item;
         });
 
+        self.companyName = data[count].companyName;
         humanDetails.setOption(option);
-      }, 5000);
+      }, 3000);
       window.addEventListener('resize', () => {
         humanDetails.resize();
       });
