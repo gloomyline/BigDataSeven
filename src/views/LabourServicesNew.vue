@@ -53,6 +53,7 @@
         </p>
         <el-table
           style="width:100%"
+          height="450px"
           :data="tableData2"
           border
           @row-click="seeDetails"
@@ -91,112 +92,82 @@ export default {
     return {
       tableData: [
         {
-          date: "桐城市顺康工程劳务有限公司",
-          name: "5",
-        },
-        {
-          date: "武汉旭鑫源建筑劳务有限公司",
-          name: "4",
-        },
-        {
-          date: "中铁大桥局集团有限公司",
+          date: "武汉市福柒鑫建筑工程有限公司",
           name: "3",
         },
         {
-          date: "武汉乐成建设工程有限公司",
-          name: "3",
-        },
-        {
-          date: "鄂州市通达建筑劳务有限公司",
+          date: "武汉市云峰市政工程有限公司",
           name: "2",
         },
         {
-          date: "中煤特殊凿井有限责任公司",
+          date: "甘肃德隆劳务有限公司",
           name: "2",
         },
         {
-          date: "福建青云建设发展有限公司",
-          name: "1",
+          date: "甘肃金隆宜路桥建设（集团）有限公司",
+          name: "2",
         },
         {
-          date: "湖北恒业建筑有限公司",
-          name: "1",
-        },
-        {
-          date: "湖北恒业建筑有限公司",
-          name: "1",
+          date: "甘肃中建道桥建设有限公司",
+          name: "2",
         },
       ],
       tableData2: [
         {
-          value: 335,
-          data: 44,
-          name: "湖北恒业建筑有限公司",
-          project: "地铁4号线",
+          value: 238,
+          data: 180,
+          name: "桐城市顺康工程劳务有限公司",
+          project: "安九铁路",
           color: "#e8222d",
         },
         {
-          value: 680,
-          data: 440,
-          name: "湖北恒业建筑有限公司2",
-          project: "地铁4号线",
+          value: 95,
+          data: 77,
+          name: "武汉驰建建设工程有限公司",
+          project: "江汉七桥",
           color: "#e8222d",
         },
         {
-          value: 80,
-          data: 78,
-          name: "湖北恒业建筑有限公司3",
-          project: "地铁4号线",
+          value: 150,
+          data: 115,
+          name: "湖北宁远聚隆建筑工程有限公司",
+          project: "地铁八号线",
           color: "#f9ce00",
         },
         {
-          value: 320,
-          data: 260,
-          name: "湖北恒业建筑有限公司4",
-          project: "地铁4号线",
+          value: 220,
+          data: 15,
+          name: "湖北同力兄弟建设工程有限公司",
+          project: "地铁七号线",
           color: "#6abe83",
         },
         {
-          value: 140,
-          data: 48,
-          name: "湖北恒业建筑有限公司5",
-          project: "地铁4号线",
+          value: 150,
+          data: 20,
+          name: "武汉市福柒鑫建筑工程有限公司",
+          project: "武嘉项目部",
           color: "#f9ce00",
         },
         {
-          value: 136,
-          data: 120,
-          name: "湖北恒业建筑有限公司6",
-          project: "地铁4号线",
-          color: "#e8222d",
+          value: 500,
+          data: 21,
+          name: "合肥市广爱建筑劳务有限公司",
+          project: "建安街项目部",
+          color: "#f9ce00",
         },
         {
           value: 80,
-          data: 64,
-          name: "湖北恒业建筑有限公司7",
-          project: "地铁4号线",
-          color: "#6abe83",
+          data: 12,
+          name: "武汉禾信鼎盛市政工程有限公司",
+          project: "新征四路项目部",
+          color: "#f9ce00",
         },
         {
-          value: 58,
-          data: 44,
-          name: "湖北恒业建筑有限公司8",
-          project: "地铁4号线",
-          color: "#e8222d",
-        },
-        {
-          value: 168,
-          data: 44,
-          name: "湖北恒业建筑有限公司9",
-          project: "地铁4号线",
-          color: "#6abe83",
-        },
-        {
-          value: 78,
-          data: 44,
-          name: "湖北恒业建筑有限公司0",
-          project: "地铁4号线",
-          color: "#6abe83",
+          value: 130,
+          data: 42,
+          name: '重庆广华睿博建筑有限公司',
+          project: "童庄河项目部",
+          color: "#f9ce00",
         },
       ],
     };
@@ -297,7 +268,7 @@ export default {
             name: "劳务队伍数",
             type: "bar",
             barWidth: "40%",
-            data: [52, 25, 20, 12, 3, 2, 1],
+            data: [81, 4, 1, 0, 0, 0, 0],
             itemStyle: {
               normal: {
                 color: function(params) {
@@ -333,9 +304,9 @@ export default {
     echarts2() {
       var myChart = echarts.init(document.getElementById("map_2"));
       var dataOpcton = [
-        { value: 10, name: "参建人数占大于总人数85%" },
-        { value: 20, name: "参建人数大于总人数65%-85%" },
-        { value: 50, name: "参建人数小于总人数60%" },
+        { value: 2, name: "参建人数占大于总人数85%" },
+        { value: 14, name: "参建人数大于总人数65%-85%" },
+        { value: 70, name: "参建人数小于总人数60%" },
       ];
       var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数65%-85%", "参建人数小于总人数60%"];
       // var dataOpcton = this.tableData2.map((item) => {
