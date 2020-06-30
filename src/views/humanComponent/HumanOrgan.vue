@@ -55,69 +55,132 @@ export default {
 
       const struData = [
         {
-          name: "中铁大桥局第七工程有限公司",
+          name: '中铁大桥局第七工程有限公司',
           children: [
             {
-              name: "公司领导",
-              children: [{ name: '领导直属', value: 10 }],
+              name: "独立项目",
+              children: [
+                { name: '安九铁路', value: 107 },
+                { name: '江汉七桥', value: 63 },
+                { name: '安九铁路', value: 107 },
+              ],
             },
             {
-              name: "机关部门",
+              name: '华北分公司',
               children: [
                 {
-                  name: "工程管理部",
-                  value: 3600
+                  name: '太原节点改造',
+                  value: 4,
                 },
                 {
-                  name: "成本管理部",
-                  value: 3600
+                  name: '虎峪河道路改造',
+                  value: 20
                 },
                 {
-                  name: "物资管理部",
-                  value: 2700
+                  name: '西安西三环',
+                  value: 13
                 },
                 {
-                  name: "机械管理部",
-                  value: 2700
+                  name: '潇河大桥',
+                  value: 77,
                 },
                 {
-                  name: "安全质量环保监察部",
-                  value: 2700
+                  name: '左云十里河桥',
+                  value: 17,
                 },
                 {
-                  name: "科技研发中心",
-                  value: 2700
+                  name: '东峰路南延',
+                  value: 17
                 },
-                {
-                  name: "专家办公室",
-                  value: 2700
-                }
               ]
             },
             {
-              name: "武汉分公司",
+              name: '城轨分公司',
               children: [
                 {
-                  name: "上幺教湖",
-                  value: 800
+                  name: '建安街',
+                  value: 35,
                 },
                 {
-                  name: "三金潭",
-                  value: 600
+                  name: '地铁八号线',
+                  value: 22,
                 },
                 {
-                  name: "江北涉铁",
-                  value: 600
+                  name: '中北路停车场',
+                  value: 10,
                 },
                 {
-                  name: "长江主轴桥梁彩化亮化美化工程",
-                  value: 600
+                  name: '武嘉高速',
+                  value: 44,
                 },
                 {
-                  name: "军运会保障线路路面整治项目部",
-                  value: 600
-                }
+                  name: '武大高速',
+                  value: 135,
+                },
+                {
+                  name: '新武金堤',
+                  value: 18,
+                },
+                {
+                  name: '七号线',
+                  value: 66,
+                },
+                {
+                  name: '常青花园道路改造',
+                  value: 5,
+                },
               ]
+            },
+            {
+              name: "湖北分公司",
+              children: [
+                {
+                  name: '郧县献珍路',
+                  value: 7,
+                },
+                {
+                  name: '湖北分公司',
+                  value: 2,
+                },
+              ]
+            },
+            {
+              name: '西北分公司',
+              children: [
+                {
+                  name: '中兰客专',
+                  value: 60,
+                },
+                {
+                  name: '靖远黄河桥',
+                  value: 12,
+                },
+                {
+                  name: '西宁昆仑路',
+                  value: 20,
+                },
+              ],
+            },
+            {
+              name: '房建分公司',
+              children: [
+                {
+                  name: '房建项目部',
+                  value: 29,
+                },
+                {
+                  name: '海口公交专用线',
+                  value: 10,
+                },
+                {
+                  name: '美兰机场',
+                  value: 13,
+                },
+                {
+                  name: 'G15沈海高速',
+                  value: 26,
+                }
+              ],
             }
           ]
         }
