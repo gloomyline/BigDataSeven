@@ -82,8 +82,8 @@
           <div class="map4" id="map_1"></div>
           <div>
             <ul class="map-info">
-              <li class="li">在建项目数：5</li>
-              <li class="li">收尾项目数：2</li>
+              <li class="li">在建项目数：41个</li>
+              <li class="li">收尾项目数：2个</li>
             </ul>
           </div>
         </div>
@@ -118,7 +118,6 @@
           <div class="alltitle" @click="goRouter('Engineering')">工程经济</div>
           <div class="sb" id="jj1"></div>
           <div class="sb" id="jj2"></div>
-          
         </dv-border-box-1>
       </li>
     </ul>
@@ -131,8 +130,8 @@
 import "@/assets/js/echarts.min.js";
 import "@/assets/js/china.js";
 import echarts from "echarts";
-import 'echarts/map/js/china.js';
-import "echarts-gl" //3D地图插件
+import "echarts/map/js/china.js";
+import "echarts-gl"; //3D地图插件
 
 export default {
   name: "Home",
@@ -142,7 +141,7 @@ export default {
       manPower: {
         total: 1033,
         bureau: 646,
-        class: 387,
+        class: 387
       },
       time: null,
       isShow: false,
@@ -228,17 +227,21 @@ export default {
       var myChart = echarts.init(document.getElementById("map_1"));
       var mapName = "china";
       var data = [
-        { name: "武汉分公司", value: 200 },
-        { name: "宜昌分公司", value: 92 },
-        { name: "华北分公司", value: 114 },
-        { name: "城轨分公司", value: 109 }
+        { name: "武汉分公司", value: 150 },
+        { name: "湖北分公司", value: 150 },
+        { name: "华北分公司", value: 150 },
+        { name: "城轨分公司", value: 120 },
+        { name: "西北分公司", value: 150 },
+        { name: "房建分公司", value: 150 }
       ];
 
       var geoCoordMap = {
-        武汉分公司: [114.216574, 30.58901],
-        宜昌分公司: [111.325897, 30.720298],
-        华北分公司: [116.486482, 40.096652],
-        城轨分公司: [101.836336, 36.583651]
+        武汉分公司: [114.250645, 30.617365],
+        湖北分公司: [111.273005, 30.694962],
+        华北分公司: [112.534306, 37.877552],
+        城轨分公司: [114.434618, 30.614381],
+        西北分公司: [103.829026, 36.057899],
+        房建分公司: [112.95166, 28.204891]
       };
       var toolTipData = [
         {
@@ -302,7 +305,7 @@ export default {
       };
       var option = {
         tooltip: {
-          position: [0, -20,],
+          position: [0, -20],
           padding: 0,
           enterable: true,
           transitionDuration: 1,
@@ -372,26 +375,26 @@ export default {
           },
           roam: true,
           itemStyle: {
-             areaColor: '#013C62',
-             opacity: 1,
-             borderWidth: 0.4,
-             borderColor: '#000'
-         },
+            areaColor: "#013C62",
+            opacity: 1,
+            borderWidth: 0.4,
+            borderColor: "#000"
+          },
           //shading: 'lambert',
-         light: { //光照阴影
-             main: {
-                 color: '#12235c', //光照颜色
-                 intensity: 1.8, //光照强度
-                 //shadowQuality: 'high', //阴影亮度
-                 shadow: true, //是否显示阴影
-                 alpha:55,
-                 beta:10
- 
-             },
-              ambient: {
-                 intensity: 0.3
-             }
-         }
+          light: {
+            //光照阴影
+            main: {
+              color: "#12235c", //光照颜色
+              intensity: 1.8, //光照强度
+              //shadowQuality: 'high', //阴影亮度
+              shadow: true, //是否显示阴影
+              alpha: 55,
+              beta: 10
+            },
+            ambient: {
+              intensity: 0.3
+            }
+          }
         },
         series: [
           {
@@ -414,7 +417,24 @@ export default {
             },
             itemStyle: {
               normal: {
-                color: "yellow",
+                color: function(e) {
+                  if(e.name == '武汉分公司') {
+                    return "red";
+                  } else if(e.name == '西北分公司') {
+                    return "yellow";
+                  } else if(e.name == '华北分公司') {
+                    return "blue";
+                  } else if(e.name == '湖北分公司') {
+                    return "green";
+                  } else if(e.name == '房建分公司') {
+                    return "yellow";
+                  } else if(e.name == '城轨分公司') {
+                    return "orange";
+                  } else {
+                    return "pink";
+                  }
+                  
+                },
                 shadowBlur: 10,
                 shadowColor: "yellow"
               }
@@ -628,7 +648,7 @@ export default {
                 borderWidth: 12
               }
             },
-            data: [50, 62, 88, 98, 98, 98, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: [60, 60, 60, 60, 63, 66, 0, 0, 0, 0, 0, 0, 0, 0]
           },
           {
             name: "今年办理准入队伍数量（个）",
@@ -675,7 +695,7 @@ export default {
                 }
               }
             },
-            data: [12, 21, 26, 32, 32, 32, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: [1, 1, 1, 1, 5, 7, 0, 0, 0, 0, 0, 0, 0, 0]
           },
           {
             name: "公司劳务队伍数量（个）",
@@ -722,7 +742,7 @@ export default {
                 }
               }
             },
-            data: [12, 28, 35, 50, 60, 62, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: [81, 81, 81, 82, 86, 93, 0, 0, 0, 0, 0, 0, 0, 0]
           }
         ]
       };
@@ -737,7 +757,7 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("echart2"));
       var option = (option = {
-        color: ["#2f89cf", "#27d08a", "#e62d2d", "#0fa0d6", "#0fb4d6",],
+        color: ["#2f89cf", "#27d08a", "#e62d2d", "#0fa0d6", "#0fb4d6"],
         title: [
           {
             text: "A类利用率94%    B类利用率78%    C类利用率80%",
@@ -749,9 +769,9 @@ export default {
             }
           },
           {
-            text: '单位：吨',
-            x: '80%',
-            textStyle: { color: '#ffffff', fontSize: 12, fontWeight: 300, }
+            text: "单位：吨",
+            x: "80%",
+            textStyle: { color: "#ffffff", fontSize: 12, fontWeight: 300 }
           }
         ],
         tooltip: {
@@ -769,7 +789,7 @@ export default {
           data: ["闲置", "在用", "封存"]
         },
         grid: {
-          top: '20%',
+          top: "20%",
           left: "3%",
           right: "4%",
           bottom: "3%",
@@ -790,7 +810,7 @@ export default {
           },
           axisTick: { show: false },
           type: "category",
-          data: ["C类", "B类", "A类", ]
+          data: ["C类", "B类", "A类"]
         },
         series: [
           {
@@ -801,10 +821,10 @@ export default {
               show: true,
               position: "insideRight",
               formatter: function(params) {
-                return Number(params.data) > 0 ? params.data : '';
-              },
+                return Number(params.data) > 0 ? params.data : "";
+              }
             },
-            data: [320, 302, 301]
+            data: [0, 54240, 14443]
           },
           {
             name: "闲置",
@@ -814,10 +834,10 @@ export default {
               show: true,
               position: "insideRight",
               formatter: function(params) {
-                return Number(params.data) > 0 ? params.data : '';
-              },
+                return Number(params.data) > 0 ? params.data : "";
+              }
             },
-            data: [120, 132, 101],
+            data: [3740, 3275, 3636]
           },
           {
             name: "封存",
@@ -827,10 +847,10 @@ export default {
               show: true,
               position: "insideRight",
               formatter: function(params) {
-                return Number(params.data) > 0 ? params.data : '';
-              },
+                return Number(params.data) > 0 ? params.data : "";
+              }
             },
-            data: [0, 0, 220]
+            data: [0, 0, 177]
           }
         ]
       });
@@ -884,8 +904,8 @@ export default {
             label: { show: true },
             labelLine: { show: true },
             data: [
-              { value: 255, name: "大型主要设备" },
-              { value: 67, name: "其他在场设备" }
+              { value: 107, name: "大型主要设备" },
+              { value: 54, name: "其他在场设备" }
             ],
             itemStyle: {
               normal: {
@@ -937,10 +957,10 @@ export default {
             selectedMode: "single",
             data: [
               {
-                value: 98,
+                value: 54,
                 name: "在用"
               },
-              { value: 250, name: "空闲" }
+              { value: 67, name: "空闲" }
             ],
             itemStyle: {
               normal: {
@@ -950,7 +970,7 @@ export default {
                   position: "inner"
                 },
                 labelLine: { show: true }
-              },
+              }
             },
             emphasis: {
               itemStyle: {
@@ -984,9 +1004,9 @@ export default {
         },
         title: [
           {
-            text: '单位：万元',
-            x: '80%',
-            textStyle: { color: '#ffffff', fontSize: 12, fontWeight: 300, }
+            text: "单位：万元",
+            x: "80%",
+            textStyle: { color: "#ffffff", fontSize: 12, fontWeight: 300 }
           }
         ],
         legend: {
@@ -1330,7 +1350,13 @@ export default {
           formatter: function(params, ticket, callback) {
             const item = params[0];
             const item1 = params[1];
-            return item1.name + "<br/>产值：" + item.value + "<br/>计价：" + item1.value;
+            return (
+              item1.name +
+              "<br/>产值：" +
+              item.value +
+              "<br/>计价：" +
+              item1.value
+            );
           }
         },
         xAxis: {
@@ -1659,7 +1685,13 @@ export default {
           formatter: function(params, ticket, callback) {
             const item = params[0];
             const item1 = params[1];
-            return item1.name + "<br/>计划：" + item.value + "<br/>完成：" + item1.value;
+            return (
+              item1.name +
+              "<br/>计划：" +
+              item.value +
+              "<br/>完成：" +
+              item1.value
+            );
           }
         },
         xAxis: {
@@ -1920,7 +1952,7 @@ export default {
             }
           },
           {
-            text: "94.2%",
+            text: "81.82%",
             top: "37%",
             left: "center",
             textStyle: {
@@ -1941,15 +1973,15 @@ export default {
           top: "70%",
           itemWidth: 10,
           itemHeight: 10,
-          data: ["完成",],
+          data: ["完成"],
           selectedMode: false, // disable symbol selected mode
           textStyle: {
             color: "rgba(255,255,255,.5)",
             fontSize: "12"
           },
           formatter: function(params) {
-            return (params === '完成' ? `${params}:${self.$utils.currency(43126)}` : '');
-          },
+            return params === "完成" ? `${params}:70970万元` : "";
+          }
         },
         series: [
           {
@@ -1957,12 +1989,12 @@ export default {
             type: "pie",
             center: ["50%", "42%"],
             radius: ["40%", "60%"],
-            color: ["#57D1C9", "#066eab"],
+            color: ["#FFE869", "#066eab"],
             label: { show: true },
             labelLine: { show: true },
             data: [
-              { value: 43126, name: "完成" },
-              { value: 2656, name: "剩余" }
+              { value: 70970, name: "完成" },
+              { value: 15774, name: "剩余" }
             ],
             itemStyle: {
               normal: {
@@ -1970,7 +2002,11 @@ export default {
                   show: false,
                   formatter: function(params) {
                     if (params.name === "完成") {
-                      return params.name + "：" + self.$utils.currency(params.data.value);
+                      return (
+                        params.name +
+                        "：" +
+                        self.$utils.currency(params.data.value)
+                      );
                     } else {
                       return "";
                     }
@@ -2005,7 +2041,7 @@ export default {
             }
           },
           {
-            text: "74.46%",
+            text: "29.89%",
             top: "37%",
             left: "center",
             textStyle: {
@@ -2026,15 +2062,15 @@ export default {
           top: "70%",
           itemWidth: 10,
           itemHeight: 10,
-          data: ["完成",],
+          data: ["完成"],
           textStyle: {
             color: "rgba(255,255,255,.5)",
             fontSize: "12"
           },
           selectedMode: false,
           formatter: function(params) {
-            return (params === '完成' ? `${params}:${self.$utils.currency(72075)}` : '');
-          },
+            return params === "完成" ? `${params}:213937万元` : "";
+          }
         },
         series: [
           {
@@ -2042,12 +2078,12 @@ export default {
             type: "pie",
             center: ["50%", "42%"],
             radius: ["40%", "60%"],
-            color: ["#FFE869", "#066eab"],
+            color: ["#EE6A50", "#066eab"],
             label: { show: false },
             labelLine: { show: false },
             data: [
-              { value: 72075, name: "完成" },
-              { value: 24721, name: "剩余" }
+              { value: 213937, name: "完成" },
+              { value: 501771, name: "剩余" }
             ],
             itemStyle: {
               normal: {
@@ -2091,8 +2127,8 @@ export default {
             }
           },
           {
-            text: "39%",
-            top: "37%",
+            text: "93.27%",
+            top: '37%',
             left: "center",
             textStyle: {
               color: "#EE6A50",
@@ -2112,15 +2148,15 @@ export default {
           top: "70%",
           itemWidth: 10,
           itemHeight: 10,
-          data: ["完成",],
+          data: ["完成"],
           textStyle: {
             color: "rgba(255,255,255,.5)",
             fontSize: "12"
           },
           selectedMode: false,
           formatter: function(params) {
-            return (params === '完成' ? `${params}:${self.$utils.currency(333301)}` : '');            
-          },
+            return params === "完成" ? `${params}:827210万元` : "";
+          }
         },
         series: [
           {
@@ -2128,22 +2164,12 @@ export default {
             type: "pie",
             center: ["50%", "42%"],
             radius: ["40%", "60%"],
-            color: [
-              "#EE6A50",
-              "#066eab",
-              "#0682ab",
-              "#0696ab",
-              "#06a0ab",
-              "#06b4ab",
-              "#06c8ab",
-              "#06dcab",
-              "#06f0ab"
-            ],
+            color: ["#57D1C9", "#066eab"],
             label: { show: false },
             labelLine: { show: false },
             data: [
-              { value: 333301, name: "完成" },
-              { value: 520620, name: "剩余" }
+              { value: 827210, name: "完成" },
+              { value: 59668, name: "剩余" }
             ],
             itemStyle: {
               normal: {
