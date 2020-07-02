@@ -38,11 +38,13 @@
 
           <div class="sy" id="fb2"></div>
           <div class="sy" id="fb3"></div>
+          <span class="unit" style="right: 20px;top: 20px;">单位：万元</span>
           <!-- <div class="boxfoot"></div> -->
         </dv-border-box-1>
         <dv-border-box-1 class="section-box">
           <div class="alltitle" @click="goRouter('LabourServicesNew')">劳务管理</div>
           <div class="allnav" id="echart1"></div>
+          <span class="unit" style="right: 20px;top: 10px;">单位：个</span>
           <!-- <div class="boxfoot"></div> -->
         </dv-border-box-1>
         <dv-border-box-1 class="section-box">
@@ -113,11 +115,13 @@
           </div>-->
           <div class="sb" id="sb1"></div>
           <div class="sb" id="sb2"></div>
+          <span class="unit" style="right: 30px;top: 10px;">单位：台</span>
         </dv-border-box-1>
         <dv-border-box-1 class="section-box">
           <div class="alltitle" @click="goRouter('Engineering')">工程经济</div>
           <div class="sb" id="jj1"></div>
           <div class="sb" id="jj2"></div>
+          <span class="unit" style="right: 30px;top: 10px;">单位：万元</span>
         </dv-border-box-1>
       </li>
     </ul>
@@ -536,9 +540,9 @@ export default {
         },
         legend: {
           data: [
-            "在用劳务队伍数量（个）",
-            "今年办理准入队伍数量（个）",
-            "公司劳务队伍数量（个）"
+            "在用劳务队伍数量",
+            "今年办理准入队伍数量",
+            "公司劳务队伍数量"
           ],
           textStyle: {
             color: "rgba(255,255,255,.5)",
@@ -604,7 +608,7 @@ export default {
         ],
         series: [
           {
-            name: "在用劳务队伍数量（个）",
+            name: "在用劳务队伍数量",
             type: "line",
             smooth: true,
             symbol: "circle",
@@ -651,7 +655,7 @@ export default {
             data: [60, 60, 60, 60, 63, 66, 0, 0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: "今年办理准入队伍数量（个）",
+            name: "今年办理准入队伍数量",
             type: "line",
             smooth: true,
             symbol: "circle",
@@ -698,7 +702,7 @@ export default {
             data: [1, 1, 1, 1, 5, 7, 0, 0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: "公司劳务队伍数量（个）",
+            name: "公司劳务队伍数量",
             type: "line",
             smooth: true,
             symbol: "circle",
@@ -867,7 +871,7 @@ export default {
       var option = {
         title: [
           {
-            text: "项目机械设备总体情况（台套）",
+            text: "项目机械设备总体情况",
             x: "center",
             y: "top",
             textStyle: {
@@ -934,7 +938,7 @@ export default {
       var option = {
         title: [
           {
-            text: "自有机械设备使用情况（台套）",
+            text: "自有机械设备使用情况",
             x: "center",
             y: "top",
             textStyle: {
@@ -1361,7 +1365,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: ["开累计价（亿元）"],
+          data: ["开累计价"],
           axisLine: {
             show: true,
             lineStyle: {
@@ -1696,7 +1700,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: ["年度变更索赔（亿元）"],
+          data: ["年度变更索赔"],
           axisLine: {
             show: true,
             lineStyle: {
@@ -1980,7 +1984,7 @@ export default {
             fontSize: "12"
           },
           formatter: function(params) {
-            return params === "完成" ? `${params}:70970万元` : "";
+            return params === "完成" ? `${params}:70970` : "";
           }
         },
         series: [
@@ -2069,7 +2073,7 @@ export default {
           },
           selectedMode: false,
           formatter: function(params) {
-            return params === "完成" ? `${params}:213937万元` : "";
+            return params === "完成" ? `${params}:213937` : "";
           }
         },
         series: [
@@ -2134,7 +2138,7 @@ export default {
               color: "#EE6A50",
               fontSize: "14"
             }
-          }
+          },
         ],
         tooltip: {
           trigger: "item",
@@ -2155,7 +2159,7 @@ export default {
           },
           selectedMode: false,
           formatter: function(params) {
-            return params === "完成" ? `${params}:827210万元` : "";
+            return params === "完成" ? `${params}:827210` : "";
           }
         },
         series: [

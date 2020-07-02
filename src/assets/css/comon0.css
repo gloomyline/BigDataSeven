@@ -5,6 +5,13 @@
 
 /***/
 
+    
+    .unit {
+        position: absolute;
+        color: white;
+        font-size: 12px;
+        font-weight: normal;
+    }
 
     .canvas {
         position: absolute;
