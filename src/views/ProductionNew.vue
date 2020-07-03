@@ -13,53 +13,22 @@
         >
       </div>
     </div>
-    <!-- 操作搜索区域 -->
-    <!-- <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label>
-        <el-input v-model="formInline.user" placeholder="项目"></el-input>
-      </el-form-item>
-      <el-form-item label>
-        <el-select v-model="formInline.region" placeholder="活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="onSubmit"
-          >查询</el-button
-        >
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary">上月项目完成情况</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary">月度施工计划</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary">片区完成比例</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-arrow-left" @click="goBack"
-          >返回主页面</el-button
-        >
-      </el-form-item>
-    </el-form> -->
     <!-- 内容区域 -->
 
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
         <div class="chartTitle">公司总体施工情况</div>
         <div class="chartContent">
-          <div class="chartContentSon">
+          <div class="chartContentSon" style="width: 55%;">
             <div class="chartTit">片区公司产值情况</div>
             <div class="chartCont" id="pieChart"></div>
           </div>
-          <div class="chartContentSon">
+          <div class="chartContentSon" style="width: 45%;">
             <div class="chartTit">施工情况简报</div>
             <div class="chartCont">
               <dv-border-box-10
                 class="chartContChild"
-                style="margin-bottom:0.2rem"
+                style="margin-bottom:0.1rem"
               >
                 <p>
                   公司在建项目总数<span class="sred">41</span>个，自营项目<span
@@ -100,13 +69,13 @@
             <div class="chartCont" id="barChart1"></div>
           </div>
           <div class="chartContentSon triples">
-            <div class="chartTit">人均产值排名</div>
+            <div class="chartTit">人均产值排名（万元）</div>
             <dv-capsule-chart :config="rjczConfig" class="chartCont" />
             <!-- <div class="chartCont" id="rowBarChart1"></div> -->
           </div>
           <div class="chartContentSon triples">
-            <div class="chartTit">产值排名</div>
-            <dv-capsule-chart :config="rjczConfig" class="chartCont"></dv-capsule-chart>
+            <div class="chartTit">产值排名（万元）</div>
+            <dv-capsule-chart :config="czConfig" class="chartCont"></dv-capsule-chart>
           </div>
         </div>
       </dv-border-box-10>
@@ -118,27 +87,30 @@
             <div class="chartCont" id="barChart2"></div>
           </div>
           <div class="chartContentSon triples">
-            <div class="chartTit">人均产值排名</div>
+            <div class="chartTit">人均产值排名（万元）</div>
             <dv-capsule-chart :config="rjczConfig2" class="chartCont" />
             <!-- <div class="chartCont" id="rowBarChart2"></div> -->
           </div>
           <div class="chartContentSon triples">
-            <div class="chartTit">产值排名</div>
-            <dv-capsule-chart :config="rjczConfig" class="chartCont"></dv-capsule-chart>
+            <div class="chartTit">产值排名（万元）</div>
+            <dv-capsule-chart :config="czConfig2" class="chartCont"></dv-capsule-chart>
           </div>
         </div>
       </dv-border-box-10>
     </div>
+
     <div class="tableContainer">
       <dv-border-box-10 class="tableContainerSon">
         <div class="tableContainerSonTitle">
           工期滞后排名
         </div>
-        <dv-scroll-board
-          :config="config"
-          class="tableContainerSonTable"
-          @click="onTableClick($event)"
-        />
+        <div class="scroll-wrap">
+          <dv-scroll-board
+            :config="config"
+            class="tableContainerSonTable"
+            @click="onTableClick($event)"
+          />  
+        </div>
       </dv-border-box-10>
     </div>
   </div>
@@ -155,7 +127,9 @@ export default {
         region: "",
       },
       config: {},
+      czConfig: {},
       rjczConfig: {},
+      czConfig2: {},
       rjczConfig2: {},
     };
   },
@@ -165,12 +139,12 @@ export default {
       const pieOption = {
         pieData: [
           
-          { value: 195004, name: "城轨分公司195004元（"+Number(195004/total*100).toFixed(2)+'%）' },
-          { value: 38109, name:  "湖北分公司38109元（"+Number(38109/total*100).toFixed(2)+'%）' },
-          { value: 169481, name: "华北分公司169481元（"+Number(169481/total*100).toFixed(2)+'%）' },
-          { value: 231123, name: "武汉分公司231123元（"+Number(231123/total*100).toFixed(2)+'%）' },
-          { value: 233597, name: "西北分公司233597元（"+Number(233597/total*100).toFixed(2)+'%）' },
-          { value: 450515, name: "房建分公司450515元（"+Number(450515/total*100).toFixed(2)+'%）' },
+          { value: 195004, name: "城轨分公司:195004万元（"+Number(195004/total*100).toFixed(2)+'%）' },
+          { value: 38109, name:  "湖北分公司:38109万元（"+Number(38109/total*100).toFixed(2)+'%）' },
+          { value: 169481, name: "华北分公司:169481万元（"+Number(169481/total*100).toFixed(2)+'%）' },
+          { value: 231123, name: "武汉分公司:231123万元（"+Number(231123/total*100).toFixed(2)+'%）' },
+          { value: 233597, name: "西北分公司:233597万元（"+Number(233597/total*100).toFixed(2)+'%）' },
+          { value: 450515, name: "房建分公司:450515万元（"+Number(450515/total*100).toFixed(2)+'%）' },
         ],
       };
 
@@ -200,7 +174,7 @@ export default {
               position: "top", //---相对位置
               rotate: 0, //---旋转角度
               color: "#ffffff",
-              fontSize: 16,
+              fontSize: 12,
             },
             itemStyle: {
               //---图形形状
@@ -221,7 +195,7 @@ export default {
               position: "top", //---相对位置
               rotate: 0, //---旋转角度
               color: "#ffffff",
-              fontSize: 16,
+              fontSize: 12,
             },
             itemStyle: {
               //---图形形状
@@ -256,7 +230,7 @@ export default {
               position: "top", //---相对位置
               rotate: 0, //---旋转角度
               color: "#ffffff",
-              fontSize: 16,
+              fontSize: 12,
             },
             itemStyle: {
               //---图形形状
@@ -277,7 +251,7 @@ export default {
               position: "top", //---相对位置
               rotate: 0, //---旋转角度
               color: "#ffffff",
-              fontSize: 16,
+              fontSize: 12,
             },
             itemStyle: {
               //---图形形状
@@ -307,18 +281,6 @@ export default {
         yAxis: ["项目一", "项目二", "项目三", "项目四", "项目五", "项目六"],
         seriesData: [500, 600, 700, 800, 900, 1000],
       };
-
-      // this.drawHorizontalBarChart(
-      //   "rowBarChart1",
-      //   option1.yAxis,
-      //   option1.seriesData
-      // );
-
-      // this.drawHorizontalBarChart(
-      //   "rowBarChart2",
-      //   option1.yAxis,
-      //   option1.seriesData
-      // );
 
       // 人均产值排名，在项目名称前增加排序，数字为在所有自营或联营项目中进行排名(客户需求)
       this.rjczConfig = {
@@ -357,6 +319,45 @@ export default {
           "#e062ae",
         ],
         unit: "人均产值",
+        showValue: true,
+      };
+
+      this.czConfig = {
+        data: [
+          {
+            name: "1-武嘉高速",
+            value: 131,
+          },
+          {
+            name: "2-潇河大桥",
+            value: 94,
+          },
+          {
+            name: "3-左云十里河桥",
+            value: 57,
+          },
+          {
+            name: "14-七号线",
+            value: 11,
+          },
+          {
+            name: "15-太原节点改造",
+            value: 0,
+          },
+          {
+            name: "16-中北路停车场",
+            value: 0,
+          },
+        ],
+        colors: [
+          "rgb(202,249,130)",
+          "rgb(202,249,130)",
+          "rgb(202,249,130)",
+          "#e062ae",
+          "#e062ae",
+          "#e062ae",
+        ],
+        unit: "产值",
         showValue: true,
       };
 
@@ -400,6 +401,46 @@ export default {
         showValue: true,
       };
 
+      // 产值排名，在项目名称前增加排序，数字为在所有自营或联营项目中进行排名(客户需求)
+      this.czConfig2 = {
+        data: [
+          {
+            name: "1-黄石宏维天地",
+            value: 788,
+          },
+          {
+            name: "2-奥山星城",
+            value: 788,
+          },
+          {
+            name: "3-十堰世纪山水一期",
+            value: 788,
+          },
+          {
+            name: "23-靖远黄河桥",
+            value: 79,
+          },
+          {
+            name: "24-G15沈海高速",
+            value: 75,
+          },
+          {
+            name: "25-郧县献珍路",
+            value: 34,
+          },
+        ],
+        colors: [
+          "rgb(202,249,130)",
+          "rgb(202,249,130)",
+          "rgb(202,249,130)",
+          "#e062ae",
+          "#e062ae",
+          "#e062ae",
+        ],
+        unit: "产值",
+        showValue: true,
+      };
+
       let zhb = [
         ["太原节点改造", "434.08%"],
         ["常青花园道路改造", "163.98%"],
@@ -420,9 +461,7 @@ export default {
         ["黄石宏维天地", "-19.71%"],
         ["奉贤区庄行镇", "-27.00%"],
         ["潇河大桥", "-27.09%"],
-        
         ["武嘉高速", "-29.52%"],
-        
         ["安九铁路", "-31.49%"],
         ["阳逻百瑞景", "-34.90%"],
         ["五里界中学", "-36.34%"],
@@ -446,17 +485,31 @@ export default {
         ["G15沈海高速", "-80.69%"],
         ["七号线", "-86.17%"],
         ["宜昌世纪山水2区", "-87.93%"],
+      ];
 
-        ];
-      
+      const lateRateColors = ['#fb7293', '#ff9f7f', '#ffdb5c', '#9fe6b8',];
+      const lateRateValues = [30, 20, 10, 0];
+
+      const newZhb = zhb.map((item) => {
+        const rate = Number(item[1].replace(/[\%|-]/g, ''));
+        let color = '';
+        for(let i = 0; i < lateRateValues.length; i += 1) {
+          if(rate >= lateRateValues[i]) {
+            color = lateRateColors[i];
+            break;
+          }
+        }
+
+        return [`<span style="color:${color};">${item[0]}</span>`, `<span style="color:${color};">${item[1]}</span>`];
+      });
 
       this.config = {
         header: ["项目", "滞后比"],
-        data: zhb,
-        index: true,
+        data: newZhb,
+          index: true,
         indexHeader: "排名",
         columnWidth: [50],
-        rowNum: 20,
+        rowNum: 15,
         align: ["center"],
       };
     });
@@ -486,24 +539,11 @@ export default {
       var myChart = echarts.init(document.getElementById(id));
 
       var option = {
-        // title: [
-        //   {
-        //     text: "片区公司产值情况",
-        //     x: "center",
-        //     y: "top",
-        //     textStyle: {
-        //       color: "#fff",
-        //       fontSize: "14",
-        //     },
-        //     show:false
-        //   },
-        // ],
         color: ["#2f89cf", "#0f63d6", "#0f8cd6", "#0fa0d6", "#0fb4d6","#0fc1d6"],
         tooltip: {
           trigger: "item",
           formatter: (params)=>{
-            // return "{a} <br/>{b}.slice(0,4) : {c}元 ({d}%)"
-            return seriesName+'<br>'+params.name.slice(0,4)+'：'+params.data.value+'元（'+ params.percent+"%）"
+            return seriesName+'<br>'+params.name.slice(0,5)+'：'+params.data.value+'万元（'+ params.percent+"%）"
           },
         },
         grid:{
@@ -518,7 +558,7 @@ export default {
             selectedMode: "single",
             data: pieData,
             label: {
-              formatter: '{b} : {c}万元 ({d}%)',
+              formatter: '{b}',
             },
             emphasis: {
               itemStyle: {
@@ -540,16 +580,11 @@ export default {
     drawDoubleBarChart(id, xData, legendData, seriesData, yTitle) {
       var myChart = echarts.init(document.getElementById(id));
       var option = {
-        // title: {
-        //   text: "资源总览",
-        //   left: "20px",
-        //   textStyle: {
-        //     color: "#436EEE",
-        //     fontSize: 17,
-        //   },
-        // },
         tooltip: {
           trigger: "axis",
+        },
+        grid: {
+          left: '18%',
         },
         legend: {
           type: "plain", //----图例类型，默认为'plain'，当图例很多时可使用'scroll'
@@ -820,33 +855,35 @@ export default {
     float: right;
     padding: 0 0.1rem 0 0;
     .tableContainerSon {
-      height: 12.2rem;
+      height: 10.1rem;
       .tableContainerSonTitle {
         padding: 0.2rem;
         color: #ffffff;
         font-size: 0.2rem;
         font-weight: bold;
       }
-      .tableContainerSonTable {
-        width: 90%;
-        height: 11.6rem;
-        margin: 0 auto;
+      .scroll-wrap {
+        height: 9.2rem;
+        .tableContainerSonTable {
+          width: 90%;
+          margin: 0 auto;
+        }
       }
     }
   }
   .chartContainer {
-    height: 4rem;
+    height: 3.3rem;
     margin-bottom: 0.1rem;
     .chartTitle {
-      padding: 0.2rem;
+      padding: 0.1rem;
       color: #ffffff;
       font-size: 0.2rem;
       font-weight: bold;
     }
     .chartContent {
-      height: 3.2rem;
+      height: 3rem;
       .chartContChild {
-        height: 1.3rem;
+        height: 1.2rem;
         // line-height: 1.2rem;
         width: 90%;
         margin: 0 auto;
@@ -883,16 +920,24 @@ export default {
         width: 33%;
       }
       .chartTit {
-        padding: 0.1rem;
+        padding: 0.01rem;
         color: #ffffff;
         font-size: 0.15rem;
         font-weight: bold;
       }
       .chartCont {
         width: 100%;
-        height: 2.8rem;
+        height: 2.4rem;
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.dv-capsule-chart {
+  .label-column {
+    text-align: left;
   }
 }
 </style>
