@@ -17,17 +17,17 @@
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon">
-          <div class="chartTit">项目大型机械设备(单位:台套)</div>
+          <div class="chartTit">项目大型机械设备(单位:台)</div>
           <div class="chartCont" id="barChart1"></div>
         </div>
         <div class="chartContentSon">
-          <div class="chartTit" @click="jumpTzDetail()">主要机械设备使用情况(单位:台套)</div>
+          <div class="chartTit" @click="jumpTzDetail()">主要机械设备使用情况(单位:台)</div>
           <div class="chartCont" id="circlePieChart"></div>
         </div>
       </dv-border-box-10>
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
-          <div class="chartTit1">项目机械设备(单位:台套)</div>
+          <div class="chartTit1">项目机械设备(单位:台)</div>
           <div class="chartCont1" id="barChart2"></div>
         </div>
       </dv-border-box-10>
@@ -85,7 +85,7 @@ export default {
           { value: 350, name: "在用" },
           { value: 200, name: "闲置" },
         ],
-        innerCircleData: [{ value: 1000, name: "主要机械设备" }],
+        // innerCircleData: [{ value: 1000, name: "主要机械设备" }],
       };
       this.drawCirclePieChart(
         "circlePieChart",
@@ -201,10 +201,10 @@ export default {
         tooltip: {
           trigger: "axis",
           formatter:(params)=>{
-            // console.log(params);
-            return params[0].axisValue+'<br>所属项目：'+params[0].data.name+' 数量：'+params[0].data.value;
+            return params[0].axisValue+ '</br>数量：'+params[0].data;
           }
         },
+        grid: { bottom: 20, },
         //-------------   x轴   -------------------
         xAxis: {
           show: true, //---是否显示
@@ -357,6 +357,7 @@ export default {
         tooltip: {
           trigger: "axis",
         },
+        grid: { bottom: 20 },
         legend: {
           type: "plain", //----图例类型，默认为'plain'，当图例很多时可使用'scroll'
           top: "1%", //----图例相对容器位置,top\bottom\left\right
@@ -615,7 +616,7 @@ export default {
     padding: 0 0.2rem 0 0.2rem;
   }
   .chartContainer {
-    height: 4rem;
+    height: 5rem;
     margin-bottom: 0.1rem;
     .chartContentSon {
       width: 50%;
@@ -624,12 +625,12 @@ export default {
       .chartTit {
         padding: 0.15rem;
         color: #ffffff;
-        font-size: 0.2rem;
+        font-size: 0.24rem;
         font-weight: bold;
       }
       .chartCont {
         width: 100%;
-        height: 3.4rem;
+        height: 3.6rem;
       }
     }
     .chartContentSon1 {
@@ -639,12 +640,12 @@ export default {
       .chartTit1 {
         padding: 0.15rem;
         color: #ffffff;
-        font-size: 0.2rem;
+        font-size: 0.24rem;
         font-weight: bold;
       }
       .chartCont1 {
         width: 100%;
-        height: 3.4rem;
+        height: 3.6rem;
       }
     }
   }
