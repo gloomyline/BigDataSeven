@@ -106,6 +106,7 @@
         <dv-border-box-1 class="section-box">
           <div class="alltitle" @click="goRouter('Finance')">财务预算管理</div>
           <div class="allnav" id="echart4"></div>
+          <span class="unit" style="right: 30px;top: 10px;">单位：万元</span>
         </dv-border-box-1>
         <dv-border-box-1 class="section-box">
           <div class="alltitle" @click="goRouter('EquipmentNew')">设备管理</div>
@@ -823,7 +824,7 @@ export default {
             stack: "总量",
             label: {
               show: true,
-              position: "insideRight",
+              position: "insideLeft",
               formatter: function(params) {
                 return Number(params.data) > 0 ? params.data : "";
               }
@@ -836,7 +837,7 @@ export default {
             stack: "总量",
             label: {
               show: true,
-              position: "insideRight",
+              position: "insideLeft",
               formatter: function(params) {
                 return Number(params.data) > 0 ? params.data : "";
               }
@@ -849,7 +850,8 @@ export default {
             stack: "总量",
             label: {
               show: true,
-              position: "insideRight",
+              position: "right",
+              distance: 20,
               formatter: function(params) {
                 return Number(params.data) > 0 ? params.data : "";
               }
@@ -1006,13 +1008,6 @@ export default {
             }
           }
         },
-        title: [
-          {
-            text: "单位：万元",
-            x: "80%",
-            textStyle: { color: "#ffffff", fontSize: 12, fontWeight: 300 }
-          }
-        ],
         legend: {
           top: "0%",
           data: [
@@ -2159,7 +2154,7 @@ export default {
           },
           selectedMode: false,
           formatter: function(params) {
-            return params === "完成" ? `${params}:827210` : "";
+            return params === "完成" ? `${params}:1309829` : "";
           }
         },
         series: [
