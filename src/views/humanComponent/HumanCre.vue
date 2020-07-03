@@ -99,7 +99,7 @@ export default {
               interval: 0,
               textStyle: {
                 color: "rgba(255,255,255,.6)",
-                fontSize: 12
+                fontSize: 14
               }
             },
             axisLine: {
@@ -115,7 +115,7 @@ export default {
             axisLabel: {
               textStyle: {
                 color: "rgba(255,255,255,.6)",
-                fontSize: 12
+                fontSize: 16
               }
             },
             axisLine: {

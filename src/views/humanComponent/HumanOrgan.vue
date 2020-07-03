@@ -215,14 +215,14 @@ export default {
                 position: "top", //标签的位置
                 verticalAlign: "middle", //文字垂直对齐方式，默认自动。可选：top，middle，bottom
                 align: "center", //文字水平对齐方式，默认自动。可选：top，center，bottom
-                fontSize: 12, //标签文字大小
+                fontSize: 16, //标签文字大小
                 color: '#000',
                 distance: -20,
                 formatter: function(params) {
                   return params.name === struData[0].name ? params.name : params.name.split('').join('\n');
                 },
                 // color: "#000",
-                padding: [12, 8],
+                padding: [6, 4],
                 borderWidth: 1,
                 borderColor: '#000',
                 backgroundColor: '#fff',

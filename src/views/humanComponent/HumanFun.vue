@@ -71,9 +71,10 @@ export default {
         title: {
           text: "工资总额年度预算执行情况",
           x: "center",
+          y: "3%",
           textStyle: {
             color: "#ffffff",
-            fontSize: 14,
+            fontSize: 24,
             lineHeight: 32,
           },
           show: true,
@@ -94,7 +95,7 @@ export default {
           data: ["使用", '剩余'],
           textStyle: {
             color: "rgba(255,255,255,.5)",
-            fontSize: "14"
+            fontSize: 16
           }
         },
         series: [
@@ -174,9 +175,10 @@ export default {
             type: "category",
             boundaryGap: false,
             axisLabel: {
+              // interval: 1,
               textStyle: {
                 color: "rgba(255,255,255,.6)",
-                fontSize: 12
+                fontSize: 14
               }
             },
             axisLine: {
@@ -206,7 +208,7 @@ export default {
             axisLabel: {
               textStyle: {
                 color: "rgba(255,255,255,.6)",
-                fontSize: 12
+                fontSize: 14
               }
             },
 
@@ -258,7 +260,10 @@ export default {
                 color: "#0184d5",
                 borderColor: "rgba(221, 220, 107, .1)",
                 label: {
-                  show: true
+                  show: true,
+                  textStyle: {
+                    fontSize: 14,
+                  }
                 },
                 borderWidth: 12
               }
@@ -306,7 +311,10 @@ export default {
                 borderColor: "rgba(221, 220, 107, .1)",
                 borderWidth: 12,
                 label: {
-                  show: true
+                  show: true,
+                  textStyle: {
+                    fontSize: 14,
+                  }
                 }
               }
             },
