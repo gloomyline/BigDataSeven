@@ -60,7 +60,7 @@ export default {
         singleBarOption.seriesData
       );
 
-            const singleBarOption2 = {
+      const singleBarOption2 = {
         xData: [
           "童庄河渡改桥工程",
           "\n武汉至大悟高速公路工程",
@@ -284,24 +284,25 @@ export default {
               color: "rgb(54,169,206)",
               barBorderRadius: [18, 18, 0, 0],
             },
-            markLine: {
-              symbol: "none", //去掉警戒线最后面的箭头
-              label: {
-                position: "start",
-                formatter: "{c}%",
-              },
-              data: [
-                {
-                  silent: false, //鼠标悬停事件  true没有，false有
-                  lineStyle: {
-                    //警戒线的样式  ，虚实  颜色
-                    type: "solid",
-                    color: "rgb(214,142,45)"
-                  },
-                  yAxis: 8, // 警戒线的标注值，可以有多个yAxis,多条警示线   或者采用   {type : 'average', name: '平均值'}，type值有  max  min  average，分为最大，最小，平均值
-                },
-              ],
-            },
+            // yAxisIndex: 1,
+            // markLine: {
+            //   symbol: "none", //去掉警戒线最后面的箭头
+            //   label: {
+            //     position: "start",
+            //     formatter: "{c}%",
+            //   },
+            //   data: [
+            //     {
+            //       silent: false, //鼠标悬停事件  true没有，false有
+            //       lineStyle: {
+            //         //警戒线的样式  ，虚实  颜色
+            //         type: "solid",
+            //         color: "rgb(214,142,45)"
+            //       },
+            //       yAxis: 80, // 警戒线的标注值，可以有多个yAxis,多条警示线   或者采用   {type : 'average', name: '平均值'}，type值有  max  min  average，分为最大，最小，平均值
+            //     },
+            //   ],
+            // },
             barWidth: "20", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
             data: seriesData[0].value,
@@ -324,8 +325,10 @@ export default {
               color: "#27d08a",
               barBorderRadius: [18, 18, 0, 0],
             },
+            yAxisIndex: 1, // 参考
             markLine: {
               symbol: "none", //去掉警戒线最后面的箭头
+              valueIndex: 1,
               label: {
                 position: "start",
                 formatter: "{c}%",
@@ -338,7 +341,7 @@ export default {
                     type: "solid",
                     color: "rgb(214,142,45)"
                   },
-                  yAxis: 8, // 警戒线的标注值，可以有多个yAxis,多条警示线   或者采用   {type : 'average', name: '平均值'}，type值有  max  min  average，分为最大，最小，平均值
+                  yAxis: 80, // 警戒线的标注值，可以有多个yAxis,多条警示线   或者采用   {type : 'average', name: '平均值'}，type值有  max  min  average，分为最大，最小，平均值
                 },
               ],
             },

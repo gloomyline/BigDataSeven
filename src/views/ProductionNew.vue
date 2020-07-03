@@ -584,7 +584,8 @@ export default {
           trigger: "axis",
         },
         grid: {
-          left: '18%',
+          left: '20%',
+          bottom: '15%',
         },
         legend: {
           type: "plain", //----图例类型，默认为'plain'，当图例很多时可使用'scroll'
