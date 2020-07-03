@@ -53,7 +53,7 @@
         </p>
         <el-table
           style="width:100%"
-          height="450px"
+          height="4rem"
           :data="tableData2"
           border
           @row-click="seeDetails"
@@ -184,6 +184,9 @@ export default {
       loading.close();
     }, 2000);
   },
+  created() {
+    this._sortTableData2();
+  },
   mounted() {
     this.$nextTick(() => {
       this.echarts();
@@ -191,6 +194,9 @@ export default {
     });
   },
   methods: {
+    _sortTableData2() {
+      this.tableData2 = this.tableData2.sort((a, b) => (b.data / b.value - a.data / a.value));
+    },
     tableRowClassName({ row, rowIndex }) {
       if (row.name > 2) {
         return "red-row";
@@ -357,7 +363,7 @@ export default {
             center: ["45%", "60%"],
             label: {
               fontSize: 16,
-              formatter: '{b}:{c}',
+              formatter: '{c}个',
             },
             data: dataOpcton,
             emphasis: {
@@ -401,19 +407,20 @@ export default {
     }
   }
   .box {
-    width: 96%;
+    width: 98%;
     min-width: 1200px;
-    margin: 0.4rem auto;
+    margin: 0.1rem auto 0 auto;
     display: flex;
     .map {
+      flex: 0 0 50%;
       width: 50%;
-      height: 100%;
-      min-height: 400px;
+      height: 4rem;
       margin-top: 0.6rem;
     }
     .table {
       flex: 1;
-      margin-top: 0.2rem;
+      height: 4rem;
+      margin-top: 0.1rem;
       .thead {
         width: 100%;
         text-align: center;
