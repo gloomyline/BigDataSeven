@@ -135,8 +135,6 @@
 import "@/assets/js/echarts.min.js";
 import "@/assets/js/china.js";
 import echarts from "echarts";
-import "echarts/map/js/china.js";
-import "echarts-gl"; //3D地图插件
 
 export default {
   name: "Home",
@@ -248,36 +246,36 @@ export default {
         西北分公司: [103.829026, 36.057899],
         房建分公司: [112.95166, 28.204891]
       };
-      var toolTipData = [
-        {
-          name: "武汉分公司",
-          value: [
-            { name: "文科", value: 12 },
-            { name: "理科", value: 12 }
-          ]
-        },
-        {
-          name: "宜昌分公司",
-          value: [
-            { name: "文科", value: 47 },
-            { name: "理科", value: 45 }
-          ]
-        },
-        {
-          name: "华北分公司",
-          value: [
-            { name: "文科", value: 57 },
-            { name: "理科", value: 57 }
-          ]
-        },
-        {
-          name: "城轨分公司",
-          value: [
-            { name: "文科", value: 57 },
-            { name: "理科", value: 52 }
-          ]
-        }
-      ];
+      // var toolTipData = [
+      //   {
+      //     name: "武汉分公司",
+      //     value: [
+      //       { name: "文科", value: 12 },
+      //       { name: "理科", value: 12 }
+      //     ]
+      //   },
+      //   {
+      //     name: "宜昌分公司",
+      //     value: [
+      //       { name: "文科", value: 47 },
+      //       { name: "理科", value: 45 }
+      //     ]
+      //   },
+      //   {
+      //     name: "华北分公司",
+      //     value: [
+      //       { name: "文科", value: 57 },
+      //       { name: "理科", value: 57 }
+      //     ]
+      //   },
+      //   {
+      //     name: "城轨分公司",
+      //     value: [
+      //       { name: "文科", value: 57 },
+      //       { name: "理科", value: 52 }
+      //     ]
+      //   }
+      // ];
 
       /*获取地图数据*/
       myChart.showLoading();
@@ -314,13 +312,11 @@ export default {
           padding: 0,
           enterable: true,
           transitionDuration: 1,
+          trigger: 'item',
           textStyle: {
             color: "#000",
             decoration: "none"
           },
-          // position: function (point, params, dom, rect, size) {
-          //   return [point[0], point[1]];
-          // },
           formatter: function(params) {
             var tipHtml = "";
             tipHtml =
@@ -368,7 +364,8 @@ export default {
             return tipHtml;
           }
         },
-        geo3D: {
+        geo: {
+          show: true,
           map: mapName,
           label: {
             normal: {
@@ -378,43 +375,31 @@ export default {
               show: false
             }
           },
-          roam: true,
+          roam: false,
           itemStyle: {
-            areaColor: "#013C62",
-            opacity: 1,
-            borderWidth: 0.4,
-            borderColor: "#000"
-          },
-          //shading: 'lambert',
-          light: {
-            //光照阴影
-            main: {
-              color: "#12235c", //光照颜色
-              intensity: 1.8, //光照强度
-              //shadowQuality: 'high', //阴影亮度
-              shadow: true, //是否显示阴影
-              alpha: 55,
-              beta: 10
+            normal: {
+              areaColor: "#023677",
+              borderColor: "#1180c7"
             },
-            ambient: {
-              intensity: 0.3
+            emphasis: {
+              areaColor: "#4499d0"
             }
           }
         },
         series: [
           {
             name: "散点",
-            type: "scatter3D",
-            coordinateSystem: "geo3D",
+            type: "scatter",
+            coordinateSystem: "geo",
             data: convertData(data),
             symbolSize: function(val) {
-              return val[2] / 10;
+              return val[2] / 20;
             },
             label: {
               normal: {
                 formatter: "{b}",
                 position: "right",
-                show: true
+                show: false
               },
               emphasis: {
                 show: true
@@ -422,64 +407,80 @@ export default {
             },
             itemStyle: {
               normal: {
-                color: function(e) {
-                  if(e.name == '武汉分公司') {
-                    return "red";
-                  } else if(e.name == '西北分公司') {
-                    return "yellow";
-                  } else if(e.name == '华北分公司') {
-                    return "blue";
-                  } else if(e.name == '湖北分公司') {
-                    return "green";
-                  } else if(e.name == '房建分公司') {
-                    return "yellow";
-                  } else if(e.name == '城轨分公司') {
-                    return "orange";
-                  } else {
-                    return "pink";
-                  }
-                  
-                },
-                shadowBlur: 10,
-                shadowColor: "yellow"
+                color: "#fff"
               }
             }
           },
-          // {
-          //   type: "map",
-          //   map: mapName,
-          //   geoIndex: 0,
-          //   aspectScale: 0.75, //长宽比
-          //   showLegendSymbol: false, // 存在legend时显示
-          //   label: {
-          //     normal: {
-          //       show: true
-          //     },
-          //     emphasis: {
-          //       show: false,
-          //       textStyle: {
-          //         color: "#fff"
-          //       }
-          //     }
-          //   },
-          //   roam: true,
-          //   itemStyle: {
-          //     normal: {
-          //       areaColor: "#031525",
-          //       borderColor: "#3B5077"
-          //     },
-          //     emphasis: {
-          //       areaColor: "#2B91B7"
-          //     }
-          //   },
-          //   animation: false,
-          //   data: data
-          // },
+          {
+            type: "map",
+            map: mapName,
+            geoIndex: 0,
+            aspectScale: 0.75, //长宽比
+            showLegendSymbol: false, // 存在legend时显示
+            label: {
+              normal: {
+                show: true
+              },
+              emphasis: {
+                show: false,
+                textStyle: {
+                  color: "#fff"
+                }
+              }
+            },
+            roam: true,
+            itemStyle: {
+              normal: {
+                areaColor: "#031525",
+                borderColor: "#3B5077"
+              },
+              emphasis: {
+                areaColor: "#2B91B7"
+              }
+            },
+            animation: false,
+            data: data
+          },
           {
             name: "点",
             type: "scatter",
-            coordinateSystem: "geo3D",
+            coordinateSystem: "geo",
             zlevel: 6
+          },
+          {
+            name: "Top 5",
+            type: "effectScatter",
+            coordinateSystem: "geo",
+            data: convertData(
+              data
+                .sort(function(a, b) {
+                  return b.value - a.value;
+                })
+                .slice(0, 10)
+            ),
+            symbolSize: function(val) {
+              return val[2] / 15;
+            },
+            showEffectOn: "render",
+            rippleEffect: {
+              brushType: "stroke"
+            },
+            hoverAnimation: true,
+            label: {
+              normal: {
+                formatter: "{b}",
+                position: "left",
+                show: false
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: "yellow",
+                shadowBlur: 10,
+                shadowColor: "yellow"
+              }
+            },
+            zlevel: 1
           }
         ]
       };
