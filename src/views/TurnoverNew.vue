@@ -419,7 +419,7 @@ export default {
           position: "bottom", //---x轴位置
           offset: 0, //---x轴相对于默认位置的偏移
           type: "category", //---轴类型，默认'category'
-          name: "项目", //---轴名称
+          name: "      项目", //---轴名称
           nameLocation: "end", //---轴名称相对位置
           triggerEvent: true,
           nameTextStyle: {
@@ -427,7 +427,7 @@ export default {
             color: "#fff",
             padding: [5, 0, 0, -5], //---坐标轴名称相对位置
             fontSize: 14,
-            fontWeight: "bold",
+            // fontWeight: "bold",
           },
           nameGap: 15, //---坐标轴名称与轴线之间的距离
           //nameRotate:270,			//---坐标轴名字旋转
@@ -455,7 +455,7 @@ export default {
             //color:'red',				//---默认取轴线的颜色
             textStyle: {
               fontSize: 14,
-              fontWeight: "bold",
+              // fontWeight: "bold",
             },
           },
           splitLine: {
@@ -484,7 +484,7 @@ export default {
             color: "#fff",
             padding: [5, 0, 0, 5], //---坐标轴名称相对位置
             fontSize: 14,
-            fontWeight: "bold",
+            // fontWeight: "bold",
           },
           nameGap: 15, //---坐标轴名称与轴线之间的距离
           //nameRotate:270,			//---坐标轴名字旋转
@@ -512,7 +512,7 @@ export default {
             //color:'red',				//---默认取轴线的颜色
             textStyle: {
               fontSize: 14,
-              fontWeight: "bold",
+              // fontWeight: "bold",
             },
           },
           splitLine: {
@@ -538,6 +538,7 @@ export default {
           {
             type: 'value',
             name: '利用率',
+            nameTextStyle: { color: '#fff' },
             position: 'right',
             splitLine: { show: true, color: '#fff',},
             axisLine: { show:true, color: '#fff',},
