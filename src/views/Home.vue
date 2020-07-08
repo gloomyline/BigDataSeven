@@ -132,6 +132,7 @@
 </template>
 
 <script>
+import { homeApi } from '@/api';
 import "@/assets/js/echarts.min.js";
 import "@/assets/js/china.js";
 import echarts from "echarts";
@@ -199,7 +200,12 @@ export default {
     };
   },
   methods: {
-    initData() {
+    async initData() {
+      // request home api
+      const _date = new Date();
+      const response = await homeApi.fetchHomeData(`${_date.getFullYear()}-${_date.getMonth()}`);
+      console.log(1, response);
+
       this.monthConfig.data[0] = 92.02;
       this.yearConfig.data[0] = 72.68;
       this.startConfig.data[0] = 32.54;

@@ -204,9 +204,10 @@ export default {
             right: "10%%", //右的距离
             // change the tree orient from default 'horizontal' to 'vertical'
             orient: 'vertical',
-            symbolSize: 1, //标记的大小，就是那个小圆圈，默认7
+            symbol: 'rect',
+            symbolSize: 7, //标记的大小，就是那个小圆圈，默认7
             itemStyle: {
-              borderWidth: 20,
+              borderWidth: 10,
               color: 'transparent',
             },
             label: {
@@ -223,9 +224,9 @@ export default {
                 },
                 // color: "#000",
                 padding: [6, 4],
-                borderWidth: 1,
-                borderColor: '#000',
-                backgroundColor: '#fff',
+                // borderWidth: 1,
+                // borderColor: '#000',
+                // backgroundColor: '#fff',
               }
             },
             leaves: {
