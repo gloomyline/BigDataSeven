@@ -207,8 +207,9 @@ export default {
             symbol: 'rect',
             symbolSize: 7, //标记的大小，就是那个小圆圈，默认7
             itemStyle: {
-              borderWidth: 10,
+              borderWidth: 20,
               color: 'transparent',
+              borderColor: 'transparent',
             },
             label: {
               //每个节点所对应的标签的样式
@@ -218,15 +219,15 @@ export default {
                 align: "center", //文字水平对齐方式，默认自动。可选：top，center，bottom
                 fontSize: 16, //标签文字大小
                 color: '#000',
-                distance: -20,
+                distance: -24,
                 formatter: function(params) {
                   return params.name === struData[0].name ? params.name : params.name.split('').join('\n');
                 },
                 // color: "#000",
                 padding: [6, 4],
-                // borderWidth: 1,
-                // borderColor: '#000',
-                // backgroundColor: '#fff',
+                borderWidth: 1,
+                borderColor: '#000',
+                backgroundColor: '#fff',
               }
             },
             leaves: {
@@ -236,7 +237,7 @@ export default {
                   position: "bottom",
                   verticalAlign: "top",
                   align: "center",
-                  color: "#000"
+                  color: "#000",
                 }
               }
             },
