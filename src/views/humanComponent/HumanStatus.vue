@@ -141,20 +141,23 @@ export default {
         ],
         series: [
           {
+            name: "局聘",
+            type: "bar",
+            barWidth: 60,
+            stack: "outside",
+            data: dataList[startWith]['data'][1],
+          },
+          {
             name: "一类劳务人员",
             type: "bar",
             stack: "outside",
             data: dataList[startWith]['data'][0],
           },
           {
-            name: "局聘",
-            type: "bar",
-            stack: "outside",
-            data: dataList[startWith]['data'][1],
-          },
-          {
             name: "定编人数",
             type: "bar",
+            barGap: '10%',
+            barWidth: 60,
             data: dataList[startWith]['data'][2],
           }
         ]
@@ -170,7 +173,7 @@ export default {
 
       // did not enable animation of human details before, enable here.
       if(!this.intervalHandler) {
-        this.enableAnimation(humanDetails, option, dataList);
+        // this.enableAnimation(humanDetails, option, dataList);
       }
     },
     enableAnimation(humanDetails, option, dataList) {
@@ -190,7 +193,7 @@ export default {
 
         self.currentCompany = dataList[self.count].companyName;
         humanDetails.setOption(option);
-      }, 3000);
+      }, 5000);
     },
   },
   destroyed() {
