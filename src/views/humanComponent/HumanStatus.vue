@@ -197,7 +197,7 @@ export default {
     },
   },
   destroyed() {
-    clearInteval(this.intervalHandler);
+    clearInterval(this.intervalHandler);
   },
 };
 </script>

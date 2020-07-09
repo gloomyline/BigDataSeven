@@ -41,28 +41,59 @@
 </template>
 <script>
 import echarts from "echarts";
+import { turnoverApi } from '@/api';
 
 export default {
   name: "Production",
   data() {
     return {
+      typeA: [],
+      typeB: [],
+      typeC: [],
+      pieRate: {},
       formInline: {
         user: "",
         region: "",
       },
     };
   },
+  created() {
+    this._initData();
+  },
   mounted() {
     this.$nextTick(() => {
+      // this.drawTypeA();
+      // this.drawTypeB();
+      // this.drawTypeC();
+      // this._drawPie();
+    });
+  },
+  methods: {
+    async _initData() {
+      const loading = this.$loading({
+        lock: true,
+        text: "页面加载中...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 1)",
+      });
+      this.typeA = await turnoverApi.fetchTypeA();
+      this.drawTypeA();
+      this.typeB = await turnoverApi.fetchTypeB();
+      this.drawTypeB();
+      this.typeC = await turnoverApi.fetchTypeC();
+      this.drawTypeC();
+      this.pieRate = await turnoverApi.fetchRate();
+      this._drawPie();
+      loading.close();
+    },
+    drawTypeA() {
       const barChartAOption = {
-        xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
+        // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
+        xData: this.typeA.map(item => `${item.deptId}-${item.name}`),
         legendData: [
           {
             name: "在用",
           },
-          // {
-          //   name: "闲置",
-          // },
           {
             name: "封存",
           },
@@ -71,7 +102,8 @@ export default {
           {
             name: "在用",
             type: "bar",
-            data: [17983-3364, 0, 2705, 7367, 0, 513, 81, 87, 0, 0, 1083, 2607,],
+            // data: [17983-3364, 0, 2705, 7367, 0, 513, 81, 87, 0, 0, 1083, 2607,],
+            data: this.typeA.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -89,31 +121,11 @@ export default {
               barBorderRadius: [15, 15, 0, 0],
             },
           },
-          // {
-          //   name: "闲置",
-          //   type: "bar",
-          //   data: [40, 22, 18, 35, 42, 40],
-          //   // stack: "使用情况",
-          //   barWidth: "30", //---柱形宽度
-          //   barCategoryGap: "20%", //---柱形间距
-          //   label: {
-          //     //---图形上的文本标签
-          //     show: true,
-          //     position: "top", //---相对位置
-          //     rotate: 0, //---旋转角度
-          //     color: "#ffffff",
-          //     fontSize: 16,
-          //   },
-          //   itemStyle: {
-          //     //---图形形状
-          //     color: "rgb(202,249,130)",
-          //     barBorderRadius: [15, 15, 0, 0],
-          //   },
-          // },
           {
             name: "封存",
             type: "bar",
-            data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
+            // data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
+            data: this.typeA.map(item => item.isSealed === 0 ? item.isSealed : (item.isSealed).toFixed(2)),
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -133,166 +145,94 @@ export default {
           },
         ],
       };
-
-      const barChartBOption = {
-        xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
-        legendData: [
-          {
-            name: "在用",
-          },
-          {
-            name: "闲置",
-          },
-        ],
-        seriesData: [
-          {
-            name: "在用",
-            type: "bar",
-            data: [0, 0, 7844, 25516, 460, 5004, 747, 4413, 0, 0, 5711, 4544,],
-            // stack: "使用情况",
-            barWidth: "30", //---柱形宽度
-            barCategoryGap: "20%", //---柱形间距
-            label: {
-              //---图形上的文本标签
-              show: true,
-              position: "top", //---相对位置
-              rotate: 0, //---旋转角度
-              color: "#ffffff",
-              fontSize: 16,
-            },
-            itemStyle: {
-              //---图形形状
-              color: "rgb(54,169,206)",
-              barBorderRadius: [15, 15, 0, 0],
-            },
-          },
-          {
-            name: "闲置",
-            type: "bar",
-            data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
-            // stack: "使用情况",
-            barWidth: "30", //---柱形宽度
-            barCategoryGap: "20%", //---柱形间距
-            label: {
-              //---图形上的文本标签
-              show: true,
-              position: "top", //---相对位置
-              rotate: 0, //---旋转角度
-              color: "#ffffff",
-              fontSize: 16,
-            },
-            itemStyle: {
-              //---图形形状
-              color: "rgb(202,249,130)",
-              barBorderRadius: [15, 15, 0, 0],
-            },
-          },
-          {
-            name: '利用率',
-            type: 'line',
-            smooth: true,
-            yAxisIndex: 1,
-            showAllSymbol: true, //显示所有图形。
-            symbol: "circle", //标记的图形为实心圆
-            symbolSize: 10, //标记的大小
-            itemStyle: {
-                //折线拐点标志的样式
-                color: "#058cff"
-            },
-            lineStyle: {
-                color: "#058cff"
-            },
-            areaStyle:{
-                color: "rgba(5,140,255, 0.2)"
-            },
-            data: [100, 97, 100, 100, 100, 0, 0, 100, 85, 70, 60, 85],
-          }
-        ],
-      };
-
-      const barChartCOption = {
-        xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
-        legendData: [
-          {
-            name: "在用",
-          },
-          {
-            name: "闲置",
-          },
-        ],
-        seriesData: [
-          {
-            name: "在用",
-            type: "bar",
-            data: [0, 0, 7844, 25516, 460, 5004, 747, 4413, 0, 0, 5711, 4544,],
-            // stack: "使用情况",
-            barWidth: "30", //---柱形宽度
-            barCategoryGap: "20%", //---柱形间距
-            label: {
-              //---图形上的文本标签
-              show: true,
-              position: "top", //---相对位置
-              rotate: 0, //---旋转角度
-              color: "#ffffff",
-              fontSize: 16,
-            },
-            itemStyle: {
-              //---图形形状
-              color: "rgb(54,169,206)",
-              barBorderRadius: [15, 15, 0, 0],
-            },
-          },
-          {
-            name: "闲置",
-            type: "bar",
-            data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
-            // stack: "使用情况",
-            barWidth: "30", //---柱形宽度
-            barCategoryGap: "20%", //---柱形间距
-            label: {
-              //---图形上的文本标签
-              show: true,
-              position: "top", //---相对位置
-              rotate: 0, //---旋转角度
-              color: "#ffffff",
-              fontSize: 16,
-            },
-            itemStyle: {
-              //---图形形状
-              color: "rgb(202,249,130)",
-              barBorderRadius: [15, 15, 0, 0],
-            },
-          },
-          {
-            name: '利用率',
-            type: 'line',
-            smooth: true,
-            yAxisIndex: 1,
-            showAllSymbol: true, //显示所有图形。
-            symbol: "circle", //标记的图形为实心圆
-            symbolSize: 10, //标记的大小
-            itemStyle: {
-                //折线拐点标志的样式
-                color: "#058cff"
-            },
-            lineStyle: {
-                color: "#058cff"
-            },
-            areaStyle:{
-                color: "rgba(5,140,255, 0.2)"
-            },
-            data: [100, 97, 100, 100, 100, 0, 0, 100, 85, 70, 60, 85],
-          }
-        ],
-      };
-
       this.drawDoubleBarChart(
         "barChartA",
         barChartAOption.xData,
         barChartAOption.legendData,
         barChartAOption.seriesData,
         "数量"
-      );
+      ); 
+    },
+    drawTypeB() {
+      const barChartBOption = {
+        // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
+        xData: this.typeA.map(item => `${item.deptId}-${item.name}`),
+        legendData: [
+          {
+            name: "在用",
+          },
+          {
+            name: "闲置",
+          },
+        ],
+        seriesData: [
+          {
+            name: "在用",
+            type: "bar",
+            // data: [0, 0, 7844, 25516, 460, 5004, 747, 4413, 0, 0, 5711, 4544,],
+            data: this.typeA.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
+            // stack: "使用情况",
+            barWidth: "30", //---柱形宽度
+            barCategoryGap: "20%", //---柱形间距
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: "top", //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 16,
+            },
+            itemStyle: {
+              //---图形形状
+              color: "rgb(54,169,206)",
+              barBorderRadius: [15, 15, 0, 0],
+            },
+          },
+          {
+            name: "闲置",
+            type: "bar",
+            // data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
+            data: this.typeB.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2)),
+            // stack: "使用情况",
+            barWidth: "30", //---柱形宽度
+            barCategoryGap: "20%", //---柱形间距
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: "top", //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 16,
+            },
+            itemStyle: {
+              //---图形形状
+              color: "rgb(202,249,130)",
+              barBorderRadius: [15, 15, 0, 0],
+            },
+          },
+          {
+            name: '利用率',
+            type: 'line',
+            smooth: true,
+            yAxisIndex: 1,
+            showAllSymbol: true, //显示所有图形。
+            symbol: "circle", //标记的图形为实心圆
+            symbolSize: 10, //标记的大小
+            itemStyle: {
+                //折线拐点标志的样式
+                color: "#058cff"
+            },
+            lineStyle: {
+                color: "#058cff"
+            },
+            areaStyle:{
+                color: "rgba(5,140,255, 0.2)"
+            },
+            data: this.typeB.map(item => (item.rate * 100).toFixed(2)),
+            // data: [100, 97, 100, 100, 100, 0, 0, 100, 85, 70, 60, 85],
+          }
+        ],
+      };
       this.drawDoubleBarChart(
         "barChartB",
         barChartBOption.xData,
@@ -301,6 +241,88 @@ export default {
         "数量",
         true
       );
+    },
+    drawTypeC() {
+      const barChartCOption = {
+        // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
+        xData: this.typeA.map(item => `${item.deptId}-${item.name}`),
+        legendData: [
+          {
+            name: "在用",
+          },
+          {
+            name: "闲置",
+          },
+        ],
+        seriesData: [
+          {
+            name: "在用",
+            type: "bar",
+            // data: [0, 0, 7844, 25516, 460, 5004, 747, 4413, 0, 0, 5711, 4544,],
+            data: this.typeA.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
+            // stack: "使用情况",
+            barWidth: "30", //---柱形宽度
+            barCategoryGap: "20%", //---柱形间距
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: "top", //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 16,
+            },
+            itemStyle: {
+              //---图形形状
+              color: "rgb(54,169,206)",
+              barBorderRadius: [15, 15, 0, 0],
+            },
+          },
+          {
+            name: "闲置",
+            type: "bar",
+            // data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
+            data: this.typeB.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2)),
+            // stack: "使用情况",
+            barWidth: "30", //---柱形宽度
+            barCategoryGap: "20%", //---柱形间距
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: "top", //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 16,
+            },
+            itemStyle: {
+              //---图形形状
+              color: "rgb(202,249,130)",
+              barBorderRadius: [15, 15, 0, 0],
+            },
+          },
+          {
+            name: '利用率',
+            type: 'line',
+            smooth: true,
+            yAxisIndex: 1,
+            showAllSymbol: true, //显示所有图形。
+            symbol: "circle", //标记的图形为实心圆
+            symbolSize: 10, //标记的大小
+            itemStyle: {
+                //折线拐点标志的样式
+                color: "#058cff"
+            },
+            lineStyle: {
+                color: "#058cff"
+            },
+            areaStyle:{
+                color: "rgba(5,140,255, 0.2)"
+            },
+            // data: [100, 97, 100, 100, 100, 0, 0, 100, 85, 70, 60, 85],
+            data: this.typeC.map(item => (item.rate * 100).toFixed(2)),
+          }
+        ],
+      };
+
       this.drawDoubleBarChart(
         "barChartC",
         barChartCOption.xData,
@@ -309,22 +331,7 @@ export default {
         "数量",
         true
       );
-
-      this._drawPie();
-    });
-  },
-  created() {
-    const loading = this.$loading({
-      lock: true,
-      text: "页面加载中...",
-      spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 1)",
-    });
-    setTimeout(() => {
-      loading.close();
-    }, 2000);
-  },
-  methods: {
+    },
     onSubmit() {
       console.log("submit!");
     },
@@ -352,14 +359,15 @@ export default {
             radius: "45%",
             center: ["52%", "50%"],
             selectedMode: "single",
-            data: [
-              {
-                value: 14443,
-                name: "在用",
-              },
-              { value: 3636, name: "闲置", },
-              { value: 177, name: '封存', },
-            ],
+            // data: [
+            //   {
+            //     value: 14443,
+            //     name: "在用",
+            //   },
+            //   { value: 3636, name: "闲置", },
+            //   { value: 177, name: '封存', },
+            // ],
+            data: [{ name: '在用', value: (this.pieRate.isUsing).toFixed(2), }, { name: '闲置', value: (this.pieRate.isUnused).toFixed(2), }, { name: '封存', value: (this.pieRate.isSealed).toFixed(2) }],
             itemStyle: {
               normal: {
                 label: {
@@ -452,10 +460,14 @@ export default {
             inside: false, //---是否朝内
             rotate: 0, //---旋转角度
             margin: 5, //---刻度标签与轴线之间的距离
+            interval: 0,
             //color:'red',				//---默认取轴线的颜色
             textStyle: {
               fontSize: 14,
               // fontWeight: "bold",
+            },
+            formatter: function(params) {
+              return params.split('-')[1];
             },
           },
           splitLine: {
@@ -550,7 +562,8 @@ export default {
       myChart.on("click", function(params) {
         if (params.componentType == "xAxis") {
           // alert("单击了" + params.value + "x轴标签");
-          _that.$router.push({ name: "TurnoverDetails" });
+          const deptId = params.value.split('-')[0]
+          _that.$router.push({ name: "TurnoverDetails", params: { deptId } });
         }
       });
       window.addEventListener("resize", function() {
@@ -618,13 +631,13 @@ export default {
         &.material-a {
           display: inline-block;
           vertital-align: top;
-          width: 80%;
+          width: 76%;
         }
       }
       .pie-material-a {
         display: inline-block;
         vertital-align: top;
-        width: 20%;
+        width: 24%;
         height: 3.4rem
       }
     }

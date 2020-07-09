@@ -252,36 +252,6 @@ export default {
         西北分公司: [103.829026, 36.057899],
         房建分公司: [112.95166, 28.204891]
       };
-      // var toolTipData = [
-      //   {
-      //     name: "武汉分公司",
-      //     value: [
-      //       { name: "文科", value: 12 },
-      //       { name: "理科", value: 12 }
-      //     ]
-      //   },
-      //   {
-      //     name: "宜昌分公司",
-      //     value: [
-      //       { name: "文科", value: 47 },
-      //       { name: "理科", value: 45 }
-      //     ]
-      //   },
-      //   {
-      //     name: "华北分公司",
-      //     value: [
-      //       { name: "文科", value: 57 },
-      //       { name: "理科", value: 57 }
-      //     ]
-      //   },
-      //   {
-      //     name: "城轨分公司",
-      //     value: [
-      //       { name: "文科", value: 57 },
-      //       { name: "理科", value: 52 }
-      //     ]
-      //   }
-      // ];
 
       /*获取地图数据*/
       myChart.showLoading();
@@ -364,9 +334,6 @@ export default {
               "</p>" +
               "</div>" +
               "</div>";
-            // setTimeout(function() {
-            //   tooltip(params.name);
-            // }, 10);
             return tipHtml;
           }
         },

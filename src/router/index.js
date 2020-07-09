@@ -98,8 +98,9 @@ const routes = [{
     component: () => import( /* webpackChunkName: "humanDetails" */ '../views/details/HumanDetailsNew.vue')
   },
   {
-    path: '/turnoverDetails',
+    path: '/turnoverDetails/:deptId',
     name: 'TurnoverDetails',
+    props: true,
     component: () => import( /* webpackChunkName: "turnoverDetails" */ '../views/details/TurnoverDetails.vue')
   },
   {
