@@ -149,7 +149,8 @@ export default {
             lineStyle: {
               color: "#dddc6b"
             }
-          }
+          },
+          formatter: '{b}<br/>{a0}:{c0}%<br/>{a1}:{c1}%',
         },
         legend: {
           top: "2%",

@@ -4,7 +4,7 @@
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
-          <div class="chartTit1">一级建造师储备和使用情况</div>
+          <div class="chartTit1">一级建造师储备和使用情况(单位：个)</div>
           <div class="chartCont1" id="barChart1" ref="certificateReserve"></div>
         </div>
       </dv-border-box-10>
@@ -56,7 +56,7 @@ export default {
       const total = usings.map((item, index) => (item + unuseds[index]));
       const certificateReserve = echarts.init(this.$refs.certificateReserve);
       const option = {
-        color: ["#a5dff9", "#3398DB", "#60c5ba", "#feee7d"],
+        color: ["#fb3232", "#60c5ba", "#feee7d"],
         tooltip: {
           trigger: "axis",
           axisPointer: {
