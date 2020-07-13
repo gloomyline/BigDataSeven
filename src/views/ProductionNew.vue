@@ -33,7 +33,6 @@
 import ProductionSummaries from '@/views/productionComponent/ProductionSummaries.vue';
 import PreviousMonth from '@/views/productionComponent/PreviousMonth.vue';
 import CurrentMonth from '@/views/productionComponent/CurrentMonth.vue';
-
 export default {
   name: "Production",
   components: { ProductionSummaries, PreviousMonth, CurrentMonth },
@@ -43,6 +42,7 @@ export default {
       tabs: ['公司施工总体情况', '上月计划完成情况', '本月项目施工计划', ],
       currentComponent: 'ProductionSummaries',
       componentList: ['ProductionSummaries', 'PreviousMonth', 'CurrentMonth'],
+      allCompany: {}, 
     };
   },
   created() {
