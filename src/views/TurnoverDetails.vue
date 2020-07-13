@@ -104,7 +104,6 @@ export default {
     };
   },
   mounted() {
-
   },
   beforeCreate() {
     const loading = this.$loading({
@@ -120,9 +119,8 @@ export default {
   },
   methods: {
     goBack() {
-        this.$router.push({ path:'/'});
+      this.$router.push({ path:'/'});
     },
-    
   }
 };
 </script>

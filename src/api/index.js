@@ -8,3 +8,7 @@ export const productionNewApi = productionNew;
 export const HumanCreApi = HumanCre;
 export const DispatchNewApi = DispatchNew;
 
+import turnover from './turnover';
+
+export const homeApi = home;
+export const turnoverApi = turnover;

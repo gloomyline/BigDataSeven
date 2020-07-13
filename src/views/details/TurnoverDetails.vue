@@ -1,7 +1,7 @@
 <template>
   <div class="turnoverDetails">
     <div class="head">
-      <h1>武嘉项目部周转材料明细表</h1>
+      <h1>{{ deptName }}项目部周转材料明细表</h1>
       <div class="weather">
         <el-button
           type="primary"
@@ -21,13 +21,7 @@
       </p>
       <el-table :data="tableData" style="width: 86%;  margin: 0 auto; min-width: 800px;">
         <el-table-column prop="title" label></el-table-column>
-        <el-table-column prop="title1" label="大桥1号桁梁"></el-table-column>
-        <el-table-column prop="region" label="贝雷梁"></el-table-column>
-        <el-table-column prop="date" label="各型钢轨、钢轨束"></el-table-column>
-        <el-table-column prop="date" label="标准钢筋车间主杆件"></el-table-column>
-        <el-table-column prop="date" label="标准钢支撑及标准连接系"></el-table-column>
-        <el-table-column prop="date" label="标准步梯"></el-table-column>
-        <el-table-column prop="date" label="汇总"></el-table-column>
+        <el-table-column v-for="(item, index) in typeAList" :label="item.materialName" :prop="item.materialName" :key="index"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
     </div>
@@ -39,21 +33,7 @@
       </p>
       <el-table :data="tableData2">
         <el-table-column prop="title" label></el-table-column>
-        <el-table-column prop="title1" label="钢挂篮"></el-table-column>
-        <el-table-column prop="region" label="钢模板"></el-table-column>
-        <el-table-column prop="date" label="钢护筒"></el-table-column>
-        <el-table-column prop="date" label="工钢束"></el-table-column>
-        <el-table-column prop="date" label="钢垫块"></el-table-column>
-        <el-table-column prop="date" label="工钢"></el-table-column>
-        <el-table-column prop="date" label="槽钢"></el-table-column>
-        <el-table-column prop="date" label="H型钢"></el-table-column>
-        <el-table-column prop="date" label="钢桥面板"></el-table-column>
-        <el-table-column prop="date" label="新制支撑架"></el-table-column>
-        <el-table-column prop="date" label="分配梁"></el-table-column>
-        <el-table-column prop="date" label="大桥施工常用组合杆件钢管柱" min-width="150"></el-table-column>
-        <el-table-column prop="date" label="锁口钢管桩围堰"></el-table-column>
-        <el-table-column prop="date" label="其他"></el-table-column>
-        <el-table-column prop="date" label="汇总"></el-table-column>
+        <el-table-column v-for="(item, index) in typeBList" :prop="item.materialName" :label="item.materialName" :key="index"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
     </div>
@@ -65,18 +45,7 @@
       </p>
       <el-table :data="tableData3">
         <el-table-column prop="title" label min-width="120"></el-table-column>
-        <el-table-column prop="title1" label="钢筋"></el-table-column>
-        <el-table-column prop="region" label="钢绞线"></el-table-column>
-        <el-table-column prop="date" label="特型结构模板、平面模板" min-width="120"></el-table-column>
-        <el-table-column prop="date" label="工钢"></el-table-column>
-        <el-table-column prop="date" label="角钢"></el-table-column>
-        <el-table-column prop="date" label="槽钢"></el-table-column>
-        <el-table-column prop="date" label="H型钢"></el-table-column>
-        <el-table-column prop="date" label="螺旋管"></el-table-column>
-        <el-table-column prop="date" label="钢板"></el-table-column>
-        <el-table-column prop="date" label="其他钢结构"></el-table-column>
-        <el-table-column prop="date" label="其他"></el-table-column>
-        <el-table-column prop="date" label="汇总"></el-table-column>
+        <el-table-column v-for="(item, index) in typeCList" :prop="item.materialName" :label="item.materialName" :key="index"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
     </div>
@@ -85,19 +54,22 @@
 
 
 <script>
+import { turnoverApi } from '@/api';
 import btnList from "@/components/BtnList.vue";
+
 export default {
   name: "TurnoverDetails",
   components: {
     btnList
   },
+  props: { deptId: String | Number },  
   data() {
     return {
-      tableData: [
-        { title: "帐面总资产", title1: "", region: "", date: "" },
-        { title: "帐面在用资产", title1: "", region: "", date: "" },
-        { title: "帐面库存资产", title1: "", region: "", date: "" }
-      ],
+      deptName: '',
+      typeAList: [],
+      typeBList: [],
+      typeCList: [],
+      tableData: [],
       tableData2: [
         { title: "采购量", title1: "", region: "", date: "" },
         { title: "再用量", title1: "", region: "", date: "" }
@@ -109,19 +81,66 @@ export default {
     };
   },
   mounted() {},
-  beforeCreate() {
-    const loading = this.$loading({
-      lock: true,
-      text: "页面加载中..",
-      spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 1)"
-    });
-
-    setTimeout(() => {
-      loading.close();
-    }, 2000);
+  created() {
+    this._initData();
   },
   methods: {
+    async _initData() {
+      const loading = this.$loading({
+        lock: true,
+        text: "页面加载中..",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 1)"
+      });
+      const response = await turnoverApi.fetchProjectDetails(this.deptId);
+      this.deptName = response.deptName;
+      this.typeAList = response.typeA;
+      this.typeBList = response.typeB;
+      this.typeCList = response.typeC;
+      loading.close();
+
+      this.fillTableData();
+    },
+    fillTableData() {
+      // material A
+      this.tableData = [
+        { title: "帐面在用资产", cate: 'isUsing' },
+        { title: "帐面库存资产", cate: 'isUnused' },
+        { title: "帐面封存资产", cate: 'isSealed'},
+      ];
+      this.tableData = this.tableData.map(item => {
+        const newItem = {...item};
+        this.typeAList.forEach(it => {
+          newItem[it.materialName] = it[item.cate];
+        });
+        return newItem;
+      });
+      // material B
+      this.tableData2 = [
+        { title: "帐面在用资产", cate: 'isUsing' },
+        { title: "帐面库存资产", cate: 'isUnused' },
+      ];
+      this.tableData2 = this.tableData2.map(item =>{
+        const newItem = {...item};
+        this.typeBList.forEach(it => {
+          newItem[it.materialName] = it[item.cate];
+        });
+        return newItem;
+      });
+      // material C
+      this.tableData3 = [
+        { title: "帐面在用资产", cate: 'isUsing' },
+        { title: "帐面库存资产", cate: 'isUnused' },
+      ];
+      this.tableData3 = this.tableData3.map(item => {
+        const newItem = {...item};
+        this.typeCList.forEach(it => {
+          newItem[it.materialName] = it[item.cate];
+        });
+        return newItem;
+      });
+      console.log(3, this.tableData3);
+    },
     goBack(res) {
       if (res) {
         this.$router.go(-1);
