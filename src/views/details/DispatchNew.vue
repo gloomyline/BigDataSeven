@@ -55,27 +55,34 @@
           width="160"
         ></el-table-column>
         <el-table-column
-          prop="title"
+          prop="name"
           label="施组及专项方案名称"
           min-width="150"
         ></el-table-column>
         <el-table-column
-          prop="region"
+          prop="status"
           label="审批状态"
           min-width="150"
-        ></el-table-column>
+        >
+        <template slot-scope="scope">
+          <span v-if="scope.row.status === '0'">未评审</span>
+          <span v-if="scope.row.status === '1'">评审中</span>
+          <span v-if="scope.row.status === '2 '">已评审</span>
+        </template>
+        </el-table-column>
         <el-table-column
-          prop="date"
+          prop="casefile"
           label="附件"
-          min-width="150"
+          min-width="220"
+          :formatter="formatter"
         ></el-table-column>
         <el-table-column
-          prop="date"
+          prop="dateplantoview"
           label="计划评审时间"
           min-width="150"
         ></el-table-column>
         <el-table-column
-          prop="date"
+          prop="datetoview"
           label="评审时间"
           min-width="150"
         ></el-table-column>
@@ -85,6 +92,7 @@
   </div>
 </template>
 <script>
+import { DispatchNewApi }  from '@/api'
 import echarts from "echarts";
 import btnList from "@/components/BtnList.vue";
 
@@ -94,51 +102,12 @@ export default {
   },
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-03",
-          title: "西南片区",
-          region: "安九铁路",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333,
-        },
-        {
-          date: "2016-05-02",
-          title: "西南片区",
-          region: "安九铁路",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333,
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          title: "西南片区",
-          region: "安九铁路",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333,
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          title: "西南片区",
-          region: "安九铁路",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333,
-        },
-      ],
+      tableData: [],
     };
   },
   mounted() {
+    this.getTableData()
+    this.finishlmonth()
     this.$nextTick(() => {
       this.echarts_31();
       this.echarts_32();
@@ -158,6 +127,21 @@ export default {
     }, 2000);
   },
   methods: {
+    formatter(row) {
+      let str = row.casefile.split('\\')
+      return str[str.length -1]
+    },
+    async getTableData() {
+      const res = await DispatchNewApi.fetchPlanfinishlmonthData(`${this.$route.params.id}`);
+      this.tableData = res.data
+    },
+    async finishlmonth() {
+      const res = await DispatchNewApi.fetchGetDepartProductionData(`${this.$route.params.id}`);
+      console.log(res, '----------------------')
+      this.echarts_31(res.data.monthly.finished, res.data.monthly.remained)
+      this.echarts_32(res.data.yearly.finished, res.data.yearly.remained)
+      this.echarts_33(res.data.sofar.finished, res.data.sofar.remained)
+    },
     goBack(res) {
       if (res) {
         this.$router.push({ path: "/" });
@@ -165,7 +149,8 @@ export default {
         this.$router.go(-1);
       }
     },
-    echarts_31() {
+    echarts_31(finish, remained) {
+      let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb1"));
       var option = {
@@ -179,7 +164,7 @@ export default {
             }
           },
           {
-            text: "94.2%",
+            text: `${str}%`,
             top: "37%",
             left: "center",
             textStyle: {
@@ -216,8 +201,8 @@ export default {
             label: { show: true },
             labelLine: { show: true },
             data: [
-              { value: 43126, name: "完成" },
-              { value: 2656, name: "剩余" }
+              { value: `${finish}`, name: "完成" },
+              { value: `${remained}`, name: "剩余" }
             ],
             itemStyle: {
               normal: {
@@ -225,8 +210,8 @@ export default {
                   show: true,
                   //"{b} : {c}",
                   formatter: function(params) {
-                    console.log("params");
-                    console.log(params);
+                    // console.log("params");
+                    // console.log(params);
                     if (params.name === "完成") {
                       return params.name + "：" + params.data.value;
                     } else {
@@ -248,7 +233,8 @@ export default {
         myChart.resize();
       });
     },
-    echarts_32() {
+    echarts_32(finish, remained) {
+      let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb2"));
       var option = {
@@ -262,7 +248,7 @@ export default {
             }
           },
           {
-            text: "74.46%",
+            text: `${str}%`,
             top: "37%",
             left: "center",
             textStyle: {
@@ -299,8 +285,8 @@ export default {
             label: { show: false },
             labelLine: { show: false },
             data: [
-              { value: 72075, name: "完成" },
-              { value: 24721, name: "剩余" }
+              { value: finish, name: "完成" },
+              { value: remained, name: "剩余" }
             ],
             itemStyle: {
               normal: {
@@ -308,8 +294,8 @@ export default {
                   show: true,
                   //"{b} : {c}",
                   formatter: function(params) {
-                    console.log("params");
-                    console.log(params);
+                    // console.log("params");
+                    // console.log(params);
                     if (params.name === "完成") {
                       return params.name + "：" + params.data.value;
                     } else {
@@ -331,8 +317,9 @@ export default {
         myChart.resize();
       });
     },
-    echarts_33() {
+    echarts_33(finish, remained) {
       // 基于准备好的dom，初始化echarts实例
+      let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
       var myChart = echarts.init(document.getElementById("fb3"));
       var option = {
         title: [
@@ -345,7 +332,7 @@ export default {
             }
           },
           {
-            text: "39%",
+            text: `${str}%`,
             top: "37%",
             left: "center",
             textStyle: {
@@ -392,16 +379,16 @@ export default {
             label: { show: false },
             labelLine: { show: false },
             data: [
-              { value: 333301, name: "完成" },
-              { value: 520620, name: "剩余" }
+              { value: finish, name: "完成" },
+              { value: remained, name: "剩余" }
             ],
             itemStyle: {
               normal: {
                 label: {
                   show: true,
                   formatter: function(params) {
-                    console.log("params");
-                    console.log(params);
+                    // console.log("params");
+                    // console.log(params);
                     if (params.name === "完成") {
                       return params.name + "：" + params.data.value;
                     } else {

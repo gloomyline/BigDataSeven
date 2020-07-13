@@ -85,6 +85,7 @@
   </div>
 </template>
 <script>
+import { DispatchNewApi } from '@/api'
 import echarts from "echarts";
 import btnList from "@/components/BtnList.vue";
 
