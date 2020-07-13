@@ -132,10 +132,11 @@
 </template>
 
 <script>
-import { homeApi } from '@/api';
+import { homeApi } from "@/api";
 import "@/assets/js/echarts.min.js";
-import "@/assets/js/china.js";
+import $ from "jquery";
 import echarts from "echarts";
+import allCtyData from "@/assets/js/allCty.json";
 
 export default {
   name: "Home",
@@ -203,7 +204,9 @@ export default {
     async initData() {
       // request home api
       const _date = new Date();
-      const response = await homeApi.fetchHomeData(`${_date.getFullYear()}-${_date.getMonth()}`);
+      const response = await homeApi.fetchHomeData(
+        `${_date.getFullYear()}-${_date.getMonth()}`
+      );
       console.log(1, response);
 
       this.monthConfig.data[0] = 92.02;
@@ -232,272 +235,1286 @@ export default {
     },
 
     echarts() {
-      var _this = this;
-      var myChart = echarts.init(document.getElementById("map_1"));
-      var mapName = "china";
-      var data = [
-        { name: "武汉分公司", value: 150 },
-        { name: "湖北分公司", value: 150 },
-        { name: "华北分公司", value: 150 },
-        { name: "城轨分公司", value: 120 },
-        { name: "西北分公司", value: 150 },
-        { name: "房建分公司", value: 150 }
+      var zhongguo = "get/s/data-1562829675575-NZp9nSurz.json";
+      var hainan = "get/s/data-1528971693521-r18nZaybm.json";
+      var xizang = "get/s/data-1528970391616-BJeoh2JW7.json";
+      var zhejiang = "get/s/data-1528970380661-SkH93h1-m.json";
+      var yunnan = "get/s/data-1528970362114-r1MK321WQ.json";
+      var xinjiang = "get/s/data-1528970349852-H18u22kWX.json";
+      var tianjin = "get/s/data-1528970339987-Hk2wnh1ZX.json";
+      var sichuan = "get/s/data-1528970319531-Hy_8n3y-m.json";
+      var shanxi = "get/s/data-1528970298351-HyzB32JZ7.json";
+      var shangxi = "get/s/data-1528970273819-B1cmnnk-Q.json";
+      var shanghai = "get/s/data-1528970254015-HJLfhnyWX.json";
+      var shangdong = "get/s/data-1528970240242-Byu-hhybX.json";
+      var qinghai = "get/s/data-1528970209434-Bytyh3kZ7.json";
+      var ningxia = "get/s/data-1528970150882-SJJ2j2yWQ.json";
+      var neimenggu = "get/s/data-1528970102554-HyJKo31bQ.json";
+      var liaoning = "get/s/data-1528970052404-BJhHihkbQ.json";
+      var jilin = "get/s/data-1528970024458-rkeEjhy-Q.json";
+      var jiangxi = "get/s/data-1528969991368-BkkMi31Zm.json";
+      var jiangsu = "get/s/data-1528969864934-BJ-qchkWQ.json";
+      var hunan = "get/s/data-1528969831328-Sykuqh1bX.json";
+      var hubei = "get/s/data-1528969822119-Bk8v93kZ7.json";
+      var henan = "get/s/data-1528969802719-HyXIqhk-m.json";
+      var heilongjiang = "get/s/data-1528969789631-ryLHcnJbm.json";
+      var hebei = "get/s/data-1528969737020-HJWMqhy-Q.json";
+      var guizhou = "get/s/data-1528969712502-Hy_g92yZQ.json";
+      var guangxi = "get/s/data-1528969706270-HJMg5hdata-1528969831328-Sykuqh1bXkWQ.json";
+      var guangdong = "get/s/data-1528969700634-BkT1qn1WQ.json";
+      var gansu = "get/s/data-1528969694316-BJLkc2yZX.json";
+      var chongqing = "get/s/data-1528969687660-r1ey9nkbX.json";
+      var aomen = "get/s/data-1528969612486-rJ4qtnyZm.json";
+      var anhui = "get/s/data-1528969607452-Hkk5tnJ-Q.json";
+      var beijing = "get/s/data-1528969604941-Hk6Ytn1WQ.json";
+      var fujian = "get/s/data-1528969599839-S1OFFn1ZQ.json";
+      var xianggang = "get/s/data-1528969589857-S1ROthJWm.json";
+      var wuhanfengongsi = "get/s/data-1585548193898-oqdhSorMp.json";
+      var fangjiangongsi = "get/s/data-fangjiangongsi.json";
+      var hubeigongsi = "get/s/data-1528969822119-Bk8v93kZ7.json";
+      var huabeigongsi = "get/s/data-huabeigongsi.json";
+      var xibeigongsi = "get/s/data-xibeigongsi.json";
+
+      var allprovinceData = [
+        {
+          name: "黑龙江",
+          value: 8
+        },
+        {
+          name: "吉林",
+          value: 8
+        },
+        {
+          name: "辽宁",
+          value: 8
+        },
+        {
+          name: "上海",
+          value: 3
+        },
+        {
+          name: "江苏",
+          value: 8
+        },
+        {
+          name: "浙江",
+          value: 8
+        },
+        {
+          name: "安徽",
+          value: 8
+        },
+        {
+          name: "福建",
+          value: 8
+        },
+        {
+          name: "江西",
+          value: 8
+        },
+        {
+          name: "山东",
+          value: 8
+        },
+        {
+          name: "台湾",
+          value: 8
+        },
+        {
+          name: "北京",
+          value: 8
+        },
+        {
+          name: "天津",
+          value: 8
+        },
+        {
+          name: "山西",
+          value: 4
+        },
+        {
+          name: "河北",
+          value: 8
+        },
+        {
+          name: "内蒙古",
+          value: 8
+        },
+        {
+          name: "河南",
+          value: 8
+        },
+        {
+          name: "湖北",
+          value: 5
+        },
+        {
+          name: "湖南",
+          value: 3
+        },
+        {
+          name: "广东",
+          value: 8
+        },
+        {
+          name: "广西",
+          value: 8
+        },
+        {
+          name: "海南",
+          value: 3
+        },
+        {
+          name: "香港",
+          value: 8
+        },
+        {
+          name: "澳门",
+          value: 8
+        },
+        {
+          name: "重庆",
+          value: 8
+        },
+        {
+          name: "四川",
+          value: 8
+        },
+        {
+          name: "贵州",
+          value: 8
+        },
+        {
+          name: "云南",
+          value: 8
+        },
+        {
+          name: "西藏",
+          value: 8
+        },
+        {
+          name: "陕西",
+          value: 4
+        },
+        {
+          name: "甘肃",
+          value: 1
+        },
+        {
+          name: "青海",
+          value: 1
+        },
+        {
+          name: "宁夏",
+          value: 8
+        },
+        {
+          name: "新疆",
+          value: 8
+        },
+        {
+          name: "南海诸岛",
+          value: 8
+        }
+      ];
+      var areaProjects = [
+        {
+          city: "辽宁",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "黑龙江",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "吉林",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "内蒙古",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "山西",
+          name: "华北分公司",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "新疆",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "宁夏",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "北京",
+          name: "",
+          merge: -25.53,
+          dataone: 123123,
+          datatwo: 123123.01
+        },
+        {
+          city: "武汉",
+          name: "武汉分公司",
+          merge: -25.53,
+          dataone: 123123,
+          datatwo: 123123.01
+        },
+        {
+          city: "河北",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "天津",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "山东",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "安徽",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "河南",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "陕西",
+          name: "华北分公司",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "甘肃",
+          name: "西北分公司",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "青海",
+          name: "西北分公司",
+          merge: -24.5,
+          dataone: 39950025,
+          datatwo: 703641592.5
+        },
+        {
+          city: "江苏",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "上海",
+          name: "房建分公司",
+          merge: -26.06,
+          dataone: 11111,
+          datatwo: 111111.33
+        },
+        {
+          city: "湖北",
+          name: "湖北分公司",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "湖南",
+          name: "房建分公司",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "江西",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "四川",
+          name: "",
+          merge: -22.23,
+          dataone: 11111,
+          datatwo: 32123.55
+        },
+        {
+          city: "西藏",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "云南",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "重庆",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "贵州",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "福建",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "浙江",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "广东",
+          name: "",
+          merge: -24.96,
+          dataone: 123123,
+          datatwo: 123123.15
+        },
+        {
+          city: "深圳",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "广西",
+          name: "",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        },
+        {
+          city: "海南",
+          name: "房建分公司",
+          merge: (Math.random() * 100).toFixed(2),
+          dataone: (Math.random() * 100).toFixed(2),
+          datatwo: (Math.random() * 100).toFixed(2)
+        }
+      ];
+      var provinceProJects = [
+        {
+          city: "湖北",
+          name: "项目1",
+          dataone: 1231,
+          datatwo: 123.01,
+          datathree: -25.53
+        },
+        {
+          city: "湖北",
+          name: "项目2",
+          dataone: 123123,
+          datatwo: 123213.33,
+          datathree: -26.06
+        },
+        {
+          city: "湖北",
+          name: "项目3",
+          dataone: 123123,
+          datatwo: 123213.15,
+          datathree: -24.96
+        }
+        
       ];
 
-      var geoCoordMap = {
-        武汉分公司: [114.250645, 30.617365],
-        湖北分公司: [111.273005, 30.694962],
-        华北分公司: [112.534306, 37.877552],
-        城轨分公司: [114.434618, 30.614381],
-        西北分公司: [103.829026, 36.057899],
-        房建分公司: [112.95166, 28.204891]
-      };
+      echarts.extendsMap = function(id, opt) {
+        // 实例
+        var chart = this.init(document.getElementById(id));
 
-      /*获取地图数据*/
-      myChart.showLoading();
-      var mapFeatures = echarts.getMap(mapName).geoJson.features;
-      myChart.hideLoading();
-      mapFeatures.forEach(function(v) {
-        // 地区名称
-        var name = v.properties.name;
-        // 地区经纬度
-        geoCoordMap[name] = v.properties.cp;
-      });
+        var curGeoJson = {};
+        var cityMap = {
+          中国: zhongguo,
+          武汉: wuhanfengongsi,
+          湖北: hubeigongsi,
+          陕西: huabeigongsi,
+          山西: huabeigongsi,
+          甘肃: xibeigongsi,
+          青海: xibeigongsi,
+          上海: fangjiangongsi,
+          湖南: fangjiangongsi,
+          海南: fangjiangongsi,
+          香港: xianggang,
+          澳门: aomen,
+          房建分公司: fangjiangongsi,
+          西北分公司: xibeigongsi,
+          湖北分公司: hubeigongsi,
+          武汉分公司: wuhanfengongsi,
+          华北分公司: huabeigongsi
+        };
+        var geoCoordMap = {
+          武汉分公司: [114.278816, 30.592498],
+          项目1: [114.278816, 30.592498],
+          项目2: [111.285078,30.680055],
+          项目3: [112.252993,30.336355]
+        };
 
-      var max = 480,
-        min = 9; // todo
-      var maxSize4Pin = 100,
-        minSize4Pin = 20;
+        var levelColorMap = {
+          "1": "rgba(241, 109, 115, .8)",
+          "2": "rgba(255, 235, 59, .7)",
+          "3": "rgba(147, 235, 248, 1)"
+        };
 
-      var convertData = function(data) {
-        var res = [];
-        for (var i = 0; i < data.length; i++) {
-          var geoCoord = geoCoordMap[data[i].name];
-          if (geoCoord) {
-            res.push({
-              name: data[i].name,
-              value: geoCoord.concat(data[i].value)
+        var defaultOpt = {
+          mapName: "china", // 地图展示
+          goDown: false, // 是否下钻
+          bgColor: "#404a59", // 画布背景色
+          activeArea: [], // 区域高亮,同echarts配置项
+          data: [],
+          // 下钻回调(点击的地图名、实例对象option、实例对象)
+          callback: function(name, option, instance) {}
+        };
+        if (opt) opt = this.util.extend(defaultOpt, opt);
+
+        // 层级索引
+        var name = [opt.mapName];
+        var idx = 0;
+        var pos = {
+          leftPlus: 115,
+          leftCur: 150,
+          left: 198,
+          top: 50
+        };
+
+        var line = [
+          [0, 0],
+          [8, 11],
+          [0, 22]
+        ];
+        // style
+        var style = {
+          font: '18px "Microsoft YaHei", sans-serif',
+          textColor: "#eee",
+          lineColor: "rgba(147, 235, 248, .8)"
+        };
+
+        var handleEvents = {
+          /**
+           * i 实例对象
+           * o option
+           * n 地图名
+           **/
+          resetOption: function(i, o, n) {
+            //var breadcrumb = this.createBreadcrumb(n);
+            var breadcrumb = null;
+            if (n == "武汉") {
+              breadcrumb = this.createBreadcrumb("武汉分公司");
+            } else if (n == "山西" || n == "陕西") {
+              breadcrumb = this.createBreadcrumb("华北分公司");
+            } else if (n == "湖北") {
+              breadcrumb = this.createBreadcrumb("湖北分公司");
+            } else if (n == "上海" || n == "湖南" || n == "海南") {
+              breadcrumb = this.createBreadcrumb("房建分公司");
+            } else if (n == "甘肃" || n == "青海") {
+              breadcrumb = this.createBreadcrumb("西北分公司");
+            }
+            if (breadcrumb !== null) {
+              breadcrumb.left = 265;
+            }
+
+            var j = name.indexOf(n);
+            var l = o.graphic.length;
+            if (j < 0) {
+              o.graphic.push(breadcrumb);
+              o.graphic[0].children[0].shape.x2 = 170;
+              o.graphic[0].children[1].shape.x2 = 170;
+              if (o.graphic.length > 2) {
+                var cityData = [];
+                var cityJson;
+                for (var x = 0; x < opt.data.length; x++) {
+                  if (n === opt.data[x].city) {
+                    $([opt.data[x]]).each(function(index, data) {
+                      cityJson = {
+                        city: data.city,
+                        name: data.name,
+                        value: data.value,
+                        crew: data.crew,
+                        company: data.company,
+                        position: data.position,
+                        region: data.region,
+                        merge: data.merge,
+                        dataone: data.dataone,
+                        datatwo: data.datatwo
+                      };
+                      cityData.push(cityJson);
+                    });
+                  }
+                }
+      
+                if (cityData != null) {
+                  o.series[0].data = handleEvents.initSeriesData(cityData);
+                } else {
+                  o.series[0].data = [];
+                }
+              }
+              name.push(n);
+              idx++;
+            } else {
+              o.graphic.splice(j + 2, l);
+              if (o.graphic.length <= 2) {
+                o.graphic[0].children[0].shape.x2 = 60;
+                o.graphic[0].children[1].shape.x2 = 60;
+                //o.series[0].data = handleEvents.initSeriesData(opt.data);
+                o.series[0].data = [];
+              }
+              name.splice(j + 1, l);
+              idx = j;
+              pos.leftCur -= pos.leftPlus * (l - j - 1);
+            }
+
+            o.geo.map = n;
+            o.geo.zoom = 0.4;
+            i.clear();
+            i.setOption(o);
+            chart.dispatchAction({
+              type: "showTip",
+              seriesIndex: 0,
+              dataIndex: 0
+            });
+            this.zoomAnimation();
+            opt.callback(n, o, i);
+          },
+
+          /**
+           * name 地图名
+           **/
+          createBreadcrumb: function(name) {
+            var cityToPinyin = {
+              中国: "zhongguo",
+              上海: "shanghai",
+              河北: "hebei",
+              山西: "shangxi",
+              内蒙古: "neimenggu",
+              辽宁: "liaoning",
+              吉林: "jilin",
+              黑龙江: "heilongjiang",
+              江苏: "jiangsu",
+              浙江: "zhejiang",
+              安徽: "anhui",
+              福建: "fujian",
+              江西: "jiangxi",
+              山东: "shangdong",
+              河南: "henan",
+              湖北: "hubei",
+              湖南: "hunan",
+              广东: "guangdong",
+              广西: "guangxi",
+              海南: "hainan",
+              四川: "sichuan",
+              贵州: "guizhou",
+              云南: "yunnan",
+              西藏: "xizang",
+              陕西: "shanxi",
+              甘肃: "gansu",
+              青海: "qinghai",
+              宁夏: "ningxia",
+              新疆: "xinjiang",
+              北京: "beijing",
+              天津: "tianjin",
+              重庆: "chongqing",
+              香港: "xianggang",
+              澳门: "aomen",
+              西北分公司: "xibeigongsi",
+              房建分公司: "fangjiangongsi",
+              湖北分公司: "hubeigongsi",
+              武汉分公司: "wuhanfengongsi",
+              华北分公司: "huabeigongsi"
+            };
+
+            var breadcrumb = {
+              type: "group",
+              id: name,
+              left: pos.leftCur + pos.leftPlus,
+              top: pos.top + 3,
+              children: [
+                {
+                  type: "polyline",
+                  left: -90,
+                  top: -5,
+                  shape: {
+                    points: line
+                  },
+                  style: {
+                    stroke: "#fff",
+                    key: name
+                    // lineWidth: 2,
+                  },
+                  onclick: function() {
+                    var name = this.style.key;
+                    handleEvents.resetOption(chart, option, name);
+                  }
+                },
+                {
+                  type: "text",
+                  left: -68,
+                  top: "middle",
+                  style: {
+                    text: name,
+                    textAlign: "center",
+                    fill: style.textColor,
+                    font: style.font
+                  },
+                  onclick: function() {
+                    var name = this.style.text;
+                    //handleEvents.resetOption(chart, option, name);
+                  }
+                },
+                {
+                  type: "text",
+                  left: -68,
+                  top: 10,
+                  style: {
+                    name: name,
+                    text: cityToPinyin[name]
+                      ? cityToPinyin[name].toUpperCase()
+                      : "",
+                    textAlign: "center",
+                    fill: style.textColor,
+                    font: '12px "Microsoft YaHei", sans-serif'
+                  },
+                  onclick: function() {
+                    // console.log(this.style);
+                    var name = this.style.name;
+                    //handleEvents.resetOption(chart, option, name);
+                  }
+                }
+              ]
+            };
+
+            pos.leftCur += pos.leftPlus;
+
+            return breadcrumb;
+          },
+
+          // 设置effectscatter
+          initSeriesData: function(data) {
+            var temp = [];
+            debugger;
+            for (var i = 0; i < data.length; i++) {
+              var geoCoord = geoCoordMap[data[i].name];
+              if (geoCoord) {
+                temp.push({
+                  name: data[i].name,
+                  value: geoCoord.concat(data[i].value),
+                  merge: data[i].merge,
+                  dataone: data[i].dataone,
+                  datatwo: data[i].datatwo
+                });
+              }
+            }
+            return temp;
+          },
+          zoomAnimation: function() {
+            var count = null;
+            var zoom = function(per) {
+              if (!count) count = per;
+              count = count + per;
+              // console.log(per,count);
+              chart.setOption({
+                geo: {
+                  zoom: count
+                }
+              });
+              if (count < 1)
+                window.requestAnimationFrame(function() {
+                  zoom(0.2);
+                });
+            };
+            window.requestAnimationFrame(function() {
+              zoom(0.2);
             });
           }
-        }
-        return res;
-      };
-      var option = {
-        tooltip: {
-          position: [0, -20],
-          padding: 0,
-          enterable: true,
-          transitionDuration: 1,
-          trigger: 'item',
-          textStyle: {
-            color: "#000",
-            decoration: "none"
+        };
+
+        var option = {
+          backgroundColor: "",
+          tooltip: {
+            show: true,
+            alwaysShowContent: true,
+            backgroundColor: "rgba(50,50,50,0.7)",
+            hideDelay: 100,
+            triggerOn: "mousemove",
+            enterable: true,
+            position: ["60%", "70%"]
           },
-          formatter: function(params) {
-            var tipHtml = "";
-            tipHtml =
-              '<div style="width:200px;height:120px;background:rgba(22,80,158,0.8);border:1px solid rgba(7,166,255,0.7)">' +
-              '<div style="width:100%;height:40px;line-height:40px;border-bottom:2px solid rgba(7,166,255,0.7);padding:0 20px">' +
-              '<i style="display:inline-block;width:8px;height:8px;background:#16d6ff;border-radius:40px;">' +
-              "</i>" +
-              '<span style="margin-left:10px;color:#fff;font-size:16px;">' +
-              params.name +
-              "</span>" +
-              "</div>" +
-              '<div style="padding:10px;text-align:center;">' +
-              '<p style="color:#fff;font-size:12px;">' +
-              '<i style="display:inline-block;width:10px;height:10px;background:#16d6ff;border-radius:40px;margin:0 8px">' +
-              "</i>" +
-              "项目1：" +
-              '<span style="color:#f48225;margin:0 6px;">' +
-              "30%" +
-              "</span>" +
-              "完成" +
-              "</p>" +
-              '<p style="color:#fff;font-size:12px;">' +
-              '<i style="display:inline-block;width:10px;height:10px;background:#16d6ff;border-radius:40px;margin:0 8px">' +
-              "</i>" +
-              "项目2：" +
-              '<span style="color:#f4e925;margin:0 6px;">' +
-              "50%" +
-              "</span>" +
-              "完成" +
-              "</p>" +
-              '<p style="color:#fff;font-size:12px;">' +
-              '<i style="display:inline-block;width:10px;height:10px;background:#16d6ff;border-radius:40px;margin:0 8px">' +
-              "</i>" +
-              "项目3：" +
-              '<span style="color:#f4e925;margin:0 6px;">' +
-              "50%" +
-              "</span>" +
-              "完成" +
-              "</p>" +
-              "</div>" +
-              "</div>";
-            return tipHtml;
-          }
-        },
-        geo: {
-          show: true,
-          map: mapName,
-          label: {
-            normal: {
-              show: false
+          graphic: [
+            {
+              type: "group",
+              left: pos.left,
+              top: pos.top - 4,
+              children: [
+                {
+                  type: "line",
+                  left: 0,
+                  top: -20,
+                  shape: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 60,
+                    y2: 0
+                  },
+                  style: {
+                    stroke: style.lineColor
+                  }
+                },
+                {
+                  type: "line",
+                  left: 0,
+                  top: 20,
+                  shape: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 60,
+                    y2: 0
+                  },
+                  style: {
+                    stroke: style.lineColor
+                  }
+                }
+              ]
             },
-            emphasis: {
-              show: false
+            {
+              id: name[idx],
+              type: "group",
+              left: pos.left + 2,
+              top: pos.top,
+              children: [
+                {
+                  type: "polyline",
+                  left: 90,
+                  top: -12,
+                  shape: {
+                    points: line
+                  },
+                  style: {
+                    stroke: "transparent",
+                    key: name[0]
+                  },
+                  onclick: function() {
+                    var name = this.style.key;
+                    handleEvents.resetOption(chart, option, name);
+                  }
+                },
+                {
+                  type: "text",
+                  left: 0,
+                  top: "middle",
+                  style: {
+                    text: "中国",
+                    textAlign: "center",
+                    fill: style.textColor,
+                    font: style.font
+                  },
+                  onclick: function() {
+                    option.tooltip.formatter = function(
+                      params,
+                      ticket,
+                      callback
+                    ) {
+                      return (
+                        "大区名称：" +
+                        params.data.name +
+                        "大区" +
+                        "<br/>" +
+                        "年累容量：" +
+                        params.data.merge +
+                        "/MW" +
+                        "<br/>" +
+                        "未开工容量：" +
+                        params.data.dataone +
+                        "/MW" +
+                        "<br/>" +
+                        "在建容量：" +
+                        params.data.datatwo +
+                        "/MW"
+                      );
+                    };
+                    option.series[1].data = allprovinceData;
+                    opt.data = areaProjects;
+                    handleEvents.resetOption(chart, option, "china");
+                  }
+                },
+                {
+                  type: "text",
+                  left: 0,
+                  top: 10,
+                  style: {
+                    text: "China",
+                    textAlign: "center",
+                    fill: style.textColor,
+                    font: '12px "Microsoft YaHei", sans-serif'
+                  },
+                  onclick: function() {
+                    option.tooltip.formatter = function(
+                      params,
+                      ticket,
+                      callback
+                    ) {
+                      return (
+                        "大区名称：" +
+                        params.data.name +
+                        "大区" +
+                        "<br/>" +
+                        "年累容量：" +
+                        params.data.merge +
+                        "/MW" +
+                        "<br/>" +
+                        "未开工容量：" +
+                        params.data.dataone +
+                        "/MW" +
+                        "<br/>" +
+                        "在建容量：" +
+                        params.data.datatwo +
+                        "/MW"
+                      );
+                    };
+                    option.series[1].data = allprovinceData;
+                    opt.data = areaProjects;
+                    handleEvents.resetOption(chart, option, "china");
+                  }
+                }
+              ]
             }
-          },
-          roam: false,
-          itemStyle: {
-            normal: {
-              areaColor: "#023677",
-              borderColor: "#1180c7"
-            },
-            emphasis: {
-              areaColor: "#4499d0"
-            }
-          }
-        },
-        series: [
-          {
-            name: "散点",
-            type: "scatter",
-            coordinateSystem: "geo",
-            data: convertData(data),
-            symbolSize: function(val) {
-              return val[2] / 20;
-            },
+          ],
+          geo: {
+            map: opt.mapName,
+            roam: true,
+            zoom: 1,
             label: {
               normal: {
-                formatter: "{b}",
-                position: "right",
-                show: false
-              },
-              emphasis: {
-                show: true
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: "#fff"
-              }
-            }
-          },
-          {
-            type: "map",
-            map: mapName,
-            geoIndex: 0,
-            aspectScale: 0.75, //长宽比
-            showLegendSymbol: false, // 存在legend时显示
-            label: {
-              normal: {
-                show: true
-              },
-              emphasis: {
                 show: false,
+                textStyle: {
+                  color: "#fff"
+                }
+              },
+              emphasis: {
                 textStyle: {
                   color: "#fff"
                 }
               }
             },
-            roam: true,
             itemStyle: {
               normal: {
-                areaColor: "#031525",
-                borderColor: "#3B5077"
+                borderColor: "rgba(255, 255, 255, .5)",
+                borderWidth: 1,
+                areaColor: {
+                  type: "radial",
+                  x: 0.5,
+                  y: 0.5,
+                  r: 0.8,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "rgba(147, 235, 248, 0)" // 0% 处的颜色
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(147, 235, 248, .5)" // 100% 处的颜色
+                    }
+                  ],
+                  globalCoord: false // 缺省为 false
+                },
+                shadowColor: "rgba(255, 255, 255, .5)",
+                // shadowColor: 'rgba(255, 255, 255, 1)',
+                shadowOffsetX: -2,
+                shadowOffsetY: 2,
+                shadowBlur: 10
               },
               emphasis: {
-                areaColor: "#2B91B7"
+                areaColor: "rgba(249,157,51, .9)",
+                borderWidth: 0
               }
             },
-            animation: false,
-            data: data
+            regions: opt.activeArea.map(function(item) {
+              if (typeof item !== "string") {
+                return {
+                  name: item.name,
+                  itemStyle: {
+                    normal: {
+                      areaColor: item.areaColor || "#389BB7"
+                    }
+                  },
+                  label: {
+                    normal: {
+                      show: item.showLabel,
+                      textStyle: {
+                        color: "#fff"
+                      }
+                    }
+                  }
+                };
+              } else {
+                return {
+                  name: item,
+                  itemStyle: {
+                    normal: {
+                      borderColor: "#91e6ff",
+                      areaColor: "#389BB7"
+                    }
+                  }
+                };
+              }
+            })
           },
-          {
-            name: "点",
-            type: "scatter",
-            coordinateSystem: "geo",
-            zlevel: 6
+          visualMap: {
+            min: 0,
+            max: 11,
+            left: "3%",
+            bottom: "10%",
+            showLabel: !0,
+            calculable: false,
+            show: false,
+            itemWidth: "20",
+            itemHeight: "16",
+            inRange: {
+              color: [
+                "#ffffff",
+                "rgba(159,202,70,1)", //yidaiyilu
+                "rgba(225,131,46,1)", //changjiangsanjiao
+                "rgba(231,210,99,1)", //jingjinji
+                "rgba(2,201,251,1)", //dawanqu
+                "rgba(50,100,236,1)", //chengyujingjiqu
+                "#4bbdd6",
+                "#ff6f5b",
+                "#F4D5B1",
+                "#ADE1E3",
+                "#F4B387",
+                "#F0F3F4"
+              ]
+            },
+            outOfRange: {
+              color: ["rgba(48,59,175,1)"]
+            },
+            pieces: [
+              {
+                value: 3,
+                label: "房建分公司",
+                color: "rgba(231,210,99,1)"
+              },
+              {
+                value: 5,
+                label: "湖北分公司",
+                color: "rgba(50,100,236,1)"
+              },
+              {
+                value: 4,
+                label: "华北分公司",
+                color: "rgba(2,201,251,1)"
+              },
+              {
+                value: 1,
+                label: "西北分公司",
+                color: "rgba(159,202,70,1)"
+              }
+            ],
+            show: !0,
+            textStyle: {
+              color: "rgba(150,173,255,1)",
+              fontSize: "20"
+            }
           },
-          {
-            name: "Top 5",
-            type: "effectScatter",
-            coordinateSystem: "geo",
-            data: convertData(
-              data
-                .sort(function(a, b) {
-                  return b.value - a.value;
-                })
-                .slice(0, 10)
-            ),
-            symbolSize: function(val) {
-              return val[2] / 15;
+          series: [
+            {
+              type: "effectScatter",
+              coordinateSystem: "geo",
+              showEffectOn: "render",
+              rippleEffect: {
+                period: 15,
+                scale: 4,
+                brushType: "fill"
+              },
+              hoverAnimation: true,
+              itemStyle: {
+                normal: {
+                  color: "#FABC61",
+                  shadowBlur: 10,
+                  shadowColor: "#333"
+                }
+              },
+              data: handleEvents.initSeriesData(opt.data)
             },
-            showEffectOn: "render",
-            rippleEffect: {
-              brushType: "stroke"
-            },
-            hoverAnimation: true,
-            label: {
-              normal: {
-                formatter: "{b}",
-                position: "left",
-                show: false
+            {
+              name: "map",
+              type: "map",
+              mapType: "china",
+              geoIndex: 0,
+              label: {
+                normal: {
+                  show: true
+                },
+                emphasis: {
+                  show: true
+                }
+              },
+              data: allprovinceData,
+              tooltip: {
+                trigger: "item",
+                triggerOn: "mousemove",
+                backgroundColor: "rgba(0,0,0,.8)",
+                borderColor: "#3574c8",
+                borderWidth: "2",
+                extraCssText:
+                  "padding:10px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);",
+                show: false,
+                formatter: function(params) {
+                  var res;
+                  if (params.value > 0) {
+                    res = params.data.value2 + "<br/>";
+                    res += params.data.value3;
+                  } else {
+                    res = "";
+                  }
+                  return res;
+                }
               }
-            },
-            itemStyle: {
-              normal: {
-                color: "yellow",
-                shadowBlur: 10,
-                shadowColor: "yellow"
-              }
-            },
-            zlevel: 1
+            }
+          ]
+        };
+
+        chart.setOption(option);
+        // 添加事件
+        chart.on("click", function(params) {
+          var _self = this;
+          var cityDot = "";
+          var city = params.name;
+          if (city == "甘肃" || city == "青海") {
+            params.name = "青海";
+          } else if (city == "武汉") {
+            params.name = "武汉";
+          } else if (city == "上海" || city == "湖南" || city == "海南") {
+            params.name = "湖南";
+          } else if (city == "湖北") {
+            params.name = "湖北";
+          } else if (city == "山西" || city == "陕西") {
+            params.name = "陕西";
           }
-        ]
+          if (opt.goDown && params.name !== name[idx]) {
+            if (cityMap[params.name]) {
+              var url = cityMap[params.name];
+              $.get(url, function(response) {
+                curGeoJson = response;
+                echarts.registerMap(params.name, response);
+                option.series[1].data = allCtyData;
+                option.tooltip.formatter = function(params, ticket, callback) {
+                  return (
+                    "所在大区：" +
+                    params.data.name +
+                    "<br/>" +
+                    "份数：" +
+                    params.data.dataone +
+                    "" +
+                    "<br/>" +
+                    "金额：" +
+                    params.data.datatwo +
+                    "(万元)" +
+                    "" +
+                    "<br/>" +
+                    "同比：" +
+                    params.data.merge +
+                    "%"
+                  );
+                };
+                option.data = provinceProJects;
+                handleEvents.resetOption(_self, option, params.name);
+              });
+            }
+            // }
+            debugger;
+            chart.dispatchAction({
+              type: "showTip",
+              seriesIndex: 0, //第几条series
+              dataIndex: 0 //第几个tooltip
+            });
+          }
+        });
+
+        chart.on("mouseover", function(params) {
+          var city = params.name;
+          if (city == "甘肃" || city == "青海") {
+            chart.dispatchAction({
+              type: "highlight",
+              name: "甘肃"
+            });
+            chart.dispatchAction({
+              type: "highlight",
+              name: "青海"
+            });
+          }
+          if (city == "武汉") {
+            chart.dispatchAction({
+              type: "highlight",
+              name: "武汉"
+            });
+          }
+          if (city == "上海" || city == "湖南" || city == "海南") {
+            chart.dispatchAction({
+              type: "highlight",
+              name: "上海"
+            });
+            chart.dispatchAction({
+              type: "highlight",
+              name: "湖南"
+            });
+            chart.dispatchAction({
+              type: "highlight",
+              name: "海南"
+            });
+          }
+          if (city == "湖北") {
+            chart.dispatchAction({
+              type: "highlight",
+              name: "湖北"
+            });
+          }
+          if (city == "山西" || city == "陕西") {
+            chart.dispatchAction({
+              type: "highlight",
+              name: "山西"
+            });
+            chart.dispatchAction({
+              type: "highlight",
+              name: "陕西"
+            });
+          }
+        });
+        chart.on("mouseout", function(params) {
+          var city = params.name;
+          if (city == "甘肃" || city == "青海") {
+            chart.dispatchAction({
+              type: "downplay",
+              name: "甘肃"
+            });
+            chart.dispatchAction({
+              type: "downplay",
+              name: "青海"
+            });
+          }
+          if (city == "武汉") {
+            chart.dispatchAction({
+              type: "downplay",
+              name: "武汉"
+            });
+          }
+          if (city == "上海" || city == "湖南" || city == "海南") {
+            chart.dispatchAction({
+              type: "downplay",
+              name: "上海"
+            });
+            chart.dispatchAction({
+              type: "downplay",
+              name: "湖南"
+            });
+            chart.dispatchAction({
+              type: "downplay",
+              name: "海南"
+            });
+          }
+          if (city == "湖北") {
+            chart.dispatchAction({
+              type: "downplay",
+              name: "湖北"
+            });
+          }
+          if (city == "山西" || city == "陕西") {
+            chart.dispatchAction({
+              type: "downplay",
+              name: "山西"
+            });
+            chart.dispatchAction({
+              type: "downplay",
+              name: "陕西"
+            });
+          }
+        });
+        chart.setMap = function(mapName) {
+          var _self = this;
+          if (mapName.indexOf("市") < 0) mapName = mapName + "市";
+          var citySource = cityMap[mapName];
+          if (citySource) {
+            var url = "./map/" + citySource + ".json";
+            $.get(url, function(response) {
+              // console.log(response);
+              curGeoJson = response;
+              echarts.registerMap(mapName, response);
+              handleEvents.resetOption(_self, option, mapName);
+            });
+          }
+        };
+
+        return chart;
       };
 
-      var index = 0; //播放所在下标
-      var showTip = setInterval(function() {
-        myChart.dispatchAction({
-          type: "showTip",
-          seriesIndex: 0,
-          dataIndex: index
+      $.getJSON(zhongguo, function(geoJson) {
+        echarts.registerMap("china", geoJson);
+        var myChart = echarts.extendsMap("map_1", {
+         
+          mapName: "china", // 地图名
+          text: "by:wxw",
+          goDown: true, // 是否下钻
+          // 下钻回调
+          callback: function(name, option, instance) {
+            //console.log(name, option, instance);
+          },
+          // 数据展示
+          data: areaProjects
         });
-        index++;
-        if (index >= option.series[0].data.length) {
-          index = 0;
-        }
-      }, 2000);
-
-      myChart.on("mouseover", function(params) {
-        clearInterval(showTip);
-        myChart.dispatchAction({
-          type: "showTip",
-          seriesIndex: 0,
-          dataIndex: params.dataIndex
-        });
-      });
-
-      myChart.on("mouseout", function(params) {
-        showTip && clearInterval(showTip);
-        showTip = setInterval(function() {
-          myChart.dispatchAction({
-            type: "showTip",
-            seriesIndex: 0,
-            dataIndex: index
-          });
-          index++;
-          if (index >= option.series[0].data.length) {
-            index = 0;
-          }
-        }, 2000);
-      });
-
-      myChart.setOption(option);
-      window.addEventListener("resize", function() {
-        myChart.resize();
       });
     },
     echarts_1() {
@@ -2101,13 +3118,13 @@ export default {
           },
           {
             text: "93.27%",
-            top: '37%',
+            top: "37%",
             left: "center",
             textStyle: {
               color: "#EE6A50",
               fontSize: "14"
             }
-          },
+          }
         ],
         tooltip: {
           trigger: "item",
