@@ -576,8 +576,9 @@
               name: item.deptname+index,
               value: item.cost
             }
-            averagecost.data.push(obj)
+            sixTotal.data.push(obj)
           })
+          console.log(sixTotal, '---------------')
           this.czConfig2 = {...sixTotal}
         }
       },
