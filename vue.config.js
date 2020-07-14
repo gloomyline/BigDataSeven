@@ -8,7 +8,7 @@ module.exports = {
     inline: true,  // 关闭热更新
     proxy: {
       '/api': {
-        target: 'http://www.bigdata-dev.com:8108',
+        target: 'http://www.bigdata-dev.com:8218',
         changeOrigin: true,
         secure: false,
         pathRewrite: {
