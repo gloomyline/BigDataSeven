@@ -143,6 +143,13 @@ export default {
   components: {},
   data() {
     return {
+      // equipments
+      equipment: {
+        bigMain: null,
+        otherUsing: null,
+        isUnused: null,
+        isUsing: null,
+      },
       manPower: {
         total: 1033,
         bureau: 646,
@@ -201,13 +208,17 @@ export default {
     };
   },
   methods: {
+    _initEquipmentData(data) {
+      this.equipment = data.equipmentVo;
+    },
     async initData() {
       // request home api
       const _date = new Date();
       const response = await homeApi.fetchHomeData(
         `${_date.getFullYear()}-${_date.getMonth()}`
       );
-      console.log(1, response);
+      const data = response.data;
+      this._initEquipmentData(data);
 
       this.monthConfig.data[0] = 92.02;
       this.yearConfig.data[0] = 72.68;
@@ -1859,6 +1870,7 @@ export default {
       });
     },
     echarts_5() {
+      const self = this;
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("sb1"));
       var option = {
@@ -1901,8 +1913,8 @@ export default {
             label: { show: true },
             labelLine: { show: true },
             data: [
-              { value: 107, name: "大型主要设备" },
-              { value: 54, name: "其他在场设备" }
+              { value: self.equipment.bigMain || 107, name: "大型主要设备" },
+              { value: self.equipment.otherUsing || 54, name: "其他在场设备" }
             ],
             itemStyle: {
               normal: {
@@ -1926,9 +1938,10 @@ export default {
     },
     echarts_51() {
       // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById("sb2"));
+      const myChart = echarts.init(document.getElementById("sb2"));
 
-      var option = {
+      const self = this;
+      const option = {
         title: [
           {
             text: "自有机械设备使用情况",
@@ -1945,7 +1958,6 @@ export default {
         //   trigger: "item",
         //   formatter: "{b} : {c} ({d}%)"
         // },
-
         series: [
           {
             type: "pie",
@@ -1954,10 +1966,10 @@ export default {
             selectedMode: "single",
             data: [
               {
-                value: 54,
+                value: self.equipment.isUsing || 54,
                 name: "在用"
               },
-              { value: 67, name: "空闲" }
+              { value: self.equipment.isUnused || 67, name: "空闲" }
             ],
             itemStyle: {
               normal: {
@@ -3199,7 +3211,15 @@ export default {
         y + "年" + mt + "月" + day + "-" + h + "时" + m + "分" + s + "秒";
     }
   },
-  mounted() {
+  async mounted() {
+    const loading = this.$loading({
+      lock: true,
+      text: "页面加载中...",
+      spinner: "el-icon-loading",
+      background: "rgba(0, 0, 0, 1)"
+    });
+    await this.initData();
+    loading.close();
     this.$nextTick(() => {
       this.echarts_1();
       this.echarts_2();
@@ -3215,16 +3235,6 @@ export default {
     });
   },
   created() {
-    this.initData();
-    const loading = this.$loading({
-      lock: true,
-      text: "页面加载中...",
-      spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 1)"
-    });
-    setTimeout(() => {
-      loading.close();
-    }, 2000);
     this.timerId = setInterval(() => {
       this.geTime();
     }, 1000);
