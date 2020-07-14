@@ -652,23 +652,30 @@ export default {
       ];
       var provinceProJects = [
         {
-          city: "湖北",
+          city: "湖北分公司",
           name: "项目1",
           dataone: 1231,
           datatwo: 123.01,
           datathree: -25.53
         },
         {
-          city: "湖北",
+          city: "湖北分公司",
           name: "项目2",
           dataone: 123123,
           datatwo: 123213.33,
           datathree: -26.06
         },
         {
-          city: "湖北",
+          city: "湖北分公司",
           name: "项目3",
           dataone: 123123,
+          datatwo: 123213.15,
+          datathree: -24.96
+        },
+        {
+          city: "西北分公司",
+          name: "项目4",
+          dataone: 55555,
           datatwo: 123213.15,
           datathree: -24.96
         }
@@ -700,10 +707,10 @@ export default {
           华北分公司: huabeigongsi
         };
         var geoCoordMap = {
-          武汉分公司: [114.278816, 30.592498],
           项目1: [114.278816, 30.592498],
           项目2: [111.285078,30.680055],
-          项目3: [112.252993,30.336355]
+          项目3: [112.252993,30.336355],
+          项目4: [101.805718,36.627556]
         };
 
         var levelColorMap = {
@@ -756,13 +763,13 @@ export default {
             var breadcrumb = null;
             if (n == "武汉") {
               breadcrumb = this.createBreadcrumb("武汉分公司");
-            } else if (n == "山西" || n == "陕西") {
+            } else if (n == "山西" || n == "陕西" || n == "华北分公司") {
               breadcrumb = this.createBreadcrumb("华北分公司");
-            } else if (n == "湖北") {
+            } else if (n == "湖北" || n == "湖北分公司") {
               breadcrumb = this.createBreadcrumb("湖北分公司");
-            } else if (n == "上海" || n == "湖南" || n == "海南") {
+            } else if (n == "上海" || n == "湖南" || n == "海南" || n == "房建分公司") {
               breadcrumb = this.createBreadcrumb("房建分公司");
-            } else if (n == "甘肃" || n == "青海") {
+            } else if (n == "甘肃" || n == "青海" || n == "西北分公司") {
               breadcrumb = this.createBreadcrumb("西北分公司");
             }
             if (breadcrumb !== null) {
@@ -779,6 +786,7 @@ export default {
                 var cityData = [];
                 var cityJson;
                 for (var x = 0; x < opt.data.length; x++) {
+             
                   if (n === opt.data[x].city) {
                     $([opt.data[x]]).each(function(index, data) {
                       cityJson = {
@@ -797,7 +805,6 @@ export default {
                     });
                   }
                 }
-      
                 if (cityData != null) {
                   o.series[0].data = handleEvents.initSeriesData(cityData);
                 } else {
@@ -951,6 +958,7 @@ export default {
               var geoCoord = geoCoordMap[data[i].name];
               if (geoCoord) {
                 temp.push({
+                  city: data[i].city,
                   name: data[i].name,
                   value: geoCoord.concat(data[i].value),
                   merge: data[i].merge,
@@ -1335,15 +1343,15 @@ export default {
           var cityDot = "";
           var city = params.name;
           if (city == "甘肃" || city == "青海") {
-            params.name = "青海";
+            params.name = "西北分公司";
           } else if (city == "武汉") {
-            params.name = "武汉";
+            params.name = "武汉分公司";
           } else if (city == "上海" || city == "湖南" || city == "海南") {
-            params.name = "湖南";
+            params.name = "房建分公司";
           } else if (city == "湖北") {
-            params.name = "湖北";
+            params.name = "湖北分公司";
           } else if (city == "山西" || city == "陕西") {
-            params.name = "陕西";
+            params.name = "华北分公司";
           }
           if (opt.goDown && params.name !== name[idx]) {
             if (cityMap[params.name]) {
@@ -1353,25 +1361,9 @@ export default {
                 echarts.registerMap(params.name, response);
                 option.series[1].data = allCtyData;
                 option.tooltip.formatter = function(params, ticket, callback) {
-                  return (
-                    "所在大区：" +
-                    params.data.name +
-                    "<br/>" +
-                    "份数：" +
-                    params.data.dataone +
-                    "" +
-                    "<br/>" +
-                    "金额：" +
-                    params.data.datatwo +
-                    "(万元)" +
-                    "" +
-                    "<br/>" +
-                    "同比：" +
-                    params.data.merge +
-                    "%"
-                  );
-                };
-                option.data = provinceProJects;
+                            return '分公司：' + params.data.city + '<br/>' + '项目名称：' + params.data.name+'<br/>' + '总产值：' + params.data.dataone + '';
+                        }
+                opt.data = provinceProJects;
                 handleEvents.resetOption(_self, option, params.name);
               });
             }
