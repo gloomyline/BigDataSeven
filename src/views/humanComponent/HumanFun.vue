@@ -5,20 +5,12 @@
       <el-container class="container-top" style="height: 80vh;">
         <el-aside width="70%" style="padding-right: 10px;">
           <dv-border-box-10>
-            <div
-              class="echart-human-details"
-              ref="humanDetails"
-              style="height: 100%"
-            ></div>
+            <div class="echart-human-details" ref="humanDetails" style="height: 100%"></div>
           </dv-border-box-10>
         </el-aside>
         <el-aside width="30%" style="padding-left: 10px;">
           <dv-border-box-10>
-            <div
-              class="echart-salary-total"
-              ref="salaryTotal"
-              style="width: 100%;height: 100%;"
-            ></div>
+            <div class="echart-salary-total" ref="salaryTotal" style="width: 100%;height: 100%;"></div>
           </dv-border-box-10>
         </el-aside>
       </el-container>
@@ -27,7 +19,7 @@
 </template>
 <script>
 import echarts from "echarts";
-
+import { HumanNewApi } from "@/api";
 export default {
   name: "Production",
   data() {
@@ -38,6 +30,10 @@ export default {
       }
     };
   },
+  created() {
+    this.ratio();
+    this.salary();
+  },
   mounted() {
     this.$nextTick(() => {
       this.echarts();
@@ -45,6 +41,23 @@ export default {
   },
 
   methods: {
+    async ratio() {
+      const _date = new Date();
+      const res = await HumanNewApi.fetchRatioData();
+      if (res && res.code === "000000") {
+        this.drawHumanFun(res.data);
+      }
+    },
+    async salary() {
+      const _date = new Date();
+      const res = await HumanNewApi.fetchSalaryData();
+      if (res && res.code === "000000") {
+        this.drawSalaryTotal(
+          res.data.costVo.yearPerformance,
+          res.data.costVo.residue
+        );
+      }
+    },
     onSubmit() {
       console.log("submit!");
     },
@@ -61,10 +74,9 @@ export default {
     },
 
     echarts() {
-      this.drawHumanFun();
       this.drawSalaryTotal();
     },
-    drawSalaryTotal() {
+    drawSalaryTotal(yearPerformance, residue) {
       const salaryTotal = echarts.init(this.$refs.salaryTotal);
       // simulate salary total data
       const option = {
@@ -75,14 +87,14 @@ export default {
           textStyle: {
             color: "#ffffff",
             fontSize: 24,
-            lineHeight: 32,
+            lineHeight: 32
           },
-          show: true,
+          show: true
         },
         color: ["#2f89cf", "#fb3232", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
         tooltip: {
           trigger: "item",
-          formatter: "{b} : {c} ({d}%)",
+          formatter: "{b} : {c} ({d}%)"
         },
         grid: {
           top: "10%",
@@ -92,7 +104,7 @@ export default {
           bottom: "5%",
           itemWidth: 10,
           itemHeight: 10,
-          data: ["使用", '剩余'],
+          data: ["使用", "剩余"],
           textStyle: {
             color: "rgba(255,255,255,.5)",
             fontSize: 16
@@ -105,13 +117,13 @@ export default {
             center: ["50%", "50%"],
             selectedMode: "single",
             data: [
-              { value: 78, name: "剩余" },
+              { value: residue, name: "剩余" },
               {
-                value: 42,
-                name: "使用",
-              },
+                value: yearPerformance,
+                name: "使用"
+              }
             ],
-             itemStyle: {
+            itemStyle: {
               normal: {
                 label: {
                   show: true,
@@ -125,24 +137,30 @@ export default {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)",
-              },
-            },
-            
-          },
-        ],
+                shadowColor: "rgba(0, 0, 0, 0.5)"
+              }
+            }
+          }
+        ]
       };
       salaryTotal.setOption(option);
-      window.addEventListener('resize', () => {
+      window.addEventListener("resize", () => {
         salaryTotal.resize();
       });
     },
-   drawHumanFun() {
+    drawHumanFun(data) {
+      let nameArr = [];
+      let productionArr =[];
+      let expenditureArr = [];
+      data.forEach(item => {
+        nameArr.push(item.name);
+        productionArr.push(item.production);
+        expenditureArr.push(item. expenditure);
+      });
       const elHumanDetails = this.$refs.humanDetails;
       const humanDetails = echarts.init(elHumanDetails);
       // simulate human details data
       const option = {
-       
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -150,14 +168,11 @@ export default {
               color: "#dddc6b"
             }
           },
-          formatter: '{b}<br/>{a0}:{c0}%<br/>{a1}:{c1}%',
+          formatter: "{b}<br/>{a0}:{c0}%<br/>{a1}:{c1}%"
         },
         legend: {
           top: "2%",
-          data: [
-            "经费开累计划执行比",
-            "开累产值计划完成比"
-          ],
+          data: ["经费开累计划执行比", "开累产值计划完成比"],
           textStyle: {
             color: "rgba(255,255,255,.5)",
             fontSize: "14"
@@ -187,7 +202,31 @@ export default {
                 color: "rgba(255,255,255,.2)"
               }
             },
-            data: ["武嘉", "童庄河", "江汉七桥", "地铁八号线", "西三环", "靖远", "中兰", "三金潭", "滨湖路", "香溪", "青山", "威亚", "军运会保障", "墨水湖", "长丰桥", "远安", "三环线北段", "三化", "虎峪河", "建安街", "新武金堤路汤逊湖泵站", "武汉至大悟高速公路"]
+            data: nameArr
+            // [
+            //   "武嘉",
+            //   "童庄河",
+            //   "江汉七桥",
+            //   "地铁八号线",
+            //   "西三环",
+            //   "靖远",
+            //   "中兰",
+            //   "三金潭",
+            //   "滨湖路",
+            //   "香溪",
+            //   "青山",
+            //   "威亚",
+            //   "军运会保障",
+            //   "墨水湖",
+            //   "长丰桥",
+            //   "远安",
+            //   "三环线北段",
+            //   "三化",
+            //   "虎峪河",
+            //   "建安街",
+            //   "新武金堤路汤逊湖泵站",
+            //   "武汉至大悟高速公路"
+            // ]
           },
           {
             axisPointer: { show: false },
@@ -263,13 +302,38 @@ export default {
                 label: {
                   show: true,
                   textStyle: {
-                    fontSize: 14,
+                    fontSize: 14
                   }
                 },
                 borderWidth: 12
               }
             },
-            data: [11, 130, 73, 111, 119, 50, 23, 171, 126, 147, 97, 90, 146, 60, 62, 77, 101, 112, 127, 73, 137, 8],
+            data: 
+            expenditureArr
+            // [
+            //   11,
+            //   130,
+            //   73,
+            //   111,
+            //   119,
+            //   50,
+            //   23,
+            //   171,
+            //   126,
+            //   147,
+            //   97,
+            //   90,
+            //   146,
+            //   60,
+            //   62,
+            //   77,
+            //   101,
+            //   112,
+            //   127,
+            //   73,
+            //   137,
+            //   8
+            // ]
           },
           {
             name: "开累产值计划完成比",
@@ -314,22 +378,47 @@ export default {
                 label: {
                   show: true,
                   textStyle: {
-                    fontSize: 14,
+                    fontSize: 14
                   }
                 }
               }
             },
-            data: [19, 79, 42, 103, 86, 83, 51, 107, 108, 101, 100, 100, 159, 81, 100, 100, 125, 103, 69, 34, 100, 8],
+            data: 
+            productionArr
+            // [
+            //   19,
+            //   79,
+            //   42,
+            //   103,
+            //   86,
+            //   83,
+            //   51,
+            //   107,
+            //   108,
+            //   101,
+            //   100,
+            //   100,
+            //   159,
+            //   81,
+            //   100,
+            //   100,
+            //   125,
+            //   103,
+            //   69,
+            //   34,
+            //   100,
+            //   8
+            // ]
           }
         ]
       };
-     
+
       humanDetails.setOption(option);
 
-      window.addEventListener('resize', () => {
+      window.addEventListener("resize", () => {
         humanDetails.resize();
       });
-    },
+    }
   }
 };
 </script>
