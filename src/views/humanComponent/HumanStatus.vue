@@ -17,7 +17,7 @@
 <script>
 import echarts from "echarts";
 import groupStructure from "@/assets/js/groupStructureData";
-
+import { HumanNewApi  } from '@/api';
 export default {
   name: "Production",
   data() {
@@ -28,7 +28,8 @@ export default {
       },
       // 分公司索引，轮播计数器
       count: 0,
-      companies: ['独立项目','华北分公司','城轨分公司','西北分公司','房建分公司',],
+      // companies: ['独立项目','华北分公司','城轨分公司','西北分公司','房建分公司',],
+      companies:[],
       currentCompany: '独立项目',
     };
   },
@@ -43,7 +44,15 @@ export default {
       this.drawHumanDetails(this.count);
     },
   },
+  created(){
+    this.getPersonnerInfo()
+  },
   methods: {
+    async getPersonnerInfo(){
+      const _date = new Date();
+        const res = await HumanNewApi.fetchGetPersonnerInfoData();
+        console.log(res, 'xxx')
+    },
     onSubmit() {
       console.log("submit!");
     },
