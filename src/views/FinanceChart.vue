@@ -19,6 +19,7 @@
 </template>
 <script>
 import echarts from "echarts";
+import { financeApi } from "@/api";
 
 export default {
   name: "Production",
@@ -28,22 +29,27 @@ export default {
         user: "",
         region: "",
       },
+      financeData:null
     };
   },
+  created(){
+    this.initData();
+  },
   mounted() {
-    this.$nextTick(() => {
-      const barChartBOption = {
+   
+  },
+  methods: {
+    initData(){
+      const date = new Date()
+      financeApi.fetchFinance(`${date.getFullYear()}-0${date.getMonth()+1}`).then((data)=>{
+        this.financeData = data.data;
+        this.initDoubleChart();
+        this.initSingleChart();
+      })
+    },
+    initDoubleChart(){
+       const barChartBOption = {
         xData: [
-          "安九",
-          "建安街",
-          "汉江七桥",
-          "靖远",
-          "昆仑路",
-          "沈海高速",
-          "童庄河",
-          "武大高速",
-          "武嘉高速",
-          '献珍路'
         ],
         legendData: [
           {
@@ -57,7 +63,7 @@ export default {
           {
             name: "计价回款率",
             type: "bar",
-            data: [7, 10, 5,6,5,7,48,16,70,60],
+            data: [],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -79,7 +85,7 @@ export default {
           {
             name: "收入计价率",
             type: "bar",
-            data: [90, 97, 90,85,0,90,48,16,60,50],
+            data: [],
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -100,6 +106,11 @@ export default {
           },
         ],
       };
+      this.financeData.forEach((financeData) => {
+        barChartBOption.xData.push(financeData.projectName);
+        barChartBOption.seriesData[0].data.push(financeData.huikuanlv);
+        barChartBOption.seriesData[1].data.push(financeData.incomeRate);
+      });
       this.drawDoubleBarChart(
         "barChart1",
         barChartBOption.xData,
@@ -107,22 +118,17 @@ export default {
         barChartBOption.seriesData,
         "百分比"
       );
-
+    },
+    initSingleChart(){
       const singleBarOption = {
         xData: [
-          "安九",
-          "建安街",
-          "汉江七桥",
-          "靖远",
-          "昆仑路",
-          "沈海高速",
-          "童庄河",
-          "武大高速",
-          "武嘉高速",
-          '献珍路'
         ],
-        seriesData: [9000, 8800, 7900, 7500, 7000, 6500, 6400, 5800, 5500, 5000, 4500, 4000],
+        seriesData: [],
       };
+      this.financeData.forEach((financeData) => {
+        singleBarOption.xData.push(financeData.projectName);
+        singleBarOption.seriesData.push(financeData.monthFunding);
+      });
 
       this.drawSingleBarChart(
         "barChart2",
@@ -130,9 +136,7 @@ export default {
         "经费",
         singleBarOption.seriesData
       );
-    });
-  },
-  methods: {
+    },
     onSubmit() {
       console.log("submit!");
     },

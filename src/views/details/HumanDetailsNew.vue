@@ -19,7 +19,7 @@
         <span class="tilte">项目部岗位名单</span>
       </p>
       <el-table
-        :data="tableData2"
+        :data="tableData"
         row-key="id"
         :show-header="false"
         default-expand-all
@@ -45,6 +45,8 @@
   </div>
 </template>
 <script>
+import { HumanNewApi } from '@/api'
+
 export default {
   data() {
     return {
@@ -189,10 +191,13 @@ export default {
           date3: "",
           id: "7",  
         },
-      ]
+      ],
+      tableData: []
     };
   },
-  mounted() {},
+  created() {
+    this.initData()
+  },
   beforeCreate() {
     const loading = this.$loading({
       lock: true,
@@ -212,6 +217,9 @@ export default {
       } else {
         this.$router.push({ path: "/" });
       }
+    },
+    async initData() {
+      this.tableData = await HumanNewApi.fetchGetEmployeeData()
     },
     equSpanMethod({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 11) {

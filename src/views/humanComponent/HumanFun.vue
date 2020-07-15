@@ -5,12 +5,20 @@
       <el-container class="container-top" style="height: 80vh;">
         <el-aside width="70%" style="padding-right: 10px;">
           <dv-border-box-10>
-            <div class="echart-human-details" ref="humanDetails" style="height: 100%"></div>
+            <div
+              class="echart-human-details"
+              ref="humanDetails"
+              style="height: 100%"
+            ></div>
           </dv-border-box-10>
         </el-aside>
         <el-aside width="30%" style="padding-left: 10px;">
           <dv-border-box-10>
-            <div class="echart-salary-total" ref="salaryTotal" style="width: 100%;height: 100%;"></div>
+            <div
+              class="echart-salary-total"
+              ref="salaryTotal"
+              style="width: 100%;height: 100%;"
+            ></div>
           </dv-border-box-10>
         </el-aside>
       </el-container>
@@ -18,260 +26,250 @@
   </div>
 </template>
 <script>
-import echarts from "echarts";
-import { HumanNewApi } from "@/api";
+import echarts from 'echarts'
+import { HumanNewApi } from '@/api'
 export default {
-  name: "Production",
+  name: 'Production',
   data() {
     return {
       formInline: {
-        user: "",
-        region: ""
-      }
-    };
+        user: '',
+        region: '',
+      },
+    }
   },
   created() {
-    this.ratio();
-    this.salary();
+    this.ratio()
+    this.salary()
   },
   mounted() {
     this.$nextTick(() => {
-      this.echarts();
-    });
+      this.echarts()
+    })
   },
 
   methods: {
     async ratio() {
-      const _date = new Date();
-      const res = await HumanNewApi.fetchRatioData();
-      if (res && res.code === "000000") {
-        this.drawHumanFun(res.data);
+      const _date = new Date()
+      const res = await HumanNewApi.fetchRatioData()
+      if (res && res.code === '000000') {
+        this.drawHumanFun(res.data)
       }
     },
     async salary() {
-      const _date = new Date();
-      const res = await HumanNewApi.fetchSalaryData();
-      if (res && res.code === "000000") {
+      const _date = new Date()
+      const res = await HumanNewApi.fetchSalaryData()
+      if (res && res.code === '000000') {
         this.drawSalaryTotal(
           res.data.costVo.yearPerformance,
           res.data.costVo.residue
-        );
+        )
       }
     },
     onSubmit() {
-      console.log("submit!");
+      console.log('submit!')
     },
     goBack() {
-      this.$router.push({ path: "/" });
+      this.$router.push({ path: '/' })
     },
     goPro() {
-      this.$router.push({ path: "/HumanDetails" });
+      this.$router.push({ path: '/HumanDetails' })
     },
     mounted() {
       this.$nextTick(() => {
-        this.echarts();
-      });
+        this.echarts()
+      })
     },
 
     echarts() {
-      this.drawSalaryTotal();
+      this.drawSalaryTotal()
     },
     drawSalaryTotal(yearPerformance, residue) {
-      const salaryTotal = echarts.init(this.$refs.salaryTotal);
+      const salaryTotal = echarts.init(this.$refs.salaryTotal)
       // simulate salary total data
       const option = {
         title: {
-          text: "工资总额年度预算执行情况",
-          x: "center",
-          y: "3%",
+          text: '工资总额年度预算执行情况',
+          x: 'center',
+          y: '3%',
           textStyle: {
-            color: "#ffffff",
+            color: '#ffffff',
             fontSize: 24,
-            lineHeight: 32
+            lineHeight: 32,
           },
-          show: true
+          show: true,
         },
-        color: ["#2f89cf", "#fb3232", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
+        color: ['#2f89cf', '#fb3232', '#0f8cd6', '#0fa0d6', '#0fb4d6'],
         tooltip: {
-          trigger: "item",
-          formatter: "{b} : {c} ({d}%)"
+          trigger: 'item',
+          formatter: '{b} : {c} ({d}%)',
         },
         grid: {
-          top: "10%",
-          bottom: "5%"
+          top: '10%',
+          bottom: '5%',
         },
         legend: {
-          bottom: "5%",
+          bottom: '5%',
           itemWidth: 10,
           itemHeight: 10,
-          data: ["使用", "剩余"],
+          data: ['使用', '剩余'],
           textStyle: {
-            color: "rgba(255,255,255,.5)",
-            fontSize: 16
-          }
+            color: 'rgba(255,255,255,.5)',
+            fontSize: 16,
+          },
         },
         series: [
           {
-            type: "pie",
-            radius: "60%",
-            center: ["50%", "50%"],
-            selectedMode: "single",
+            type: 'pie',
+            radius: '60%',
+            center: ['50%', '50%'],
+            selectedMode: 'single',
             data: [
-              { value: residue, name: "剩余" },
+              { value: residue, name: '剩余' },
               {
                 value: yearPerformance,
-                name: "使用"
-              }
+                name: '使用',
+              },
             ],
             itemStyle: {
               normal: {
                 label: {
                   show: true,
-                  formatter: "{b} : {c}万 ({d}%)",
-                  position: "inner"
+                  formatter: '{b} : {c}万 ({d}%)',
+                  position: 'inner',
                 },
-                labelLine: { show: true }
-              }
+                labelLine: { show: true },
+              },
             },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              }
-            }
-          }
-        ]
-      };
-      salaryTotal.setOption(option);
-      window.addEventListener("resize", () => {
-        salaryTotal.resize();
-      });
+                shadowColor: 'rgba(0, 0, 0, 0.5)',
+              },
+            },
+          },
+        ],
+      }
+      salaryTotal.setOption(option)
+      window.addEventListener('resize', () => {
+        salaryTotal.resize()
+      })
     },
     drawHumanFun(data) {
-      let nameArr = [];
-      let productionArr =[];
-      let expenditureArr = [];
-      data.forEach(item => {
-        nameArr.push(item.name);
-        productionArr.push(item.production);
-        expenditureArr.push(item. expenditure);
-      });
-      const elHumanDetails = this.$refs.humanDetails;
-      const humanDetails = echarts.init(elHumanDetails);
+      const humanDetails = echarts.init(this.$refs.humanDetails)
+
+      let nameArr = []
+      let productionArr = []
+      let expenditureArr = []
+      data.forEach((item) => {
+        nameArr.push(item.name)
+        productionArr.push(item.production)
+        expenditureArr.push(item.expenditure)
+      })
+
       // simulate human details data
       const option = {
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
           axisPointer: {
             lineStyle: {
-              color: "#dddc6b"
-            }
+              color: '#dddc6b',
+            },
           },
-          formatter: "{b}<br/>{a0}:{c0}%<br/>{a1}:{c1}%"
+          formatter: '{b}<br/>{a0}:{c0}%<br/>{a1}:{c1}%',
         },
         legend: {
-          top: "2%",
-          data: ["经费开累计划执行比", "开累产值计划完成比"],
+          top: '2%',
+          data: ['经费开累计划执行比', '开累产值计划完成比'],
           textStyle: {
-            color: "rgba(255,255,255,.5)",
-            fontSize: "14"
-          }
+            color: 'rgba(255,255,255,.5)',
+            fontSize: '14',
+          },
         },
         grid: {
-          left: "20",
-          top: "60",
-          right: "30",
-          bottom: "20",
-          containLabel: true
+          left: '20',
+          top: '60',
+          right: '30',
+          bottom: '20',
+          containLabel: true,
         },
-
+        dataZoom: [
+          {
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 50,
+          },
+          {
+            type: 'inside',
+            realtime: true,
+            start: 0,
+            end: 50,
+          },
+        ],
         xAxis: [
           {
-            type: "category",
+            type: 'category',
             boundaryGap: false,
             axisLabel: {
               // interval: 1,
               textStyle: {
-                color: "rgba(255,255,255,.6)",
-                fontSize: 14
-              }
+                color: 'rgba(255,255,255,.6)',
+                fontSize: 14,
+              },
             },
             axisLine: {
               lineStyle: {
-                color: "rgba(255,255,255,.2)"
-              }
+                color: 'rgba(255,255,255,.2)',
+              },
             },
-            data: nameArr
-            // [
-            //   "武嘉",
-            //   "童庄河",
-            //   "江汉七桥",
-            //   "地铁八号线",
-            //   "西三环",
-            //   "靖远",
-            //   "中兰",
-            //   "三金潭",
-            //   "滨湖路",
-            //   "香溪",
-            //   "青山",
-            //   "威亚",
-            //   "军运会保障",
-            //   "墨水湖",
-            //   "长丰桥",
-            //   "远安",
-            //   "三环线北段",
-            //   "三化",
-            //   "虎峪河",
-            //   "建安街",
-            //   "新武金堤路汤逊湖泵站",
-            //   "武汉至大悟高速公路"
-            // ]
+            data: nameArr,
           },
           {
             axisPointer: { show: false },
             axisLine: { show: false },
-            position: "bottom",
-            offset: 20
-          }
+            position: 'bottom',
+            offset: 20,
+          },
         ],
 
         yAxis: [
           {
-            type: "value",
+            type: 'value',
             axisTick: { show: false },
             axisLine: {
               lineStyle: {
-                color: "rgba(255,255,255,.1)"
-              }
+                color: 'rgba(255,255,255,.1)',
+              },
             },
             axisLabel: {
               textStyle: {
-                color: "rgba(255,255,255,.6)",
-                fontSize: 14
-              }
+                color: 'rgba(255,255,255,.6)',
+                fontSize: 14,
+              },
             },
 
             splitLine: {
               lineStyle: {
-                color: "rgba(255,255,255,.1)"
-              }
-            }
-          }
+                color: 'rgba(255,255,255,.1)',
+              },
+            },
+          },
         ],
         series: [
           {
-            name: "经费开累计划执行比",
-            type: "line",
+            name: '经费开累计划执行比',
+            type: 'line',
             smooth: true,
-            symbol: "circle",
+            symbol: 'circle',
             symbolSize: 5,
             showSymbol: true,
             lineStyle: {
               normal: {
-                color: "#0184d5",
-                width: 3
-              }
+                color: '#0184d5',
+                width: 3,
+              },
             },
             areaStyle: {
               normal: {
@@ -283,70 +281,45 @@ export default {
                   [
                     {
                       offset: 0,
-                      color: "rgba(1, 132, 213, 0.4)"
+                      color: 'rgba(1, 132, 213, 0.4)',
                     },
                     {
                       offset: 0.8,
-                      color: "rgba(1, 132, 213, 0.1)"
-                    }
+                      color: 'rgba(1, 132, 213, 0.1)',
+                    },
                   ],
                   false
                 ),
-                shadowColor: "rgba(0, 0, 0, 0.1)"
-              }
+                shadowColor: 'rgba(0, 0, 0, 0.1)',
+              },
             },
             itemStyle: {
               normal: {
-                color: "#0184d5",
-                borderColor: "rgba(221, 220, 107, .1)",
+                color: '#0184d5',
+                borderColor: 'rgba(221, 220, 107, .1)',
                 label: {
                   show: true,
                   textStyle: {
-                    fontSize: 14
-                  }
+                    fontSize: 14,
+                  },
                 },
-                borderWidth: 12
-              }
+                borderWidth: 12,
+              },
             },
-            data: 
-            expenditureArr
-            // [
-            //   11,
-            //   130,
-            //   73,
-            //   111,
-            //   119,
-            //   50,
-            //   23,
-            //   171,
-            //   126,
-            //   147,
-            //   97,
-            //   90,
-            //   146,
-            //   60,
-            //   62,
-            //   77,
-            //   101,
-            //   112,
-            //   127,
-            //   73,
-            //   137,
-            //   8
-            // ]
+            data: expenditureArr,
           },
           {
-            name: "开累产值计划完成比",
-            type: "line",
+            name: '开累产值计划完成比',
+            type: 'line',
             smooth: true,
-            symbol: "circle",
+            symbol: 'circle',
             symbolSize: 5,
             showSymbol: true,
             lineStyle: {
               normal: {
-                color: "#fb3232",
-                width: 3
-              }
+                color: '#fb3232',
+                width: 3,
+              },
             },
             areaStyle: {
               normal: {
@@ -358,69 +331,44 @@ export default {
                   [
                     {
                       offset: 0,
-                      color: "rgba(0, 216, 135, 0.4)"
+                      color: 'rgba(0, 216, 135, 0.4)',
                     },
                     {
                       offset: 0.8,
-                      color: "rgba(0, 216, 135, 0.1)"
-                    }
+                      color: 'rgba(0, 216, 135, 0.1)',
+                    },
                   ],
                   false
                 ),
-                shadowColor: "rgba(0, 0, 0, 0.1)"
-              }
+                shadowColor: 'rgba(0, 0, 0, 0.1)',
+              },
             },
             itemStyle: {
               normal: {
-                color: "#fb3232",
-                borderColor: "rgba(221, 220, 107, .1)",
+                color: '#fb3232',
+                borderColor: 'rgba(221, 220, 107, .1)',
                 borderWidth: 12,
                 label: {
                   show: true,
                   textStyle: {
-                    fontSize: 14
-                  }
-                }
-              }
+                    fontSize: 14,
+                  },
+                },
+              },
             },
-            data: 
-            productionArr
-            // [
-            //   19,
-            //   79,
-            //   42,
-            //   103,
-            //   86,
-            //   83,
-            //   51,
-            //   107,
-            //   108,
-            //   101,
-            //   100,
-            //   100,
-            //   159,
-            //   81,
-            //   100,
-            //   100,
-            //   125,
-            //   103,
-            //   69,
-            //   34,
-            //   100,
-            //   8
-            // ]
-          }
-        ]
-      };
+            data: productionArr,
+          },
+        ],
+      }
 
-      humanDetails.setOption(option);
+      humanDetails.setOption(option)
 
-      window.addEventListener("resize", () => {
-        humanDetails.resize();
-      });
-    }
-  }
-};
+      window.addEventListener('resize', () => {
+        humanDetails.resize()
+      })
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
