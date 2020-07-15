@@ -36,54 +36,64 @@
 </template>
 <script>
 import echarts from "echarts";
+import { equipmentApi } from '@/api';
 
 export default {
   name: "Production",
   data() {
     return {
-      formInline: {
-        user: "",
-        region: "",
-      },
+      bigEquipments: [],
+      projectEquipments: [],
+      usingDetail: {
+        // 在用
+        isUsing: null,
+        // 闲置
+        isUnused: null,
+        // 长期闲置
+        isIdle: null,
+      }
     };
   },
-  mounted() {
+  async mounted() {
+    const loading = this.$loading({
+      lock: true,
+      text: "页面加载中...",
+      spinner: "el-icon-loading",
+      background: "rgba(0, 0, 0, 1)",
+    });
+    await this._requestData();
+    loading.close();
     this.$nextTick(() => {
+      this._drawEcharts();      
+    });
+  },
+  methods: {
+    async _requestData() {
+      const response = await equipmentApi.fetchEquipments();
+      this.bigEquipments = response.bigEquipmentTypeList;
+      this.projectEquipments = response.projectEquipmentList;
+      this.usingDetail.isUsing = response.isUsing;
+      this.usingDetail.isUnused = response.idle;
+      this.usingDetail.isIdle = response.idleLong;
+    },
+    _drawEcharts() {
+      const self = this;
+      // 项目大型机械设备
       const singleBarOption = {
-        xData: [
-          "架梁起重机",
-          "履带起重机",
-          "门式起重机",
-          "汽车起重机",
-          "施工电梯",
-          "施工升降机",
-          "塔式起重机",
-          "桅杆起重机",
-          "移动模架",
-        ],
-        seriesData: [
-          2,
-          7,
-          4,
-          2,
-          1,
-          10,
-          69,
-          2,
-          1,
-        ],
+        xData: self.bigEquipments.map(item => item.equipmentType),
+        seriesData: self.bigEquipments.map(item => item.countType),
       };
       this.drawSingleBarChart(
         "barChart1",
         singleBarOption.xData,
         singleBarOption.seriesData
       );
-
+      // 主要机械设备
       const pieOption = {
         seriesData: [
-          { value: 300, name: "长期闲置" },
-          { value: 350, name: "在用" },
-          { value: 200, name: "闲置" },
+          { value: self.usingDetail.isIdle, name: "长期闲置" },
+          { value: self.usingDetail.isUsing, name: "在用" },
+          { value: self.usingDetail.isUnused, name: "闲置" },
         ],
         // innerCircleData: [{ value: 1000, name: "主要机械设备" }],
       };
@@ -93,25 +103,9 @@ export default {
         pieOption.seriesData,
         pieOption.innerCircleData
       );
-
+      // 项目机械设备，以项目来划分
       const barChartBOption = {
-        xData: [
-          "安九",
-          "地铁7号线",
-          "东峰路南延二标",
-          "房建分公司",
-          "建安街",
-          "汉江七桥",
-          "靖远",
-          "昆仑路",
-          "沈海高速",
-          "童庄河",
-          "武大高速",
-          "武嘉高速",
-          '萧何桥',
-          '中兰客专',
-          '献珍路'
-        ],
+        xData: self.projectEquipments.map(item => item.projectName),
         legendData: [
           {
             name: "大型机械设备",
@@ -124,8 +118,7 @@ export default {
           {
             name: "大型机械设备",
             type: "bar",
-            data: [8, 0, 0, 10, 10, 20, 5, 20, 36, 10, 10, 4, 1, 7, 2, 0],
-            // stack: "使用情况",
+            data: self.projectEquipments.map(item => item.bigEquipmentProject),
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
             label: {
@@ -145,8 +138,7 @@ export default {
           {
             name: "其他机械设备",
             type: "bar",
-            data: [102, 11, , 35, 42, 40, 40, 22, 18, 35, 42, 15, 2, 26, 8, 18],
-            // stack: "使用情况",
+            data: self.projectEquipments.map(item => item.otherEquipmentProject),
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
             label: {
@@ -172,22 +164,6 @@ export default {
         barChartBOption.seriesData,
         "数量"
       );
-    });
-  },
-  created() {
-    const loading = this.$loading({
-      lock: true,
-      text: "页面加载中...",
-      spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 1)",
-    });
-    setTimeout(() => {
-      loading.close();
-    }, 2000);
-  },
-  methods: {
-    onSubmit() {
-      console.log("submit!");
     },
     goBack() {
       this.$router.push({ path: "/" });
@@ -204,7 +180,7 @@ export default {
             return params[0].axisValue+ '</br>数量：'+params[0].data;
           }
         },
-        grid: { bottom: 20, },
+        grid: { top: 30, bottom: 60, },
         //-------------   x轴   -------------------
         xAxis: {
           show: true, //---是否显示
@@ -241,7 +217,9 @@ export default {
             inside: false, //---是否朝内
             rotate: 0, //---旋转角度
             margin: 5, //---刻度标签与轴线之间的距离
-            //color:'red',				//---默认取轴线的颜色
+            formatter: function(value) {
+              return value.split('').join('\n');
+            },
           },
           splitLine: {
             //---grid 区域中的分隔线
