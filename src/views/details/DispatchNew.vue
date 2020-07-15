@@ -132,7 +132,7 @@ export default {
       return str[str.length -1]
     },
     async getTableData() {
-      const res = await DispatchNewApi.fetchPlanfinishlmonthData(`${this.$route.params.id}`);
+      const res = await DispatchNewApi.fetchPlanfinishlMonthData1(`${this.$route.params.id}`);
       this.tableData = res.data
     },
     async finishlmonth() {
@@ -236,7 +236,6 @@ export default {
       });
     },
     echarts_32(finish, remained) {
-      alert(finish)
       let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2) === 'NaN' ? `0` : (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb2"));
