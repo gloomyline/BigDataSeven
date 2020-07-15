@@ -110,6 +110,8 @@
         pieOption: {
           pieData: []
         },
+        arr: [],
+        total: 0,
         forminline: {
           user: "",
           region: "",
@@ -393,42 +395,42 @@
         // 产值排名，在项目名称前增加排序，数字为在所有自营或联营项目中进行排名(客户需求)
         this.czConfig2 = {
           data: [
-            {
-              name: "1-黄石宏维天地",
-              value: 788,
-            },
-            {
-              name: "2-奥山星城",
-              value: 788,
-            },
-            {
-              name: "3-十堰世纪山水一期",
-              value: 788,
-            },
-            {
-              name: "23-靖远黄河桥",
-              value: 79,
-            },
-            {
-              name: "24-G15沈海高速",
-              value: 75,
-            },
-            {
-              name: "25-郧县献珍路",
-              value: 34,
-            },
-          ],
-          colors: [
-            "rgb(202,249,130)",
-            "rgb(202,249,130)",
-            "rgb(202,249,130)",
-            "#e062ae",
-            "#e062ae",
-            "#e062ae",
-          ],
-          unit: "产值",
-          showValue: true,
-        };
+        //     {
+        //       name: "1-黄石宏维天地",
+        //       value: 788,
+        //     },
+        //     {
+        //       name: "2-奥山星城",
+        //       value: 788,
+        //     },
+        //     {
+        //       name: "3-十堰世纪山水一期",
+        //       value: 788,
+        //     },
+        //     {
+        //       name: "23-靖远黄河桥",
+        //       value: 79,
+        //     },
+        //     {
+        //       name: "24-G15沈海高速",
+        //       value: 75,
+        //     },
+        //     {
+        //       name: "25-郧县献珍路",
+        //       value: 34,
+        //     },
+        //   ],
+        //   colors: [
+        //     "rgb(202,249,130)",
+        //     "rgb(202,249,130)",
+        //     "rgb(202,249,130)",
+        //     "#e062ae",
+        //     "#e062ae",
+        //     "#e062ae",
+        //   ],
+        //   unit: "产值",
+        //   showValue: true,
+        // };
 
         // let zhb = [
         //   ["太原节点改造", "434.08%"],
@@ -745,38 +747,34 @@
         this.month = _date.getMonth()+1;
         let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
         this.getDeptNumName()
-        
         this.allCompany = await productionNewApi .fetchProManData(`${_date.getFullYear()}-${mm}`);
+        // this.total = this.arr.reduce((n,m) => n + m);
+        Object.keys(this.allCompany.data.productionValue).forEach(item => {
+          this.arr.push(Number(this.allCompany.data.productionValue[item]))
+          this.total = this.arr.reduce((n,m) => n + m);
+        })
         if(this.allCompany && this.allCompany.data && this.allCompany.data.productionValue) {
-          
           Object.keys(this.allCompany.data.productionValue).forEach(item => {
-            let total = 0
-            arr.push(Number(this.allCompany.data.productionValue[item]))
-            total = arr.reduce((n,m) => n + m);
-            console.log(total, '-----------------------------')          
+            this.DeptArr.forEach(i => {
+              if(i.value === item) {
+                let str = 0
+                if(this.total === 0 || Number(this.allCompany.data.productionValue[item] === 0)) {
+                  str = 0
+                } else {
+                  str = ((this.allCompany.data.productionValue[item] / this.total) * 100).toFixed(2)
+                  console.log(this.allCompany.data.productionValue[item], this.total)
+                  
+                }
+                let obj = {
+                  value: this.allCompany.data.productionValue[item],
+                  name: `${i.name}:${this.allCompany.data.productionValue[item]}(${str}%)`
+                }
+                this.pieOption.pieData.push(obj)
+                this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
+              } 
+            })
           })
-          total = arr.reduce((n,m) => n + m);
-          this.DeptArr.forEach(i => {
-            if(i.value === item) {
-              let str = 0
-              if(total === 0 || Number(this.allCompany.data.productionValue[item] === 0)) {
-                str = 0
-              } else {
-                str = ((this.allCompany.data.productionValue[item] / total) * 100).toFixed(2)
-                console.log(this.allCompany.data.productionValue[item], total)
-                
-              }
-              let obj = {
-                value: this.allCompany.data.productionValue[item],
-                name: `${i.name}:${this.allCompany.data.productionValue[item]}(${str}%)`
-              }
-              this.pieOption.pieData.push(obj)
-              this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
-            } 
-          })
-          
         }
-        
         
       },
       onTableClick(row) {
