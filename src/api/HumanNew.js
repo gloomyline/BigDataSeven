@@ -22,8 +22,14 @@ export default {
     return response;
     },
     // 人员三级界面
-    async fetchGetEmployeeData(){
-        const response = await axios.get('/emp/employee');
+    async fetchGetEmployeeData(projectId){
+        const response = await axios.get('/emp/employee',{
+            params: {
+                projectId: projectId
+            }
+        }
+
+        );
     return response;
     }
 }

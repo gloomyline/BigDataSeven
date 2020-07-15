@@ -95,14 +95,29 @@ export default {
                 children: [
                 ]
               }   
-          )
+          );
+          this.tableData[this.tableData.length-1].children.push(
+            {
+              id: this.tableData[this.tableData.length-1].children.length+this.tableData.length*10+1,
+              date: "",
+              title: "",
+              region:financeData.projectName ,
+              name: financeData.income,
+              name1: financeData.interestRate,
+              name2: financeData.huikuanlv,
+              name3: financeData.incomeRate,
+              name4: "0",
+              name5: "",
+              zip: ""
+            }
+          );
         }else{
           let areaIndex=this.tableData.findIndex((children)=>{
             return children.title === financeData.area
           });
           this.tableData[areaIndex].children.push(
             {
-              id: this.tableData[areaIndex].children.length+11,
+              id: this.tableData[areaIndex].children.length+(areaIndex+1)*10+1,
               date: "",
               title: "",
               region:financeData.projectName ,
