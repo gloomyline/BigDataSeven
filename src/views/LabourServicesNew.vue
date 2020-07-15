@@ -29,7 +29,7 @@
           :data="tableData"
           border
           size="mini"
-          @row-click="openDetails"
+          height="4rem"
         >
           <el-table-column
             type="index"
@@ -56,7 +56,6 @@
           height="4rem"
           :data="tableData2"
           border
-          @row-click="seeDetails"
           size="mini"
         >
           <el-table-column
@@ -92,10 +91,7 @@ import { LabourServicesNewApi } from '@/api'
 export default {
   data() {
     return {
-      tableInfo:{},
-      tableData: [{
-        comname: 'aaa'
-      }],
+      tableData: [],
       tableData2: [],
     };
   },
@@ -118,24 +114,30 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.echarts();
-      this.echarts2();
+      // this.echarts();
+      // this.echarts2();
     });
   },
   methods: {
     // 劳务队伍
     async initData() {
       const _date = new Date();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
-      this.tableInfo = await LabourServicesNewApi.fetchLabelteamworkrateData(`${_date.getFullYear()}-${mm}`)
-      console.log(this.tableInfo, 'lm res')
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}月` : `${_date.getMonth()+1}月`;
+      let year = `${_date.getFullYear()}年`
+      let arr = await LabourServicesNewApi.fetchLabelteamworkrateData(`${year}${mm}`)
+      this.tableData2 = arr.data.right
+      // console.log(this.tableInfo.data.right, 'lm res')
+      this.echarts2(arr.data.left);
     },
     // 劳务队伍作业人数占比
     async fetchedLabelteamnumData() {
       const _date = new Date();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
-      this.tableInfo = await LabourServicesNewApi.fetchedLabelteamnumData(`${_date.getFullYear()}-${mm}`)
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}月` : `${_date.getMonth()+1}月`;
+      let year = `${_date.getFullYear()}年`
+      let arr = await LabourServicesNewApi.fetchedLabelteamnumData(`${year}${mm}`)
+      this.tableData = arr.data.right
       console.log(this.tableInfo, 'lm res')
+      this.echarts(arr.data.left);
     },
     _sortTableData2() {
       this.tableData2 = this.tableData2.sort((a, b) => (b.data / b.value - a.data / a.value));
@@ -156,16 +158,23 @@ export default {
     goBack() {
       this.$router.push({ path: "/" });
     },
-    openDetails() {
+    openDetails(row) {
+      console.log(row, '-----------')
       this.$router.push({ 
         name: "LabourServicesDetails",
-        Params: {}
+        params: {
+          name: row.name
+        }
        });
     },
     seeDetails(resRow) {
       this.echarts2(resRow);
     },
-    echarts() {
+    echarts(left) {
+      let data = []
+      for(let i=0; i<left.length; i++){
+        data.push(i+1)
+      }
       var myChart = echarts.init(document.getElementById("map_l"));
       var option = {
         // color: ["#3398DB"],
@@ -186,7 +195,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: [1, 2, 3, 4, 5, 6, 7],
+            data: [1, 2],
             axisTick: {
               alignWithLabel: true,
             },
@@ -220,7 +229,7 @@ export default {
             name: "劳务队伍数",
             type: "bar",
             barWidth: "40%",
-            data: [81, 4, 1, 0, 0, 0, 0],
+            data: [40, 2],
             itemStyle: {
               normal: {
                 color: function(params) {
@@ -253,13 +262,10 @@ export default {
         myChart.resize();
       });
     },
-    echarts2() {
+    echarts2(left) {
+      console.log(left, '--------zxczxcxz-----')
       var myChart = echarts.init(document.getElementById("map_2"));
-      var dataOpcton = [
-        { value: 2, name: "参建人数占大于总人数85%" },
-        { value: 14, name: "参建人数大于总人数65%-85%" },
-        { value: 70, name: "参建人数小于总人数60%" },
-      ];
+      var dataOpcton = left;
       var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数65%-85%", "参建人数小于总人数60%"];
       // var dataOpcton = this.tableData2.map((item) => {
       //   var resvalue = Math.floor((item.data / item.value) * 10000) / 100;

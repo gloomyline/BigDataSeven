@@ -280,6 +280,7 @@ export default {
       this.echarts_32(response.data.production.sofar)
       this.echarts_33(response.data.production.yearly)
       this.echarts_2(response.data.materials.material, response.data.materials.rate)
+      this.echarts_1(response.data.labour.useLaborCount, response.data.labour.thisYearLaborCount, response.data.labour.allLaborCount, response.data.labour.moth);
     },
     judgeColor(config) {
       if (config.data[0] >= 90) {
@@ -1537,7 +1538,7 @@ export default {
         });
       });
     },
-    echarts_1() {
+    echarts_1(useLaborCount, thisYearLaborCount, allLaborCount, moth) {
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("echart1"));
 
@@ -1585,7 +1586,7 @@ export default {
               }
             },
 
-            data: ["01", "02", "03", "04", "05", "06"]
+            data: moth
           },
           {
             axisPointer: { show: false },
@@ -1664,7 +1665,7 @@ export default {
                 borderWidth: 12
               }
             },
-            data: [60, 60, 60, 60, 63, 66, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: useLaborCount
           },
           {
             name: "今年办理准入队伍数量",
@@ -1711,7 +1712,7 @@ export default {
                 }
               }
             },
-            data: [1, 1, 1, 1, 5, 7, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: thisYearLaborCount
           },
           {
             name: "公司劳务队伍数量",
@@ -1758,7 +1759,7 @@ export default {
                 }
               }
             },
-            data: [81, 81, 81, 82, 86, 93, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: useLaborCount
           }
         ]
       };
@@ -2973,12 +2974,14 @@ export default {
     },
     echarts_31(monthly) {
       let finished = Number(monthly.finished).toFixed(2)
+      let remained = Number(monthly.remained).toFixed(2)
+      let sum = Number(finished)+Number(remained)
       const self = this;
       let str = 0
       if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
         str = 0
       } else {
-        str = Number(monthly.finished)/Number(monthly.remained)
+        str = (Number(monthly.finished)/(sum)).toFixed(2)
       }
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb1"));
@@ -3069,11 +3072,13 @@ export default {
     },
     echarts_32(monthly) {
       let finished = Number(monthly.finished).toFixed(2)
+      let remained = Number(monthly.remained).toFixed(2)
+      let sum = Number(finished)+Number(remained)
       let str = 0
       if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
         str = 0
       } else {
-        str = Number(monthly.finished)/Number(monthly.remained)
+        str = (Number(monthly.finished)/(sum)).toFixed(2)
       }
       const self = this;
       // 基于准备好的dom，初始化echarts实例
@@ -3161,13 +3166,16 @@ export default {
       });
     },
     echarts_33(monthly) {
+      let finished = Number(monthly.finished).toFixed(2)
+      let remained = Number(monthly.remained).toFixed(2)
+      let sum = Number(finished)+Number(remained)
       let str = 0
       if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
         str = 0
       } else {
-        str = Number(monthly.finished)/Number(monthly.remained)
+        str = (Number(monthly.finished)/(sum)).toFixed(2)
       }
-      let finished = Number(monthly.finished).toFixed(2)
+     
       const self = this;
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb3"));
@@ -3274,7 +3282,7 @@ export default {
     await this.initData();
     loading.close();
     this.$nextTick(() => {
-      this.echarts_1();
+      // this.echarts_1();
       this.echarts_5();
       this.echarts_51();
       // this.echarts();
