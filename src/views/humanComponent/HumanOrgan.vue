@@ -36,8 +36,8 @@ export default {
     goBack() {
       this.$router.push({ path: '/' })
     },
-    goPro() {
-      this.$router.push({ path: '/HumanDetailsNew' })
+    goPro(projectId) {
+      this.$router.push({ name: 'HumanDetailsNew', params: { projectId: projectId }})
     },
     async initData() {
       const res = await HumanNewApi.fetchGetEmpOrganizationData()
@@ -118,8 +118,9 @@ export default {
         if (typeof param.seriesIndex == 'undefined') {
           return
         }
+        
         if (param.type == 'click') {
-          this.goPro()
+          this.goPro(param.data.id)
         }
       }
       groupStructure.setOption(option)

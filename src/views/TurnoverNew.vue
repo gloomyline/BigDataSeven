@@ -406,15 +406,16 @@ export default {
         //     fontSize: 17,
         //   },
         // },
-//         dataZoom: [{
-//           type: 'slider',
-//           show: true, //flase直接隐藏图形
-//           xAxisIndex: [0],
-//           left: '9%', //滚动条靠左侧的百分比
-//           bottom: -5,
-//           start: 0,//滚动条的起始位置
-//           end: 20 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
-//         }],
+        // 设置滚动条
+        // dataZoom: [{
+        //   type: 'slider',
+        //   show: true, //flase直接隐藏图形
+        //   xAxisIndex: [0],
+        //   left: '9%', //滚动条靠左侧的百分比
+        //   bottom: -5,
+        //   start: 0,//滚动条的起始位置
+        //   end: 20 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+        // }],
         tooltip: {
           trigger: "axis",
         },
