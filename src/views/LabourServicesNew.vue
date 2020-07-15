@@ -87,31 +87,12 @@
 <script>
 import "@/assets/js/china.js";
 import echarts from "echarts";
+import { LabourServicesNewApi } from '@/api'
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "武汉市福柒鑫建筑工程有限公司",
-          name: "3",
-        },
-        {
-          date: "武汉市云峰市政工程有限公司",
-          name: "2",
-        },
-        {
-          date: "甘肃德隆劳务有限公司",
-          name: "2",
-        },
-        {
-          date: "甘肃金隆宜路桥建设（集团）有限公司",
-          name: "2",
-        },
-        {
-          date: "甘肃中建道桥建设有限公司",
-          name: "2",
-        },
-      ],
+      tableInfo:{},
+      tableData: [],
       tableData2: [
         {
           value: 238,
@@ -186,6 +167,8 @@ export default {
   },
   created() {
     this._sortTableData2();
+    this.initData()
+    this.fetchedLabelteamnumData()
   },
   mounted() {
     this.$nextTick(() => {
@@ -194,6 +177,20 @@ export default {
     });
   },
   methods: {
+    // 劳务队伍
+    async initData() {
+      const _date = new Date();
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
+      this.tableInfo = await LabourServicesNewApi.fetchLabelteamworkrateData(`${_date.getFullYear()}-${mm}`)
+      console.log(this.tableInfo, 'lm res')
+    },
+    // 劳务队伍作业人数占比
+    async fetchedLabelteamnumData() {
+      const _date = new Date();
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
+      this.tableInfo = await LabourServicesNewApi.fetchedLabelteamnumData(`${_date.getFullYear()}-${mm}`)
+      console.log(this.tableInfo, 'lm res')
+    },
     _sortTableData2() {
       this.tableData2 = this.tableData2.sort((a, b) => (b.data / b.value - a.data / a.value));
     },

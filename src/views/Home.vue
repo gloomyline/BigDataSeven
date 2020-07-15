@@ -143,6 +143,9 @@ export default {
   components: {},
   data() {
     return {
+      mapPoint: {},
+      mapPointArr: [],
+      provinceProJectsArr: [],
       // equipments
       equipment: {
         bigMain: null,
@@ -209,7 +212,33 @@ export default {
   },
   methods: {
     async fetchHomeMap() {
+      this.mapPointArr = []
+      this.provinceProJectsArr = []
+      this.mapPoint = {}
       const response = await homeApi.fetchHomeMapData();
+      // console.log(response, '----------')
+      
+      response.data.forEach(item => {
+        let name = item.name
+        if(item.point !== '') {
+          let pointX = Number(item.point.split(',')[0])
+          let pointY = Number(item.point.split(',')[1])
+          let pointArr = []
+          pointArr.push(pointX, pointY)
+          this.mapPoint[item.name] = pointArr
+          let obj = {
+            city: item.city,
+            name: item.name,
+            dataone: item.cost,
+            datatwo: 0,
+            datathree: 0
+          }
+          this.provinceProJectsArr.push(obj)
+        }      
+      })
+      if(this.mapPoint!== {} && this.provinceProJectsArr && this.provinceProJectsArr.length > 0) {
+        this.echarts(this.mapPoint, this.provinceProJectsArr);
+      } 
     },
     _initEquipmentData(data) {
       this.equipment = data.equipmentVo;
@@ -252,7 +281,7 @@ export default {
       this.$router.push({ name: resName });
     },
 
-    echarts() {
+    echarts(pointArr, provinceProJectsArr) {
       var zhongguo = "get/s/data-1562829675575-NZp9nSurz.json";
       var hainan = "get/s/data-1528971693521-r18nZaybm.json";
       var xizang = "get/s/data-1528970391616-BJeoh2JW7.json";
@@ -668,37 +697,8 @@ export default {
           datatwo: (Math.random() * 100).toFixed(2)
         }
       ];
-      var provinceProJects = [
-        {
-          city: "湖北分公司",
-          name: "项目1",
-          dataone: 1231,
-          datatwo: 123.01,
-          datathree: -25.53
-        },
-        {
-          city: "湖北分公司",
-          name: "项目2",
-          dataone: 123123,
-          datatwo: 123213.33,
-          datathree: -26.06
-        },
-        {
-          city: "湖北分公司",
-          name: "项目3",
-          dataone: 123123,
-          datatwo: 123213.15,
-          datathree: -24.96
-        },
-        {
-          city: "西北分公司",
-          name: "项目4",
-          dataone: 55555,
-          datatwo: 123213.15,
-          datathree: -24.96
-        }
-        
-      ];
+      // ssg
+      var provinceProJects = provinceProJectsArr;
 
       echarts.extendsMap = function(id, opt) {
         // 实例
@@ -724,12 +724,7 @@ export default {
           武汉分公司: wuhanfengongsi,
           华北分公司: huabeigongsi
         };
-        var geoCoordMap = {
-          项目1: [114.278816, 30.592498],
-          项目2: [111.285078,30.680055],
-          项目3: [112.252993,30.336355],
-          项目4: [101.805718,36.627556]
-        };
+        var geoCoordMap = pointArr
 
         var levelColorMap = {
           "1": "rgba(241, 109, 115, .8)",
@@ -970,6 +965,7 @@ export default {
 
           // 设置effectscatter
           initSeriesData: function(data) {
+            // console.log(data, '------------------------------------', geoCoordMap)
             var temp = [];
             for (var i = 0; i < data.length; i++) {
               var geoCoord = geoCoordMap[data[i].name];
@@ -3255,12 +3251,12 @@ export default {
       this.echarts_51();
       this.echarts_61();
       this.echarts_62();
-      this.echarts();
+      // this.echarts();
     });
   },
   created() {
     this.fetchHomeMap()
-    this.initData();
+    // this.initData();
     const loading = this.$loading({
       lock: true,
       text: "页面加载中...",
