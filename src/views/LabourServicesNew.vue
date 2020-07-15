@@ -36,8 +36,8 @@
             label="排序"
             width="120"
           ></el-table-column>
-          <el-table-column prop="date" label="劳务队伍"></el-table-column>
-          <el-table-column prop="name" label="参建项目数"></el-table-column>
+          <el-table-column prop="comname" label="劳务队伍"></el-table-column>
+          <el-table-column prop="deptidnum" label="参建项目数"></el-table-column>
         </el-table>
       </div>
       <div class="boxfoot"></div>
@@ -65,18 +65,19 @@
             width="100"
           ></el-table-column>
           <el-table-column
-            prop="name"
+            prop="comname"
             min-width="150"
             label="劳务队伍"
           ></el-table-column>
           <el-table-column
-            prop="project"
+            prop="deptname"
             min-width="120"
             label="参建项目"
           ></el-table-column>
-          <el-table-column prop="data" label="作业人数"></el-table-column>
-          <el-table-column prop="value" label="注册人数"></el-table-column>
-          <el-table-column prop label="占比" :formatter="formatter">
+          <el-table-column prop="worknum" label="作业人数"></el-table-column>
+          <el-table-column prop="regisnum" label="注册人数"></el-table-column>
+          <el-table-column prop="prate" label="占比">
+          <!-- <el-table-column prop="prate" label="占比" :formatter="formatter"> -->
           </el-table-column>
         </el-table>
       </div>
@@ -92,65 +93,10 @@ export default {
   data() {
     return {
       tableInfo:{},
-      tableData: [],
-      tableData2: [
-        {
-          value: 238,
-          data: 180,
-          name: "桐城市顺康工程劳务有限公司",
-          project: "安九铁路",
-          color: "#e8222d",
-        },
-        {
-          value: 95,
-          data: 77,
-          name: "武汉驰建建设工程有限公司",
-          project: "江汉七桥",
-          color: "#e8222d",
-        },
-        {
-          value: 150,
-          data: 115,
-          name: "湖北宁远聚隆建筑工程有限公司",
-          project: "地铁八号线",
-          color: "#f9ce00",
-        },
-        {
-          value: 220,
-          data: 15,
-          name: "湖北同力兄弟建设工程有限公司",
-          project: "地铁七号线",
-          color: "#6abe83",
-        },
-        {
-          value: 150,
-          data: 20,
-          name: "武汉市福柒鑫建筑工程有限公司",
-          project: "武嘉项目部",
-          color: "#f9ce00",
-        },
-        {
-          value: 500,
-          data: 21,
-          name: "合肥市广爱建筑劳务有限公司",
-          project: "建安街项目部",
-          color: "#f9ce00",
-        },
-        {
-          value: 80,
-          data: 12,
-          name: "武汉禾信鼎盛市政工程有限公司",
-          project: "新征四路项目部",
-          color: "#f9ce00",
-        },
-        {
-          value: 130,
-          data: 42,
-          name: '重庆广华睿博建筑有限公司',
-          project: "童庄河项目部",
-          color: "#f9ce00",
-        },
-      ],
+      tableData: [{
+        comname: 'aaa'
+      }],
+      tableData2: [],
     };
   },
   beforeCreate() {
@@ -211,7 +157,10 @@ export default {
       this.$router.push({ path: "/" });
     },
     openDetails() {
-      this.$router.push({ name: "LabourServicesDetails" });
+      this.$router.push({ 
+        name: "LabourServicesDetails",
+        Params: {}
+       });
     },
     seeDetails(resRow) {
       this.echarts2(resRow);

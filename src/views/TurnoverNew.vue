@@ -106,7 +106,7 @@ export default {
             // data: [17983-3364, 0, 2705, 7367, 0, 513, 81, 87, 0, 0, 1083, 2607,],
             data: this.typeA.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
             // stack: "使用情况",
-            barWidth: "30", //---柱形宽度
+            barWidth: "10", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
             label: {
               //---图形上的文本标签
@@ -157,7 +157,7 @@ export default {
     drawTypeB() {
       const barChartBOption = {
         // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
-        xData: this.typeA.data.map(item => `${item.deptId}-${item.name}`),
+        xData: this.typeB.data.map(item => `${item.deptId}-${item.name}`),
         legendData: [
           {
             name: "在用",
@@ -171,7 +171,7 @@ export default {
             name: "在用",
             type: "bar",
             // data: [0, 0, 7844, 25516, 460, 5004, 747, 4413, 0, 0, 5711, 4544,],
-            data: this.typeA.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
+            data: this.typeB.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -246,7 +246,7 @@ export default {
     drawTypeC() {
       const barChartCOption = {
         // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
-        xData: this.typeA.data.map(item => `${item.deptId}-${item.name}`),
+        xData: this.typeC.data.map(item => `${item.deptId}-${item.name}`),
         legendData: [
           {
             name: "在用",
@@ -260,7 +260,7 @@ export default {
             name: "在用",
             type: "bar",
             // data: [0, 0, 7844, 25516, 460, 5004, 747, 4413, 0, 0, 5711, 4544,],
-            data: this.typeA.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
+            data: this.typeC.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -282,7 +282,7 @@ export default {
             name: "闲置",
             type: "bar",
             // data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
-            data: this.typeB.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2)),
+            data: this.typeC.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2)),
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -406,11 +406,20 @@ export default {
         //     fontSize: 17,
         //   },
         // },
+//         dataZoom: [{
+//           type: 'slider',
+//           show: true, //flase直接隐藏图形
+//           xAxisIndex: [0],
+//           left: '9%', //滚动条靠左侧的百分比
+//           bottom: -5,
+//           start: 0,//滚动条的起始位置
+//           end: 20 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+//         }],
         tooltip: {
           trigger: "axis",
         },
         legend: {
-          type: "plain", //----图例类型，默认为'plain'，当图例很多时可使用'scroll'
+          type: "scroll", //----图例类型，默认为'plain'，当图例很多时可使用'scroll'
           top: "1%", //----图例相对容器位置,top\bottom\left\right
           textStyle: {
             color: "#fff",
