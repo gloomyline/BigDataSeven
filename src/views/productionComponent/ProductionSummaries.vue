@@ -221,125 +221,14 @@
     },
     mounted() {
       this.$nextTick(() => {
-        // const total = 195004 +38109+169481+231123+233597+450515
-        // const pieOption = {
-        //   pieData: [
-        //     { value: 195004, name: "城轨分公司:195004万元（"+Number(195004/total*100).toFixed(2)+'%）' },
-        //     { value: 38109, name:  "湖北分公司:38109万元（"+Number(38109/total*100).toFixed(2)+'%）' },
-        //     { value: 169481, name: "华北分公司:169481万元（"+Number(169481/total*100).toFixed(2)+'%）' },
-        //     { value: 231123, name: "武汉分公司:231123万元（"+Number(231123/total*100).toFixed(2)+'%）' },
-        //     { value: 233597, name: "西北分公司:233597万元（"+Number(233597/total*100).toFixed(2)+'%）' },
-        //     { value: 450515, name: "房建分公司:450515万元（"+Number(450515/total*100).toFixed(2)+'%）' },
-        //   ],
-        // };
-        // this.drawPieChart("pieChart", pieOption.pieData,'片区公司产值情况');
-
-        // const barChartLYOption = {
-        //   xData: ["月度", "年度", "开累"],
-        //   legendData: [
-        //     {
-        //       name: "计划",
-        //     },
-        //     {
-        //       name: "完成",
-        //     },
-        //   ],
-        //   seriesData: [
-        //     {
-        //       name: "计划",
-        //       type: "bar",
-        //       data: [50319, 401455, 878069],
-        //       // stack: "使用情况",
-        //       barWidth: "30", //---柱形宽度
-        //       barCategoryGap: "20%", //---柱形间距
-        //       label: {
-        //         //---图形上的文本标签
-        //         show: true,
-        //         position: "top", //---相对位置
-        //         rotate: 0, //---旋转角度
-        //         color: "#ffffff",
-        //         fontSize: 12,
-        //       },
-        //       itemStyle: {
-        //         //---图形形状
-        //         color: "rgb(54,169,206)",
-        //         barBorderRadius: [15, 15, 0, 0],
-        //       },
-        //     },
-        //     {
-        //       name: "完成",
-        //       type: "bar",
-        //       data: [40059, 125792, 347374],
-        //       // stack: "使用情况",
-        //       barWidth: "30", //---柱形宽度
-        //       barCategoryGap: "20%", //---柱形间距
-        //       label: {
-        //         //---图形上的文本标签
-        //         show: true,
-        //         position: "top", //---相对位置
-        //         rotate: 0, //---旋转角度
-        //         color: "#ffffff",
-        //         fontSize: 12,
-        //       },
-        //       itemStyle: {
-        //         //---图形形状
-        //         color: "rgb(202,249,130)",
-        //         barBorderRadius: [15, 15, 0, 0],
-        //       },
-        //     },
-        //   ],
-        // };
-        // this.drawDoubleBarChart(
-        //   "barChart1",
-        //   barChartZYOption.xData,
-        //   barChartZYOption.legendData,
-        //   barChartZYOption.seriesData,
-        //   "产值"
-        // );
-
-        // this.drawDoubleBarChart(
-        //   "barChart2",
-        //   barChartLYOption.xData,
-        //   barChartLYOption.legendData,
-        //   barChartLYOption.seriesData,
-        //   "产值"
-        // );
-
         const option1 = {
           yAxis: ["项目一", "项目二", "项目三", "项目四", "项目五", "项目六"],
           seriesData: [500, 600, 700, 800, 900, 1000],
         };
 
         // 人均产值排名，在项目名称前增加排序，数字为在所有自营或联营项目中进行排名(客户需求)
-        
-
         this.czConfig = {
-          data: [
-            // {
-            //   name: "1-武嘉高速",
-            //   value: 11,
-            // },
-            // {
-            //   name: "2-潇河大桥",
-            //   value: 94,
-            // },
-            // {
-            //   name: "3-左云十里河桥",
-            //   value: 57,
-            // },
-            // {
-            //   name: "14-七号线",
-            //   value: 11,
-            // },
-            // {
-            //   name: "15-太原节点改造",
-            //   value: 0,
-            // },
-            // {
-            //   name: "16-中北路停车场",
-            //   value: 0,
-            // },
-          ],
+          data: [],
           colors: [
             "rgb(202,249,130)",
             "rgb(202,249,130)",
@@ -355,30 +244,7 @@
         // 人均产值排名，在项目名称前增加排序，数字为在所有自营或联营项目中进行排名(客户需求)
         this.rjczConfig2 = {
           data: [
-            // {
-            //   name: "1-黄石宏维天地",
-            //   value: 788,
-            // },
-            // {
-            //   name: "2-奥山星城",
-            //   value: 788,
-            // },
-            // {
-            //   name: "3-十堰世纪山水一期",
-            //   value: 788,
-            // },
-            // {
-            //   name: "23-靖远黄河桥",
-            //   value: 79,
-            // },
-            // {
-            //   name: "24-G15沈海高速",
-            //   value: 75,
-            // },
-            // {
-            //   name: "25-郧县献珍路",
-            //   value: 34,
-            // },
+            
           ],
           colors: [
             "rgb(202,249,130)",
@@ -393,117 +259,7 @@
         };
 
         // 产值排名，在项目名称前增加排序，数字为在所有自营或联营项目中进行排名(客户需求)
-        this.czConfig2 = {
-          data: [
-        //     {
-        //       name: "1-黄石宏维天地",
-        //       value: 788,
-        //     },
-        //     {
-        //       name: "2-奥山星城",
-        //       value: 788,
-        //     },
-        //     {
-        //       name: "3-十堰世纪山水一期",
-        //       value: 788,
-        //     },
-        //     {
-        //       name: "23-靖远黄河桥",
-        //       value: 79,
-        //     },
-        //     {
-        //       name: "24-G15沈海高速",
-        //       value: 75,
-        //     },
-        //     {
-        //       name: "25-郧县献珍路",
-        //       value: 34,
-        //     },
-        //   ],
-        //   colors: [
-        //     "rgb(202,249,130)",
-        //     "rgb(202,249,130)",
-        //     "rgb(202,249,130)",
-        //     "#e062ae",
-        //     "#e062ae",
-        //     "#e062ae",
-        //   ],
-        //   unit: "产值",
-        //   showValue: true,
-        // };
-
-        // let zhb = [
-        //   ["太原节点改造", "434.08%"],
-        //   ["常青花园道路改造", "163.98%"],
-        //   ["西安西三环", "99.05%"],
-        //   ["左云十里河桥", "87.83%"],
-        //   ["虎峪河道路改造", "55.61%"],
-        //   ["建安街", "47.94%"],
-        //   ["芳草路公园停车场", "32.30%"],
-        //   ["江汉七桥", "25.45%"],
-        //   ["靖远黄河桥", "24.71%"],
-        //   ["十堰世纪山水一期", "17.78%"],
-        //   ["南桥新城02-10地块", "13.83%"],
-        //   ["童庄河", "12.54%"], 
-        //   ["理工大学南校区基础设施维修", "2.71%"],
-        //   ["奥山星城", "0.82%"],
-        //   ["地铁八号线", "-0.25%"],
-        //   ["汉中经开区基础设施", "-5.02%"],
-        //   ["黄石宏维天地", "-19.71%"],
-        //   ["奉贤区庄行镇", "-27.00%"],
-        //   ["潇河大桥", "-27.09%"],
-        //   ["武嘉高速", "-29.52%"],
-        //   ["安九铁路", "-31.49%"],
-        //   ["阳逻百瑞景", "-34.90%"],
-        //   ["五里界中学", "-36.34%"],
-        //   ["南桥新城15-04地块", "-50.27%"],
-        //   ["郧县献珍路", "-52.62%"],
-        //   ["恩施玺悦", "-53.27%"],
-        //   ["中兰客专", "-54.38%"],
-        //   ["美兰机场", "-58.86%"],
-        //   ["世纪山水小区二期（十堰）", "-61.68%"],
-        //   ["海口公交专用线", "-65.89%"],
-        //   ["东峰路南延", "-66.46%"],
-        //   ["西宁昆仑路", "-67.19%"],
-        //   ["新征四路", "-68.13%"],
-        //   ["中北路停车场", "-68.67%"],
-        //   ["吉首天麓城", "-69.02%"],
-        //   ["武大高速", "-71.62%"],
-        //   ["新武金堤", "-77.66%"],
-        //   ["汉中创智谷", "-80.11%"],
-        //   ["神农架", "-80.28%"],
-        //   ["汉中创智家园", "-80.37%"],
-        //   ["G15沈海高速", "-80.69%"],
-        //   ["七号线", "-86.17%"],
-        //   ["宜昌世纪山水2区", "-87.93%"],
-        // ];
-
-        // const lateRateColors = ['#fb7293', '#ff9f7f', '#ffdb5c', '#9fe6b8',];
-        // const lateRateValues = [30, 20, 10, 0];
-
-        // const newZhb = this.zhb.map((item) => {
-        //   const rate = Number(item[1].replace(/[\%|-]/g, ''));
-        //   console.log(rate, '------')
-        //   let color = '';
-        //   for(let i = 0; i < lateRateValues.length; i += 1) {
-        //     if(rate >= lateRateValues[i]) {
-        //       color = lateRateColors[i];
-        //       break;
-        //     }
-        //   }
-        //   return [`<span style="color:${color};">${item[0]}</span>`, `<span style="color:${color};">${item[1]}</span>`];
-          
-        // });
-
-        // this.config = {
-        //   header: ["项目", "滞后比"],
-        //   data: newZhb,
-        //     index: true,
-        //   indexHeader: "排名",
-        //   columnWidth: [50],
-        //   rowNum: 15,
-        //   align: ["center"],
-        // };
+        this.czConfig2 = {data: []};
       });
     },
     methods: {
@@ -718,16 +474,6 @@
             }
           }
           return [`<span style="color:${color};">${item[0]}</span>`, `<span style="color:${color};">${item[1]}%</span>`];
-        });
-        zhb.forEach((item) => {
-          // const rate = Number(item[1].replace(/[\%|-]/g, ''));
-          // let color = '';
-          // for(let i = 0; i < lateRateValues.length; i += 1) {
-          //   if(rate >= lateRateValues[i]) {
-          //     color = lateRateColors[i];
-          //     break;
-          //   }
-          // }
         });
         this.config = {
           header: ["项目", "滞后比"],
