@@ -138,9 +138,11 @@ export default {
     async finishlmonth() {
       const res = await DispatchNewApi.fetchGetDepartProductionData(`${this.$route.params.id}`);
       console.log(res, '----------------------')
-      this.echarts_31(res.data.monthly.finished, res.data.monthly.remained)
-      this.echarts_32(res.data.yearly.finished, res.data.yearly.remained)
-      this.echarts_33(res.data.sofar.finished, res.data.sofar.remained)
+      if(res.data) {
+        this.echarts_31(res.data.monthly.finished, res.data.monthly.remained)
+        this.echarts_32(res.data.yearly.finished, res.data.yearly.remained)
+        this.echarts_33(res.data.sofar.finished, res.data.sofar.remained)
+      }
     },
     goBack(res) {
       if (res) {
@@ -234,7 +236,8 @@ export default {
       });
     },
     echarts_32(finish, remained) {
-      let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
+      alert(finish)
+      let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2) === 'NaN' ? `0` : (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb2"));
       var option = {

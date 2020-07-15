@@ -201,6 +201,10 @@ export default {
     };
   },
   methods: {
+    async fetchHomeMap() {
+      const response = await homeApi.fetchHomeMapData();
+      console.log(response, '--------------SFSD-----')
+    },
     async initData() {
       // request home api
       const _date = new Date();
@@ -217,6 +221,10 @@ export default {
       this.judgeColor(this.startConfig);
       this.sbNumConfig.color = ["#27d08a", "#066eab"];
       this.sbTypeConfig.color = ["#2f89cf", "#0f63d6"];
+      this.echarts_31(response.data.production.monthly)
+      this.echarts_32(response.data.production.sofar)
+      this.echarts_33(response.data.production.yearly)
+      this.echarts_2(response.data.materials.material, response.data.materials.rate)
     },
     judgeColor(config) {
       if (config.data[0] >= 90) {
@@ -700,7 +708,6 @@ export default {
           华北分公司: huabeigongsi
         };
         var geoCoordMap = {
-          武汉分公司: [114.278816, 30.592498],
           项目1: [114.278816, 30.592498],
           项目2: [111.285078,30.680055],
           项目3: [112.252993,30.336355]
@@ -946,7 +953,6 @@ export default {
           // 设置effectscatter
           initSeriesData: function(data) {
             var temp = [];
-            debugger;
             for (var i = 0; i < data.length; i++) {
               var geoCoord = geoCoordMap[data[i].name];
               if (geoCoord) {
@@ -1376,7 +1382,6 @@ export default {
               });
             }
             // }
-            debugger;
             chart.dispatchAction({
               type: "showTip",
               seriesIndex: 0, //第几条series
@@ -1749,14 +1754,20 @@ export default {
         myChart.resize();
       });
     },
-    echarts_2() {
+    echarts_2(type, rate) {
+      let typeA = type.typeA
+      let rateA = (Number(rate.typeA)*100).toFixed(2)
+      let rateB = (Number(rate.typeB)*100).toFixed(2)
+      let rateC = (Number(rate.typeC)*100).toFixed(2)
+      // let typeB = type.typeB
+      // let typeC = type.typeC
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("echart2"));
       var option = (option = {
         color: ["#2f89cf", "#27d08a", "#e62d2d", "#0fa0d6", "#0fb4d6"],
         title: [
           {
-            text: "A类利用率94%    B类利用率78%    C类利用率80%",
+            text: `A类利用率${rateA}%    B类利用率${rateB}%    C类利用率${rateC}%`,
             x: "center",
             y: "bottom",
             textStyle: {
@@ -1820,7 +1831,7 @@ export default {
                 return Number(params.data) > 0 ? params.data : "";
               }
             },
-            data: [0, 54240, 14443]
+            data: [typeA.isUsing, typeA.isUsing, typeA.isUsing]
           },
           {
             name: "闲置",
@@ -1833,7 +1844,7 @@ export default {
                 return Number(params.data) > 0 ? params.data : "";
               }
             },
-            data: [3740, 3275, 3636]
+            data: [typeA.isUnused, typeA.isUnused, typeA.isUnused]
           },
           {
             name: "封存",
@@ -1847,7 +1858,7 @@ export default {
                 return Number(params.data) > 0 ? params.data : "";
               }
             },
-            data: [0, 0, 177]
+            data: ['', '', typeA.isUnused]
           }
         ]
       });
@@ -2927,8 +2938,15 @@ export default {
         myChart.resize();
       });
     },
-    echarts_31() {
+    echarts_31(monthly) {
+      let finished = Number(monthly.finished).toFixed(2)
       const self = this;
+      let str = 0
+      if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
+        str = 0
+      } else {
+        str = Number(monthly.finished)/Number(monthly.remained)
+      }
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb1"));
       var option = {
@@ -2942,7 +2960,7 @@ export default {
             }
           },
           {
-            text: "81.82%",
+            text: `${str}%`,
             top: "37%",
             left: "center",
             textStyle: {
@@ -2970,7 +2988,7 @@ export default {
             fontSize: "12"
           },
           formatter: function(params) {
-            return params === "完成" ? `${params}:70970` : "";
+            return params === "完成" ? `${params}:${finished}` : "";
           }
         },
         series: [
@@ -2983,8 +3001,8 @@ export default {
             label: { show: true },
             labelLine: { show: true },
             data: [
-              { value: 70970, name: "完成" },
-              { value: 15774, name: "剩余" }
+              { value: finished, name: "完成" },
+              { value: monthly.remained, name: "剩余" }
             ],
             itemStyle: {
               normal: {
@@ -3016,7 +3034,14 @@ export default {
         myChart.resize();
       });
     },
-    echarts_32() {
+    echarts_32(monthly) {
+      let finished = Number(monthly.finished).toFixed(2)
+      let str = 0
+      if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
+        str = 0
+      } else {
+        str = Number(monthly.finished)/Number(monthly.remained)
+      }
       const self = this;
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb2"));
@@ -3031,7 +3056,7 @@ export default {
             }
           },
           {
-            text: "29.89%",
+            text: `${str}%`,
             top: "37%",
             left: "center",
             textStyle: {
@@ -3059,7 +3084,7 @@ export default {
           },
           selectedMode: false,
           formatter: function(params) {
-            return params === "完成" ? `${params}:213937` : "";
+            return params === "完成" ? `${params}:${finished}` : "";
           }
         },
         series: [
@@ -3072,8 +3097,8 @@ export default {
             label: { show: false },
             labelLine: { show: false },
             data: [
-              { value: 213937, name: "完成" },
-              { value: 501771, name: "剩余" }
+              { value: finished, name: "完成" },
+              { value: monthly.remained, name: "剩余" }
             ],
             itemStyle: {
               normal: {
@@ -3102,7 +3127,14 @@ export default {
         myChart.resize();
       });
     },
-    echarts_33() {
+    echarts_33(monthly) {
+      let str = 0
+      if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
+        str = 0
+      } else {
+        str = Number(monthly.finished)/Number(monthly.remained)
+      }
+      let finished = Number(monthly.finished).toFixed(2)
       const self = this;
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb3"));
@@ -3117,7 +3149,7 @@ export default {
             }
           },
           {
-            text: "93.27%",
+            text: `${str}%`,
             top: "37%",
             left: "center",
             textStyle: {
@@ -3145,7 +3177,7 @@ export default {
           },
           selectedMode: false,
           formatter: function(params) {
-            return params === "完成" ? `${params}:1309829` : "";
+            return params === "完成" ? `${params}:${finished}` : "";
           }
         },
         series: [
@@ -3158,8 +3190,8 @@ export default {
             label: { show: false },
             labelLine: { show: false },
             data: [
-              { value: 827210, name: "完成" },
-              { value: 59668, name: "剩余" }
+              { value: finished, name: "完成" },
+              { value: monthly.remained, name: "剩余" }
             ],
             itemStyle: {
               normal: {
@@ -3202,11 +3234,11 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.echarts_1();
-      this.echarts_2();
+      // this.echarts_2();
       this.echarts_4();
-      this.echarts_31();
-      this.echarts_32();
-      this.echarts_33();
+      // this.echarts_31();
+      // this.echarts_32();
+      // this.echarts_33();
       this.echarts_5();
       this.echarts_51();
       this.echarts_61();
@@ -3215,6 +3247,7 @@ export default {
     });
   },
   created() {
+    this.fetchHomeMap()
     this.initData();
     const loading = this.$loading({
       lock: true,

@@ -34,7 +34,11 @@ export default {
   async fetchGetDeptNumNameData(date) {
     const response = await axios.get('/dept/getDeptNumName');
     return response;
+  },
+  fetchPlannmonthData(date) {
+    axios.get('/production/plannmonth').then(res => {}).catch(err => {});
   }
+  
   
   
 }

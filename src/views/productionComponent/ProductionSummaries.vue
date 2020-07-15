@@ -5,7 +5,7 @@
         <div class="chartTitle">公司总体施工情况</div>
         <div class="chartContent">
           <div class="chartContentSon" style="width: 55%;">
-            <div class="chartTit">片区公司产值情况</div>
+            <div class="chartTit"></div>
             <div class="chartCont" id="pieChart"></div>
           </div>
           <div class="chartContentSon" style="width: 45%;">
@@ -107,6 +107,9 @@
   export default {
     data() {
       return {
+        pieOption: {
+          pieData: []
+        },
         forminline: {
           user: "",
           region: "",
@@ -207,28 +210,27 @@
       };
     },
     created() {
+    },
+    activated() {
       this.initData()
       this.getLagList()
       this.selfSupport()
-      this.getDeptNumName()
       this.joinSupport()
     },
     mounted() {
       this.$nextTick(() => {
-        const total = 195004 +38109+169481+231123+233597+450515
-        const pieOption = {
-          pieData: [
-            { value: 195004, name: "城轨分公司:195004万元（"+Number(195004/total*100).toFixed(2)+'%）' },
-            { value: 38109, name:  "湖北分公司:38109万元（"+Number(38109/total*100).toFixed(2)+'%）' },
-            { value: 169481, name: "华北分公司:169481万元（"+Number(169481/total*100).toFixed(2)+'%）' },
-            { value: 231123, name: "武汉分公司:231123万元（"+Number(231123/total*100).toFixed(2)+'%）' },
-            { value: 233597, name: "西北分公司:233597万元（"+Number(233597/total*100).toFixed(2)+'%）' },
-            { value: 450515, name: "房建分公司:450515万元（"+Number(450515/total*100).toFixed(2)+'%）' },
-          ],
-        };
-        this.drawPieChart("pieChart", pieOption.pieData,'片区公司产值情况');
-
-        
+        // const total = 195004 +38109+169481+231123+233597+450515
+        // const pieOption = {
+        //   pieData: [
+        //     { value: 195004, name: "城轨分公司:195004万元（"+Number(195004/total*100).toFixed(2)+'%）' },
+        //     { value: 38109, name:  "湖北分公司:38109万元（"+Number(38109/total*100).toFixed(2)+'%）' },
+        //     { value: 169481, name: "华北分公司:169481万元（"+Number(169481/total*100).toFixed(2)+'%）' },
+        //     { value: 231123, name: "武汉分公司:231123万元（"+Number(231123/total*100).toFixed(2)+'%）' },
+        //     { value: 233597, name: "西北分公司:233597万元（"+Number(233597/total*100).toFixed(2)+'%）' },
+        //     { value: 450515, name: "房建分公司:450515万元（"+Number(450515/total*100).toFixed(2)+'%）' },
+        //   ],
+        // };
+        // this.drawPieChart("pieChart", pieOption.pieData,'片区公司产值情况');
 
         // const barChartLYOption = {
         //   xData: ["月度", "年度", "开累"],
@@ -503,20 +505,20 @@
       });
     },
     methods: {
-      async getDeptNumName() {
+      getDeptNumName() {
         // request home api
         const _date = new Date();
-        const res = await productionNewApi.fetchGetDeptNumNameData();
-        console.log(res, 'woshi-----jigou ')
-        if(res && res.data.length > 0 && res.code === '000000') {
-          res.data.forEach(item => {
-            let obj = {
-              name: item.selectName,
-              value: item.deptCode
-            }
-            this.DeptArr.push(obj)
-          })
-        }
+        productionNewApi.fetchGetDeptNumNameData().then(res => {
+          if(res && res.data.length > 0 && res.code === '000000') {
+            res.data.forEach(item => {
+              let obj = {
+                name: item.selectName,
+                value: item.deptCode
+              }
+              this.DeptArr.push(obj)
+            })
+          }
+        })
       },
       // 联营
       async joinSupport() {
@@ -535,7 +537,6 @@
         const _date = new Date();
         let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
         const res = await productionNewApi.fetchJoinSupportData(`${_date.getFullYear()}-${mm}`);
-        console.log(res, '-----------------------')
         this.seriesData.forEach(item => {
           item.data = []
           let data = [Number(res.data.proinfo.monthly.remained).toFixed(2), Number(res.data.proinfo.yearly.remained).toFixed(2), Number(res.data.proinfo.sofar.remained).toFixed(2)]
@@ -555,30 +556,49 @@
           "产值"
         );
         let averagecost = {
-          data: []
+          data: [],
+          colors: [
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "#e062ae",
+            "#e062ae",
+            "#e062ae",
+          ],
+          unit: "人均产值",
+          showValue: true,
         }
         if (res && res.data.sixAverage && res.data.sixAverage.length > 0) {
           res.data.sixAverage.forEach((item, index) => {
             let obj = {
-              name: item.deptname+index,
-              value: item.cost
+              name: item.deptname,
+              value: item.cost === null ? 0 : item.cost
             }
             averagecost.data.push(obj)
           })
           this.rjczConfig2 = {...averagecost}
         }
         let sixTotal = {
-          data: []
+          data: [],
+          colors: [
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "#e062ae",
+            "#e062ae",
+            "#e062ae",
+          ],
+          unit: "产值",
+          showValue: true,
         }
         if (res && res.data.sixTotal && res.data.sixTotal.length > 0) {
           res.data.sixTotal.forEach((item, index) => {
             let obj = {
-              name: item.deptname+index,
-              value: item.cost
+              name: item.deptname,
+              value: item.cost === null ? 0 : item.cost
             }
             sixTotal.data.push(obj)
           })
-          console.log(sixTotal, '---------------')
           this.czConfig2 = {...sixTotal}
         }
       },
@@ -628,28 +648,47 @@
           "产值"
         );
         let averagecost = {
-          data: []
+          data: [],
+          colors: [
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "#e062ae",
+            "#e062ae",
+            "#e062ae",
+          ],
+          unit: "人均产值",
+          showValue: true,
         }
         res.data.sixAverage.forEach((item, index) => {
           let obj = {
             name: item.deptname+index,
-            value: item.cost
+            value: item.cost === null ? 0 : item.cost
           }
           averagecost.data.push(obj)
         })
         this.rjczConfig = {...averagecost}
         let sixTotal = {
-          data: []
+          data: [],
+          colors: [
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "#e062ae",
+            "#e062ae",
+            "#e062ae",
+          ],
+          unit: "产值",
+          showValue: true,
         }
         res.data.sixTotal.forEach((item, index) => {
-          
           let obj = {
-            name: item.deptname+index,
-            value: item.cost
+            name: item.deptname,
+            value: item.cost === null ? 0 : item.cost
           }
           sixTotal.data.push(obj)
         })
-        this.czConfig = {...averagecost}
+        this.czConfig = {...sixTotal}
       },
       // 滞后list
       async getLagList() {
@@ -662,10 +701,11 @@
         const lateRateValues = [30, 20, 10, 0];
         let zhb = []
         this.lagList = res.data
-        res.data.forEach(item => {
-          zhb.push([item.name, item.delayrate, item.id])
-        })
-        console.log(zhb, 'zhbzhbzhbzhbzhb')
+        if(res && res.data && res.data.length > 0) {
+          res.data.forEach(item => {
+            zhb.push([item.name, item.delayrate, item.id])
+          })
+        }
         const newZhb = zhb.map((item) => {
           const rate = Number(item[1].replace(/[\%|-]/g, ''));
           let color = '';
@@ -679,7 +719,6 @@
         });
         zhb.forEach((item) => {
           // const rate = Number(item[1].replace(/[\%|-]/g, ''));
-          console.log(item, '------------------')
           // let color = '';
           // for(let i = 0; i < lateRateValues.length; i += 1) {
           //   if(rate >= lateRateValues[i]) {
@@ -700,63 +739,52 @@
       },
       // 公司总体施工情况，片区+施工情况
       async initData() {
+        this.pieOption.pieData = []
         // request home api
         const _date = new Date();
         this.month = _date.getMonth()+1;
         let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
-        this.allCompany = await productionNewApi .fetchProManData(`${_date.getFullYear()}-${mm}`);
+        this.getDeptNumName()
         
-        // console.log(this.DeptArr, '------------------飒飒的石帆胜丰士大夫', this.allCompany)
+        this.allCompany = await productionNewApi .fetchProManData(`${_date.getFullYear()}-${mm}`);
         if(this.allCompany && this.allCompany.data && this.allCompany.data.productionValue) {
+          
           Object.keys(this.allCompany.data.productionValue).forEach(item => {
             let total = 0
-            console.log(item, 'YYYYYYYYYYYYYYYYYYYYYYYYYY', this.allCompany.data.productionValue[item])
-            total += Number(this.allCompany.data.productionValue[item])
-            console.log(this.DeptArr, '-------------ssg')
-            this.DeptArr.forEach(i => {
-              console.log(i, '张三-----------')
-              if(i.value === item) {
-                let str = Number(this.allCompany.data.productionValue[item])/total
-                let obj = {
-                  value: this.allCompany.data.productionValue[item],
-                  name: `${i.name}:${this.allCompany.data.productionValue[item]}${str}%`
-                }
-                console.log(obj, '00000000000000000000000000')
-              }
-            })
-            console.log(total, '--------AFSDF645645---------------')
-            const pieOption = {
-              pieData: [
-                { value: 195004, name: "城轨分公司:195004万元（"+Number(195004/total*100).toFixed(2)+'%）' },
-                { value: 38109, name:  "湖北分公司:38109万元（"+Number(38109/total*100).toFixed(2)+'%）' },
-                { value: 169481, name: "华北分公司:169481万元（"+Number(169481/total*100).toFixed(2)+'%）' },
-                { value: 231123, name: "武汉分公司:231123万元（"+Number(231123/total*100).toFixed(2)+'%）' },
-                { value: 233597, name: "西北分公司:233597万元（"+Number(233597/total*100).toFixed(2)+'%）' },
-                { value: 450515, name: "房建分公司:450515万元（"+Number(450515/total*100).toFixed(2)+'%）' },
-              ]
-            };
-            this.drawPieChart("pieChart", pieOption.pieData,'片区公司产值情况');
+            arr.push(Number(this.allCompany.data.productionValue[item]))
+            total = arr.reduce((n,m) => n + m);
+            console.log(total, '-----------------------------')          
           })
+          total = arr.reduce((n,m) => n + m);
+          this.DeptArr.forEach(i => {
+            if(i.value === item) {
+              let str = 0
+              if(total === 0 || Number(this.allCompany.data.productionValue[item] === 0)) {
+                str = 0
+              } else {
+                str = ((this.allCompany.data.productionValue[item] / total) * 100).toFixed(2)
+                console.log(this.allCompany.data.productionValue[item], total)
+                
+              }
+              let obj = {
+                value: this.allCompany.data.productionValue[item],
+                name: `${i.name}:${this.allCompany.data.productionValue[item]}(${str}%)`
+              }
+              this.pieOption.pieData.push(obj)
+              this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
+            } 
+          })
+          
         }
         
-        // const total = 195004 +38109+169481+231123+233597+450515
-        // const pieOption = {
-        //   pieData: [
-        //     { value: 195004, name: "城轨分公司:195004万元（"+Number(195004/total*100).toFixed(2)+'%）' },
-        //     { value: 38109, name:  "湖北分公司:38109万元（"+Number(38109/total*100).toFixed(2)+'%）' },
-        //     { value: 169481, name: "华北分公司:169481万元（"+Number(169481/total*100).toFixed(2)+'%）' },
-        //     { value: 231123, name: "武汉分公司:231123万元（"+Number(231123/total*100).toFixed(2)+'%）' },
-        //     { value: 233597, name: "西北分公司:233597万元（"+Number(233597/total*100).toFixed(2)+'%）' },
-        //     { value: 450515, name: "房建分公司:450515万元（"+Number(450515/total*100).toFixed(2)+'%）' },
-        //   ],
-        // };
-        // this.drawPieChart("pieChart", pieOption.pieData,'片区公司产值情况');
+        
       },
       onTableClick(row) {
         let id = ''
         this.lagList && this.lagList.length > 0 && this.lagList.forEach((item, index) => {
           if(row.rowIndex === index) {
-            id = item.id
+            id = item.id,
+            name = item.name
           }
         })
         this.$router.push({ 

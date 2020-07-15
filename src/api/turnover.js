@@ -2,15 +2,15 @@ const { axios } = window;
 export default {
   async fetchTypeA() {
     const response = await axios.get('/material/typeA');
-    return response.typeA;
+    return response;
   },
   async fetchTypeB() {
     const response = await axios.get('/material/typeB');
-    return response.typeB;
+    return response;
   },
   async fetchTypeC() {
     const response = await axios.get('/material/typeC');
-    return response.typeC;
+    return response;
   },
   async fetchRate() {
     const response = await axios.get('/material/rateMonth');

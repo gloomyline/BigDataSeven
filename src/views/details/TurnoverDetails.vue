@@ -93,12 +93,11 @@ export default {
         background: "rgba(0, 0, 0, 1)"
       });
       const response = await turnoverApi.fetchProjectDetails(this.deptId);
-      this.deptName = response.deptName;
-      this.typeAList = response.typeA;
-      this.typeBList = response.typeB;
-      this.typeCList = response.typeC;
+      this.deptName = response.data.deptName;
+      this.typeAList = response.data.typeA;
+      this.typeBList = response.data.typeB;
+      this.typeCList = response.data.typeC;
       loading.close();
-
       this.fillTableData();
     },
     fillTableData() {
