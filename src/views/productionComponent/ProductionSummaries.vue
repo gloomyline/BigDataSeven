@@ -475,6 +475,7 @@
           }
           return [`<span style="color:${color};">${item[0]}</span>`, `<span style="color:${color};">${item[1]}%</span>`];
         });
+
         this.config = {
           header: ["项目", "滞后比"],
           data: newZhb,
@@ -525,16 +526,18 @@
       },
       onTableClick(row) {
         let id = ''
+        let name = ''
         this.lagList && this.lagList.length > 0 && this.lagList.forEach((item, index) => {
           if(row.rowIndex === index) {
-            id = item.id,
+            id = item.id
             name = item.name
           }
         })
         this.$router.push({ 
           name: "DispatchNew",
           params: {
-            id
+            id,
+            name
           }
        });
       },

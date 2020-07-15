@@ -1,7 +1,7 @@
 <template>
   <div class="dispatch">
     <div class="head">
-      <h1>武嘉项目部生产明细</h1>
+      <h1>{{title}}项目部生产明细</h1>
       <div class="weather">
         <el-button
           type="primary"
@@ -103,15 +103,17 @@ export default {
   data() {
     return {
       tableData: [],
+      title: this.$route.params.name
     };
   },
   mounted() {
+    console.log(this.$route.params)
     this.getTableData()
     this.finishlmonth()
     this.$nextTick(() => {
-      this.echarts_31();
-      this.echarts_32();
-      this.echarts_33();
+      // this.echarts_31();
+      // this.echarts_32();
+      // this.echarts_33();
     });
   },
   beforeCreate() {
@@ -138,10 +140,14 @@ export default {
     async finishlmonth() {
       const res = await DispatchNewApi.fetchGetDepartProductionData(`${this.$route.params.id}`);
       console.log(res, '----------------------')
-      if(res.data) {
+      if(res && res.data) {
         this.echarts_31(res.data.monthly.finished, res.data.monthly.remained)
         this.echarts_32(res.data.yearly.finished, res.data.yearly.remained)
         this.echarts_33(res.data.sofar.finished, res.data.sofar.remained)
+      } else {
+        this.echarts_31(0, 0)
+        this.echarts_32(0, 0)
+        this.echarts_33(0, 0)
       }
     },
     goBack(res) {
@@ -152,7 +158,7 @@ export default {
       }
     },
     echarts_31(finish, remained) {
-      let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
+      let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2) === 'NaN' ? `0` : (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb1"));
       var option = {
@@ -320,8 +326,9 @@ export default {
       });
     },
     echarts_33(finish, remained) {
+      console.log(finish, remained, '实打实打算')
       // 基于准备好的dom，初始化echarts实例
-      let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
+      let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2) === 'NaN' ? `0` : (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
       var myChart = echarts.init(document.getElementById("fb3"));
       var option = {
         title: [
