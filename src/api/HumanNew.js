@@ -15,5 +15,15 @@ export default {
     async fetchGetPersonnerInfoData(){
         const response = await axios.get('/employ/getPersonnerInfo');
     return response;
+    },
+    // 组织机构
+    async fetchGetEmpOrganizationData(){
+        const response = await axios.get('/emp/organization');
+    return response;
+    },
+    // 人员三级界面
+    async fetchGetEmployeeData(){
+        const response = await axios.get('/emp/employee');
+    return response;
     }
 }

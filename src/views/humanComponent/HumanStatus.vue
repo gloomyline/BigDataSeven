@@ -7,208 +7,190 @@
           <div class="chartTit1">各单位人员情况({{ currentCompany }})</div>
           <div class="chartCont1" id="barChart1" ref="humanDetails"></div>
         </div>
-        <el-radio-group class="company-selector" v-model="currentCompany">
-          <el-radio-button v-for="(company, index) in companies" :label="company" :key="index"></el-radio-button>
-        </el-radio-group>
+        <!-- <el-radio-group class="company-selector" v-model="currentCompany">
+          <el-radio-button
+            v-for="(company, index) in companies"
+            :label="company"
+            :key="index"
+          ></el-radio-button>
+        </el-radio-group> -->
       </dv-border-box-10>
     </div>
   </div>
 </template>
 <script>
-import echarts from "echarts";
-import groupStructure from "@/assets/js/groupStructureData";
-import { HumanNewApi  } from '@/api';
+import echarts from 'echarts'
+import groupStructure from '@/assets/js/groupStructureData'
+import { HumanNewApi } from '@/api'
 export default {
-  name: "Production",
+  name: 'Production',
   data() {
     return {
       formInline: {
-        user: "",
-        region: "",
+        user: '',
+        region: '',
       },
       // 分公司索引，轮播计数器
       count: 0,
       // companies: ['独立项目','华北分公司','城轨分公司','西北分公司','房建分公司',],
-      companies:[],
+      companies: [],
       currentCompany: '独立项目',
-    };
+      compData: [],
+    }
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.echarts();
-    });
-  },
-  watch: {
-    currentCompany(val) {
-      this.count = this.companies.indexOf(val);
-      this.drawHumanDetails(this.count);
-    },
-  },
-  created(){
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     this.echarts()
+  //   })
+  // },
+  // watch: {
+  //   currentCompany(val) {
+  //     this.count = this.companies.indexOf(val)
+  //     this.drawHumanDetails(this.count)
+  //   },
+  // },
+  created() {
     this.getPersonnerInfo()
   },
   methods: {
-    async getPersonnerInfo(){
-      const _date = new Date();
-        const res = await HumanNewApi.fetchGetPersonnerInfoData();
-        console.log(res, 'xxx')
-    },
-    onSubmit() {
-      console.log("submit!");
+    async getPersonnerInfo() {
+      const res = await HumanNewApi.fetchGetPersonnerInfoData()
+      this.compData = res.personnerInfo
+      this.drawHumanDetails(this.compData)
     },
     goBack() {
-      this.$router.push({ path: "/" });
+      this.$router.push({ path: '/' })
     },
     goPro() {
-      this.$router.push({ path: "/HumanDetails" });
+      this.$router.push({ path: '/HumanDetails' })
     },
     echarts() {
-      this.drawHumanDetails();
+      this.drawHumanDetails()
     },
-    drawHumanDetails(startWith = 0) {
-      const elHumanDetails = this.$refs.humanDetails;
-      const humanDetails = echarts.init(elHumanDetails);
-      // simulate human details data
-      const dataList = [
-        {
-          companyName: '独立项目',
-          projectNames: ['安九铁路', '江汉七桥',],
-          data: [[51, 21], [56, 33], [85, 48,],],
-        },
-        {
-          companyName: '华北分公司',
-          projectNames: ['太原节点改造', '虎峪河道路改造', '西安西三环', '潇河大桥', '左云十里河桥', '东峰路南延',],
-          data: [[0, 5, 5, 20, 7, 8], [4, 15, 8, 57, 10, 9], [4, 15, 8, 57, 10, 9],],
-        },
-        {
-          companyName: '城轨分公司',
-          projectNames: ['建安街','地铁八号线','中北路停车场','武嘉高速','武大高速','新武金堤','七号线','常青花园道路改造',],
-          data: [[15, 10, 5, 10, 25, 2, 32, 0,], [20, 12, 5, 34, 110, 16, 34, 5], [15, 14, 6, 40, 125, 12, 54, 3], ],
-        },
-        {
-          companyName: '西北分公司',
-          projectNames: ['中兰客专', '靖远黄河桥', '西宁昆仑路',],
-          data: [[20, 4, 10], [40, 8, 10], [45, 10, 15],],
-        },
-        {
-          companyName: '房建分公司',
-          projectNames: ['房建项目部', '海口公交专用线', '美兰机场', 'G15沈海高速',],
-          data: [[2, 0, 4, 6], [27, 10, 9, 20], [18, 5, 8, 20]],
-        },
-      ]
+    drawHumanDetails(compData) {
+      const humanDetails = echarts.init(this.$refs.humanDetails)
+      var proNames = []
+      var jpList = []
+      var ylList = []
+      var dbList = []
+      compData.map((item) => {
+        proNames.push(item.conname)
+        jpList.push(item.countJnum)
+        ylList.push(item.countOnum)
+        dbList.push(item.countDnum)
+      })
+
       const option = {
-        color: ["#a5dff9", "#3398DB", "#60c5ba", "#feee7d"],
+        color: ['#a5dff9', '#3398DB', '#60c5ba', '#feee7d'],
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
           axisPointer: {
             // 坐标轴指示器，坐标轴触发有效
-            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-          }
+            type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
+          },
         },
         legend: {
-          x: "center",
-          y: "bottom",
-          data: ["一类劳务人员", "局聘", "定编人数"],
-          textStyle: { color: "rgba(255, 255, 255, .6)", fontSize: 12 }
+          x: 'center',
+          y: 'bottom',
+          data: ['一类劳务人员', '局聘', '定编人数'],
+          textStyle: { color: 'rgba(255, 255, 255, .6)', fontSize: 12 },
         },
         grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "18%",
-          containLabel: true
+          left: '3%',
+          right: '4%',
+          bottom: '18%',
+          containLabel: true,
         },
         xAxis: [
           {
-            type: "category",
-            data: dataList[startWith]['projectNames'],
+            type: 'category',
+            data: proNames,
             axisLabel: {
               textStyle: {
-                color: "rgba(255,255,255,.6)",
-                fontSize: 12
-              }
+                color: 'rgba(255,255,255,.6)',
+                fontSize: 12,
+              },
             },
             axisLine: {
               lineStyle: {
-                color: "rgba(255,255,255,.2)"
-              }
-            }
-          }
+                color: 'rgba(255,255,255,.2)',
+              },
+            },
+          },
         ],
         yAxis: [
           {
-            type: "value",
+            type: 'value',
             axisLabel: {
               textStyle: {
-                color: "rgba(255,255,255,.6)",
-                fontSize: 12
-              }
+                color: 'rgba(255,255,255,.6)',
+                fontSize: 12,
+              },
             },
             axisLine: {
-              lineStyle: { color: "rgba(255, 255, 255, .2)" }
-            }
-          }
+              lineStyle: { color: 'rgba(255, 255, 255, .2)' },
+            },
+          },
         ],
         series: [
           {
-            name: "局聘",
-            type: "bar",
+            name: '局聘',
+            type: 'bar',
             barWidth: 60,
-            stack: "outside",
-            data: dataList[startWith]['data'][1],
+            stack: 'outside',
+            data: jpList,
           },
           {
-            name: "一类劳务人员",
-            type: "bar",
-            stack: "outside",
-            data: dataList[startWith]['data'][0],
+            name: '一类劳务人员',
+            type: 'bar',
+            stack: 'outside',
+            data: ylList,
           },
           {
-            name: "定编人数",
-            type: "bar",
+            name: '定编人数',
+            type: 'bar',
             barGap: '10%',
             barWidth: 60,
-            data: dataList[startWith]['data'][2],
-          }
-        ]
-      };
+            data: dbList,
+          },
+        ],
+      }
 
-      // first render echart
-      this.companyName = dataList[startWith].companyName;
-      humanDetails.setOption(option);
+      humanDetails.setOption(option)
 
       window.addEventListener('resize', () => {
-        humanDetails.resize();
-      });
+        humanDetails.resize()
+      })
 
       // did not enable animation of human details before, enable here.
-      if(!this.intervalHandler) {
+      if (!this.intervalHandler) {
         // this.enableAnimation(humanDetails, option, dataList);
       }
     },
     enableAnimation(humanDetails, option, dataList) {
-      const self = this;
+      const self = this
 
       self.intervalHandler = option.timeTicket = setInterval(function() {
-        const timesOneTurn = dataList.length;
-        self.count += 1;
+        const timesOneTurn = dataList.length
+        self.count += 1
         if (self.count >= timesOneTurn) {
-          self.count = 0;
+          self.count = 0
         }
 
-        option.xAxis[0].data = dataList[self.count].projectNames;
+        option.xAxis[0].data = dataList[self.count].projectNames
         dataList[self.count].data.forEach((item, index) => {
-          option.series[index].data = item;
-        });
+          option.series[index].data = item
+        })
 
-        self.currentCompany = dataList[self.count].companyName;
-        humanDetails.setOption(option);
-      }, 5000);
+        self.currentCompany = dataList[self.count].companyName
+        humanDetails.setOption(option)
+      }, 5000)
     },
   },
   destroyed() {
-    clearInterval(this.intervalHandler);
+    clearInterval(this.intervalHandler)
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
