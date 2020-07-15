@@ -24,7 +24,7 @@
       <div class="boxfoot"></div>
     </div>
 
-    <div class="table boxall">
+    <!-- <div class="table boxall">
       <p class="thead">
         <img class="img" src="../assets/images/u563.png" />
         <span class="tilte">公司主要财务指标</span>
@@ -36,238 +36,17 @@
         <el-table-column prop="date" label="年度数/年度完成率" min-width="150"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
+import { financeApi } from "@/api";
 export default {
   name: "Finance",
   data() {
     return {
-      tableData: [
-        {
-          date: "",
-          title: "独立项目",
-          region: "-",
-          name: "",
-          name1: "",
-          name2: "",
-          name3: "",
-          name4: "",
-          name5: "",
-          zip: "",
-          id: 1,
-          children: [
-            {
-              id: 11,
-              date: "",
-              title: "",
-              region: "安九铁路",
-              name: "11,534.00",
-              name1: "128",
-              name2: "6.70%",
-              name3: "90.00%",
-              name4: "111.40%",
-              name5: "",
-              zip: ""
-            },
-            {
-              id: 12,
-              date: "待补充",
-              title: "",
-              region: "江汉七桥",
-              plan: "2800",
-              finish: "2045",
-              rate: "73.0%",
-              name: "1,913.00",
-              name1: "395",
-              name2: "10.68%",
-              name3: "97.00%",
-              name4: "90.60%",
-              name5: "",
-              zip: ""
-            },
-            {
-              id: 16,
-              date: "48月",
-              title: "",
-              region: "中兰客专",
-              plan: "5040",
-              finish: "1165",
-              rate: "23.1%",
-              name: "1,915.00",
-              name1: "97.8",
-              name2: "5.11%",
-              name3: "90.00%",
-              name4: "92.29%",
-              name5: "",
-              zip: ""
-            },
-            {
-              id: 17,
-              date: "",
-              title: "",
-              region: "西宁昆仑路",
-              name: "",
-              name1: "",
-              name2: "",
-              name3: "",
-              name4: "",
-              name5: "",
-              zip: ""
-            }
-          ]
-        },
-        {
-          date: "",
-          title: "城轨分公司",
-          region: "-",
-          name: "",
-          name1: "",
-          name2: "",
-          name3: "",
-          name4: "",
-          name5: "",
-          zip: "",
-          id: 1,
-          children: [
-            {
-              id: 14,
-              date: "待补充",
-              title: "",
-              region: "武嘉高速",
-              plan: "1962",
-              finish: "210",
-              rate: "10.7%",
-              name: "1,914.00",
-              name1: "94",
-              name2: "6.22%",
-              name3: "85.00%",
-              name4: "99.58%",
-              name5: "",
-              zip: ""
-            }
-          ]
-        },
-        {
-          date: "",
-          title: "武汉分公司",
-          region: "-",
-          name: "",
-          name1: "",
-          name2: "",
-          name3: "",
-          name4: "",
-          name5: "",
-          zip: "",
-          id: 1,
-          children: [
-            {
-              id: 15,
-              date: "42月",
-              title: "",
-              region: "武大高速",
-              plan: "8458",
-              finish: "709",
-              rate: "8.4%",
-              name: "1,575.00",
-              name1: "55",
-              name2: "4.95%",
-              name3: "",
-              name4: "",
-              name5: "",
-              zip: ""
-            }
-          ]
-        },
-        {
-          date: "",
-          title: "湖北分公司",
-          region: "-",
-          name: "",
-          name1: "",
-          name2: "",
-          name3: "",
-          name4: "",
-          name5: "",
-          zip: "",
-          id: 1,
-          children: [
-            {
-              id: 11,
-              date: "960天",
-              title: "",
-              region: "童庄河",
-              plan: "1,912.00",
-              finish: "112",
-              rate: "6.70%",
-              name: "1,912.00",
-              name1: "112",
-              name2: "6.70%",
-              name3: "90.00%",
-              name4: "111.40%",
-              name5: "",
-              zip: ""
-            }
-          ]
-        },
-        {
-          date: "",
-          title: "西北分公司",
-          region: "-",
-          name: "",
-          name1: "",
-          name2: "",
-          name3: "",
-          name4: "",
-          name5: "",
-          zip: "",
-          id: 1,
-          children: [
-            {
-              id: 13,
-              date: "",
-              title: "",
-              region: "潇河大桥",
-              name: "20",
-              name1: "28",
-              name2: "48",
-              name3: "48",
-              name4: "0",
-              name5: "",
-              zip: ""
-            }
-          ]
-        },
-        {
-          date: "",
-          title: "海南项目群",
-          region: "-",
-          name: "",
-          name1: "",
-          name2: "",
-          name3: "",
-          name4: "",
-          name5: "",
-          zip: "",
-          id: 1,
-          children: [
-            {
-              id: 13,
-              date: "",
-              title: "",
-              region: "沈海高速",
-              name: "10",
-              name1: "6",
-              name2: "16",
-              name3: "16",
-              name4: "0",
-              name5: "",
-              zip: ""
-            }
-          ]
-        }
-      ],
+      tableData: [],
+      
       tableData2: [
         { title: "营业收入", title1: "", region: "", date: "" },
         { title: "营业利润", title1: "", region: "", date: "" },
@@ -280,11 +59,65 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(() => {
-      this.echarts();
-    });
+    // this.$nextTick(() => {
+    //   this.echarts();
+    // });
+  },
+  created(){
+    this.initData();
   },
   methods: {
+    initData(){
+      const date = new Date();
+      financeApi.fetchFinance(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()+1}`).then((data)=>{
+        this.financeData = data.data;
+        this.dealData();
+      })
+    },
+    dealData(){
+      let flagCom = [];
+      this.financeData.forEach((financeData) => {
+        if(!flagCom.includes(financeData.area)){
+          flagCom.push(financeData.area);
+          this.tableData.push(
+              {
+                date: "",
+                title: financeData.area,
+                region: "-",
+                name: "",
+                name1: "",
+                name2: "",
+                name3: "",
+                name4: "",
+                name5: "",
+                zip: "",
+                id: this.tableData.length+1,
+                children: [
+                ]
+              }   
+          )
+        }else{
+          let areaIndex=this.tableData.findIndex((children)=>{
+            return children.title === financeData.area
+          });
+          this.tableData[areaIndex].children.push(
+            {
+              id: this.tableData[areaIndex].children.length+11,
+              date: "",
+              title: "",
+              region:financeData.projectName ,
+              name: financeData.income,
+              name1: financeData.interestRate,
+              name2: financeData.huikuanlv,
+              name3: financeData.incomeRate,
+              name4: "0",
+              name5: "",
+              zip: ""
+            }
+          );
+        }
+      });
+    },
     goBack() {
       this.$router.push({ path: "/" });
     }

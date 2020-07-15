@@ -19,6 +19,7 @@
 </template>
 <script>
 import echarts from "echarts";
+import { economyApi } from "@/api";
 
 export default {
   name: "Production",
@@ -26,71 +27,84 @@ export default {
     return {
       formInline: {
         user: "",
-        region: "",
+        region: ""
       },
+      economyMeter: null,
+      economyClaim: null
     };
   },
+  created(){
+    this.initData();
+  },
   mounted() {
+ 
     this.$nextTick(() => {
+      
+
+      
+    });
+  },
+  methods: {
+    initData(){
+      let economyMeter =  economyApi.fetchEconomyMeter().then((data)=>{
+        this.economyMeter = data;
+        this.loadMeterChart();
+        console.log(this.economyMeter);
+      });
+      
+      let economyClaim =  economyApi.fetchEconomyClaim().then((data)=>{
+        this.economyClaim = data;
+        this.loadClaimChart();
+      });
+      
+      
+    },
+    loadMeterChart(){
+
       const singleBarOption = {
         xData: [
-          "童庄河渡改桥工程",
-          "\n武汉至大悟高速公路工程",
-          "靖远金滩黄河大桥工程",
-          "\n黄石奥山星城莱茵郡项目",
-          "十堰世纪山水项目（一期）",
-          "\n十堰世纪山水项目（二期）",
-          "汉中创智谷",
-          "\n南桥新城15-04地块",
-          "南桥新城18单元02-10地块",
-          "\n武汉市江汉七桥工程PPP项目",
-          // "项目11",
-          // "项目12",
         ],
-        seriesData: [{name:'产值',value:[19474.93, 15597.48, 25243.2, 8779, 28165, 8913, 21242, 1933, 34221, 64312]},
-        {name:'计价金额',value:[18819,0,21091,8727,12809,0,15307,897,32238,59379]},
-        {name:'计价比例',value:[97,0,84,99,45,0,72,46,94,92]}
+        seriesData: [{name:'产值',value:[]},
+        {name:'计价金额',value:[]},
+        {name:'计价比例',value:[]}
         ]
   
       };
+      this.economyMeter.forEach(claim => {
+         singleBarOption.xData.push(claim.name);
+         singleBarOption.seriesData[0].value.push(claim.charge);
+         singleBarOption.seriesData[1].value.push(claim.output);
+         singleBarOption.seriesData[2].value.push(claim.claim);
+       });
       this.drawSingleBarChart(
         "barChart1",
         singleBarOption.xData,
         "计价比例（%）",
         singleBarOption.seriesData
       );
-
+    },
+    loadClaimChart(){
       const singleBarOption2 = {
         xData: [
-          "童庄河渡改桥工程",
-          "\n武汉至大悟高速公路工程",
-          "靖远金滩黄河大桥工程",
-          "\n黄石奥山星城莱茵郡项目",
-          "十堰世纪山水项目（一期）",
-          "\n十堰世纪山水项目（二期）",
-          "汉中创智谷",
-          "\n南桥新城15-04地块",
-          "南桥新城18单元02-10地块",
-          "\n武汉市江汉七桥工程PPP项目",
-          // "项目11",
-          // "项目12",
         ],
-        seriesData: [{name:'计划',value:[1553, 3872, 2499, 293, 626, 1618, 0, 0, 164, 3105]},
-        {name:'完成',value:[731,0,0,0,0,0,0,0,0,0]},
-        {name:'索赔完成率',value:[47,0,0,0,0,0,0,0,0,0]}
+        seriesData: [{name:'计划',value:[]},
+        {name:'完成',value:[]},
+        {name:'索赔完成率',value:[]}
         ]
       };
-      setTimeout(() => {
-        this.drawSingleBarChart(
-        "barChart2",
-        singleBarOption2.xData,
-        "索赔完成率（%）",
-        singleBarOption2.seriesData
+       this.economyClaim.forEach(claim => {
+         singleBarOption2.xData.push(claim.name);
+         singleBarOption2.seriesData[0].value.push(claim.planed);
+         singleBarOption2.seriesData[1].value.push(claim.finished);
+         singleBarOption2.seriesData[2].value.push(claim.claim);
+       });
+      this.drawSingleBarChart(
+      "barChart2",
+      singleBarOption2.xData,
+      "索赔完成率（%）",
+      singleBarOption2.seriesData
       );
-      }, 0);
-    });
-  },
-  methods: {
+    },
     onSubmit() {
       console.log("submit!");
     },
@@ -107,6 +121,7 @@ export default {
         //-------------   x轴   -------------------
         xAxis: {
           show: true, //---是否显示
+          
           position: "bottom", //---x轴位置
           offset: 0, //---x轴相对于默认位置的偏移
           type: "category", //---轴类型，默认'category'
@@ -140,7 +155,7 @@ export default {
             //---坐标轴 标签
             show: true, //---是否显示
             inside: false, //---是否朝内
-            rotate: 0, //---旋转角度
+            rotate: seriesData[2].value.length>9?45:0, //---旋转角度
             margin: 5, //---刻度标签与轴线之间的距离
             //color:'red',				//---默认取轴线的颜色
           },

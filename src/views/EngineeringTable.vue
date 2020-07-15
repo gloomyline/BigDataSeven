@@ -38,6 +38,7 @@
   </div>
 </template>
 <script>
+import { economyApi } from "@/api";
 export default {
   name: "Engineering",
   data() {
@@ -65,138 +66,34 @@ export default {
           zip: "",
           id: 1,
           children: [
-            {
-              id: 11,
-              date: "",
-              title: "",
-              region: "秭归县童庄河渡改桥工程",
-              p1: "2017.10-2021.10",
-              p2: "133046",
-              p3: "133046",
-              p4: "0",
-              name: "651",
-              name1: "18167",
-              name2: "18817",
-              name3: "97%",
-              name4: "1553",
-              name5: "0",
-              name6: "47%",
-              name7: "0",
-              name8: "",
-              name9: "",
-              zip: ""
-            },
-            {
-              id: 12,
-              date: "待补充",
-              title: "",
-              region: "武汉至大悟高速公路工程",
-              plan: "2800",
-              finish: "2045",
-              rate: "73.0%",
-              p1: "2017.11.01-2020.09.30",
-              p2: "128734",
-              p3: "84592",
-              p4: "0",
-              name: "0",
-              name1: "0",
-              name2: "0",
-              name3: "0%",
-              name4: "3872",
-              name5: "0",
-              name6: "0%",
-              name7: "",
-              name8: "",
-              name9: "",
-              zip: ""
-            },
-            {
-              id: 16,
-              date: "48月",
-              title: "",
-              region: "武汉市江汉七桥工程PPP项目",
-              plan: "5040",
-              finish: "1165",
-              rate: "23.1%",
-              p1: "2018.09.01-2022.08.31",
-              p2: "137901",
-              p3: "137901",
-              p4: "0",
-              name: "0",
-              name1: "66727",
-              name2: "66727",
-              name3: "80%",
-              name4: "3105",
-              name5: "0",
-              name6: "0%",
-              name7: "0",
-              name8: "",
-              name9: "",
-              zip: ""
-            },
-            {
-              id: 17,
-              date: "",
-              title: "",
-              region: "靖远金滩黄河大桥工程",
-              p1: "2019.12.1-2021.9.1",
-              p2: "68273",
-              p3: "68273",
-              p4: "0",
-              name: "864",
-              name1: "20227",
-              name2: "21091",
-              name3: "84%",
-              name4: "2499",
-              name5: "0",
-              name6: "0%",
-              name7: "",
-              name8: "",
-              name9: "",
-              zip: ""
-            },
-            {
-              id: 17,
-              date: "",
-              title: "",
-              region: "黄石奥山星城莱茵郡项目",
-              p1: "2019.12.1-2021.9.1",
-              p2: "68273",
-              p3: "68273",
-              p4: "0",
-               name: "864",
-              name1: "20227",
-              name2: "21091",
-              name3: "84%",
-              name4: "2499",
-              name5: "0",
-              name6: "0%",
-              name7: "",
-              name8: "",
-              name9: "",
-              zip: ""
-            },
-            {
-              id: 17,
-              date: "",
-              title: "",
-              region: "南桥新城15-04地块",
-              p1: "2017.6.1-2021.9.1",
-              p2: "68273",
-              p3: "68273",
-              p4: "0",
-              name: "864",
-              name1: "20227",
-              name2: "21091",
-              name3: "84%",
-              name4: "2499",
-              name5: "0",
-              name6: "0%",
-              name7: "",
-              name8: "",
-              name9: "",
-              zip: ""
-            }
+            
+            
+          ]
+        },
+        {
+          date: "",
+          title: "新建",
+          region: "-",
+          name: "",
+          name1: "",
+          name2: "",
+          name3: "",
+          name4: "",
+          name5: "",
+          name6: "",
+          name7: "",
+          name8: "",
+          name9: "",
+          name10: "",
+          name11: "",
+          name12: "",
+          name13: "",
+          name14: "",
+          zip: "",
+          id: 2,
+          children: [
+            
+            
           ]
         },
         {
@@ -214,290 +111,107 @@ export default {
           name8: "",
           name9: "",
           zip: "",
-          id: 1,
+          id:3,
           children: [
-            {
-              id: 14,
-              date: "待补充",
-              title: "",
-              region: "湖北香溪长江公路大桥工程施工",
-              plan: "2902",
-              finish: "210",
-              rate: "10.7%",
-              p1: "2019.06.01-2021.01.20",
-              p2: "53364",
-              p3: "53364",
-              p4: "2600",
-              name: "2902",
-              name1: "10607",
-              name2: "13509",
-              name3: "76%",
-              name4: "4478",
-              name5: "0",
-              name6: "0%",
-              name7: "0",
-              name8: "",
-              name9: "",
-              zip: ""
-            },
-            {
-              id: 14,
-              date: "待补充",
-              title: "",
-              region: "长丰桥工程整治提升施工",
-              plan: "2902",
-              finish: "210",
-              rate: "10.7%",
-              p1: "2019.06.01-2021.01.20",
-              p2: "53364",
-              p3: "53364",
-              p4: "2600",
-              name: "2902",
-              name1: "10607",
-              name2: "13509",
-              name3: "76%",
-              name4: "4478",
-              name5: "0",
-              name6: "0%",
-              name7: "0",
-              name8: "",
-              name9: "",
-              zip: ""
-            },
-            {
-              id: 15,
-              date: "待补充",
-              title: "",
-              region: "三环线北段综合改造工程",
-              plan: "2902",
-              finish: "210",
-              rate: "10.7%",
-              p1: "2019.06.01-2021.01.20",
-              p2: "53364",
-              p3: "53364",
-              p4: "2600",
-              name: "2902",
-              name1: "10607",
-              name2: "13509",
-              name3: "76%",
-              name4: "4478",
-              name5: "3005",
-              name6: "50",
-              name7: "0",
-              name8: "",
-              name9: "",
-              zip: ""
-            }
-            ,
-            {
-              id: 14,
-              date: "待补充",
-              title: "",
-              region: "夹套河骨干箱涵工程一标段",
-              plan: "2902",
-              finish: "210",
-              rate: "10.7%",
-              p1: "2019.06.01-2021.01.20",
-              p2: "53364",
-              p3: "53364",
-              p4: "2600",
-              name: "2902",
-              name1: "10607",
-              name2: "13509",
-              name3: "76%",
-              name4: "4478",
-              name5: "2342",
-              name6: "0%",
-              name7: "0",
-              name8: "",
-              name9: "",
-              zip: ""
-            } ,
-            {
-              id: 14,
-              date: "待补充",
-              title: "",
-              region: "夹套河骨干箱涵工程一标段",
-              plan: "2902",
-              finish: "210",
-              rate: "10.7%",
-              p1: "2019.06.01-2021.01.20",
-              p2: "53364",
-              p3: "53364",
-              p4: "2600",
-              name: "2902",
-              name1: "10607",
-              name2: "13509",
-              name3: "76%",
-              name4: "202",
-              name5: "0",
-              name6: "0%",
-              name7: "0",
-              name8: "",
-              name9: "",
-              zip: ""
-            }
+            
           ]
         },
-        // {
-        //   date: "",
-        //   title: "武汉分公司",
-        //   region: "-",
-        //   name: "",
-        //   name1: "",
-        //   name2: "",
-        //   name3: "",
-        //   name4: "",
-        //   name5: "",
-        //   zip: "",
-        //   id: 1,
-        //   children: [
-        //     {
-        //       id: 15,
-        //       date: "42月",
-        //       title: "",
-        //       region: "武大高速",
-        //       plan: "8458",
-        //       finish: "709",
-        //       rate: "8.4%",
-        //       p1: "2019.07.01-2022.12.31",
-        //       p2: "223400",
-        //       p3: "223400",
-        //       p4: "0",
-        //       name: "0",
-        //       name1: "0",
-        //       name2: "0",
-        //       name3: "0",
-        //       name4: "3872",
-        //       name5: "0",
-        //       name6: "0",
-        //       name7: "0",
-        //       name8: "",
-        //       name9: "",
-        //       zip: ""
-        //     }
-        //   ]
-        // },
-        // {
-        //   date: "",
-        //   title: "湖北分公司",
-        //   region: "-",
-        //   name: "",
-        //   name1: "",
-        //   name2: "",
-        //   name3: "",
-        //   name4: "",
-        //   name5: "",
-        //   zip: "",
-        //   id: 1,
-        //   children: [
-        //     {
-        //       id: 11,
-        //       date: "960天",
-        //       title: "",
-        //       region: "童庄河",
-        //       plan: "1455",
-        //       finish: "1888",
-        //       rate: "129.7%",
-        //       p1: "2016.12-2020.5.15",
-        //       p2: "23853",
-        //       p3: "21695",
-        //       p4: "2158",
-        //       name: "836",
-        //       name1: "17330",
-        //       name2: "18167",
-        //       name3: "96%",
-        //       name4: "1553",
-        //       name5: "731",
-        //       name6: "47%",
-        //       name7: "",
-        //       name8: "",
-        //       name9: "",
-        //       zip: ""
-        //     }
-        //   ]
-        // },
-        // {
-        //   date: "",
-        //   title: "西北分公司",
-        //   region: "-",
-        //   name: "",
-        //   name1: "",
-        //   name2: "",
-        //   name3: "",
-        //   name4: "",
-        //   name5: "",
-        //   zip: "",
-        //   id: 1,
-        //   children: [
-        //     {
-        //       id: 13,
-        //       date: "",
-        //       title: "",
-        //       region: "潇河大桥",
-        //       p1: "2019.06.01-2020.11.21",
-        //       p2: "79966",
-        //       p3: "79966",
-        //       p4: "0",
-        //       name: "0",
-        //       name1: "30693",
-        //       name2: "30693",
-        //       name3: "50%",
-        //       name4: "4009",
-        //       name5: "0",
-        //       name6: "0",
-        //       name7: "0",
-        //       name8: "",
-        //       name9: "",
-        //       zip: ""
-        //     }
-        //   ]
-        // },
-        // {
-        //   date: "",
-        //   title: "海南项目群",
-        //   region: "-",
-        //   name: "",
-        //   name1: "",
-        //   name2: "",
-        //   name3: "",
-        //   name4: "",
-        //   name5: "",
-        //   zip: "",
-        //   id: 1,
-        //   children: [
-        //     {
-        //       id: 13,
-        //       date: "",
-        //       title: "",
-        //       region: "沈海高速",
-        //       p1: "2020.2.10-2022.1.30",
-        //       p2: "54285",
-        //       p3: "54285",
-        //       p4: "0",
-        //       name: "0",
-        //       name1: "0",
-        //       name2: "0",
-        //       name3: "0",
-        //       name4: "1191",
-        //       name5: "0",
-        //       name6: "0",
-        //       name7: "",
-        //       name8: "",
-        //       name9: "",
-        //       zip: ""
-        //     }
-        //   ]
-        // }
       ]
     };
   },
+  created(){
+    this.ajaxData();
+  },
   mounted() {
-    this.$nextTick(() => {
-      this.echarts();
-    });
+    // this.$nextTick(() => {
+    //   this.echarts();
+    // });
   },
   methods: {
+    ajaxData(){
+      economyApi.fetchEconomyTable().then((data)=>{
+        const ajaxData = data;
+        ajaxData.forEach(tableData => {
+          if(tableData.areaId===2){
+             this.tableData[0].children.push({
+                id: tableData.name,
+                date: "",
+                title: "",
+                region: tableData.name,
+                p1: tableData.beginDate+'-'+tableData.endDae,
+                p2: tableData.contractCost,
+                p3: tableData.conOutput,
+                p4: tableData.provisionalSum,
+                name: tableData.monthPlanFinished,
+                name1: tableData.lastPeriodPlan,
+                name2: tableData.periodPlan,
+                name3: tableData.lastPeriodPlan===0||tableData.periodPlan===0?'0%':(tableData.lastPeriodPlan/tableData.periodPlan*100).toFixed(2)+'%',
+                name4: tableData.yPlan,
+                name5: tableData.monthFinished,
+                name6: tableData.yfinished===0||tableData.yplan===0?'0%':(tableData.yfinished/tableData.yplan*100).toFixed(2)+'%',
+                name7: "0",
+                name8: "",
+                name9: "",
+                zip: ""
+              })
+          }else if(tableData.areaId===1){
+             this.tableData[1].children.push({
+                id: tableData.name,
+                date: "",
+                title: "",
+                region: tableData.name,
+                p1: tableData.beginDate+'-'+tableData.endDae,
+                p2: tableData.contractCost,
+                p3: tableData.conOutput,
+                p4: tableData.provisionalSum,
+                name: tableData.monthPlanFinished,
+                name1: tableData.lastPeriodPlan,
+                name2: tableData.periodPlan,
+                name3: tableData.lastPeriodPlan===0||tableData.periodPlan===0?0:(tableData.lastPeriodPlan/tableData.periodPlan*100).toFixed(2)+'%',
+                name4: tableData.yPlan,
+                name5: tableData.monthFinished,
+                name6: tableData.yfinished===0||tableData.yplan===0?'0%':(tableData.yfinished/tableData.yplan*100).toFixed(2)+'%',
+                name7: "0",
+                name8: "",
+                name9: "",
+                zip: ""
+              })
+          }else if(tableData.areaId===3){
+             this.tableData[2].children.push({
+                id:tableData.name,
+                date: "",
+                title: "",
+                region: tableData.name,
+                p1: tableData.beginDate+'-'+tableData.endDae,
+                p2: tableData.contractCost,
+                p3: tableData.conOutput,
+                p4: tableData.provisionalSum,
+                name: tableData.monthPlanFinished,
+                name1: tableData.lastPeriodPlan,
+                name2: tableData.periodPlan,
+                name3: tableData.lastPeriodPlan===0||tableData.periodPlan===0?0:(tableData.lastPeriodPlan/tableData.periodPlan*100).toFixed(2)+'%',
+                name4: tableData.yPlan,
+                name5: tableData.monthFinished,
+                name6: tableData.yfinished===0||tableData.yplan===0?'0%':(tableData.yfinished/tableData.yplan*100).toFixed(2)+'%',
+                name7: "0",
+                name8: "",
+                name9: "",
+                zip: ""
+              })
+
+          }
+             
+          // if(tableData.areaId===1){
+          //   this.tableData[1].children.push({
+
+          //   })
+          // }
+        });
+        // this.economyMeter = data;
+        // this.loadMeterChart();
+        // console.log(this.economyMeter);
+      });
+    },
     goBack() {
       this.$router.push({ path: "/" });
     }

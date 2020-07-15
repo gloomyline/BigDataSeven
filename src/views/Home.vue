@@ -150,6 +150,8 @@ export default {
         isUnused: null,
         isUsing: null,
       },
+      economy:null,
+      financeVo: null,
       manPower: {
         total: 1033,
         bureau: 646,
@@ -211,6 +213,19 @@ export default {
     _initEquipmentData(data) {
       this.equipment = data.equipmentVo;
     },
+    _initEconomyData(data) {
+      this.economy = data.economy;
+      this.echarts_61();
+      this.echarts_62();
+      console.log(this.economy);
+    },
+    _initFinanceData(data) {
+      this.financeVo = data.financeVo;
+      this.echarts_4();
+      // this.echarts_61();
+      // this.echarts_62();
+      // console.log(this.economy);
+    },
     async initData() {
       // request home api
       const _date = new Date();
@@ -219,7 +234,8 @@ export default {
       );
       const data = response.data;
       this._initEquipmentData(data);
-
+      this._initEconomyData(data);
+      this._initFinanceData(data);
       this.monthConfig.data[0] = 92.02;
       this.yearConfig.data[0] = 72.68;
       this.startConfig.data[0] = 32.54;
@@ -1994,6 +2010,23 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("echart4"));
 
+      let xData = [];
+      let series = {
+        balance:[],
+        earning:[],
+        profits:[],
+        stock:[]
+      }
+
+      this.financeVo.forEach((financeVo,index) => {
+        xData.push(index+1);
+        series.balance.push(financeVo.balance);
+        series.earning.push(financeVo.earning);
+        series.profits.push(financeVo.profits);
+        series.stock.push(financeVo.stock);
+      });
+
+
       var option = {
         tooltip: {
           trigger: "axis",
@@ -2040,7 +2073,7 @@ export default {
               }
             },
 
-            data: ["01", "02", "03", "04", "05", "06"]
+            data: xData
           },
           {
             axisPointer: { show: false },
@@ -2119,7 +2152,7 @@ export default {
                 borderWidth: 12
               }
             },
-            data: [73, 79, 116, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: series.earning
           },
           {
             name: "营业利润（亿）",
@@ -2166,7 +2199,7 @@ export default {
                 }
               }
             },
-            data: [1, 1.5, 1, 1.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: series.profits
           },
           {
             name: "两金余额（亿）",
@@ -2206,7 +2239,7 @@ export default {
                 }
               }
             },
-            data: [0, 0, 27, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: series.balance
           },
           {
             name: "货币存量（亿）",
@@ -2250,7 +2283,7 @@ export default {
                 borderWidth: 12
               }
             },
-            data: [0, 0, -13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: series.stock
           }
         ]
       };
@@ -2331,8 +2364,8 @@ export default {
       echarts.graphic.registerShape("CubeRight", CubeRight);
       echarts.graphic.registerShape("CubeTop", CubeTop);
 
-      const MAX = [122];
-      const VALUE = [103];
+      const MAX = [this.economy.valulation.charge];
+      const VALUE = [this.economy.valulation.output];
       var myChart = echarts.init(document.getElementById("jj1"));
 
       var option = (option = {
@@ -2666,8 +2699,8 @@ export default {
       echarts.graphic.registerShape("CubeRight", CubeRight);
       echarts.graphic.registerShape("CubeTop", CubeTop);
 
-      const MAX = [9];
-      const VALUE = [1];
+      const MAX = [this.economy.claim.planed];
+      const VALUE = [this.economy.claim.finished];
       var myChart = echarts.init(document.getElementById("jj2"));
 
       var option = (option = {
@@ -3215,14 +3248,14 @@ export default {
     this.$nextTick(() => {
       this.echarts_1();
       this.echarts_2();
-      this.echarts_4();
+      // this.echarts_4();
       this.echarts_31();
       this.echarts_32();
       this.echarts_33();
       this.echarts_5();
       this.echarts_51();
-      this.echarts_61();
-      this.echarts_62();
+      
+      
       this.echarts();
     });
   },
