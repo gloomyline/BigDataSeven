@@ -61,22 +61,21 @@ export default {
       // simulate data
       if(data) {
         let obj = data.certificatesInfo[0]
-        let usings = []
-        usings.push(
+        let usings = [
           obj.muniadministration, obj.road, obj.architecture, obj.railway, obj.hydropower, obj.electromechanical,
           obj.municipalrailway, obj.municipalroad, obj.municipalportwaterway, obj.highwayconstruction,
           obj.highwayandrailway, obj.highwayandharbor, obj.municipalconstruction, obj.constwaterhydpower, 
           obj.highwaymunbuildings, obj.muniadmhighrailway
-        )
+        ]
         let userObj = data.certificatesInfo[1]
         let unuseds = [userObj.muniadministration, userObj.road, userObj.architecture, userObj.railway, userObj.hydropower, userObj.electromechanical,
           userObj.municipalrailway, userObj.municipalroad, userObj.municipalportwaterway, userObj.highwayconstruction,
           userObj.highwayandrailway, userObj.highwayandharbor, userObj.municipalconstruction, userObj.constwaterhydpower, 
           userObj.highwaymunbuildings, userObj.muniadmhighrailway
         ]
-        console.log(usings, '-----------------')
         const total = usings.map((item, index) => (item + unuseds[index]));
-        console.log(total, '----total')
+        // const total = usings.map((item, index) => (item + unuseds[index]));
+        // console.log(total, '----total')
         const certificateReserve = echarts.init(this.$refs.certificateReserve);
         const option = {
           color: ["#fb3232", "#60c5ba", "#feee7d"],
@@ -156,8 +155,13 @@ export default {
                 show: true,
                 color: '#3398DB',
                 formatter: function(params) {
+                   if(Number.parseFloat(params.data) === 0 || Number.parseFloat(total[params.dataIndex]) === 0) {
+                    return `0(0.00%)`
+                  } else {
+                    return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
+                  }
                   console.log((Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex])))
-                  return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
+                  // return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
                 },
               },
             },
@@ -169,7 +173,12 @@ export default {
               label: {
                 show: true,
                 formatter: function(params) {
-                  return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
+                  if(Number.parseFloat(params.data) === 0 || Number.parseFloat(total[params.dataIndex]) === 0) {
+                    return `0(0.00%)`
+                  } else {
+                    return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
+                  }
+                  // return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
                 },
               },
             }
@@ -180,110 +189,120 @@ export default {
           certificateReserve.resize();
         });
       }
-      
+      // 暂时屏蔽
       // const unuseds = [5, 10, 4, 4, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0];
-      const total = usings.map((item, index) => (item + unuseds[index]));
-      const certificateReserve = echarts.init(this.$refs.certificateReserve);
-      const option = {
-        color: ["#fb3232", "#60c5ba", "#feee7d"],
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            // 坐标轴指示器，坐标轴触发有效
-            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-          },
-        },
-        legend: {
-          x: "center",
-          y: "top",
-          data: ["已用", "可用存量"],
-          textStyle: { color: "rgba(255, 255, 255, .6)", fontSize: 12 }
-        },
-        grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "2%",
-          containLabel: true
-        },
-        xAxis: [
-          {
-            type: "category",
-            data: [
-              "市政",
-              "公路",
-              "建筑",
-              "铁路",
-              "水利水电",
-              "机电",
-              "市政公路",
-              "市政海航",
-              "公路港航",
-              "建筑市政",
-              "铁路港航",
-              "建筑水利水电",
-              "公路市政建筑",
-              "公路铁路市政"
-            ],
-            axisLabel: {
-              interval: 0,
-              textStyle: {
-                color: "rgba(255,255,255,.6)",
-                fontSize: 14
-              }
-            },
-            axisLine: {
-              lineStyle: {
-                color: "rgba(255,255,255,.2)"
-              }
-            }
-          }
-        ],
-        yAxis: [
-          {
-            type: "value",
-            axisLabel: {
-              textStyle: {
-                color: "rgba(255,255,255,.6)",
-                fontSize: 16
-              }
-            },
-            axisLine: {
-              lineStyle: { color: "rgba(255, 255, 255, .2)" }
-            }
-          }
-        ],
-        series: [
-          {
-            name: "已用",
-            type: "bar",
-            stack: "outside",
-            data: usings,
-            label: {
-              show: true,
-              color: '#3398DB',
-              formatter: function(params) {
-                return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
-              },
-            },
-          },
-          {
-            name: "可用存量",
-            type: "bar",
-            stack: "outside",
-            data: unuseds,
-            label: {
-              show: true,
-              formatter: function(params) {
-                return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
-              },
-            },
-          }
-        ]
-      };
-      certificateReserve.setOption(option);
-      window.addEventListener('resize', () => {
-        certificateReserve.resize();
-      });
+      // const total = usings.map((item, index) => (item + unuseds[index]));
+      // const certificateReserve = echarts.init(this.$refs.certificateReserve);
+      // const option = {
+      //   color: ["#fb3232", "#60c5ba", "#feee7d"],
+      //   tooltip: {
+      //     trigger: "axis",
+      //     axisPointer: {
+      //       // 坐标轴指示器，坐标轴触发有效
+      //       type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+      //     },
+      //   },
+      //   legend: {
+      //     x: "center",
+      //     y: "top",
+      //     data: ["已用", "可用存量"],
+      //     textStyle: { color: "rgba(255, 255, 255, .6)", fontSize: 12 }
+      //   },
+      //   grid: {
+      //     left: "3%",
+      //     right: "4%",
+      //     bottom: "2%",
+      //     containLabel: true
+      //   },
+      //   xAxis: [
+      //     {
+      //       type: "category",
+      //       data: [
+      //         "市政",
+      //         "公路",
+      //         "建筑",
+      //         "铁路",
+      //         "水利水电",
+      //         "机电",
+      //         "市政公路",
+      //         "市政海航",
+      //         "公路港航",
+      //         "建筑市政",
+      //         "铁路港航",
+      //         "建筑水利水电",
+      //         "公路市政建筑",
+      //         "公路铁路市政"
+      //       ],
+      //       axisLabel: {
+      //         interval: 0,
+      //         textStyle: {
+      //           color: "rgba(255,255,255,.6)",
+      //           fontSize: 14
+      //         }
+      //       },
+      //       axisLine: {
+      //         lineStyle: {
+      //           color: "rgba(255,255,255,.2)"
+      //         }
+      //       }
+      //     }
+      //   ],
+      //   yAxis: [
+      //     {
+      //       type: "value",
+      //       axisLabel: {
+      //         textStyle: {
+      //           color: "rgba(255,255,255,.6)",
+      //           fontSize: 16
+      //         }
+      //       },
+      //       axisLine: {
+      //         lineStyle: { color: "rgba(255, 255, 255, .2)" }
+      //       }
+      //     }
+      //   ],
+      //   series: [
+      //     {
+      //       name: "已用",
+      //       type: "bar",
+      //       stack: "outside",
+      //       data: usings,
+      //       label: {
+      //         show: true,
+      //         color: '#3398DB',
+      //         formatter: function(params) {
+      //           if(Number.parseFloat(params.data) === 0 || Number.parseFloat(total[params.dataIndex]) === 0) {
+      //               return `0(0.00%)`
+      //           } else {
+      //             return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
+      //           }
+      //           // return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
+      //         },
+      //       },
+      //     },
+      //     {
+      //       name: "可用存量",
+      //       type: "bar",
+      //       stack: "outside",
+      //       data: unuseds,
+      //       label: {
+      //         show: true,
+      //         formatter: function(params) {
+      //           if(Number.parseFloat(params.data) === 0 || Number.parseFloat(total[params.dataIndex]) === 0) {
+      //               return `0(0.00%)`
+      //           } else {
+      //             return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
+      //           }
+      //           // return `${params.data} (${(Number.parseFloat(params.data)/Number.parseFloat(total[params.dataIndex]) * 100).toFixed(2)}%)`
+      //         },
+      //       },
+      //     }
+      //   ]
+      // };
+      // certificateReserve.setOption(option);
+      // window.addEventListener('resize', () => {
+      //   certificateReserve.resize();
+      // });
     }
   }
 };
