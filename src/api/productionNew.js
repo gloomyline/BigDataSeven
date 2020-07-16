@@ -20,11 +20,11 @@ export default {
     const response = await axios.get('/production/delayRate', { params: { ny: date } });
     return response;
   },
-  // // 上个月完成产值情况
-  // async fetchPlanfinishlMonthData(date) {
-  //   const response = await axios.get('/production/planfinishlmonth', { params: { ny: date } });
-  //   return response;
-  // },
+  // 上个月完成产值情况
+  async fetchPlanfinishlMonthData(date) {
+    const response = await axios.get('/production/planfinishlmonth', { params: { ny: date } });
+    return response;
+  },
   // 本月完成产值情况
   async fetchlannmonthData(date) {
     const response = await axios.get('/production/plannmonth', { params: { ny: date } });
@@ -35,10 +35,8 @@ export default {
     const response = await axios.get('/dept/getDeptNumName');
     return response;
   },
-  fetchPlannmonthData(date) {
-    axios.get('/production/plannmonth').then(res => {}).catch(err => {});
+  async fetchPlannmonthData(date) {
+    const response = await axios.get('/production/plannmonth', { params: { ny: date } });
+    return response;
   }
-  
-  
-  
 }

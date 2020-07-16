@@ -64,7 +64,9 @@ export default {
       const _date = new Date();
       let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
       const res = await productionNewApi.fetchPlanfinishlMonthData(`${_date.getFullYear()}-${mm}`);
-      this.tableData = res.data
+      if(res && res.code === '000000') {
+        this.tableData = res.data
+      } 
     }
   }
 }

@@ -58,9 +58,9 @@
           <div class="barbox" @click="goRouter('HumanNew')">
             <div class="alltitle" @click="goRouter('HumanNew')">人力资源管理</div>
             <ul class="clearfix">
-              <li class="pulll_left counter">{{ manPower.total }}</li>
-              <li class="pulll_left counter">{{ manPower.bureau }}</li>
-              <li class="pulll_left counter">{{ manPower.class }}</li>
+              <li class="pulll_left counter">{{ manpower.total }}</li>
+              <li class="pulll_left counter">{{ manpower.bureau }}</li>
+              <li class="pulll_left counter">{{ manpower.firstCate }}</li>
             </ul>
           </div>
           <div class="barbox2">
@@ -143,6 +143,7 @@ export default {
   components: {},
   data() {
     return {
+      manpower: {}, // 人力资源
       mapPoint: {},
       mapPointArr: [],
       provinceProJectsArr: [],
@@ -219,7 +220,6 @@ export default {
       this.mapPoint = {}
       const response = await homeApi.fetchHomeMapData();
       // console.log(response, '----------')
-      
       response.data.forEach(item => {
         let name = item.name
         if(item.point !== '') {
@@ -264,6 +264,8 @@ export default {
       const response = await homeApi.fetchHomeData(
         `${_date.getFullYear()}-${_date.getMonth()}`
       );
+      this.manpower = response.data.manpower
+      console.log(response.data, '-------dasdsad-------')
       const data = response.data;
       this._initEquipmentData(data);
       this._initEconomyData(data);
@@ -1772,6 +1774,8 @@ export default {
     },
     echarts_2(type, rate) {
       let typeA = type.typeA
+      let typeB = type.typeB
+      let typeC = type.typeC
       let rateA = (Number(rate.typeA)*100).toFixed(2)
       let rateB = (Number(rate.typeB)*100).toFixed(2)
       let rateC = (Number(rate.typeC)*100).toFixed(2)
@@ -1847,7 +1851,7 @@ export default {
                 return Number(params.data) > 0 ? params.data : "";
               }
             },
-            data: [typeA.isUsing, typeA.isUsing, typeA.isUsing]
+            data: [typeC.isUsing, typeB.isUsing, typeA.isUsing]
           },
           {
             name: "闲置",
@@ -1860,7 +1864,7 @@ export default {
                 return Number(params.data) > 0 ? params.data : "";
               }
             },
-            data: [typeA.isUnused, typeA.isUnused, typeA.isUnused]
+            data: [typeC.isUnused, typeB.isUnused, typeA.isUnused]
           },
           {
             name: "封存",
@@ -2981,7 +2985,7 @@ export default {
       if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
         str = 0
       } else {
-        str = (Number(monthly.finished)/(sum)).toFixed(2)
+        str = ((Number(monthly.finished)/(sum)) * 100).toFixed(2)
       }
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb1"));
@@ -3078,7 +3082,7 @@ export default {
       if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
         str = 0
       } else {
-        str = (Number(monthly.finished)/(sum)).toFixed(2)
+        str = ((Number(monthly.finished)/(sum)) * 100).toFixed(2)
       }
       const self = this;
       // 基于准备好的dom，初始化echarts实例
@@ -3173,7 +3177,7 @@ export default {
       if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
         str = 0
       } else {
-        str = (Number(monthly.finished)/(sum)).toFixed(2)
+        str = ((Number(monthly.finished)/(sum)) * 100).toFixed(2)
       }
      
       const self = this;

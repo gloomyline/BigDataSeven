@@ -326,7 +326,7 @@ export default {
       });
     },
     echarts_33(finish, remained) {
-      console.log(finish, remained, '实打实打算')
+      // console.log(finish, remained, '实打实打算')
       // 基于准备好的dom，初始化echarts实例
       let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2) === 'NaN' ? `0` : (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
       var myChart = echarts.init(document.getElementById("fb3"));

@@ -38,16 +38,16 @@
       };
     },
     created() {
-      this.fetchPlannmonthDat()
+      this.fetchPlannmonthData()
       const date = new Date();
       this.year = date.getFullYear();
       this.month = ('00' + (date.getMonth() + 1)).substr(-2, 2);
       // this._fetchData();
     },
     methods: {
-      async fetchPlannmonthDat() {
+      async fetchPlannmonthData() {
         const _date = new Date();
-        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
         const res = await productionNewApi.fetchPlannmonthData(`${_date.getFullYear()}-${mm}`);
         this.tableData = res.data
       }
