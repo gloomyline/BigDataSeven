@@ -37,7 +37,10 @@ export default {
       this.$router.push({ path: '/' })
     },
     goPro(projectId) {
-      this.$router.push({ name: 'HumanDetailsNew', params: { projectId: projectId }})
+      this.$router.push({
+        name: 'HumanDetailsNew',
+        params: { projectId: projectId },
+      })
     },
     async initData() {
       const res = await HumanNewApi.fetchGetEmpOrganizationData()
@@ -49,26 +52,20 @@ export default {
       const groupStructure = echarts.init(this.$refs.groupStructure)
       const option = {
         tooltip: {
-          //提示框组件
-          trigger: 'item', //触发类型，默认：item（数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用）。可选：'axis'：坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用。'none':什么都不触发。
-          triggerOn: 'mousemove', //提示框触发的条件，默认mousemove|click（鼠标点击和移动时触发）。可选mousemove：鼠标移动时，click：鼠标点击时，none：
+            trigger: 'item',   
+            triggerOn: 'mousemove'           
         },
         series: [
-          //系列列表
           {
-            type: 'tree', //树形结构
-            data: struData, //上面从flare.json中得到的数据
-            // change the link line from curvy to broken
+            type: 'tree',
+            data: struData,
             edgeShape: 'polyline',
-            edgeForkPosition: '60%',
-            top: 30,
-            bottom: 180,
-            left: '10%%', //左
-            right: '10%%', //右的距离
-            // change the tree orient from default 'horizontal' to 'vertical'
-            orient: 'vertical',
-            symbol: 'rect',
-            symbolSize: 7, //标记的大小，就是那个小圆圈，默认7
+            edgeForkPosition: '20%',
+            top: 50,
+            left: '5%',
+            bottom: 150,
+            right: '5%',
+            symbolSize: [20, 100],
             itemStyle: {
               borderWidth: 20,
               color: 'transparent',
@@ -78,11 +75,11 @@ export default {
               //每个节点所对应的标签的样式
               normal: {
                 position: 'top', //标签的位置
-                verticalAlign: 'middle', //文字垂直对齐方式，默认自动。可选：top，middle，bottom
+                verticalAlign: 'top', //文字垂直对齐方式，默认自动。可选：top，middle，bottom
                 align: 'center', //文字水平对齐方式，默认自动。可选：top，center，bottom
-                fontSize: 16, //标签文字大小
+                fontSize: 14, //标签文字大小
                 color: '#000',
-                distance: -24,
+                distance: -40,
                 formatter: function(params) {
                   return params.name === struData[0].name
                     ? params.name
@@ -99,16 +96,19 @@ export default {
               //叶子节点的特殊配置，如上面的树图示例中，叶子节点和非叶子节点的标签位置不同
               label: {
                 normal: {
-                  position: 'bottom',
+                  position: 'top',
                   verticalAlign: 'top',
                   align: 'center',
                   color: '#000',
+                  // distance: -8,
                 },
               },
             },
-            expandAndCollapse: true, //子树折叠和展开的交互，默认打开
-            animationDuration: 550, //初始动画的时长，支持回调函数,默认1000
+            expandAndCollapse: true,
+            animationDuration: 550,
             animationDurationUpdate: 750,
+            orient: 'vertical',
+            symbol: 'roundRect',
           },
         ],
       }
@@ -118,14 +118,14 @@ export default {
         if (typeof param.seriesIndex == 'undefined') {
           return
         }
-        
+
         if (param.type == 'click') {
           this.goPro(param.data.id)
         }
       }
+      
       groupStructure.setOption(option)
       groupStructure.on('click', clickFun)
-
       window.addEventListener('resize', () => {
         groupStructure.resize()
       })
@@ -202,9 +202,11 @@ export default {
       }
       .chartCont1 {
         width: 100%;
-        height: 6.4rem;
+        height: 7rem;
       }
     }
   }
 }
 </style>
+
+
