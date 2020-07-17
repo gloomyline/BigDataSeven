@@ -83,18 +83,26 @@ export default {
       this.typeC = await turnoverApi.fetchTypeC();
       this.drawTypeC();
       this.pieRate = await turnoverApi.fetchRate();
+      console.log(this.pieRate, '-------------this.pieRate')
       this._drawPie();
       loading.close();
     },
     drawTypeA() {
       let fcData = []
       let xDataA = []
+      let isUsing = []
+      let xzDataA = []
       if(this.typeA && this.typeA.data && this.typeA.data.length > 0) {
+        isUsing = this.typeA.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2))
         fcData = this.typeA.data.map(item => item.isSealed === 0 ? item.isSealed : (item.isSealed).toFixed(2))
         xDataA = this.typeA.data.map(item => `${item.deptId}-${item.name}`)
+        xzDataA = this.typeA.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2))
+        console.log(fcData, xDataA, '---- this.typeA.data----------')
       } else {
         fcData = []
         xDataA = []
+        isUsing = []
+        xzDataA = []
       }
       const barChartAOption = {
         // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
@@ -106,13 +114,16 @@ export default {
           {
             name: "封存",
           },
+          {
+            name: "闲置",
+          },
         ],
         seriesData: [
           {
             name: "在用",
             type: "bar",
             // data: [17983-3364, 0, 2705, 7367, 0, 513, 81, 87, 0, 0, 1083, 2607,],
-            data: [],
+            data: isUsing,
             // stack: "使用情况",
             barWidth: "10", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -152,6 +163,30 @@ export default {
               barBorderRadius: [15, 15, 0, 0],
             },
           },
+          {
+            name: "闲置",
+            type: "bar",
+            // data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
+            data: xzDataA,
+            // stack: "使用情况",
+            barWidth: "30", //---柱形宽度
+            barCategoryGap: "20%", //---柱形间距
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: "top", //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 16,
+            },
+            itemStyle: {
+              //---图形形状
+              color: "rgb(202,249,130)",
+              barBorderRadius: [15, 15, 0, 0],
+            },
+          },
+          
+          
         ],
       };
       this.drawDoubleBarChart(
@@ -166,18 +201,21 @@ export default {
       let data = []
       let lylDataB = []
       let xzDataB = []
+      let name = []
       if(this.typeB && this.typeB.data && this.typeB.data.length > 0) {
+        name = this.typeA.data.map(item => `${item.deptId}-${item.name}`)
         data = this.typeB.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2))
         xzDataB = this.typeB.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2))
         lylDataB = this.typeB.data.map(item => (item.rate * 100).toFixed(2))
       } else {
+        name = []
         data = []
         xzDataB = []
         lylDataB = []
       }
       const barChartBOption = {
         // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
-        xData: data,
+        xData: name,
         legendData: [
           {
             name: "在用",
@@ -375,7 +413,7 @@ export default {
       let isUsing = 0
       let isUnused = 0
       let isSealed = 0
-      if(this.pieRate && this.pieRate.data && this.pieRate.data.length > 0) {
+      if(this.pieRate && this.pieRate.data !== {}) {
         isUsing = this.pieRate.data.isUsing
         isUnused = this.pieRate.data.isUnused
         isSealed = this.pieRate.data.isSealed
@@ -440,6 +478,20 @@ export default {
       });
     },
     drawDoubleBarChart(id, xData, legendData, seriesData, yTitle, isDouble) {
+      let arr = []
+      if(xData && xData.length > 9) {
+        arr = [{
+          type: 'slider',
+          show: true, //flase直接隐藏图形
+          xAxisIndex: [0],
+          left: '9%', //滚动条靠左侧的百分比
+          bottom: -5,
+          start: 0,//滚动条的起始位置
+          end: 20 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+        }]
+      } else {
+        arr = []
+      }
       var myChart = echarts.init(document.getElementById(id));
       var _that = this;
       var option = {
@@ -452,15 +504,7 @@ export default {
         //   },
         // },
         // 设置滚动条
-        // dataZoom: [{
-        //   type: 'slider',
-        //   show: true, //flase直接隐藏图形
-        //   xAxisIndex: [0],
-        //   left: '9%', //滚动条靠左侧的百分比
-        //   bottom: -5,
-        //   start: 0,//滚动条的起始位置
-        //   end: 20 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
-        // }],
+        dataZoom: arr,
         tooltip: {
           trigger: "axis",
         },

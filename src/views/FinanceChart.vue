@@ -144,6 +144,18 @@ export default {
       this.$router.push({ path: "/" });
     },
     drawDoubleBarChart(id, xData, legendData, seriesData, yTitle) {
+      let arr = []
+      if(xData && xData.length > 10) {
+        arr = [{
+          type: 'slider',
+          show: true,
+          start: 0,
+          end: 25,
+          xAxisIndex: [0],
+        }]
+      } else {
+        arr = []
+      }
       var myChart = echarts.init(document.getElementById(id));
       var option = {
         // title: {
@@ -154,15 +166,7 @@ export default {
         //     fontSize: 17,
         //   },
         // },
-        dataZoom : [
-          {
-            type: 'slider',
-            show: true,
-            start: 0,
-            end: 25,
-            xAxisIndex: [0],
-          },
-        ],
+        dataZoom : arr,
         tooltip: {
           trigger: "axis",
         },

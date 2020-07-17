@@ -20,24 +20,36 @@
         <span class="tilte">项目大型机械设备分布情况</span>
       </p>
       <el-table :data="tableData" :span-method="equSpanMethod">
-        <el-table-column prop="title" label="管理编号"></el-table-column>
-        <el-table-column prop="title1" label="设备名称"></el-table-column>
-        <el-table-column prop="region" label="型号规格"></el-table-column>
-        <el-table-column prop="date" label="生产厂家"></el-table-column>
-        <el-table-column prop="date" label="出厂年月"></el-table-column>
-        <el-table-column prop="date" label="设备来源"></el-table-column>
-        <el-table-column prop="date" label="设备提供单位"></el-table-column>
-        <el-table-column prop="date" label="进场时间"></el-table-column>
-        <el-table-column prop="date" label="设备使用单位"></el-table-column>
-        <el-table-column prop="date" label="是否 实施机长负责制"></el-table-column>
-        <el-table-column prop="date" label="机长"></el-table-column>
-        <el-table-column prop="date" label="机长人数"></el-table-column>
+        <el-table-column prop="id" label="管理编号"></el-table-column>
+        <el-table-column prop="equipmentName" label="设备名称"></el-table-column>
+        <el-table-column prop="specifications" label="型号规格"></el-table-column>
+        <el-table-column prop="manufacturer" label="生产厂家"></el-table-column>
+        <el-table-column prop="manufactureDate" label="出厂年月"></el-table-column>
+        <el-table-column prop="equipmentSource" label="设备来源">
+          <template slot-scope="scope">
+            <span v-if="scope.row.equipmentSource === 1">自带</span>
+            <span v-if="scope.row.equipmentSource === 2">内租</span>
+            <span v-if="scope.row.equipmentSource === 3">外租</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="provideUnit" label="设备提供单位"></el-table-column>
+        <el-table-column prop="startDate" label="进场时间"></el-table-column>
+        <el-table-column prop="useTheUnit" label="设备使用单位"></el-table-column>
+        <el-table-column prop="isCaptain" label="是否 实施机长负责制">
+           <template slot-scope="scope">
+            <span v-if="scope.row.isCaptain === 1">是</span>
+            <span v-if="scope.row.isCaptain === 2">否</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="captainName" label="机长"></el-table-column>
+        <el-table-column prop="captainTotal" label="机长人数"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
     </div>
   </div>
 </template>
 <script>
+import { equipmentApi } from '@/api';
 import btnList from "@/components/BtnList.vue";
 export default {
   name: "EquipmentDetails",
@@ -46,17 +58,12 @@ export default {
   },
   data() {
     return {
-      tableData: [
-        { title: "WG011", title1: "", region: "", date: "", id: "11" },
-        { title: "WG012", title1: "", region: "", date: "", id: "12" },
-        { title: "WG013", title1: "", region: "", date: "", id: "13" },
-        { title: "WG014", title1: "", region: "", date: "", id: "14" },
-        { title: "WG015", title1: "", region: "", date: "", id: "15" },
-        { title: "WG016", title1: "", region: "", date: "", id: "16" }
-      ]
+      tableData: []
     };
   },
-  mounted() {},
+  mounted() {
+    this._requestData()
+  },
   beforeCreate() {
     const loading = this.$loading({
       lock: true,
@@ -70,6 +77,13 @@ export default {
     }, 2000);
   },
   methods: {
+    async _requestData(data, ny) {
+      const _date = new Date();
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+      const response = await equipmentApi.fetchEquipmentsByProject(`${this.$route.params.id}`, `${_date.getFullYear()}-${mm}`);
+      console.log(response, 'woasfsdfs-----------fsdfds')
+      this.tableData = response
+    },
     goBack(res) {
       if (res) {
         this.$router.go(-1);

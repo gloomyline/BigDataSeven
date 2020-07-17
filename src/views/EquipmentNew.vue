@@ -190,6 +190,15 @@ export default {
             return params[0].axisValue+ '</br>数量：'+params[0].data;
           }
         },
+        dataZoom : [
+          {
+            type: 'slider',
+            show: true,
+            start: 0,
+            end: 25,
+            xAxisIndex: [0],
+          },
+        ],
         grid: { top: 30, bottom: 60, },
         //-------------   x轴   -------------------
         xAxis: {

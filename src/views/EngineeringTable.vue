@@ -30,7 +30,8 @@
         <el-table-column label="2020年度变更索赔">
           <el-table-column prop="name4" label="年度计划" min-width="120"></el-table-column>
           <el-table-column prop="name5" label="月度完成" min-width="120"></el-table-column>
-          <el-table-column prop="name6" label="完成比" min-width="120"></el-table-column>
+          <el-table-column prop="name6" label="年度完成" min-width="120"></el-table-column>
+          <el-table-column prop="name7" label="完成比" min-width="120"></el-table-column>
         </el-table-column>
       </el-table>
       <div class="boxfoot"></div>
@@ -91,9 +92,7 @@ export default {
           name14: "",
           zip: "",
           id: 2,
-          children: [
-            
-            
+          children: [ 
           ]
         },
         {
@@ -110,6 +109,7 @@ export default {
           name7: "",
           name8: "",
           name9: "",
+          name10: "",
           zip: "",
           id:3,
           children: [
@@ -148,10 +148,11 @@ export default {
                 name3: tableData.lastPeriodPlan===0||tableData.periodPlan===0?'0%':(tableData.lastPeriodPlan/tableData.periodPlan*100).toFixed(2)+'%',
                 name4: tableData.yplan,
                 name5: tableData.monthFinished,
-                name6: tableData.yfinished===0||tableData.yplan===0?'0%':(tableData.yfinished/tableData.yplan*100).toFixed(2)+'%',
-                name7: "0",
-                name8: "",
+                name6: tableData.yfinished,
+                name7: tableData.yfinished===0||tableData.yplan===0?'0%':(tableData.yfinished/tableData.yplan*100).toFixed(2)+'%',
+                name8: "0",
                 name9: "",
+                name10: "",
                 zip: ""
               })
           }else if(tableData.areaId===1){
@@ -170,10 +171,11 @@ export default {
                 name3: tableData.lastPeriodPlan===0||tableData.periodPlan===0?0:(tableData.lastPeriodPlan/tableData.periodPlan*100).toFixed(2)+'%',
                 name4: tableData.yplan,
                 name5: tableData.monthFinished,
-                name6: tableData.yfinished===0||tableData.yplan===0?'0%':(tableData.yfinished/tableData.yplan*100).toFixed(2)+'%',
-                name7: "0",
-                name8: "",
+                name6: tableData.yfinished,
+                name7: tableData.yfinished===0||tableData.yplan===0?'0%':(tableData.yfinished/tableData.yplan*100).toFixed(2)+'%',
+                name8: "0",
                 name9: "",
+                name10: "",
                 zip: ""
               })
           }else if(tableData.areaId===3){
@@ -192,10 +194,11 @@ export default {
                 name3: tableData.lastPeriodPlan===0||tableData.periodPlan===0?0:(tableData.lastPeriodPlan/tableData.periodPlan*100).toFixed(2)+'%',
                 name4: tableData.yplan,
                 name5: tableData.monthFinished,
-                name6: tableData.yfinished===0||tableData.yplan===0?'0%':(tableData.yfinished/tableData.yplan*100).toFixed(2)+'%',
-                name7: "0",
-                name8: "",
+                name6: tableData.yfinished,
+                name7: tableData.yfinished===0||tableData.yplan===0?'0%':(tableData.yfinished/tableData.yplan*100).toFixed(2)+'%',
+                name8: "0",
                 name9: "",
+                name10: "",
                 zip: ""
               })
 

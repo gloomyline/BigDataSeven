@@ -139,7 +139,6 @@ export default {
     },
     async finishlmonth() {
       const res = await DispatchNewApi.fetchGetDepartProductionData(`${this.$route.params.id}`);
-      console.log(res, '----------------------')
       if(res && res.data) {
         this.echarts_31(res.data.monthly.finished, res.data.monthly.remained)
         this.echarts_32(res.data.yearly.finished, res.data.yearly.remained)
