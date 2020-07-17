@@ -305,18 +305,21 @@ export default {
       let data = []
       let xzDataC = []
       let lylDataC = []
+      let name = []
       if(this.typeC && this.typeC.data && this.typeC.data.length > 0) {
         data = this.typeC.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2))
         xzDataC = this.typeC.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2))
         lylDataC = this.typeC.data.map(item => (item.rate * 100).toFixed(2))
+        name = this.typeC.data.map(item => `${item.deptId}-${item.name}`)
       } else {
         data = []
         xzDataC = []
         lylDataC = []
+        name = []
       }
       const barChartCOption = {
         // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
-        xData: data,
+        xData: name,
         legendData: [
           {
             name: "在用",
@@ -478,8 +481,9 @@ export default {
       });
     },
     drawDoubleBarChart(id, xData, legendData, seriesData, yTitle, isDouble) {
+      console.log(xData.length, '----asdsfdsfds-----------')
       let arr = []
-      if(xData && xData.length > 9) {
+      if(xData && xData.length > 15) {
         arr = [{
           type: 'slider',
           show: true, //flase直接隐藏图形
@@ -487,7 +491,7 @@ export default {
           left: '9%', //滚动条靠左侧的百分比
           bottom: -5,
           start: 0,//滚动条的起始位置
-          end: 22 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+          end: 20 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
         }]
       } else {
         arr = []

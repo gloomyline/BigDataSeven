@@ -110,6 +110,7 @@ export default {
     console.log(this.$route.params)
     this.getTableData()
     this.finishlmonth()
+    this.getWebPreviewInfo()
     this.$nextTick(() => {
       // this.echarts_31();
       // this.echarts_32();
@@ -133,9 +134,13 @@ export default {
       let str = row.casefile.split('\\')
       return str[str.length -1]
     },
+    async getWebPreviewInfo() {
+      const res = await DispatchNewApi.fetchedWebPreviewInfo(`${this.$route.params.id}`);
+      this.tableData = res.data
+    },
     async getTableData() {
       const res = await DispatchNewApi.fetchPlanfinishlMonthData1(`${this.$route.params.id}`);
-      this.tableData = res.data
+      // this.tableData = res.data
     },
     async finishlmonth() {
       const res = await DispatchNewApi.fetchGetDepartProductionData(`${this.$route.params.id}`);

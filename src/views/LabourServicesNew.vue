@@ -77,7 +77,7 @@
           <el-table-column prop="regisnum" label="注册人数"></el-table-column>
           <el-table-column prop="prate" label="占比">
             <template slot-scope="scope">
-              <span v-if="scope.row.prate">{{`(${scope.row.prate}.toFixed())`}}</span>
+              <span v-if="scope.row.prate">{{`${scope.row.prate}%`}}</span>
             </template>
           <!-- <el-table-column prop="prate" label="占比" :formatter="formatter"> -->
           </el-table-column>
