@@ -16,7 +16,6 @@
 </template>
 <script>
 import echarts from "echarts";
-import groupStructure from "@/assets/js/groupStructureData";
 import { HumanNewApi  } from '@/api';
 export default {
   name: "Production",
@@ -28,11 +27,16 @@ export default {
       },
       // 分公司索引，轮播计数器
       count: 0,
-      companies: ['独立项目','华北分公司','城轨分公司','西北分公司','房建分公司',],
-      currentCompany: '独立项目',
+      companies: ['独立项目部','华北分公司','城轨分公司','西北分公司','房建分公司',],
+      currentCompany: '独立项目部',
+      // person details request from server
+      personInfo: [],
+      // interval for every companies data bar display, unit is mileseconds
+      intervalTime: 5000,
     };
   },
-  mounted() {
+  async mounted() {
+    await this.getPersonnerInfo();
     this.$nextTick(() => {
       this.echarts();
     });
@@ -44,16 +48,11 @@ export default {
     },
   },
   created(){
-    this.getPersonnerInfo()
   },
   methods: {
     async getPersonnerInfo(){
-      const _date = new Date();
-        const res = await HumanNewApi.fetchGetPersonnerInfoData();
-        console.log(res, 'xxx')
-    },
-    onSubmit() {
-      console.log("submit!");
+      const res = await HumanNewApi.fetchGetPersonnerInfoData();
+      this.personInfo = res.personnerInfo;
     },
     goBack() {
       this.$router.push({ path: "/" });
@@ -64,35 +63,50 @@ export default {
     echarts() {
       this.drawHumanDetails();
     },
+    _filterCompany(name, isProjects = true) {
+      const filteredProjects = this.personInfo.filter(item => item.conname === name);
+      if(isProjects) {
+        return filteredProjects.map(item => item.name);
+      } else {
+        // 一类劳务人员各项目人数
+        const filteredOs = filteredProjects.map(item => item.countOnum);
+        // 局聘
+        const filteredJs = filteredProjects.map(item => item.countJnum);
+        // 定编
+        const filteredDs = filteredProjects.map(item => item.countDnum);
+        return [filteredOs, filteredJs, filteredDs];
+      }
+    },
     drawHumanDetails(startWith = 0) {
+      const self = this;
       const elHumanDetails = this.$refs.humanDetails;
       const humanDetails = echarts.init(elHumanDetails);
       // simulate human details data
       const dataList = [
         {
-          companyName: '独立项目',
-          projectNames: ['安九铁路', '江汉七桥',],
-          data: [[51, 21], [56, 33], [85, 48,],],
+          companyName: '独立项目部',
+          projectNames: self._filterCompany('独立项目部'),
+          data: self._filterCompany('独立项目部', false),
         },
         {
           companyName: '华北分公司',
-          projectNames: ['太原节点改造', '虎峪河道路改造', '西安西三环', '潇河大桥', '左云十里河桥', '东峰路南延',],
-          data: [[0, 5, 5, 20, 7, 8], [4, 15, 8, 57, 10, 9], [4, 15, 8, 57, 10, 9],],
+          projectNames: self._filterCompany('华北分公司'),
+          data: self._filterCompany('华北分公司', false),
         },
         {
           companyName: '城轨分公司',
-          projectNames: ['建安街','地铁八号线','中北路停车场','武嘉高速','武大高速','新武金堤','七号线','常青花园道路改造',],
-          data: [[15, 10, 5, 10, 25, 2, 32, 0,], [20, 12, 5, 34, 110, 16, 34, 5], [15, 14, 6, 40, 125, 12, 54, 3], ],
+          projectNames: self._filterCompany('城轨分公司'),
+          data: self._filterCompany('城轨分公司', false),
         },
         {
           companyName: '西北分公司',
-          projectNames: ['中兰客专', '靖远黄河桥', '西宁昆仑路',],
-          data: [[20, 4, 10], [40, 8, 10], [45, 10, 15],],
+          projectNames: self._filterCompany('西北分公司'),
+          data: self._filterCompany('西北分公司', false),
         },
         {
           companyName: '房建分公司',
-          projectNames: ['房建项目部', '海口公交专用线', '美兰机场', 'G15沈海高速',],
-          data: [[2, 0, 4, 6], [27, 10, 9, 20], [18, 5, 8, 20]],
+          projectNames: self._filterCompany('房建分公司'),
+          data: self._filterCompany('房建分公司', false),
         },
       ]
       const option = {
@@ -121,6 +135,7 @@ export default {
             type: "category",
             data: dataList[startWith]['projectNames'],
             axisLabel: {
+              // interval: 0,
               textStyle: {
                 color: "rgba(255,255,255,.6)",
                 fontSize: 12
@@ -151,7 +166,7 @@ export default {
           {
             name: "局聘",
             type: "bar",
-            barWidth: 60,
+            barWidth: 50,
             stack: "outside",
             data: dataList[startWith]['data'][1],
           },
@@ -164,8 +179,8 @@ export default {
           {
             name: "定编人数",
             type: "bar",
-            barGap: '10%',
-            barWidth: 60,
+            barGap: '5%',
+            barWidth: 50,
             data: dataList[startWith]['data'][2],
           }
         ]
@@ -181,7 +196,7 @@ export default {
 
       // did not enable animation of human details before, enable here.
       if(!this.intervalHandler) {
-        // this.enableAnimation(humanDetails, option, dataList);
+        this.enableAnimation(humanDetails, option, dataList);
       }
     },
     enableAnimation(humanDetails, option, dataList) {
@@ -201,7 +216,7 @@ export default {
 
         self.currentCompany = dataList[self.count].companyName;
         humanDetails.setOption(option);
-      }, 5000);
+      }, this.intervalTime);
     },
   },
   destroyed() {
