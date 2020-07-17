@@ -1,19 +1,19 @@
 const { axios } = window;
 export default {
-  async fetchTypeA() {
-    const response = await axios.get('/material/typeA');
+  async fetchTypeA(date) {
+    const response = await axios.get('/material/typeA', { params: { ny: date } });
     return response;
   },
-  async fetchTypeB() {
-    const response = await axios.get('/material/typeB');
+  async fetchTypeB(date) {
+    const response = await axios.get('/material/typeB', { params: { ny: date } });
     return response;
   },
-  async fetchTypeC() {
-    const response = await axios.get('/material/typeC');
+  async fetchTypeC(date) {
+    const response = await axios.get('/material/typeC', { params: { ny: date } });
     return response;
   },
-  async fetchRate() {
-    const response = await axios.get('/material/rateMonth');
+  async fetchRate(date) {
+    const response = await axios.get('/material/rateMonth', { params: { ny: date } });
     return response;
   },
   async fetchProjectDetails(deptId) {

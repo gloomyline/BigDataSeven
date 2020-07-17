@@ -13,7 +13,7 @@
           width="80">
         </el-table-column>
         <el-table-column
-          prop="projectname"
+          prop="name"
           label="项目名称"
           min-width="180">
         </el-table-column>

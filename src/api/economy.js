@@ -1,16 +1,16 @@
 const { axios } = window;
 
 export default {
-  async fetchEconomyMeter() {
-    const response = await axios.get('/economy/meter');
+  async fetchEconomyMeter(date) {
+    const response = await axios.get('/economy/meter', { params: { ny: date } });
     return response.data;
   },
-  async fetchEconomyClaim() {
-    const response = await axios.get('/economy/claim');
+  async fetchEconomyClaim(date) {
+    const response = await axios.get('/economy/claim', { params: { ny: date } });
     return response.data;
   },
-  async fetchEconomyTable() {
-    const response = await axios.get('/economy/table');
+  async fetchEconomyTable(date) {
+    const response = await axios.get('/economy/table', { params: { ny: date } });
     return response.data;
   },
   

@@ -108,8 +108,8 @@ export default {
       };
       this.financeData.forEach((financeData) => {
         barChartBOption.xData.push(financeData.projectName);
-        barChartBOption.seriesData[0].data.push(financeData.huikuanlv * 100).toFixed(2);
-        barChartBOption.seriesData[1].data.push(financeData.incomeRate* 100).toFixed(2);
+        barChartBOption.seriesData[0].data.push(financeData.huikuanlv).toFixed(2);
+        barChartBOption.seriesData[1].data.push(financeData.incomeRate).toFixed(2);
       });
       this.drawDoubleBarChart(
         "barChart1",

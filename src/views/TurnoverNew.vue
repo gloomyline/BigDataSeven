@@ -76,14 +76,14 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 1)",
       });
-      this.typeA = await turnoverApi.fetchTypeA();
+      const date = new Date()
+      this.typeA = await turnoverApi.fetchTypeA(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`);
       this.drawTypeA();
-      this.typeB = await turnoverApi.fetchTypeB();
+      this.typeB = await turnoverApi.fetchTypeB(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`);
       this.drawTypeB()
-      this.typeC = await turnoverApi.fetchTypeC();
+      this.typeC = await turnoverApi.fetchTypeC(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`);
       this.drawTypeC();
-      this.pieRate = await turnoverApi.fetchRate();
-      console.log(this.pieRate, '-------------this.pieRate')
+      this.pieRate = await turnoverApi.fetchRate(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`);
       this._drawPie();
       loading.close();
     },
@@ -487,7 +487,7 @@ export default {
           left: '9%', //滚动条靠左侧的百分比
           bottom: -5,
           start: 0,//滚动条的起始位置
-          end: 20 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+          end: 22 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
         }]
       } else {
         arr = []

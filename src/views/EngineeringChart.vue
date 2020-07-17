@@ -46,13 +46,15 @@ export default {
   },
   methods: {
     initData(){
-      let economyMeter =  economyApi.fetchEconomyMeter().then((data)=>{
+      const _date = new Date();
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+      let economyMeter =  economyApi.fetchEconomyMeter(`${_date.getFullYear()}-${mm}`).then((data)=>{
         this.economyMeter = data;
         this.loadMeterChart();
         console.log(this.economyMeter);
       });
       
-      let economyClaim =  economyApi.fetchEconomyClaim().then((data)=>{
+      let economyClaim =  economyApi.fetchEconomyClaim(`${_date.getFullYear()}-${mm}`).then((data)=>{
         this.economyClaim = data;
         this.loadClaimChart();
       });
@@ -113,11 +115,26 @@ export default {
       this.$router.push({ path: "/" });
     },
     drawSingleBarChart(id, xData, yTitle, seriesData) {
+      let arr = []
+      if(xData && xData.length > 9) {
+        arr = [{
+          type: 'slider',
+          show: true, //flase直接隐藏图形
+          xAxisIndex: [0],
+          left: '9%', //滚动条靠左侧的百分比
+          bottom: -5,
+          start: 0,//滚动条的起始位置
+          end: 22 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+        }]
+      } else {
+        arr = []
+      }
       var myChart = echarts.init(document.getElementById(id));
       var option = {
         tooltip: {
           trigger: "axis",
         },
+        dataZoom: arr,
         grid: { left: 48, right: 48, },
         //-------------   x轴   -------------------
         xAxis: {

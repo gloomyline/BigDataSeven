@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       current: 0,
-      tabs: ['公司施工总体情况', '上月计划完成情况', '本月项目施工计划', ],
+      tabs: ['公司施工总体情况', '上月计划完成情况', '下月项目施工计划', ],
       currentComponent: 'ProductionSummaries',
       componentList: ['ProductionSummaries', 'PreviousMonth', 'CurrentMonth'],
       allCompany: {}, 

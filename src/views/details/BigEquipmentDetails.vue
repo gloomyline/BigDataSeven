@@ -1,7 +1,7 @@
 <template>
   <div class="equipmentDetails">
     <div class="head">
-      <h1>武嘉项目部设备情况</h1>
+      <h1>{{this.$route.params.name}}项目部设备情况</h1>
       <div class="weather">
         <el-button
           type="primary"

@@ -17,7 +17,11 @@
         <el-table-column prop="region" label="项目名称"></el-table-column>
         <el-table-column prop="name" label="营业收入"></el-table-column>
         <el-table-column prop="name1" label="营业利润"></el-table-column>
-        <el-table-column prop="name2" label="计价回款率"></el-table-column>
+        <el-table-column prop="name2" label="计价回款率">
+          <!-- <template slot-scope="scope">
+            <span v-if="scope.row.name2">{{``}}</span>
+          </template> -->
+        </el-table-column>
         <el-table-column prop="name3" label="计价收入率"></el-table-column>
         <el-table-column prop="name4" label="人月均经费"></el-table-column>
       </el-table>
@@ -105,8 +109,8 @@ export default {
               region:financeData.projectName ,
               name: financeData.income,
               name1: financeData.interestRate,
-              name2: financeData.huikuanlv,
-              name3: financeData.incomeRate,
+              name2: `${financeData.huikuanlv}%`,
+              name3: `${financeData.incomeRate}%`,
               name4: "0",
               name5: "",
               zip: ""
@@ -124,8 +128,8 @@ export default {
               region:financeData.projectName ,
               name: financeData.income,
               name1: financeData.interestRate,
-              name2: financeData.huikuanlv,
-              name3: financeData.incomeRate,
+              name2: `${financeData.huikuanlv}%`,
+              name3: `${financeData.incomeRate}%`,
               name4: "0",
               name5: "",
               zip: ""

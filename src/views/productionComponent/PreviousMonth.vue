@@ -31,6 +31,9 @@
           prop="finishrate"
           label="完成比例"
           min-width="180">
+          <template slot-scope="scope">
+            <span v-if="scope.row.finishrate">{{`${scope.row.finishrate}%`}}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="score"

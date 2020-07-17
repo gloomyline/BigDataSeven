@@ -129,7 +129,9 @@ export default {
   },
   methods: {
     ajaxData(){
-      economyApi.fetchEconomyTable().then((data)=>{
+      const _date = new Date();
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+      economyApi.fetchEconomyTable(`${_date.getFullYear()}-${mm}`).then((data)=>{
         const ajaxData = data;
         ajaxData.forEach(tableData => {
           if(tableData.areaId===2){

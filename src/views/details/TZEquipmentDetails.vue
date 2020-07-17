@@ -35,8 +35,22 @@
         <el-table-column prop="power" label="功率(kW)"></el-table-column>
         <el-table-column prop="valueOf" label="原值(元)"></el-table-column>
         <el-table-column prop="location" label="现存地"></el-table-column>
-        <el-table-column prop="technicalConditions" label="技术状况"></el-table-column>
-        <el-table-column prop="usingState" label="使用状态"></el-table-column>
+        <el-table-column prop="technicalConditions" label="技术状况">
+          <template slot-scope="scope">
+            <span v-if="scope.row.technicalConditions === 1">良好</span>
+            <span v-if="scope.row.technicalConditions === 2">一般</span>
+            <span v-if="scope.row.technicalConditions === 3">差</span>
+            <span v-if="scope.row.technicalConditions === 4">较差</span>
+            <span v-if="scope.row.technicalConditions === 5">极差</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="usingState" label="使用状态">
+          <template slot-scope="scope">
+            <span v-if="scope.row.usingState === 1">再用</span>
+            <span v-if="scope.row.usingState === 2">闲置</span>
+            <span v-if="scope.row.usingState === 3">长久闲置</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="note" label="备注"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>

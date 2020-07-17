@@ -3030,7 +3030,7 @@ export default {
           }
         },
         legend: {
-          top: "79%",
+          top: "70%",
           itemWidth: 10,
           itemHeight: 10,
           data: ["完成"],
