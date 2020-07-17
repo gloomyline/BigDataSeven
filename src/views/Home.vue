@@ -122,6 +122,8 @@
           <div class="alltitle" @click="goRouter('Engineering')">工程经济</div>
           <div class="sb" id="jj1"></div>
           <div class="sb" id="jj2"></div>
+          <!-- <div class="sb">1111</div>
+          <div class="sb">1222</div> -->
           <span class="unit" style="right: 30px;top: 10px;">单位：万元</span>
         </dv-border-box-1>
       </li>
@@ -278,8 +280,8 @@ export default {
       this.sbNumConfig.color = ["#27d08a", "#066eab"];
       this.sbTypeConfig.color = ["#2f89cf", "#0f63d6"];
       this.echarts_31(response.data.production.monthly)
-      this.echarts_32(response.data.production.sofar)
-      this.echarts_33(response.data.production.yearly)
+      this.echarts_32(response.data.production.yearly)
+      this.echarts_33(response.data.production.sofar)
       this.echarts_2(response.data.materials.material, response.data.materials.rate)
       this.echarts_1(response.data.labour.useLaborCount, response.data.labour.thisYearLaborCount, response.data.labour.allLaborCount, response.data.labour.moth);
     },
@@ -1564,9 +1566,9 @@ export default {
         },
         grid: {
           left: "20",
-          top: "50",
+          top: "0",
           right: "30",
-          bottom: "10",
+          bottom: "0",
           containLabel: true
         },
 
@@ -1608,7 +1610,7 @@ export default {
             axisLabel: {
               textStyle: {
                 color: "rgba(255,255,255,.6)",
-                fontSize: 12
+                fontSize: 12,
               }
             },
 
@@ -2379,6 +2381,12 @@ export default {
       var myChart = echarts.init(document.getElementById("jj1"));
 
       var option = (option = {
+        grid: {  
+          left: '8%',  
+          right: '0',  
+          bottom: '0',  
+          containLabel: true  
+        },
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -2731,6 +2739,12 @@ export default {
             );
           }
         },
+        grid: {  
+          left: '8%',  
+          right: '0',  
+          bottom: '0',  
+          containLabel: true  
+        },
         xAxis: {
           type: "category",
           data: ["年度变更索赔"],
@@ -3016,7 +3030,7 @@ export default {
           }
         },
         legend: {
-          top: "70%",
+          top: "79%",
           itemWidth: 10,
           itemHeight: 10,
           data: ["完成"],

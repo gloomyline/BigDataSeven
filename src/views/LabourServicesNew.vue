@@ -76,6 +76,9 @@
           <el-table-column prop="worknum" label="作业人数"></el-table-column>
           <el-table-column prop="regisnum" label="注册人数"></el-table-column>
           <el-table-column prop="prate" label="占比">
+            <template slot-scope="scope">
+              <span v-if="scope.row.prate">{{`(${scope.row.prate}.toFixed())`}}</span>
+            </template>
           <!-- <el-table-column prop="prate" label="占比" :formatter="formatter"> -->
           </el-table-column>
         </el-table>
@@ -159,7 +162,7 @@ export default {
       this.$router.push({ path: "/" });
     },
     openDetails(row) {
-      console.log(row, '-----------')
+      // console.log(row, '-----------')
       this.$router.push({ 
         name: "LabourServicesDetails",
         params: {
@@ -171,6 +174,7 @@ export default {
       this.echarts2(resRow);
     },
     echarts(left) {
+      console.log(left, '-------SDDDDDD--------------------')
       let data = []
       for(let i=0; i<left.length; i++){
         data.push(i+1)
@@ -195,7 +199,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: [1, 2],
+            data,
             axisTick: {
               alignWithLabel: true,
             },
@@ -229,7 +233,7 @@ export default {
             name: "劳务队伍数",
             type: "bar",
             barWidth: "40%",
-            data: [40, 2],
+            data: left,
             itemStyle: {
               normal: {
                 color: function(params) {

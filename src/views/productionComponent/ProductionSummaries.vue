@@ -420,7 +420,7 @@
         }
         res.data.sixAverage.forEach((item, index) => {
           let obj = {
-            name: item.deptname+index,
+            name: item.deptname,
             value: item.cost === null ? 0 : item.cost
           }
           averagecost.data.push(obj)

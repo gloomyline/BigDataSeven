@@ -76,11 +76,10 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 1)",
       });
-      // this.typeA = await turnoverApi.fetchTypeA();
-      console.log(this.typeA, '----------sdfsdfsdfsdfdsf------')
+      this.typeA = await turnoverApi.fetchTypeA();
       this.drawTypeA();
       this.typeB = await turnoverApi.fetchTypeB();
-      this.drawTypeB();
+      this.drawTypeB()
       this.typeC = await turnoverApi.fetchTypeC();
       this.drawTypeC();
       this.pieRate = await turnoverApi.fetchRate();
@@ -88,9 +87,18 @@ export default {
       loading.close();
     },
     drawTypeA() {
+      let fcData = []
+      let xDataA = []
+      if(this.typeA && this.typeA.data && this.typeA.data.length > 0) {
+        fcData = this.typeA.data.map(item => item.isSealed === 0 ? item.isSealed : (item.isSealed).toFixed(2))
+        xDataA = this.typeA.data.map(item => `${item.deptId}-${item.name}`)
+      } else {
+        fcData = []
+        xDataA = []
+      }
       const barChartAOption = {
         // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
-        xData: this.typeA.data.map(item => `${item.deptId}-${item.name}`),
+        xData: xDataA,
         legendData: [
           {
             name: "在用",
@@ -126,7 +134,7 @@ export default {
             name: "封存",
             type: "bar",
             // data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
-            data: this.typeA.data.map(item => item.isSealed === 0 ? item.isSealed : (item.isSealed).toFixed(2)),
+            data: fcData,
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -155,9 +163,21 @@ export default {
       ); 
     },
     drawTypeB() {
+      let data = []
+      let lylDataB = []
+      let xzDataB = []
+      if(this.typeB && this.typeB.data && this.typeB.data.length > 0) {
+        data = this.typeB.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2))
+        xzDataB = this.typeB.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2))
+        lylDataB = this.typeB.data.map(item => (item.rate * 100).toFixed(2))
+      } else {
+        data = []
+        xzDataB = []
+        lylDataB = []
+      }
       const barChartBOption = {
         // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
-        xData: this.typeB.data.map(item => `${item.deptId}-${item.name}`),
+        xData: data,
         legendData: [
           {
             name: "在用",
@@ -171,7 +191,7 @@ export default {
             name: "在用",
             type: "bar",
             // data: [0, 0, 7844, 25516, 460, 5004, 747, 4413, 0, 0, 5711, 4544,],
-            data: this.typeB.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
+            data,
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -193,7 +213,7 @@ export default {
             name: "闲置",
             type: "bar",
             // data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
-            data: this.typeB.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2)),
+            data: xzDataB,
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -229,7 +249,7 @@ export default {
             areaStyle:{
                 color: "rgba(5,140,255, 0.2)"
             },
-            data: this.typeB.data.map(item => (item.rate * 100).toFixed(2)),
+            data: lylDataB,
             // data: [100, 97, 100, 100, 100, 0, 0, 100, 85, 70, 60, 85],
           }
         ],
@@ -244,9 +264,21 @@ export default {
       );
     },
     drawTypeC() {
+      let data = []
+      let xzDataC = []
+      let lylDataC = []
+      if(this.typeC && this.typeC.data && this.typeC.data.length > 0) {
+        data = this.typeC.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2))
+        xzDataC = this.typeC.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2))
+        lylDataC = this.typeC.data.map(item => (item.rate * 100).toFixed(2))
+      } else {
+        data = []
+        xzDataC = []
+        lylDataC = []
+      }
       const barChartCOption = {
         // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
-        xData: this.typeC.data.map(item => `${item.deptId}-${item.name}`),
+        xData: data,
         legendData: [
           {
             name: "在用",
@@ -260,7 +292,7 @@ export default {
             name: "在用",
             type: "bar",
             // data: [0, 0, 7844, 25516, 460, 5004, 747, 4413, 0, 0, 5711, 4544,],
-            data: this.typeC.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
+            data,
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -282,7 +314,7 @@ export default {
             name: "闲置",
             type: "bar",
             // data: [3364, 272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 177,],
-            data: this.typeC.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2)),
+            data: xzDataC,
             // stack: "使用情况",
             barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
@@ -319,7 +351,7 @@ export default {
                 color: "rgba(5,140,255, 0.2)"
             },
             // data: [100, 97, 100, 100, 100, 0, 0, 100, 85, 70, 60, 85],
-            data: this.typeC.data.map(item => (item.rate * 100).toFixed(2)),
+            data: lylDataC,
           }
         ],
       };
@@ -340,6 +372,18 @@ export default {
       this.$router.push({ path: "/" });
     },
     _drawPie() {
+      let isUsing = 0
+      let isUnused = 0
+      let isSealed = 0
+      if(this.pieRate && this.pieRate.data && this.pieRate.data.length > 0) {
+        isUsing = this.pieRate.data.isUsing
+        isUnused = this.pieRate.data.isUnused
+        isSealed = this.pieRate.data.isSealed
+      } else {
+        isUsing = 0
+        isUnused = 0
+        isSealed = 0
+      }
       const pie = echarts.init(this.$refs.materialAPie);
       const option = {
         title: [
@@ -368,7 +412,8 @@ export default {
             //   { value: 3636, name: "闲置", },
             //   { value: 177, name: '封存', },
             // ],
-            data: [{ name: '在用', value: (this.pieRate.data.isUsing) }, { name: '闲置', value: (this.pieRate.data.isUnused) }, { name: '封存', value: (this.pieRate.data.isSealed) }],
+            data: [{ name: '在用', value: isUsing}, { name: '闲置', value: isUnused}, { name: '封存', value: isSealed }],
+            // data: [{ name: '在用', value: (this.pieRate.data.isUsing) }, { name: '闲置', value: (this.pieRate.data.isUnused) }, { name: '封存', value: (this.pieRate.data.isSealed) }],
             itemStyle: {
               normal: {
                 label: {

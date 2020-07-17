@@ -154,6 +154,15 @@ export default {
         //     fontSize: 17,
         //   },
         // },
+        dataZoom : [
+          {
+            type: 'slider',
+            show: true,
+            start: 0,
+            end: 25,
+            xAxisIndex: [0],
+          },
+        ],
         tooltip: {
           trigger: "axis",
         },
