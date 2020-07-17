@@ -104,6 +104,14 @@ export default {
         pieOption.innerCircleData
       );
       // 项目机械设备，以项目来划分
+      let arr = []
+      self.projectEquipments.forEach(item => {
+        let obj = {
+          name: item.projectName,
+          id: item.projectId
+        }
+        arr.push(obj)
+      })
       const barChartBOption = {
         xData: self.projectEquipments.map(item => item.projectName),
         legendData: [
@@ -156,13 +164,15 @@ export default {
             },
           },
         ],
+        arr,
       };
       this.drawDoubleBarChart(
         "barChart2",
         barChartBOption.xData,
         barChartBOption.legendData,
         barChartBOption.seriesData,
-        "数量"
+        "数量",
+        barChartBOption.arr
       );
     },
     goBack() {
@@ -320,7 +330,7 @@ export default {
         myChart.resize();
       });
     },
-    drawDoubleBarChart(id, xData, legendData, seriesData, yTitle) {
+    drawDoubleBarChart(id, xData, legendData, seriesData, yTitle, projectIdArr) {
       var myChart = echarts.init(document.getElementById(id));
       var _that = this;
       var option = {
@@ -457,10 +467,24 @@ export default {
       };
       myChart.setOption(option);
       myChart.on("click", function(params) {
+        let a = '{"error":1,"data":"用户不存在"}'
         if (params.componentType == "xAxis") {
-          // alert("单击了" + params.value + "x轴标签");
-          _that.$router.push({ name: "BigEquipmentDetails" });
+          projectIdArr.forEach(item => {
+            if(item.name === params.value) {
+               _that.$router.push({ 
+                name: "BigEquipmentDetails",
+                params: {
+                  name: item.name,
+                  id: item.id
+                }
+              });
+            }
+          })
+            // alert("单击了" + params.value + "x轴标签");
+         
         }
+        
+        
       });
       window.addEventListener("resize", function() {
         myChart.resize();

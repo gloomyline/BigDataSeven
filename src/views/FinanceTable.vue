@@ -69,7 +69,7 @@ export default {
   methods: {
     initData(){
       const date = new Date();
-      financeApi.fetchFinance(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()+1}`).then((data)=>{
+      financeApi.fetchFinance(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`).then((data)=>{
         this.financeData = data.data;
         this.dealData();
       })
@@ -77,6 +77,7 @@ export default {
     dealData(){
       let flagCom = [];
       this.financeData.forEach((financeData) => {
+        console.log(financeData.area, '-------------financeData.area')
         if(!flagCom.includes(financeData.area)){
           flagCom.push(financeData.area);
           this.tableData.push(

@@ -41,7 +41,7 @@ export default {
   methods: {
     initData(){
       const date = new Date()
-      financeApi.fetchFinance(`${date.getFullYear()}-0${date.getMonth()+1}`).then((data)=>{
+      financeApi.fetchFinance(`${date.getFullYear()}-0${date.getMonth()}`).then((data)=>{
         this.financeData = data.data;
         this.initDoubleChart();
         this.initSingleChart();
@@ -108,8 +108,8 @@ export default {
       };
       this.financeData.forEach((financeData) => {
         barChartBOption.xData.push(financeData.projectName);
-        barChartBOption.seriesData[0].data.push(financeData.huikuanlv);
-        barChartBOption.seriesData[1].data.push(financeData.incomeRate);
+        barChartBOption.seriesData[0].data.push(financeData.huikuanlv * 100).toFixed(2);
+        barChartBOption.seriesData[1].data.push(financeData.incomeRate* 100).toFixed(2);
       });
       this.drawDoubleBarChart(
         "barChart1",

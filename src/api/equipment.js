@@ -1,7 +1,7 @@
 const { axios } = window;
 
 export default {
-  async fetchEquipments(ny = `${(new Date()).getFullYear()}-${('00' + ((new Date()).getMonth() + 1)).substr(-2)}`) {
+  async fetchEquipments(ny = `${(new Date()).getFullYear()}-${('00' + ((new Date()).getMonth())).substr(-2)}`) {
     const response = await axios.get('/equipment/equipment', { params: { ny } });
     return response.data;
   },
@@ -9,4 +9,8 @@ export default {
     const response = await axios.get('/equipment/findByProjectId', { params: { projectId } });
     return response.data;
   },
+  async fetchFindAllEquipmentData(ny = `${(new Date()).getFullYear()}-${('00' + ((new Date()).getMonth())).substr(-2)}`) {
+    const response = await axios.get('/equipment/findAllEquipment', { params: { ny } });
+    return response.data;
+  }
 }

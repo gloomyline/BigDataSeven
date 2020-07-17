@@ -1,7 +1,7 @@
 <template>
   <div class="equipmentDetails">
     <div class="head">
-      <h1>武嘉项目部设备情况</h1>
+      <h1>项目部设备情况</h1>
       <div class="weather">
         <el-button
           type="primary"
@@ -24,26 +24,27 @@
         default-expand-all
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
-        <el-table-column prop="title" label="机械类别" min-width="120"></el-table-column>
-        <el-table-column prop="title1" label="主要机械设备" min-width="100"></el-table-column>
-        <el-table-column prop="region" label="管理编号"></el-table-column>
-        <el-table-column prop="date" label="机械名称"></el-table-column>
-        <el-table-column prop="date" label="型号"></el-table-column>
-        <el-table-column prop="date" label="规格"></el-table-column>
-        <el-table-column prop="date" label="生产厂家"></el-table-column>
-        <el-table-column prop="date" label="购置日期"></el-table-column>
-        <el-table-column prop="date" label="功率(kW)"></el-table-column>
-        <el-table-column prop="date" label="原值(元)"></el-table-column>
-        <el-table-column prop="date" label="现存地"></el-table-column>
-        <el-table-column prop="date" label="技术状况"></el-table-column>
-        <el-table-column prop="date" label="使用状态"></el-table-column>
-        <el-table-column prop="date" label="备注"></el-table-column>
+        <el-table-column prop="equipmentType" label="机械类别" min-width="120"></el-table-column>
+        <el-table-column prop="necessaryEquipment" label="主要机械设备" min-width="100"></el-table-column>
+        <el-table-column prop="number" label="管理编号"></el-table-column>
+        <el-table-column prop="equipmentName" label="机械名称"></el-table-column>
+        <el-table-column prop="model" label="型号"></el-table-column>
+        <el-table-column prop="specifications" label="规格"></el-table-column>
+        <el-table-column prop="manufacturer" label="生产厂家"></el-table-column>
+        <el-table-column prop="purchaseDate" label="购置日期"></el-table-column>
+        <el-table-column prop="power" label="功率(kW)"></el-table-column>
+        <el-table-column prop="valueOf" label="原值(元)"></el-table-column>
+        <el-table-column prop="location" label="现存地"></el-table-column>
+        <el-table-column prop="technicalConditions" label="技术状况"></el-table-column>
+        <el-table-column prop="usingState" label="使用状态"></el-table-column>
+        <el-table-column prop="note" label="备注"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
     </div>
   </div>
 </template>
 <script>
+import { equipmentApi } from '@/api';
 import btnList from "@/components/BtnList.vue";
 export default {
   components: {
@@ -51,57 +52,12 @@ export default {
   },
   data() {
     return {
-      tableData2: [
-        {
-          title: "土石方机械",
-          title1: "",
-          region: "",
-          date: "",
-          id: "1",
-          children: [
-            {
-              title: "",
-              title1: "",
-              region: "",
-              date: "",
-              id: "11"
-            },
-            {
-              title: "",
-              title1: "",
-              region: "",
-              date: "",
-              id: "12"
-            }
-          ]
-        },
-        {
-          title: "动力  机械",
-          title1: "",
-          region: "",
-          date: "",
-          id: "2",
-          children: [
-            {
-              title: "",
-              title1: "",
-              region: "",
-              date: "",
-              id: "21"
-            },
-            {
-              title: "",
-              title1: "",
-              region: "",
-              date: "",
-              id: "22"
-            }
-          ]
-        }
-      ]
+      tableData2: []
     };
   },
-  mounted() {},
+  mounted() {
+    this._init()
+  },
   beforeCreate() {
     const loading = this.$loading({
       lock: true,
@@ -115,6 +71,19 @@ export default {
     }, 2000);
   },
   methods: {
+    async _init() {
+      const response = await equipmentApi.fetchFindAllEquipmentData();
+      response.forEach((element, index) => {
+        this.$set(element, 'id', index+1)
+        this.$set(element, 'necessaryEquipment', '-')
+        if(element.children && element.children.length > 0) {
+          element.children.forEach(i => {
+            this.$set(i, 'equipmentType','')
+          })
+        }
+      });
+      this.tableData2 = response
+    },
     goBack(res) {
       if (res) {
         this.$router.go(-1);

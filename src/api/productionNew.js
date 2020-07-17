@@ -7,12 +7,12 @@ export default {
   },
   // 自营
   async fetchSelfBusinessData(date) {
-    const response = await axios.get('/production/selfSupport', { params: { fillDate: date } });
+    const response = await axios.get('/production/selfSupport', { params: { ny: date } });
     return response;
   },
   // 联营J
   async fetchJoinSupportData(date) {
-    const response = await axios.get('/production/joinSupport', { params: { fillDate: date } });
+    const response = await axios.get('/production/joinSupport', { params: { ny: date } });
     return response;
   },
   // 工期滞后

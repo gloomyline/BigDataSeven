@@ -76,7 +76,7 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 1)",
       });
-      this.typeA = await turnoverApi.fetchTypeA();
+      // this.typeA = await turnoverApi.fetchTypeA();
       console.log(this.typeA, '----------sdfsdfsdfsdfdsf------')
       this.drawTypeA();
       this.typeB = await turnoverApi.fetchTypeB();
@@ -104,7 +104,7 @@ export default {
             name: "在用",
             type: "bar",
             // data: [17983-3364, 0, 2705, 7367, 0, 513, 81, 87, 0, 0, 1083, 2607,],
-            data: this.typeA.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2)),
+            data: [],
             // stack: "使用情况",
             barWidth: "10", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距

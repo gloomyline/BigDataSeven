@@ -74,7 +74,7 @@ export default {
          singleBarOption.xData.push(claim.name);
          singleBarOption.seriesData[0].value.push(claim.charge);
          singleBarOption.seriesData[1].value.push(claim.output);
-         singleBarOption.seriesData[2].value.push(claim.claim);
+         singleBarOption.seriesData[2].value.push(claim.proportion);
        });
       this.drawSingleBarChart(
         "barChart1",
@@ -97,6 +97,7 @@ export default {
          singleBarOption2.seriesData[0].value.push(claim.planed);
          singleBarOption2.seriesData[1].value.push(claim.finished);
          singleBarOption2.seriesData[2].value.push(claim.claim);
+
        });
       this.drawSingleBarChart(
       "barChart2",

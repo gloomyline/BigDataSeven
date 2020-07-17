@@ -219,7 +219,6 @@ export default {
       this.provinceProJectsArr = []
       this.mapPoint = {}
       const response = await homeApi.fetchHomeMapData();
-      // console.log(response, '----------')
       response.data.forEach(item => {
         let name = item.name
         if(item.point !== '') {
@@ -261,11 +260,11 @@ export default {
     async initData() {
       // request home api
       const _date = new Date();
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth()
       const response = await homeApi.fetchHomeData(
-        `${_date.getFullYear()}-${_date.getMonth()}`
+        `${_date.getFullYear()}-${mm}`
       );
       this.manpower = response.data.manpower
-      console.log(response.data, '-------dasdsad-------')
       const data = response.data;
       this._initEquipmentData(data);
       this._initEconomyData(data);
@@ -1513,7 +1512,6 @@ export default {
           if (citySource) {
             var url = "./map/" + citySource + ".json";
             $.get(url, function(response) {
-              // console.log(response);
               curGeoJson = response;
               echarts.registerMap(mapName, response);
               handleEvents.resetOption(_self, option, mapName);

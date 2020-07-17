@@ -21,7 +21,7 @@ let config = {
     // env for development
     ? '/api'
     // env for production
-    : 'http://login.honengelec.com:8108',
+    : 'http://211.149.184.113:8218',
 };
 
 const _axios = axios.create(config);

@@ -122,7 +122,7 @@ export default {
     // 劳务队伍
     async initData() {
       const _date = new Date();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}月` : `${_date.getMonth()+1}月`;
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}月` : `${_date.getMonth()}月`;
       let year = `${_date.getFullYear()}年`
       let arr = await LabourServicesNewApi.fetchLabelteamworkrateData(`${year}${mm}`)
       this.tableData2 = arr.data.right
@@ -132,7 +132,7 @@ export default {
     // 劳务队伍作业人数占比
     async fetchedLabelteamnumData() {
       const _date = new Date();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}月` : `${_date.getMonth()+1}月`;
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}月` : `${_date.getMonth()}月`;
       let year = `${_date.getFullYear()}年`
       let arr = await LabourServicesNewApi.fetchedLabelteamnumData(`${year}${mm}`)
       this.tableData = arr.data.right

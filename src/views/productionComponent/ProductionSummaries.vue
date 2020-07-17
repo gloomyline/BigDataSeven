@@ -293,7 +293,7 @@
           seriesData: this.seriesData
         };
         const _date = new Date();
-        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
+        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
         const res = await productionNewApi.fetchJoinSupportData(`${_date.getFullYear()}-${mm}`);
         this.seriesData.forEach(item => {
           item.data = []
@@ -376,7 +376,7 @@
         };
         // request home api
         const _date = new Date();
-        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
+        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
         const res = await productionNewApi .fetchSelfBusinessData(`${_date.getFullYear()}-${mm}`);
         //  产值赋值
         this.seriesData.forEach(item => {
@@ -452,8 +452,8 @@
       async getLagList() {
         // request home api
         const _date = new Date();
-        this.month = _date.getMonth()+1;
-        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
+        this.month = _date.getMonth();
+        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
         let res = await productionNewApi  .fetchLagListData(`${_date.getFullYear()}-${mm}`);
         const lateRateColors = ['#fb7293', '#ff9f7f', '#ffdb5c', '#9fe6b8',];
         const lateRateValues = [30, 20, 10, 0];
@@ -491,8 +491,8 @@
         this.pieOption.pieData = []
         // request home api
         const _date = new Date();
-        this.month = _date.getMonth()+1;
-        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()+1}` : _date.getMonth()+1;
+        this.month = _date.getMonth();
+        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
         this.getDeptNumName()
         this.allCompany = await productionNewApi .fetchProManData(`${_date.getFullYear()}-${mm}`);
         // this.total = this.arr.reduce((n,m) => n + m);
