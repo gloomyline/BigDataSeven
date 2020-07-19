@@ -199,7 +199,7 @@ export default {
             xAxisIndex: [0],
           },
         ],
-        grid: { top: 30, bottom: 60, },
+        grid: { top: 30, bottom: 165, },
         //-------------   x轴   -------------------
         xAxis: {
           show: true, //---是否显示
@@ -235,7 +235,7 @@ export default {
             show: true, //---是否显示
             inside: false, //---是否朝内
             rotate: 0, //---旋转角度
-            margin: 5, //---刻度标签与轴线之间的距离
+            margin: 10, //---刻度标签与轴线之间的距离
             formatter: function(value) {
               return value.split('').join('\n');
             },

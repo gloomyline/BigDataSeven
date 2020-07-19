@@ -1566,7 +1566,7 @@ export default {
         },
         grid: {
           left: "20",
-          top: "0",
+          top: "10",
           right: "30",
           bottom: "0",
           containLabel: true
@@ -1613,7 +1613,6 @@ export default {
                 fontSize: 12,
               }
             },
-
             splitLine: {
               lineStyle: {
                 color: "rgba(255,255,255,.1)"
@@ -1761,7 +1760,7 @@ export default {
                 }
               }
             },
-            data: useLaborCount
+            data: allLaborCount
           }
         ]
       };

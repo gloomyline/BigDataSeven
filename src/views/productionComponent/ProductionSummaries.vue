@@ -165,6 +165,50 @@
           unit: "人均产值",
           showValue: true,
         },
+        joinSeriesData: [
+          {
+            name: "计划",
+            type: "bar",
+            data: [],
+            // stack: "使用情况",
+            barWidth: "30", //---柱形宽度
+            barCategoryGap: "20%", //---柱形间距
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: "top", //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 12,
+            },
+            itemStyle: {
+              //---图形形状
+              color: "rgb(54,169,206)",
+              barBorderRadius: [15, 15, 0, 0],
+            },
+          },
+          {
+            name: "完成",
+            type: "bar",
+            data: [30911, 85897, 336029],
+            // stack: "使用情况",
+            barWidth: "30", //---柱形宽度
+            barCategoryGap: "20%", //---柱形间距
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: "top", //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 12,
+            },
+            itemStyle: {
+              //---图形形状
+              color: "rgb(202,249,130)",
+              barBorderRadius: [15, 15, 0, 0],
+            },
+          },
+        ],
         seriesData: [
           {
             name: "计划",
@@ -278,8 +322,8 @@
           }
         })
       },
-      // 联营
-      async joinSupport() {
+       // 自营
+      async selfSupport() {
         const barChartZYOption = {
           xData: ["月度", "年度", "开累"],
           legendData: [
@@ -292,9 +336,11 @@
           ],
           seriesData: this.seriesData
         };
+        // request home api
         const _date = new Date();
         let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-        const res = await productionNewApi.fetchJoinSupportData(`${_date.getFullYear()}-${mm}`);
+        const res = await productionNewApi .fetchSelfBusinessData(`${_date.getFullYear()}-${mm}`);
+        //  产值赋值
         this.seriesData.forEach(item => {
           item.data = []
           let data = [Number(res.data.proinfo.monthly.remained).toFixed(2), Number(res.data.proinfo.yearly.remained).toFixed(2), Number(res.data.proinfo.sofar.remained).toFixed(2)]
@@ -306,6 +352,86 @@
             this.$set(item, 'data', downData)
           }
         })
+        //  echarts重新渲染
+        this.drawDoubleBarChart(
+          "barChart1",
+          barChartZYOption.xData,
+          barChartZYOption.legendData,
+          barChartZYOption.seriesData,
+          "产值"
+        );
+        let averagecost = {
+          data: [],
+          colors: [
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "#e062ae",
+            "#e062ae",
+            "#e062ae",
+          ],
+          unit: "人均产值",
+          showValue: true,
+        }
+        res.data.sixAverage.forEach((item, index) => {
+          let obj = {
+            name: item.deptname,
+            value: item.cost === null ? 0 : item.cost
+          }
+          averagecost.data.push(obj)
+        })
+        this.rjczConfig = {...averagecost}
+        let sixTotal = {
+          data: [],
+          colors: [
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "#e062ae",
+            "#e062ae",
+            "#e062ae",
+          ],
+          unit: "产值",
+          showValue: true,
+        }
+        res.data.sixTotal.forEach((item, index) => {
+          let obj = {
+            name: item.deptname,
+            value: item.cost === null ? 0 : item.cost
+          }
+          sixTotal.data.push(obj)
+        })
+        this.czConfig = {...sixTotal}
+      },
+      // 联营
+      async joinSupport() {
+        const _date = new Date();
+        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+        const res = await productionNewApi.fetchJoinSupportData(`${_date.getFullYear()}-${mm}`);
+        console.log(res.data.proinfo, '--------res')
+        this.joinSeriesData.forEach(item => {
+          item.data = []
+          let data = [Number(res.data.proinfo.monthly.remained).toFixed(2), Number(res.data.proinfo.yearly.remained).toFixed(2), Number(res.data.proinfo.sofar.remained).toFixed(2)]
+          let downData = [Number(res.data.proinfo.monthly.finished).toFixed(2), Number(res.data.proinfo.yearly.finished).toFixed(2), Number(res.data.proinfo.sofar.finished).toFixed(2)]
+          if(item.name === '计划') {
+            this.$set(item, 'data', data)
+          }
+          if(item.name === '完成') {
+            this.$set(item, 'data', downData)
+          }
+        })
+        const barChartZYOption = {
+          xData: ["月度", "年度", "开累"],
+          legendData: [
+            {
+              name: "计划",
+            },
+            {
+              name: "完成",
+            },
+          ],
+          seriesData: this.joinSeriesData
+        };
         this.drawDoubleBarChart(
           "barChart2",
           barChartZYOption.xData,
@@ -360,94 +486,6 @@
           this.czConfig2 = {...sixTotal}
         }
       },
-      // 自营
-      async selfSupport() {
-        const barChartZYOption = {
-          xData: ["月度", "年度", "开累"],
-          legendData: [
-            {
-              name: "计划",
-            },
-            {
-              name: "完成",
-            },
-          ],
-          seriesData: this.seriesData
-        };
-        // request home api
-        const _date = new Date();
-        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-        const res = await productionNewApi .fetchSelfBusinessData(`${_date.getFullYear()}-${mm}`);
-        //  产值赋值
-        this.seriesData.forEach(item => {
-          item.data = []
-          let data = [Number(res.data.proinfo.monthly.remained).toFixed(2), Number(res.data.proinfo.yearly.remained).toFixed(2), Number(res.data.proinfo.sofar.remained).toFixed(2)]
-          let downData = [Number(res.data.proinfo.monthly.finished).toFixed(2), Number(res.data.proinfo.yearly.finished).toFixed(2), Number(res.data.proinfo.sofar.finished).toFixed(2)]
-          if(item.name === '计划') {
-            this.$set(item, 'data', data)
-          }
-          if(item.name === '完成') {
-            this.$set(item, 'data', downData)
-          }
-        })
-        //  echarts重新渲染
-        this.drawDoubleBarChart(
-          "barChart1",
-          barChartZYOption.xData,
-          barChartZYOption.legendData,
-          barChartZYOption.seriesData,
-          "产值"
-        );
-        this.drawDoubleBarChart(
-          "barChart2",
-          barChartZYOption.xData,
-          barChartZYOption.legendData,
-          barChartZYOption.seriesData,
-          "产值"
-        );
-        let averagecost = {
-          data: [],
-          colors: [
-            "rgb(202,249,130)",
-            "rgb(202,249,130)",
-            "rgb(202,249,130)",
-            "#e062ae",
-            "#e062ae",
-            "#e062ae",
-          ],
-          unit: "人均产值",
-          showValue: true,
-        }
-        res.data.sixAverage.forEach((item, index) => {
-          let obj = {
-            name: item.deptname,
-            value: item.cost === null ? 0 : item.cost
-          }
-          averagecost.data.push(obj)
-        })
-        this.rjczConfig = {...averagecost}
-        let sixTotal = {
-          data: [],
-          colors: [
-            "rgb(202,249,130)",
-            "rgb(202,249,130)",
-            "rgb(202,249,130)",
-            "#e062ae",
-            "#e062ae",
-            "#e062ae",
-          ],
-          unit: "产值",
-          showValue: true,
-        }
-        res.data.sixTotal.forEach((item, index) => {
-          let obj = {
-            name: item.deptname,
-            value: item.cost === null ? 0 : item.cost
-          }
-          sixTotal.data.push(obj)
-        })
-        this.czConfig = {...sixTotal}
-      },
       // 滞后list
       async getLagList() {
         // request home api
@@ -455,8 +493,8 @@
         this.month = _date.getMonth();
         let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
         let res = await productionNewApi  .fetchLagListData(`${_date.getFullYear()}-${mm}`);
-        const lateRateColors = ['#fb7293', '#ff9f7f', '#ffdb5c', '#9fe6b8',];
-        const lateRateValues = [30, 20, 10, 0];
+        const lateRateColors = ['#fb7293', '#ffdb5c', '#9fe6b8',];
+        const lateRateValues = [20, 10, 0];
         let zhb = []
         this.lagList = res.data
         if(res && res.data && res.data.length > 0) {
@@ -465,13 +503,33 @@
           })
         }
         const newZhb = zhb.map((item) => {
-          const rate = Number(item[1].replace(/[\%|-]/g, ''));
+          const rate = Number(item[1].replace(/[\%|]/g, ''));
+          // console.log(rate, '---------rate--------')
           let color = '';
           for(let i = 0; i < lateRateValues.length; i += 1) {
-            if(rate >= lateRateValues[i]) {
-              color = lateRateColors[i];
+            if(rate > lateRateValues[0]) {
+              color = lateRateColors[0];
               break;
             }
+            if(rate >= lateRateValues[1] && rate < lateRateValues[0]) {
+              console.log(rate, '----rate')
+              color = lateRateColors[1];
+              break;
+            }
+            if(rate < lateRateValues[1]) {
+              color = lateRateColors[2];
+              break;
+            }
+            // if(rate < lateRateValues[i] && ) {
+            //   color = lateRateColors[i];
+            //   break;
+            // }
+            // if(rate >= lateRateValues[i]) {
+              
+            //   color = lateRateColors[i];
+            //   break;
+            // }
+            // console.log(lateRateValues, '----console.log(lateRateValues[i])-----')
           }
           return [`<span style="color:${color};">${item[0]}</span>`, `<span style="color:${color};">${item[1]}%</span>`];
         });

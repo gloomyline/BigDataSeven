@@ -267,9 +267,10 @@ export default {
       });
     },
     echarts2(left) {
-      console.log(left, '--------zxczxcxz-----')
+      console.log(left[0].value
+      , '====left')
       var myChart = echarts.init(document.getElementById("map_2"));
-      var dataOpcton = left;
+      // var dataOpcton = left;
       var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数65%-85%", "参建人数小于总人数60%"];
       // var dataOpcton = this.tableData2.map((item) => {
       //   var resvalue = Math.floor((item.data / item.value) * 10000) / 100;
@@ -302,7 +303,7 @@ export default {
           orient: "vertical",
           left: 10,
           top: 40,
-          data: titleList,
+          data: ["参建人数占大于总人数85%", "参建人数大于总人数65%-85%", "参建人数小于总人数60%"],
           show: true,
           textStyle: {
             color: "#fff", //颜色
@@ -313,7 +314,6 @@ export default {
         color: ["rgb(236, 128, 141)","rgb(250, 205, 145)","rgb(202, 249, 130)"],
         series: [
           {
-            name: "占比",
             type: "pie",
             radius: "55%",
             center: ["45%", "60%"],
@@ -321,12 +321,17 @@ export default {
               fontSize: 16,
               formatter: '{c}个',
             },
-            data: dataOpcton,
+            // 后台name返回汉字错误，进行转换，如后台修改后，直接赋值 data: left  即可
+            // left: [{name: "参见人数占大于总人数85%", value: 49}, {name: "参见人数占比大于总人数65%-85%", value: 0},…]
+            data: [{ value: left[0].value, name: left[0].name === '参见人数占大于总人数85%' ? '参建人数占大于总人数85%' : '参建人数占大于总人数85%' },
+              {value: left[1].value, name: left[1].name === '参见人数占比大于总人数65%-85%' ? '参建人数大于总人数65%-85%' : '参建人数大于总人数65%-85%'},
+              {value: left[2].value, name: left[2].name === '参见人数占小于总人数60%' ? '参建人数小于总人数60%' : '参建人数小于总人数60%'}
+            ],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)",
+                shadowColor: "rgba(0, 0, 0, 0.1)",
               },
             }
           },
