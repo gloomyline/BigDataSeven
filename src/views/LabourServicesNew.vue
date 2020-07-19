@@ -267,8 +267,6 @@ export default {
       });
     },
     echarts2(left) {
-      console.log(left[0].value
-      , '====left')
       var myChart = echarts.init(document.getElementById("map_2"));
       // var dataOpcton = left;
       var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数65%-85%", "参建人数小于总人数60%"];
@@ -323,10 +321,7 @@ export default {
             },
             // 后台name返回汉字错误，进行转换，如后台修改后，直接赋值 data: left  即可
             // left: [{name: "参见人数占大于总人数85%", value: 49}, {name: "参见人数占比大于总人数65%-85%", value: 0},…]
-            data: [{ value: left[0].value, name: left[0].name === '参见人数占大于总人数85%' ? '参建人数占大于总人数85%' : '参建人数占大于总人数85%' },
-              {value: left[1].value, name: left[1].name === '参见人数占比大于总人数65%-85%' ? '参建人数大于总人数65%-85%' : '参建人数大于总人数65%-85%'},
-              {value: left[2].value, name: left[2].name === '参见人数占小于总人数60%' ? '参建人数小于总人数60%' : '参建人数小于总人数60%'}
-            ],
+            data: left,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
