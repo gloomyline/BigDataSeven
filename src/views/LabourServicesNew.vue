@@ -301,7 +301,7 @@ export default {
           orient: "vertical",
           left: 10,
           top: 40,
-          data: ["参建人数占大于总人数85%", "参建人数大于总人数65%-85%", "参建人数小于总人数60%"],
+          data: [left[0].name, left[1].name, left[2].name],
           show: true,
           textStyle: {
             color: "#fff", //颜色
