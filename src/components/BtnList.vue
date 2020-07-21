@@ -7,7 +7,7 @@
       <el-button size="small" type="warning" @click="goToDetails('EquipmentDetails')">机械设备</el-button>
       <el-button size="small" type="danger" @click="goToDetails('LabourServicesDetails')">劳务管理</el-button>
     </el-row>
-  </div> 
+  </div>
 </template>
 <script>
 export default {

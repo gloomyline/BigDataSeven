@@ -76,6 +76,5 @@ export default {
 </script>
 
 <style lang="scss">
-.table-container {
-} 
+
 </style>

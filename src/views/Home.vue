@@ -1566,7 +1566,7 @@ export default {
         },
         grid: {
           left: "20",
-          top: "10",
+          top: "15",
           right: "30",
           bottom: "0",
           containLabel: true
@@ -2993,20 +2993,30 @@ export default {
       let sum = Number(finished)+Number(remained)
       const self = this;
       let str = 0
+      let rendercolor = "red" 
       if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
         str = 0
       } else {
         str = ((Number(monthly.finished)/(sum)) * 100).toFixed(2)
+        
+        if(str>=90){
+          rendercolor = "green"
+        }else if(str<90 && str>=70){
+          rendercolor = "yellow"
+        }else if(str<70){
+          rendercolor="red"
+        }
       }
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb1"));
-      var option = {
+      var option= {
         title: [
           {
             text: "当月完成产值",
             left: "center",
             textStyle: {
-              color: "#57D1C9",
+              // color: "#57D1C9",
+              color: "#ff0000",
               fontSize: "15"
             }
           },
@@ -3048,7 +3058,7 @@ export default {
             type: "pie",
             center: ["50%", "42%"],
             radius: ["40%", "60%"],
-            color: ["#FFE869", "#066eab"],
+            color: [`${rendercolor}`, "#066eab"],
             label: { show: true },
             labelLine: { show: true },
             data: [
@@ -3076,7 +3086,8 @@ export default {
               }
             }
           }
-        ]
+        ],
+        
       };
 
       // 使用刚指定的配置项和数据显示图表。
@@ -3090,10 +3101,18 @@ export default {
       let remained = Number(monthly.remained).toFixed(2)
       let sum = Number(finished)+Number(remained)
       let str = 0
+      let rendercolor = "red"
       if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
         str = 0
       } else {
         str = ((Number(monthly.finished)/(sum)) * 100).toFixed(2)
+        if(str>=90){
+          rendercolor = "green"
+        }else if(str<90 && str>=70){
+          rendercolor = "yellow"
+        }else if(str<70){
+          rendercolor="red"
+        }
       }
       const self = this;
       // 基于准备好的dom，初始化echarts实例
@@ -3146,7 +3165,7 @@ export default {
             type: "pie",
             center: ["50%", "42%"],
             radius: ["40%", "60%"],
-            color: ["#EE6A50", "#066eab"],
+            color: [`${rendercolor}`, "#066eab"],
             label: { show: false },
             labelLine: { show: false },
             data: [
@@ -3185,10 +3204,18 @@ export default {
       let remained = Number(monthly.remained).toFixed(2)
       let sum = Number(finished)+Number(remained)
       let str = 0
+      let rendercolor="red"
       if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
         str = 0
       } else {
         str = ((Number(monthly.finished)/(sum)) * 100).toFixed(2)
+        if(str>=90){
+          rendercolor = "green"
+        }else if(str<90 && str>=70){
+          rendercolor = "yellow"
+        }else if(str<70){
+          rendercolor="red"
+        }
       }
      
       const self = this;
@@ -3242,7 +3269,7 @@ export default {
             type: "pie",
             center: ["50%", "42%"],
             radius: ["40%", "60%"],
-            color: ["#57D1C9", "#066eab"],
+            color: [`${rendercolor}`, "#066eab"],
             label: { show: false },
             labelLine: { show: false },
             data: [

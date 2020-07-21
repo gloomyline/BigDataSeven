@@ -66,6 +66,7 @@ export default {
   data() {
     return {
       deptName: '',
+      ny:this.$route.params.ny,
       typeAList: [],
       typeBList: [],
       typeCList: [],
@@ -83,6 +84,7 @@ export default {
   mounted() {},
   created() {
     this._initData();
+    console
   },
   methods: {
     async _initData() {
@@ -92,7 +94,7 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 1)"
       });
-      const response = await turnoverApi.fetchProjectDetails(this.deptId);
+      const response = await turnoverApi.fetchProjectDetails(this.deptId,this.ny);
       this.deptName = response.data.deptName;
       this.typeAList = response.data.typeA;
       this.typeBList = response.data.typeB;

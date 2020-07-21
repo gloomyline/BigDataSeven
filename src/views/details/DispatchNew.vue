@@ -164,6 +164,14 @@ export default {
     echarts_31(finish, remained) {
       let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2) === 'NaN' ? `0` : (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
       // 基于准备好的dom，初始化echarts实例
+      let rendercolor="red"
+      if(str>=90){
+        rendercolor = "green"
+      }else if(str<90 && str>=70){
+        rendercolor = "yellow"
+      }else if(str<70){
+        rendercolor="red"
+      }
       var myChart = echarts.init(document.getElementById("fb1"));
       var option = {
         title: [
@@ -197,10 +205,14 @@ export default {
           top: "85%",
           itemWidth: 10,
           itemHeight: 10,
-          data: ["完成", "剩余"],
+          data: ["完成"],
           textStyle: {
             color: "rgba(255,255,255,.5)",
             fontSize: "12"
+          },
+          formatter: function(params) {
+            
+            return params === "完成" ? `完成 ${finish}` : "";
           }
         },
         series: [
@@ -209,7 +221,7 @@ export default {
             type: "pie",
             center: ["50%", "50%"],
             radius: ["40%", "60%"],
-            color: ["#57D1C9", "#066eab"],
+            color: [`${rendercolor}`, "#066eab"],
             label: { show: true },
             labelLine: { show: true },
             data: [
@@ -219,7 +231,7 @@ export default {
             itemStyle: {
               normal: {
                 label: {
-                  show: true,
+                  show: false,
                   //"{b} : {c}",
                   formatter: function(params) {
                     // console.log("params");
@@ -248,6 +260,14 @@ export default {
     echarts_32(finish, remained) {
       let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2) === 'NaN' ? `0` : (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
       // 基于准备好的dom，初始化echarts实例
+      let rendercolor="red"
+      if(str>=90){
+        rendercolor = "green"
+      }else if(str<90 && str>=70){
+        rendercolor = "yellow"
+      }else if(str<70){
+        rendercolor="red"
+      }
       var myChart = echarts.init(document.getElementById("fb2"));
       var option = {
         title: [
@@ -281,10 +301,14 @@ export default {
           top: "85%",
           itemWidth: 10,
           itemHeight: 10,
-          data: ["完成", "剩余"],
+          data: ["完成"],
           textStyle: {
             color: "rgba(255,255,255,.5)",
             fontSize: "12"
+          },
+          formatter: function(params) {
+            
+            return params === "完成" ? `完成 ${finish}` : "";
           }
         },
         series: [
@@ -293,7 +317,7 @@ export default {
             type: "pie",
             center: ["50%", "50%"],
             radius: ["40%", "60%"],
-            color: ["#FFE869", "#066eab"],
+            color: [`${rendercolor}`, "#066eab"],
             label: { show: false },
             labelLine: { show: false },
             data: [
@@ -303,7 +327,7 @@ export default {
             itemStyle: {
               normal: {
                 label: {
-                  show: true,
+                  show: false,
                   //"{b} : {c}",
                   formatter: function(params) {
                     // console.log("params");
@@ -333,6 +357,14 @@ export default {
       // console.log(finish, remained, '实打实打算')
       // 基于准备好的dom，初始化echarts实例
       let str = (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2) === 'NaN' ? `0` : (Number(finish) / (Number(finish)+(Number(remained)))*100).toFixed(2)
+      let rendercolor="red"
+      if(str>=90){
+        rendercolor = "green"
+      }else if(str<90 && str>=70){
+        rendercolor = "yellow"
+      }else if(str<70){
+        rendercolor="red"
+      }
       var myChart = echarts.init(document.getElementById("fb3"));
       var option = {
         title: [
@@ -366,10 +398,14 @@ export default {
           top: "85%",
           itemWidth: 10,
           itemHeight: 10,
-          data: ["完成", "剩余"],
+          data: ["完成"],
           textStyle: {
             color: "rgba(255,255,255,.5)",
             fontSize: "12"
+          },
+          formatter: function(params) {
+            
+            return params === "完成" ? `完成 ${finish}` : "";
           }
         },
         series: [
@@ -379,7 +415,7 @@ export default {
             center: ["50%", "50%"],
             radius: ["40%", "60%"],
             color: [
-              "#EE6A50",
+              `${rendercolor}`,
               "#066eab",
               "#0682ab",
               "#0696ab",
@@ -398,7 +434,7 @@ export default {
             itemStyle: {
               normal: {
                 label: {
-                  show: true,
+                  show: false,
                   formatter: function(params) {
                     // console.log("params");
                     // console.log(params);

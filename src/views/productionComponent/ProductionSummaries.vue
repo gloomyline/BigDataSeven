@@ -60,7 +60,9 @@
           </div>
           <div class="chartContentSon triples">
             <div class="chartTit">产值排名（万元）</div>
-            <dv-capsule-chart :config="czConfig" class="chartCont"></dv-capsule-chart>
+            <dv-capsule-chart :config="czConfig" class="chartCo
+            
+            nt"></dv-capsule-chart>
           </div>
         </div>
       </dv-border-box-10>
@@ -90,11 +92,11 @@
           工期滞后排名
         </div>
         <div class="scroll-wrap">
-          <dv-scroll-board
+          <dv-scroll-board  ref="scroll"
             :config="config"
             class="tableContainerSonTable"
             @click="onTableClick"
-          />  
+          />
         </div>
       </dv-border-box-10>
     </div>
@@ -105,6 +107,9 @@
   import { productionNewApi  } from '@/api';
   import echarts from "echarts";
   export default {
+    mounted(){
+      console.log("this.$refs.scroll",this.$refs.scroll)
+    },
     data() {
       return {
         pieOption: {
@@ -310,6 +315,7 @@
       getDeptNumName() {
         // request home api
         const _date = new Date();
+        this.DeptArr=[]
         productionNewApi.fetchGetDeptNumNameData().then(res => {
           if(res && res.data.length > 0 && res.code === '000000') {
             res.data.forEach(item => {
@@ -343,7 +349,7 @@
         //  产值赋值
         this.seriesData.forEach(item => {
           item.data = []
-          let data = [Number(res.data.proinfo.monthly.remained).toFixed(2), Number(res.data.proinfo.yearly.remained).toFixed(2), Number(res.data.proinfo.sofar.remained).toFixed(2)]
+          let data = [Number(res.data.proinfo.monthly.plan).toFixed(2), Number(res.data.proinfo.yearly.plan).toFixed(2), Number(res.data.proinfo.sofar.remained).toFixed(2)]
           let downData = [Number(res.data.proinfo.monthly.finished).toFixed(2), Number(res.data.proinfo.yearly.finished).toFixed(2), Number(res.data.proinfo.sofar.finished).toFixed(2)]
           if(item.name === '计划') {
             this.$set(item, 'data', data)
@@ -411,7 +417,7 @@
         console.log(res.data.proinfo, '--------res')
         this.joinSeriesData.forEach(item => {
           item.data = []
-          let data = [Number(res.data.proinfo.monthly.remained).toFixed(2), Number(res.data.proinfo.yearly.remained).toFixed(2), Number(res.data.proinfo.sofar.remained).toFixed(2)]
+          let data = [Number(res.data.proinfo.monthly.plan).toFixed(2), Number(res.data.proinfo.yearly.plan).toFixed(2), Number(res.data.proinfo.sofar.remained).toFixed(2)]
           let downData = [Number(res.data.proinfo.monthly.finished).toFixed(2), Number(res.data.proinfo.yearly.finished).toFixed(2), Number(res.data.proinfo.sofar.finished).toFixed(2)]
           if(item.name === '计划') {
             this.$set(item, 'data', data)

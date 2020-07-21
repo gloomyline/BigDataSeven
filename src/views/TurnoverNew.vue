@@ -77,6 +77,8 @@ export default {
         background: "rgba(0, 0, 0, 1)",
       });
       const date = new Date()
+      this.parmadate=`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`
+      console.log(" this.parmadate", this.parmadate)
       this.typeA = await turnoverApi.fetchTypeA(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`);
       this.drawTypeA();
       this.typeB = await turnoverApi.fetchTypeB(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`);
@@ -667,7 +669,9 @@ export default {
         if (params.componentType == "xAxis") {
           // alert("单击了" + params.value + "x轴标签");
           const deptId = params.value.split('-')[0]
-          _that.$router.push({ name: "TurnoverDetails", params: { deptId } });
+          const ny=_that.parmadate
+          console.log( " ny",ny)
+          _that.$router.push({ name: "TurnoverDetails", params: { deptId:deptId,ny:ny} });
         }
       });
       window.addEventListener("resize", function() {

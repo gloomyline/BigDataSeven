@@ -16,8 +16,9 @@ export default {
     const response = await axios.get('/material/rateMonth', { params: { ny: date } });
     return response;
   },
-  async fetchProjectDetails(deptId) {
-    const response = await axios.get('/material/threePage', { params: { deptId } });
+  async fetchProjectDetails(deptId,ny) {
+    console.log("fechprojectdate",ny)
+    const response = await axios.get('/material/threePage', { params: { deptId:deptId,ny:ny } });
     return response;
   }
 }
