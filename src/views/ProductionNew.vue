@@ -7,7 +7,7 @@
           type="month"
           :picker-options="pickerOptions"
           value-format="yyyy-MM"
-          placeholder="选择月">
+          placeholder="选择日期">
         </el-date-picker>
       </div>
       <h1>生产管理</h1>

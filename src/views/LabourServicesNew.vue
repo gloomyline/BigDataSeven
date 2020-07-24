@@ -1,6 +1,15 @@
 <template>
   <div class="labourServices">
     <div class="head">
+      <div class="left">
+        <el-date-picker
+          v-model="date"
+          type="month"
+          :picker-options="pickerOptions"
+          value-format="yyyy-MM"
+          placeholder="选择日期">
+        </el-date-picker>
+      </div>
       <h1>劳务管理</h1>
       <div class="weather">
         <el-button
@@ -97,6 +106,12 @@ export default {
     return {
       tableData: [],
       tableData2: [],
+      date: '',
+      pickerOptions: {
+        disabledDate(time) {
+          return time >Date.now();
+        },
+      },      
     };
   },
   beforeCreate() {
@@ -106,41 +121,34 @@ export default {
       spinner: "el-icon-loading",
       background: "rgba(0, 0, 0,1)",
     });
-
     setTimeout(() => {
       loading.close();
     }, 2000);
   },
   created() {
-    this._sortTableData2();
+    const _date = new Date()
+    this.date = `${_date.getFullYear()}-${('0' + _date.getMonth()).substr(-2)}`
     this.initData()
-    this.fetchedLabelteamnumData()
   },
-  mounted() {
-    this.$nextTick(() => {
-      // this.echarts();
-      // this.echarts2();
-    });
+  watch: {
+    date(newDate) {
+      this.initData();
+    },
   },
   methods: {
     // 劳务队伍
     async initData() {
       const _date = new Date();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}月` : `${_date.getMonth()}月`;
-      let year = `${_date.getFullYear()}年`
-      let arr = await LabourServicesNewApi.fetchLabelteamworkrateData(`${year}${mm}`)
+      let arr = await LabourServicesNewApi.fetchLabelteamworkrateData(this.date);
       this.tableData2 = arr.data.right
-      // console.log(this.tableInfo.data.right, 'lm res')
+      this._sortTableData2();
       this.echarts2(arr.data.left);
+      this.fetchedLabelteamnumData()
     },
     // 劳务队伍作业人数占比
     async fetchedLabelteamnumData() {
-      const _date = new Date();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}月` : `${_date.getMonth()}月`;
-      let year = `${_date.getFullYear()}年`
-      let arr = await LabourServicesNewApi.fetchedLabelteamnumData(`${year}${mm}`)
+      let arr = await LabourServicesNewApi.fetchedLabelteamnumData(this.date);
       this.tableData = arr.data.right
-      console.log(this.tableInfo, 'lm res')
       this.echarts(arr.data.left);
     },
     _sortTableData2() {
@@ -175,7 +183,6 @@ export default {
       this.echarts2(resRow);
     },
     echarts(left) {
-      console.log(left, '-------SDDDDDD--------------------')
       let data = []
       for(let i=0; i<left.length; i++){
         data.push(i+1)
@@ -193,7 +200,7 @@ export default {
         grid: {
           left: "2%",
           right: "10%",
-          top: "8%",
+          top: "12%",
           bottom: "0",
           containLabel: true,
         },
@@ -350,6 +357,11 @@ export default {
     background-size: 100% 100%;
     position: relative;
     z-index: 100;
+    .left {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
     h1 {
       color: #63ecff;
       text-align: center;
