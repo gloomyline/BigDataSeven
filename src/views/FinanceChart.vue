@@ -23,6 +23,7 @@ import { financeApi } from "@/api";
 
 export default {
   name: "Production",
+  props: ['date'],
   data() {
     return {
       formInline: {
@@ -35,20 +36,21 @@ export default {
   created(){
     this.initData();
   },
-  mounted() {
-   
+  watch: {
+    date(newDate) {
+      this.initData();
+    },
   },
   methods: {
     initData(){
-      const date = new Date()
-      financeApi.fetchFinance(`${date.getFullYear()}-0${date.getMonth()}`).then((data)=>{
+      financeApi.fetchFinance(this.date).then((data)=>{
         this.financeData = data.data;
         this.initDoubleChart();
         this.initSingleChart();
       })
     },
     initDoubleChart(){
-       const barChartBOption = {
+      const barChartBOption = {
         xData: [
         ],
         legendData: [

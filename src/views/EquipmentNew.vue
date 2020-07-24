@@ -1,6 +1,15 @@
 <template>
   <div class="production">
     <div class="head">
+      <div class="left">
+        <el-date-picker
+          v-model="date"
+          type="month"
+          :picker-options="pickerOptions"
+          value-format="yyyy-MM"
+          placeholder="选择日期">
+        </el-date-picker>
+      </div>
       <h1>机械设备</h1>
       <div class="weather">
         <el-button
@@ -51,8 +60,27 @@ export default {
         isUnused: null,
         // 长期闲置
         isIdle: null,
-      }
+      },
+      date: '',
+      pickerOptions: {
+        disabledDate(time) {
+          return time >Date.now();
+        },
+      },      
     };
+  },
+  watch: {
+    async date(newDate) {
+      const loading = this.$loading({
+        lock: true,
+        text: "页面加载中...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 1)",
+      });
+      await this._requestData();
+      this._drawEcharts();
+      loading.close();
+    },
   },
   async mounted() {
     const loading = this.$loading({
@@ -61,6 +89,7 @@ export default {
       spinner: "el-icon-loading",
       background: "rgba(0, 0, 0, 1)",
     });
+    this.date = `${(new Date()).getFullYear()}-${('00' + (new Date()).getMonth()).substr(-2)}`;
     await this._requestData();
     loading.close();
     this.$nextTick(() => {
@@ -69,7 +98,7 @@ export default {
   },
   methods: {
     async _requestData() {
-      const response = await equipmentApi.fetchEquipments();
+      const response = await equipmentApi.fetchEquipments(this.date);
       this.bigEquipments = response.bigEquipmentTypeList;
       this.projectEquipments = response.projectEquipmentList;
       this.usingDetail.isUsing = response.isUsing;
@@ -356,14 +385,6 @@ export default {
       var myChart = echarts.init(document.getElementById(id));
       var _that = this;
       var option = {
-        // title: {
-        //   text: "资源总览",
-        //   left: "20px",
-        //   textStyle: {
-        //     color: "#436EEE",
-        //     fontSize: 17,
-        //   },
-        // },
         tooltip: {
           trigger: "axis",
         },
@@ -502,11 +523,7 @@ export default {
               });
             }
           })
-            // alert("单击了" + params.value + "x轴标签");
-         
         }
-        
-        
       });
       window.addEventListener("resize", function() {
         myChart.resize();
@@ -610,6 +627,11 @@ export default {
     background-size: 100% 100%;
     position: relative;
     z-index: 100;
+    .left {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
     h1 {
       color: #63ecff;
       text-align: center;

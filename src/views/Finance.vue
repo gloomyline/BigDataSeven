@@ -1,6 +1,15 @@
 <template>
   <div class="engineering">
     <div class="head">
+      <div class="left">
+        <el-date-picker
+          v-model="date"
+          type="month"
+          :picker-options="pickerOptions"
+          value-format="yyyy-MM"
+          placeholder="选择日期">
+        </el-date-picker>
+      </div>
       <h1>资金管理</h1>
       <div class="weather">
         <el-button
@@ -26,7 +35,7 @@
       </div>
       <div style="margin:10px 0;"></div>
       <keep-alive>
-        <component v-bind:is="tabView"></component>
+        <component v-bind:is="tabView" :date="date"></component>
       </keep-alive>
     </div>
   </div>
@@ -51,6 +60,8 @@ export default {
     setTimeout(() => {
       loading.close();
     }, 2000);
+    const date = new Date();
+    this.date = `${date.getFullYear()}-${('0' + date.getMonth()).substr(-2)}`
   },
   data() {
     return {
@@ -58,6 +69,12 @@ export default {
       iscur: 0,
       tabs: [{ name: "分析视图" }, { name: "表格视图" }],
       componentsList: ["financeChart", "financeTable"],
+      date: '',
+      pickerOptions: {
+        disabledDate(time) {
+          return time >Date.now();
+        },
+      },      
     };
   },
   methods: {
@@ -72,6 +89,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.head {
+  position: relative;  
+  .left {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
 .radio-group span {
   display: inline-block;
   letter-spacing: normal;
