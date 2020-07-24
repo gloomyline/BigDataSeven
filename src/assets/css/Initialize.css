@@ -119,6 +119,7 @@ a:hover {
   .el-table__body-wrapper {
     background-color: #0c2456 !important;
   }
+  .el-table .cell {color:aliceblue}
   .cell,.cell div {
     /* color: aliceblue !important; */
     font-family: "Arial Normal", "Arial";
