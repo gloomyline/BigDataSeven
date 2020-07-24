@@ -23,6 +23,7 @@ import { economyApi } from "@/api";
 
 export default {
   name: "Production",
+  props: ['date'],
   data() {
     return {
       formInline: {
@@ -33,36 +34,26 @@ export default {
       economyClaim: null
     };
   },
+  watch: {
+    date(newDate) {
+      this.initData();
+    },
+  },
   created(){
     this.initData();
   },
-  mounted() {
- 
-    this.$nextTick(() => {
-      
-
-      
-    });
-  },
   methods: {
     initData(){
-      const _date = new Date();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-      let economyMeter =  economyApi.fetchEconomyMeter(`${_date.getFullYear()}-${mm}`).then((data)=>{
+      economyApi.fetchEconomyMeter(this.date).then((data)=>{
         this.economyMeter = data;
         this.loadMeterChart();
-        console.log(this.economyMeter);
       });
-      
-      let economyClaim =  economyApi.fetchEconomyClaim(`${_date.getFullYear()}-${mm}`).then((data)=>{
+      economyApi.fetchEconomyClaim(this.date).then((data)=>{
         this.economyClaim = data;
         this.loadClaimChart();
       });
-      
-      
     },
     loadMeterChart(){
-
       const singleBarOption = {
         xData: [
         ],

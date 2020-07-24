@@ -42,6 +42,7 @@
 import { economyApi } from "@/api";
 export default {
   name: "Engineering",
+  props: ['date'],
   data() {
     return {
       tableData: [
@@ -66,10 +67,7 @@ export default {
           name14: "",
           zip: "",
           id: 1,
-          children: [
-            
-            
-          ]
+          children: [],
         },
         {
           date: "",
@@ -113,30 +111,31 @@ export default {
           zip: "",
           id:3,
           children: [
-            
           ]
         },
       ]
     };
   },
+  watch: {
+    date(newDate) {
+      this.ajaxData();
+    },
+  },
   created(){
     this.ajaxData();
   },
-  mounted() {
-    // this.$nextTick(() => {
-    //   this.echarts();
-    // });
-  },
   methods: {
     ajaxData(){
-      const _date = new Date();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-      economyApi.fetchEconomyTable(`${_date.getFullYear()}-${mm}`).then((data)=>{
+      economyApi.fetchEconomyTable(this.date).then((data)=>{
         const ajaxData = data;
+        // initilize the tableData
+        this.tableData = this.$options.data().tableData;
+        // initlize the counter
+        let count = 4
         ajaxData.forEach(tableData => {
           if(tableData.areaId===2){
              this.tableData[0].children.push({
-                id: tableData.name,
+                id: ++count,
                 date: "",
                 title: "",
                 region: tableData.name,
@@ -159,7 +158,7 @@ export default {
               })
           }else if(tableData.areaId===1){
              this.tableData[1].children.push({
-                id: tableData.name,
+                id: ++count,
                 date: "",
                 title: "",
                 region: tableData.name,
@@ -182,7 +181,7 @@ export default {
               })
           }else if(tableData.areaId===3){
              this.tableData[2].children.push({
-                id:tableData.name,
+                id: ++count,
                 date: "",
                 title: "",
                 region: tableData.name,
@@ -203,18 +202,8 @@ export default {
                 name10: "",
                 zip: ""
               })
-
           }
-             
-          // if(tableData.areaId===1){
-          //   this.tableData[1].children.push({
-
-          //   })
-          // }
         });
-        // this.economyMeter = data;
-        // this.loadMeterChart();
-        // console.log(this.economyMeter);
       });
     },
     goBack() {
