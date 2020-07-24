@@ -595,7 +595,7 @@ export default {
             //---坐标轴 标签
             show: true, //---是否显示
             inside: false, //---是否朝内
-            rotate: 0, //---旋转角度
+            rotate: 40, //---旋转角度
             margin: 5, //---刻度标签与轴线之间的距离
             interval: 0,
             //color:'red',				//---默认取轴线的颜色
