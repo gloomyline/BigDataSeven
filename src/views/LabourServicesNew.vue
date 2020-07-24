@@ -67,6 +67,7 @@
           :data="tableData2"
           border
           size="mini"
+          :row-class-name="tableRowClassName2"
         >
           <el-table-column
             type="index"
@@ -136,6 +137,23 @@ export default {
     },
   },
   methods: {
+      //参比数改变字体颜色
+     tableRowClassName2({row, rowIndex}) {
+       //console.log("rowrowindex",row,rowIndex)
+       if(row.prate>=85){
+         return 'textcolorRed'
+       }else if(row.prate<85 && row.prate>=65){
+         return 'textcolorYellow'
+       }else if(row.prate<60){
+         return 'textcolorGreen'
+       }
+        // if (rowIndex === 1) {
+        //   return 'textcolorRed';
+        // } else if (rowIndex === 3) {
+        //   return 'textcolorYellow';
+        // }
+        // return '';
+      },
     // 劳务队伍
     async initData() {
       const _date = new Date();
@@ -155,13 +173,23 @@ export default {
       this.tableData2 = this.tableData2.sort((a, b) => (b.data / b.value - a.data / a.value));
     },
     tableRowClassName({ row, rowIndex }) {
-      if (row.name > 2) {
-        return "red-row";
-      } else if (row.name == 2) {
-        return "yellow-row";
-      } else if (row.name < 2) {
-        return "cyan-row";
-      }
+       console.log("rowrowindex",row,rowIndex)
+       if(row.deptidnum==3){
+         return 'textcolorRed'
+       }else if(row.deptidnum==2){
+         return 'textcolorYellow'
+       }else if(row.deptidnum==1){
+         return 'textcolorGreen'
+       }
+      // console.log("rowname",row.name)
+      // if (row.name > 2) {
+      //   return "red-row";
+      // } else if (row.name == 2) {
+      //   return "yellow-row";
+      // } else if (row.name < 2) {
+        
+      // }
+      
     },
     formatter(resRow) {
       var resvalue = Math.floor((resRow.data / resRow.value) * 10000) / 100;
@@ -309,7 +337,7 @@ export default {
           orient: "vertical",
           left: 10,
           top: 40,
-          data: [left[0].name, left[1].name, left[2].name],
+          //data: [left[0].name, left[1].name, left[2].name],
           show: true,
           textStyle: {
             color: "#fff", //颜色
@@ -350,6 +378,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-table__row.textcolorRed td div.cell{
+    color:rgb(236, 128, 141)
+     
+}
+::v-deep .el-table__row.textcolorGreen td div.cell{
+    color:rgb(202, 249, 130)
+     
+}
+::v-deep .el-table__row.textcolorYellow td div.cell{
+    color:rgb(250, 205, 145)
+     
+}
+
+.el-table .success-row {
+  background:"red";
+}
 .labourServices {
   .head {
     height: 1.05rem;
@@ -406,6 +450,7 @@ export default {
 }
 </style>
 <style>
+
 .el-table .red-row {
   background: rgb(236, 128, 141) !important;
 }

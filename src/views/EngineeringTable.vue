@@ -19,9 +19,9 @@
         <el-table-column prop="region" label="工程项目名称" min-width="120"></el-table-column>
         <el-table-column prop="p1" label="建设年限" min-width="120"></el-table-column>
         <el-table-column prop="p2" label="合同价" min-width="120"></el-table-column>
-        <el-table-column prop="p3" label="施工产值" min-width="120"></el-table-column>
+        <el-table-column prop="p3" label="开累施工产值" min-width="120"></el-table-column>
         <el-table-column prop="p4" label="暂定金" min-width="120"></el-table-column>
-        <el-table-column prop="name" label="本月计价完" min-width="120"></el-table-column>
+        <el-table-column prop="name" label="本月计价完成" min-width="120"></el-table-column>
         <el-table-column label="开累">
           <el-table-column prop="name1" label="上期开累计价" min-width="120"></el-table-column>
           <el-table-column prop="name2" label="开累计价" min-width="120"></el-table-column>
@@ -145,8 +145,9 @@ export default {
                 p4: tableData.provisionalSum,
                 name: tableData.monthPlanFinished,
                 name1: tableData.lastPeriodPlan,
-                name2: tableData.periodPlan,
-                name3: tableData.lastPeriodPlan===0||tableData.periodPlan===0?'0%':(tableData.lastPeriodPlan/tableData.periodPlan*100).toFixed(2)+'%',
+                name2: tableData.openPrice,
+                //计价比例
+                name3: tableData.openPrice===0||tableData.conOutput===0?'0%':(tableData.openPrice/tableData.conOutput*100).toFixed(2)+'%',
                 name4: tableData.yplan,
                 name5: tableData.monthFinished,
                 name6: tableData.yfinished,
@@ -176,7 +177,7 @@ export default {
                 name7: tableData.yfinished===0||tableData.yplan===0?'0%':(tableData.yfinished/tableData.yplan*100).toFixed(2)+'%',
                 name8: "0",
                 name9: "",
-                name10: "",
+                name10: "", 
                 zip: ""
               })
           }else if(tableData.areaId===3){

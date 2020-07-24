@@ -15,7 +15,7 @@
       >
         <el-table-column prop="title" label="片区"></el-table-column>
         <el-table-column prop="region" label="项目名称"></el-table-column>
-        <el-table-column prop="name" label="营业收入(元)"></el-table-column>
+        <el-table-column prop="name" label="营业收入(万元)"></el-table-column>
         <el-table-column prop="name1" label="营业毛利润"></el-table-column>
         <el-table-column prop="name2" label="计价回款率">
         </el-table-column>
@@ -93,9 +93,9 @@ export default {
               title: "",
               region: financeData.projectName ,
               name: financeData.income,
-              name1: financeData.interestRate?`${financeData.interestRate}%`:"",
-              name2: financeData.huikuanlv?`${financeData.huikuanlv}%`:"",
-              name3: financeData.incomeRate?`${financeData.incomeRate}%`:"",
+              name1: financeData.interestRate?`${parseInt(financeData.interestRate)}%`:"",
+              name2: financeData.huikuanlv?`${parseInt(financeData.huikuanlv)}%`:"",
+              name3: financeData.incomeRate?`${parseInt(financeData.incomeRate)}%`:"",
               name4: `${financeData.monthFunding}`,
               name5: "",
               zip: ""
@@ -112,9 +112,9 @@ export default {
               title: "",
               region:financeData.projectName ,
               name: financeData.income,
-              name1: financeData.interestRate?`${financeData.interestRate}%`:'',
-              name2: financeData.huikuanlv?`${financeData.huikuanlv}%`:"",
-              name3: financeData.incomeRate?`${financeData.incomeRate}%`:"",
+              name1: financeData.interestRate?`${parseInt(financeData.interestRate)}%`:'',
+              name2: financeData.huikuanlv?`${parseInt(financeData.huikuanlv)}%`:"",
+              name3: financeData.incomeRate?`${parseInt(financeData.incomeRate)}%`:"",
               name4: `${financeData.monthFunding}`,
               name5: "",
               zip: ""
