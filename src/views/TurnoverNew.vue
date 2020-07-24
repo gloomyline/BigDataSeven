@@ -111,6 +111,7 @@ export default {
       this.typeA = await turnoverApi.fetchTypeA(this.ny);
       this.drawTypeA();
       this.typeB = await turnoverApi.fetchTypeB(this.ny);
+      //console.log("typeB",typeB)
       this.drawTypeB()
       this.typeC = await turnoverApi.fetchTypeC(this.ny);
       this.drawTypeC();
@@ -234,8 +235,9 @@ export default {
       let xzDataB = []
       let name = []
       if(this.typeB && this.typeB.data && this.typeB.data.length > 0) {
-        name = this.typeA.data.map(item => `${item.deptId}-${item.name}`)
-        data = this.typeB.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2))
+        name = this.typeB.data.map(item => `${item.deptId}-${item.name}`)
+        data = this.typeB.data.map(item => item.isUsing === 0 ? 0 : (item.isUsing).toFixed(2))
+        console.log("BBBBBBBBBBBBBb",data)
         xzDataB = this.typeB.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2))
         lylDataB = this.typeB.data.map(item => (item.rate * 100).toFixed(2))
       } else {
