@@ -15,4 +15,9 @@ export default {
     const response = await axios.get('/production/planfinishlmonth', { params: { ny: date } });
     return response;
   },
+  //项目简介
+  async fetchProjectIntroduction(deptId) {
+    const response = await axios.get('/deptdesc/findDeptDesc', { params: { deptId: deptId } });
+    return response;
+  },
 }

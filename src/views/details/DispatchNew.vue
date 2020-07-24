@@ -17,15 +17,13 @@
     <div class="table boxall">
       <p class="thead">
         <img class="img" src="@/assets/images/u563.png" />
-        <span class="tilte">项目简介</span>
+        <span class="tilte">{{title}}项目简介</span>
       </p>
       <div class="chartContent">
           <div class="chartContentSon">
             <img style="max-height:100%" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593346438644&di=53dc449845b342b41a056b0ea9a95485&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1410%2F20%2Fc1%2F39878059_39878059_1413773506307.jpg" class="image">
           </div>
-          <div class="chartContentSon">
-            <img style="max-height:100%" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593346438644&di=53dc449845b342b41a056b0ea9a95485&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1410%2F20%2Fc1%2F39878059_39878059_1413773506307.jpg" class="image">
-          </div>
+          
         </div>
 
     </div>
@@ -103,7 +101,8 @@ export default {
   data() {
     return {
       tableData: [],
-      title: this.$route.params.name
+      title: this.$route.params.name,
+      projectinfo:""
     };
   },
   mounted() {
@@ -111,6 +110,7 @@ export default {
     this.getTableData()
     this.finishlmonth()
     this.getWebPreviewInfo()
+    this.projectInfo()
     this.$nextTick(() => {
       // this.echarts_31();
       // this.echarts_32();
@@ -141,6 +141,10 @@ export default {
     async getTableData() {
       const res = await DispatchNewApi.fetchPlanfinishlMonthData1(`${this.$route.params.id}`);
       // this.tableData = res.data
+    },
+    async projectInfo() {
+      const res = await DispatchNewApi.fetchProjectIntroduction(`${this.$route.params.id}`);
+      console.log("projectInfo",res.data)
     },
     async finishlmonth() {
       const res = await DispatchNewApi.fetchGetDepartProductionData(`${this.$route.params.id}`);
