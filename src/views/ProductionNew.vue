@@ -1,6 +1,15 @@
 <template>
   <div class="production">
     <div class="head">
+      <div class="left">
+        <el-date-picker
+          v-model="ny"
+          type="month"
+          :picker-options="pickerOptions"
+          value-format="yyyy-MM"
+          placeholder="选择月">
+        </el-date-picker>
+      </div>
       <h1>生产管理</h1>
       <div class="weather">
         <el-button
@@ -24,7 +33,7 @@
       </div>
       <!-- <div style="margin:10px 0;"></div> -->
       <keep-alive>
-        <component :is="currentComponent"></component>
+        <component :is="currentComponent" :ny="ny"></component>
       </keep-alive>
     </div>
   </div>
@@ -43,8 +52,15 @@ export default {
       currentComponent: 'ProductionSummaries',
       componentList: ['ProductionSummaries', 'PreviousMonth', 'CurrentMonth'],
       allCompany: {}, 
+      ny:this.$route.params.ny,
+      pickerOptions: {
+        disabledDate(time) {
+            return time >Date.now()
+        },
+      }
     };
   },
+  
   created() {
     const loading = this.$loading({
       lock: true,
@@ -55,7 +71,14 @@ export default {
     setTimeout(() => {
       loading.close();
     }, 2000);
+    if(!this.ny){
+      const _date = new Date();
+      this.month = _date.getMonth();
+      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+      this.ny=`${_date.getFullYear()}-${mm}`
+    }
   },
+  
   methods: {
     goBack() {
       this.$router.push({ path: "/" });
@@ -76,6 +99,9 @@ export default {
     background-size: 100% 100%;
     position: relative;
     z-index: 100;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     h1 {
       color: #63ecff;
       text-align: center;
@@ -108,6 +134,9 @@ export default {
   }
   .radio-group .active {
     background-color: #1b88e7;
+  }
+  .weather  {
+    position:inherit;
   }
 }
 </style>

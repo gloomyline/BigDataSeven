@@ -1,8 +1,17 @@
 <template>
   <div class="engineering">
     <div class="head">
-      <h1>人力资源</h1>
-      <div class="weather">
+      <div class="left">
+        <el-date-picker
+          v-model="ny"
+          type="month"
+          :picker-options="pickerOptions"
+          value-format="yyyy-MM"
+          placeholder="选择月">
+        </el-date-picker>
+      </div>
+      <div class="middle"><h1 >人力资源</h1></div>
+      <div class="right">
         <el-button
           type="primary"
           size="small"
@@ -25,9 +34,9 @@
         </span>
       </div>
       <div style="margin:10px 0;"></div>
-      <keep-alive>
-        <component v-bind:is="tabView"></component>
-      </keep-alive>
+      
+        <component v-bind:is="tabView" :ny="ny" ></component>
+      
     </div>
   </div>
 </template>
@@ -59,9 +68,15 @@ export default {
   data() {
     return {
       tabView: "humanOrgan",
+      ny:this.$route.params.ny,
       iscur: 0,
       tabs: [{ name: "组织机构" }, { name: "人员情况" }, { name: "薪酬情况" }, { name: "资质证书管理情况" }],
       componentsList: ["humanOrgan", "humanStatus", "humanFun", "humanCre"],
+      pickerOptions: {
+         disabledDate(time) {
+            return time >Date.now()
+          },
+        }   
     };
   },
   methods: {
@@ -94,4 +109,16 @@ export default {
 .radio-group .cur {
   background-color: #1b88e7;
 }
+.head {
+  padding-top:10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between
+
+}
+.el-month-table td.today .cell {
+    color: #606266 !important;
+    font-weight: 100 !important;
+}
+
 </style>

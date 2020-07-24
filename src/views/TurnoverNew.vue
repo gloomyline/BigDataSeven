@@ -1,8 +1,17 @@
 <template>
   <div class="production">
     <div class="head">
-      <h1>周转材料</h1>
-      <div class="weather">
+      <div class="left">
+        <el-date-picker
+          v-model="ny"
+          type="month"
+          :picker-options="pickerOptions"
+          value-format="yyyy-MM"
+          placeholder="选择月">
+        </el-date-picker>
+      </div>
+      <div><h1>周转材料</h1></div>
+      <div >
         <el-button
           type="primary"
           size="small"
@@ -55,6 +64,12 @@ export default {
         user: "",
         region: "",
       },
+      ny:this.$route.params.ny,
+      pickerOptions: {
+        disabledDate(time) {
+            return time >Date.now()
+        },
+      }
     };
   },
   created() {
@@ -68,6 +83,14 @@ export default {
       // this._drawPie();
     });
   },
+    watch: {  
+    ny(newValue, oldValue) {  
+        if(newValue!==oldValue) {
+          this._initData()
+
+        }
+    }  
+  },
   methods: {
     async _initData() {
       const loading = this.$loading({
@@ -79,13 +102,19 @@ export default {
       const date = new Date()
       this.parmadate=`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`
       console.log(" this.parmadate", this.parmadate)
-      this.typeA = await turnoverApi.fetchTypeA(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`);
+      console.log("this.ny", this.ny)
+      console.log("boleanthis.ny", Boolean(this.ny))
+      if(!this.ny){
+        this.ny= this.parmadate
+      }
+      console.log("this.ny", this.ny)
+      this.typeA = await turnoverApi.fetchTypeA(this.ny);
       this.drawTypeA();
-      this.typeB = await turnoverApi.fetchTypeB(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`);
+      this.typeB = await turnoverApi.fetchTypeB(this.ny);
       this.drawTypeB()
-      this.typeC = await turnoverApi.fetchTypeC(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`);
+      this.typeC = await turnoverApi.fetchTypeC(this.ny);
       this.drawTypeC();
-      this.pieRate = await turnoverApi.fetchRate(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`);
+      this.pieRate = await turnoverApi.fetchRate(this.ny);
       this._drawPie();
       loading.close();
     },
@@ -127,7 +156,7 @@ export default {
             // data: [17983-3364, 0, 2705, 7367, 0, 513, 81, 87, 0, 0, 1083, 2607,],
             data: isUsing,
             // stack: "使用情况",
-            barWidth: "10", //---柱形宽度
+            barWidth: "30", //---柱形宽度
             barCategoryGap: "20%", //---柱形间距
             label: {
               //---图形上的文本标签
@@ -690,6 +719,10 @@ export default {
     background-size: 100% 100%;
     position: relative;
     z-index: 100;
+    padding-top:10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     h1 {
       color: #63ecff;
       text-align: center;

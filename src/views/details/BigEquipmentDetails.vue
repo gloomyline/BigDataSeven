@@ -42,7 +42,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="captainName" label="机长"></el-table-column>
-        <el-table-column prop="captainTotal" label="机长人数"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
     </div>

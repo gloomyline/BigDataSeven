@@ -38,6 +38,7 @@
           ></el-table-column>
           <el-table-column prop="comname" label="劳务队伍"></el-table-column>
           <el-table-column prop="deptidnum" label="参建项目数"></el-table-column>
+          <el-table-column prop="deptname" label="参建项目"></el-table-column>
         </el-table>
       </div>
       <div class="boxfoot"></div>

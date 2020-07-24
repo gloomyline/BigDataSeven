@@ -21,7 +21,7 @@
           <div class="chartCont" id="barChart1"></div>
         </div>
         <div class="chartContentSon">
-          <div class="chartTit" @click="jumpTzDetail()">主要机械设备使用情况(单位:台)</div>
+          <div class="chartTit" @click="jumpTzDetail()">自有主要机械设备使用情况(单位:台)</div>
           <div class="chartCont" id="circlePieChart"></div>
         </div>
       </dv-border-box-10>
@@ -82,11 +82,13 @@ export default {
       const singleBarOption = {
         xData: self.bigEquipments.map(item => item.equipmentType),
         seriesData: self.bigEquipments.map(item => item.countType),
+        allEquipmentsData:self.bigEquipments
       };
       this.drawSingleBarChart(
         "barChart1",
         singleBarOption.xData,
-        singleBarOption.seriesData
+        singleBarOption.seriesData,
+        singleBarOption.allEquipmentsData
       );
       // 主要机械设备
       const pieOption = {
@@ -181,13 +183,24 @@ export default {
     jumpTzDetail() {
       this.$router.push({ name: "TZEquipmentDetails" });
     },
-    drawSingleBarChart(id, xData, seriesData) {
+    drawSingleBarChart(id, xData, seriesData,allData) {
       var myChart = echarts.init(document.getElementById(id));
       var option = {
         tooltip: {
           trigger: "axis",
           formatter:(params)=>{
-            return params[0].axisValue+ '</br>数量：'+params[0].data;
+             let equipmentType = params[0].axisValue
+             for(let i in allData){
+               if(allData[i].equipmentType==equipmentType){
+                 let children = allData[i].children
+                 let str=""
+                 for (let i in children){
+                   str += `${children[i].equipmentType}: ${children[i].countType} <br> `
+                 }
+                 return  str
+                 
+               }
+             }
           }
         },
         dataZoom : [
@@ -576,6 +589,7 @@ export default {
               },
             },
             data: seriesData,
+            color:['red', '#3CB371', '#FFD700']
           },
         ],
       };

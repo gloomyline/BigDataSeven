@@ -30,6 +30,7 @@ import echarts from 'echarts'
 import { HumanNewApi } from '@/api'
 export default {
   name: 'Production',
+  props: ['ny'],
   data() {
     return {
       formInline: {
@@ -43,15 +44,24 @@ export default {
     this.salary()
   },
   mounted() {
+    console.log("thisnyhumanfun",this.ny)
     this.$nextTick(() => {
       this.echarts()
     })
+  },
+  watch: {  
+    ny(newValue, oldValue) {  
+        if(newValue!==oldValue) {
+          this.ratio()
+
+        }
+    }  
   },
 
   methods: {
     async ratio() {
       const _date = new Date()
-      const res = await HumanNewApi.fetchRatioData()
+      const res = await HumanNewApi.fetchRatioData(this.ny)
       if (res && res.code === '000000') {
         this.drawHumanFun(res.data)
       }
@@ -75,11 +85,11 @@ export default {
     goPro() {
       this.$router.push({ path: '/HumanDetails' })
     },
-    mounted() {
-      this.$nextTick(() => {
-        this.echarts()
-      })
-    },
+    // mounted() {
+    //   this.$nextTick(() => {
+    //     this.echarts()
+    //   })
+    // },
 
     echarts() {
       this.drawSalaryTotal()

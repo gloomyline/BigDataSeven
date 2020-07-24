@@ -21,13 +21,13 @@
       <el-table
         :data="tableData"
         row-key="id"
-        :show-header="false"
+        :show-header="true"
         default-expand-all
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
-        <el-table-column prop="department" label="" min-width="50"></el-table-column>
-        <el-table-column prop="post" label="" min-width="50"></el-table-column>
-        <el-table-column prop="name" label=""></el-table-column>
+        <el-table-column prop="department" label="部门名称" min-width="50"></el-table-column>
+        <el-table-column prop="post" label="职务" min-width="50"></el-table-column>
+        <el-table-column prop="name" label="人员姓名"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
     </div>

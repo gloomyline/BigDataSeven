@@ -107,8 +107,17 @@
   import { productionNewApi  } from '@/api';
   import echarts from "echarts";
   export default {
+    props:["ny"],
     mounted(){
       console.log("this.$refs.scroll",this.$refs.scroll)
+    },
+    watch:{
+      ny:function(newValue,oldValue){
+        console.log("newvalue,oldvalue",newValue,oldValue)
+        if(newValue!==oldValue){
+           this.initData()
+        }
+      }
     },
     data() {
       return {
@@ -274,6 +283,7 @@
           yAxis: ["项目一", "项目二", "项目三", "项目四", "项目五", "项目六"],
           seriesData: [500, 600, 700, 800, 900, 1000],
         };
+        console.log("props ny",this.ny)
 
         // 人均产值排名，在项目名称前增加排序，数字为在所有自营或联营项目中进行排名(客户需求)
         this.czConfig = {
@@ -343,9 +353,9 @@
           seriesData: this.seriesData
         };
         // request home api
-        const _date = new Date();
-        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-        const res = await productionNewApi .fetchSelfBusinessData(`${_date.getFullYear()}-${mm}`);
+        // const _date = new Date();
+        // let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+        const res = await productionNewApi .fetchSelfBusinessData(this.ny);
         //  产值赋值
         this.seriesData.forEach(item => {
           item.data = []
@@ -413,7 +423,7 @@
       async joinSupport() {
         const _date = new Date();
         let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-        const res = await productionNewApi.fetchJoinSupportData(`${_date.getFullYear()}-${mm}`);
+        const res = await productionNewApi.fetchJoinSupportData(this.ny);
         console.log(res.data.proinfo, '--------res')
         this.joinSeriesData.forEach(item => {
           item.data = []
@@ -498,7 +508,7 @@
         const _date = new Date();
         this.month = _date.getMonth();
         let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-        let res = await productionNewApi  .fetchLagListData(`${_date.getFullYear()}-${mm}`);
+        let res = await productionNewApi  .fetchLagListData(this.ny);
         const lateRateColors = ['#fb7293', '#ffdb5c', '#9fe6b8',];
         const lateRateValues = [20, 10, 0];
         let zhb = []
@@ -557,8 +567,10 @@
         const _date = new Date();
         this.month = _date.getMonth();
         let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+        console.log("productionsummer 月份",mm)
         this.getDeptNumName()
-        this.allCompany = await productionNewApi .fetchProManData(`${_date.getFullYear()}-${mm}`);
+        this.allCompany = await productionNewApi .fetchProManData(this.ny);
+        console.log("production summerallCompany",this.allCompany)
         // this.total = this.arr.reduce((n,m) => n + m);
         Object.keys(this.allCompany.data.productionValue).forEach(item => {
           this.arr.push(Number(this.allCompany.data.productionValue[item]))

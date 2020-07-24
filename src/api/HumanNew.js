@@ -2,8 +2,9 @@ const { axios } = window;
 
 export default {
     //经费开累计划执行比和开累产值计划完成比
-    async fetchRatioData(){
-        const response = await axios.get('/emp/ratio');
+    async fetchRatioData(ny){
+        //const response = await axios.get('/emp/ratio');
+        const response = await axios.get('/emp/ratio',{params:{ny:ny}});
     return response;
     },
     //工资总额

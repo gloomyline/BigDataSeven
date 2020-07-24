@@ -212,7 +212,7 @@ export default {
         digitalFlopStyle: {
           fontSize: 16
         }
-      }
+      },
     };
   },
   methods: {
@@ -263,6 +263,7 @@ export default {
       // request home api
       const _date = new Date();
       let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth()
+      this.ny=  `${_date.getFullYear()}-${mm}`
       const response = await homeApi.fetchHomeData(
         `${_date.getFullYear()}-${mm}`
       );
@@ -298,7 +299,7 @@ export default {
       }
     },
     goRouter(resName) {
-      this.$router.push({ name: resName });
+      this.$router.push({ name: resName,params: { ny: this.ny } });
     },
 
     echarts(pointArr, provinceProJectsArr) {
@@ -1565,9 +1566,9 @@ export default {
           }
         },
         grid: {
-          left: "20",
-          top: "15",
-          right: "30",
+          left: "3%",
+          top: "5%",
+          right: "5%",
           bottom: "0",
           containLabel: true
         },
@@ -2048,12 +2049,12 @@ export default {
           }
         },
         legend: {
-          top: "0%",
+          top: "%",
           data: [
-            "营业收入（万元）",
-            "营业利润（万元）",
-            "两金余额（万元）",
-            "货币存量（万元）"
+            "营业收入",
+            "营业利润",
+            "两金余额",
+            "货币存量"
           ],
           textStyle: {
             color: "rgba(255,255,255,.5)",
@@ -2119,7 +2120,7 @@ export default {
         ],
         series: [
           {
-            name: "营业收入（亿）",
+            name: "营业收入",
             type: "line",
             smooth: true,
             symbol: "circle",
@@ -2166,7 +2167,7 @@ export default {
             data: series.earning
           },
           {
-            name: "营业利润（亿）",
+            name: "营业利润",
             type: "line",
             smooth: true,
             symbol: "circle",
@@ -2213,7 +2214,7 @@ export default {
             data: series.profits
           },
           {
-            name: "两金余额（亿）",
+            name: "两金余额",
             type: "line",
             smooth: true,
             symbol: "circle",
@@ -2253,12 +2254,12 @@ export default {
             data: series.balance
           },
           {
-            name: "货币存量（亿）",
+            name: "货币存量",
             type: "line",
             smooth: true,
             symbol: "circle",
             symbolSize: 5,
-            showSymbol: false,
+            showSymbol: true,
             lineStyle: {
               normal: {
                 color: "yellow",
@@ -2291,8 +2292,13 @@ export default {
               normal: {
                 color: "yellow",
                 borderColor: "rgba(221, 220, 107, .1)",
-                borderWidth: 12
+                borderWidth: 12,
+                label: {
+                  show: true
               }
+              },
+              
+              
             },
             data: series.stock
           }
@@ -2377,35 +2383,50 @@ export default {
 
       const MAX = [this.economy.valulation.charge];
       const VALUE = [this.economy.valulation.output];
+      let percent= parseInt((VALUE/MAX)*100)
       var myChart = echarts.init(document.getElementById("jj1"));
 
-      var option = (option = {
+      var option = {
+        color:["red","#49BEE5"],
+
         grid: {  
           left: '8%',  
           right: '0',  
           bottom: '0',  
           containLabel: true  
         },
+        legend:{
+          data:["产值","计价"],
+          textStyle: { //图例文字的样式
+              color: '#999',
+              fontSize: 12
+          },
+        },
+
         tooltip: {
           trigger: "axis",
           axisPointer: {
             type: "shadow"
           },
-          formatter: function(params, ticket, callback) {
-            const item = params[0];
-            const item1 = params[1];
-            return (
-              item1.name +
-              "<br/>产值：" +
-              item.value +
-              "<br/>计价：" +
-              item1.value
-            );
-          }
+          formatter: '{a0}: {c0}<br />{a1}: {c1}',
+          // formatter: {function(params, ticket, callback) {
+          //   const item = params[0];
+          //   const item1 = params[1];
+          //   return (
+          //     item1.name +
+          //     "<br/>产值：" +
+          //     item.value +
+          //     "<br/>计价：" +
+          //     item1.value
+          //   );}
+          // }
         },
         xAxis: {
           type: "category",
-          data: ["开累计价"],
+          show:true,
+          data: [
+           `${percent}%`
+         ],
           axisLine: {
             show: true,
             lineStyle: {
@@ -2414,15 +2435,18 @@ export default {
               type: "solid"
             }
           },
-          offset: 25,
-          axisTick: {
-            show: false,
-            length: 9,
-            alignWithLabel: true,
-            lineStyle: {
-              color: "#7DFFFD"
-            }
-          },
+          // offset: 25,
+          // axisLabel:{
+          //   show:true
+          // },
+          // axisTick: {
+          //   show: true,
+          //   length: 9,
+          //   alignWithLabel: true,
+          //   lineStyle: {
+          //     color: "#7DFFFD"
+          //   }
+          // },
           axisLabel: {
             interval: 0,
             // rotate:50,
@@ -2482,7 +2506,7 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: "rgba(47,102,192,.27)"
+                      fill: "rgba(255,0,0,.7)"
                     }
                   },
                   {
@@ -2495,7 +2519,7 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: "rgba(59,128,226,.27)"
+                      fill: "rgba(255,0,0,.7)"
                     }
                   },
                   {
@@ -2508,7 +2532,7 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: "rgba(72,156,221,.27)"
+                      fill: "rgba(255,0,0,.7)"
                     }
                   }
                 ]
@@ -2638,7 +2662,7 @@ export default {
             data: VALUE
           }
         ]
-      });
+      };
 
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
@@ -2718,9 +2742,18 @@ export default {
 
       const MAX = [this.economy.claim.planed];
       const VALUE = [this.economy.claim.finished];
+      let percent=parseInt((VALUE/MAX)*100)
       var myChart = echarts.init(document.getElementById("jj2"));
 
       var option = (option = {
+        color:["red","#49BEE5"],
+        legend:{
+          data:["计划","完成"],
+          textStyle: { //图例文字的样式
+              color: '#999',
+              fontSize: 12
+          },
+        },
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -2746,7 +2779,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: ["年度变更索赔"],
+          data: [`${percent}%`],
           axisLine: {
             show: true,
             lineStyle: {
@@ -2755,15 +2788,15 @@ export default {
               type: "solid"
             }
           },
-          offset: 25,
-          axisTick: {
-            show: false,
-            length: 9,
-            alignWithLabel: true,
-            lineStyle: {
-              color: "#7DFFFD"
-            }
-          },
+          // offset: 25,
+          // axisTick: {
+          //   show: false,
+          //   length: 9,
+          //   alignWithLabel: true,
+          //   lineStyle: {
+          //     color: "#7DFFFD"
+          //   }
+          // },
           axisLabel: {
             interval: 0,
             // rotate:50,
@@ -2823,7 +2856,7 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: "rgba(47,102,192,.27)"
+                      fill: "rgba(255,0,0,.7)"
                     }
                   },
                   {
@@ -2836,7 +2869,7 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: "rgba(59,128,226,.27)"
+                      fill: "rgba(255,0,0,.7)"
                     }
                   },
                   {
@@ -2849,7 +2882,7 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: "rgba(72,156,221,.27)"
+                      fill: "rgba(255,0,0,.7)"
                     }
                   }
                 ]

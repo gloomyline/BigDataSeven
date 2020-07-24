@@ -295,6 +295,11 @@ export default {
               //--网格区域
               show: false, //---是否显示，默认false
             },
+            axisLabel: {  
+              show: true,  
+              interval: 'auto',  
+              formatter: '{value} %'  
+            },  
           }
         ],
 
