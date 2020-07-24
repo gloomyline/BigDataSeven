@@ -1,7 +1,7 @@
 <template>
   <div class="equipmentDetails">
     <div class="head">
-      <h1>项目部</h1>
+      <h1>{{projectname}}项目部</h1>
       <div class="weather">
         <el-button
           type="primary"
@@ -39,7 +39,8 @@ import { HumanNewApi } from '@/api'
 export default {
   data() {
     return {
-      tableData: []
+      tableData: [],
+      projectname:this.$route.params.projectname
     }
   },
   created() {

@@ -36,10 +36,10 @@ export default {
     goBack() {
       this.$router.push({ path: '/' })
     },
-    goPro(projectId) {
+    goPro(projectId,projectname) {
       this.$router.push({
         name: 'HumanDetailsNew',
-        params: { projectId: projectId },
+        params: { projectId: projectId, projectname:projectname},
       })
     },
     async initData() {
@@ -118,9 +118,9 @@ export default {
         if (typeof param.seriesIndex == 'undefined') {
           return
         }
-
+        console.log("gopro param.data",param.data)
         if (param.type == 'click') {
-          this.goPro(param.data.id)
+          this.goPro(param.data.id,param.data.name)
         }
       }
       
