@@ -18,37 +18,22 @@
         <el-table-column prop="name" label="营业收入(元)"></el-table-column>
         <el-table-column prop="name1" label="营业毛利润"></el-table-column>
         <el-table-column prop="name2" label="计价回款率">
-          <!-- <template slot-scope="scope">
-            <span v-if="scope.row.name2">{{``}}</span>
-          </template> -->
         </el-table-column>
         <el-table-column prop="name3" label="计价收入率"></el-table-column>
         <el-table-column prop="name4" label="人月均经费"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
     </div>
-
-    <!-- <div class="table boxall">
-      <p class="thead">
-        <img class="img" src="../assets/images/u563.png" />
-        <span class="tilte">公司主要财务指标</span>
-      </p>
-      <el-table :data="tableData2" style="width: 86%;  margin: 0 auto; min-width: 800px;">
-        <el-table-column prop="title" label min-width="150"></el-table-column>
-        <el-table-column prop="title1" label="月度数" min-width="150"></el-table-column>
-        <el-table-column prop="region" label="季度数" min-width="150"></el-table-column>
-        <el-table-column prop="date" label="年度数/年度完成率" min-width="150"></el-table-column>
-      </el-table>
-      <div class="boxfoot"></div>
-    </div> -->
   </div>
 </template>
 <script>
 import { financeApi } from "@/api";
 export default {
   name: "Finance",
+  props: ['date'],
   data() {
     return {
+      financeData: [],
       tableData: [],
       
       tableData2: [
@@ -62,52 +47,51 @@ export default {
       ]
     };
   },
-  mounted() {
-    // this.$nextTick(() => {
-    //   this.echarts();
-    // });
-  },
   created(){
     this.initData();
   },
+  watch: {
+    date(newDate) {
+      this.initData();
+    },
+  },
   methods: {
     initData(){
-      const date = new Date();
-      financeApi.fetchFinance(`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`).then((data)=>{
-        this.financeData = data.data;
+      financeApi.fetchFinance(this.date).then((data)=>{
+        this.financeData = data.data.map((item,index) => ({id: index, ...item}));
         this.dealData();
-        console.log("financeTable",data)
       })
     },
     dealData(){
-      let flagCom = [];
-      this.financeData.forEach((financeData) => {
-        console.log(financeData.area, '-------------financeData.area')
+      const storeds = [];
+      const flagCom = [];
+      let count = 0;
+      this.financeData.forEach((financeData, index) => {
         if(!flagCom.includes(financeData.area)){
           flagCom.push(financeData.area);
-          this.tableData.push(
-              {
-                date: "",
-                title: financeData.area,
-                region: "-",
-                name: "",
-                name1: "",
-                name2: "",
-                name3: "",
-                name4: "",
-                name5: "",
-                zip: "",
-                id: this.tableData.length+1,
-                children: [
-                ]
-              }   
-          );
-          this.tableData[this.tableData.length-1].children.push(
+          storeds.push(
             {
-              id: this.tableData[this.tableData.length-1].children.length+this.tableData.length*10+1,
+              date: "",
+              title: financeData.area,
+              region: "-",
+              name: "",
+              name1: "",
+              name2: "",
+              name3: "",
+              name4: "",
+              name5: "",
+              zip: "",
+              id: count++,
+              children: [
+              ]
+            }   
+          );
+          storeds[storeds.length-1].children.push(
+            {
+              id: count++,
               date: "",
               title: "",
-              region:financeData.projectName ,
+              region: financeData.projectName ,
               name: financeData.income,
               name1: financeData.interestRate?`${financeData.interestRate}%`:"",
               name2: financeData.huikuanlv?`${financeData.huikuanlv}%`:"",
@@ -118,12 +102,12 @@ export default {
             }
           );
         }else{
-          let areaIndex=this.tableData.findIndex((children)=>{
+          const areaIndex=storeds.findIndex((children)=>{
             return children.title === financeData.area
           });
-          this.tableData[areaIndex].children.push(
+          storeds[areaIndex].children.push(
             {
-              id: this.tableData[areaIndex].children.length+(areaIndex+1)*10+1,
+              id: count++,
               date: "",
               title: "",
               region:financeData.projectName ,
@@ -138,6 +122,7 @@ export default {
           );
         }
       });
+      this.tableData = storeds;
     },
     goBack() {
       this.$router.push({ path: "/" });
