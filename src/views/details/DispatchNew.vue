@@ -20,9 +20,9 @@
         <span class="tilte">{{title}}项目简介</span>
       </p>
       <div class="chartContent">
-          <div class="chartContentSon">
-            <img style="max-height:100%" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1593346438644&di=53dc449845b342b41a056b0ea9a95485&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1410%2F20%2Fc1%2F39878059_39878059_1413773506307.jpg" class="image">
-          </div>
+         
+            <div class="textcolorWhite" v-html="projectinfo">{{projectinfo}}</div>
+          
           
         </div>
 
@@ -98,6 +98,10 @@ export default {
   components: {
     btnList,
   },
+  created(){
+    this.projectInfo()
+    
+  },
   data() {
     return {
       tableData: [],
@@ -110,7 +114,6 @@ export default {
     this.getTableData()
     this.finishlmonth()
     this.getWebPreviewInfo()
-    this.projectInfo()
     this.$nextTick(() => {
       // this.echarts_31();
       // this.echarts_32();
@@ -144,7 +147,14 @@ export default {
     },
     async projectInfo() {
       const res = await DispatchNewApi.fetchProjectIntroduction(`${this.$route.params.id}`);
-      console.log("projectInfo",res.data)
+      //console.log("projectInfo",res.data.deptContent)
+      if(res.data.deptContent){
+         this.projectinfo = res.data.deptContent
+      }else{
+         this.projectinfo="暂无数据"
+      }
+     
+      
     },
     async finishlmonth() {
       const res = await DispatchNewApi.fetchGetDepartProductionData(`${this.$route.params.id}`);
@@ -468,6 +478,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.textcolorWhite {
+  color:#fff;
+  font-size:16px;
+}
 .white{
 
   margin-bottom: 30px;

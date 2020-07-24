@@ -1878,7 +1878,7 @@ export default {
                 return Number(params.data) > 0 ? params.data : "";
               }
             },
-            data: ['', '', typeA.isUnused]
+            data: ['', '', typeA.isSealed]
           }
         ]
       });

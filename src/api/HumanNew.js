@@ -8,8 +8,8 @@ export default {
     return response;
     },
     //工资总额
-    async fetchSalaryData(){
-        const response = await axios.get('/emp/salary');
+    async fetchSalaryData(ny){
+        const response = await axios.get('/emp/salary',{params:{ny:ny}});
     return response;
     },
     // 人员情况

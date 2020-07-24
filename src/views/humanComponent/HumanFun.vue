@@ -53,6 +53,7 @@ export default {
     ny(newValue, oldValue) {  
         if(newValue!==oldValue) {
           this.ratio()
+          this.salary()
 
         }
     }  
@@ -68,7 +69,7 @@ export default {
     },
     async salary() {
       const _date = new Date()
-      const res = await HumanNewApi.fetchSalaryData()
+      const res = await HumanNewApi.fetchSalaryData(this.ny)
       if (res && res.code === '000000') {
         this.drawSalaryTotal(
           res.data.costVo.yearPerformance,

@@ -106,6 +106,12 @@ export default {
       this.$router.push({ path: "/" });
     },
     drawSingleBarChart(id, xData, yTitle, seriesData) {
+      console.log("seriesData",seriesData)
+      let seriesname=[]
+      for(let i=0;i<seriesData.length;i++){
+        seriesname.push(seriesData[i].name)  
+      }
+      console.log("seriesname",seriesname)
       let arr = []
       if(xData && xData.length > 9) {
         arr = [{
@@ -122,10 +128,32 @@ export default {
       }
       var myChart = echarts.init(document.getElementById(id));
       var option = {
+        
         tooltip: {
           trigger: "axis",
         },
-        dataZoom: arr,
+        legend:{
+          show:true,
+          textStyle: {
+            color: '#fff'
+         }
+
+        },
+        //dataZoom: arr,
+        dataZoom: [
+            {
+                show: true,
+                realtime: true,
+                start: 0,
+                end: 50
+            },
+            {
+                type: 'inside',
+                realtime: true,
+                start: 0,
+                end: 50
+            }
+        ],
         grid: { left: 48, right: 48, },
         //-------------   x轴   -------------------
         xAxis: {
