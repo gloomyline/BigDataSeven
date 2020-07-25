@@ -2425,7 +2425,7 @@ export default {
           type: "category",
           show:true,
           data: [
-           `${percent}%`
+           `开累计价完成比${percent}%`
          ],
           axisLine: {
             show: true,
