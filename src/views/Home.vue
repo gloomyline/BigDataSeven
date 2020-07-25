@@ -2779,7 +2779,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: [`${percent}%`],
+          data: [`变更索赔完成率${percent}%`],
           axisLine: {
             show: true,
             lineStyle: {
