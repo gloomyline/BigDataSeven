@@ -27,7 +27,7 @@ export default {
       },
       // 分公司索引，轮播计数器
       count: 0,
-      companies: ['独立项目部','华北分公司','城轨分公司','西北分公司','房建分公司',],
+      companies: ['独立项目部','华北分公司','城轨分公司','西北分公司','房建分公司','武汉分公司','湖北分公司'],
       currentCompany: '独立项目部',
       // person details request from server
       personInfo: [],
@@ -108,6 +108,16 @@ export default {
           projectNames: self._filterCompany('房建分公司'),
           data: self._filterCompany('房建分公司', false),
         },
+        {
+          companyName: '武汉分公司',
+          projectNames: self._filterCompany('武汉分公司'),
+          data: self._filterCompany('武汉分公司', false),
+        },
+        {
+          companyName: '湖北分公司',
+          projectNames: self._filterCompany('湖北分公司'),
+          data: self._filterCompany('湖北分公司', false),
+        },
       ]
       const option = {
         color: ["#a5dff9", "#3398DB", "#60c5ba", "#feee7d"],
@@ -145,7 +155,20 @@ export default {
               lineStyle: {
                 color: "rgba(255,255,255,.2)"
               }
-            }
+            },
+            axisLabel: {
+              //---坐标轴 标签
+              show: true, //---是否显示
+              inside: false, //---是否朝内
+              rotate: 40, //---旋转角度
+              margin: 5, //---刻度标签与轴线之间的距离
+              interval: 0,
+              color:'white',				//---默认取轴线的颜色
+              textStyle: {
+                fontSize: 14,
+                // fontWeight: "bold",
+              }
+            },
           }
         ],
         yAxis: [
@@ -300,6 +323,7 @@ export default {
       position: absolute;
       left: 50%;
       top: 8%;
+      width:90%;
       transform: translateX(-50%);
     }
   }

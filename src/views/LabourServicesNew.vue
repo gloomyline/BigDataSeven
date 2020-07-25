@@ -30,7 +30,7 @@
       <!-- 表格区域 -->
       <div class="table">
         <p class="thead">
-          <span class="tilte">劳务队伍参建项目数</span>
+          <span class="tilte">劳务企业参建项目数</span>
         </p>
         <el-table
           style="width:100%"
@@ -45,7 +45,7 @@
             label="排序"
             width="120"
           ></el-table-column>
-          <el-table-column prop="comname" label="劳务队伍"></el-table-column>
+          <el-table-column prop="comname" label="劳务企业"></el-table-column>
           <el-table-column prop="deptidnum" label="参建项目数"></el-table-column>
           <el-table-column prop="deptname" label="参建项目"></el-table-column>
         </el-table>
@@ -59,7 +59,7 @@
       <!-- 表格区域 -->
       <div class="table">
         <p class="thead">
-          <span class="tilte">劳务队伍作业人数占比</span>
+          <span class="tilte">劳务企业作业人数占比</span>
         </p>
         <el-table
           style="width:100%"
@@ -77,7 +77,7 @@
           <el-table-column
             prop="comname"
             min-width="150"
-            label="劳务队伍"
+            label="劳务企业"
           ></el-table-column>
           <el-table-column
             prop="deptname"
@@ -142,7 +142,7 @@ export default {
        //console.log("rowrowindex",row,rowIndex)
        if(row.prate>=85){
          return 'textcolorRed'
-       }else if(row.prate<85 && row.prate>=65){
+       }else if(row.prate<85 && row.prate>=60){
          return 'textcolorYellow'
        }else if(row.prate<60){
          return 'textcolorGreen'
@@ -166,6 +166,7 @@ export default {
     // 劳务队伍作业人数占比
     async fetchedLabelteamnumData() {
       let arr = await LabourServicesNewApi.fetchedLabelteamnumData(this.date);
+      console.log("arr.data.leftleft",arr.data.left)
       this.tableData = arr.data.right
       this.echarts(arr.data.left);
     },
@@ -173,7 +174,7 @@ export default {
       this.tableData2 = this.tableData2.sort((a, b) => (b.data / b.value - a.data / a.value));
     },
     tableRowClassName({ row, rowIndex }) {
-       console.log("rowrowindex",row,rowIndex)
+      //  console.log("rowrowindex",row,rowIndex)
        if(row.deptidnum==3){
          return 'textcolorRed'
        }else if(row.deptidnum==2){
@@ -211,6 +212,7 @@ export default {
       this.echarts2(resRow);
     },
     echarts(left) {
+      console.log("leftlefteftleft",left)
       let data = []
       for(let i=0; i<left.length; i++){
         data.push(i+1)
@@ -252,7 +254,7 @@ export default {
         yAxis: [
           {
             type: "value",
-            name: "劳务队伍数",
+            name: "劳务企业数",
             splitLine: { show: false }, //去除网格线
             axisLabel: {},
             axisLine: {
@@ -266,7 +268,7 @@ export default {
         ],
         series: [
           {
-            name: "劳务队伍数",
+            name: "劳务企业数",
             type: "bar",
             barWidth: "40%",
             data: left,
@@ -303,9 +305,10 @@ export default {
       });
     },
     echarts2(left) {
+      console.log("leftleft",left)
       var myChart = echarts.init(document.getElementById("map_2"));
       // var dataOpcton = left;
-      var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数65%-85%", "参建人数小于总人数60%"];
+      var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数60%-85%", "参建人数小于总人数60%"];
       // var dataOpcton = this.tableData2.map((item) => {
       //   var resvalue = Math.floor((item.data / item.value) * 10000) / 100;
       //   if (resvalue >= 85) {
@@ -320,7 +323,7 @@ export default {
       // });
       var option = {
         title: {
-          text: "劳务队伍作业人数占比",
+          text: "劳务企业作业人数占比",
           left: "center",
           textStyle: {
             color: "#fff", //颜色

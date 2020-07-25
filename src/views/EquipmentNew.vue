@@ -241,7 +241,7 @@ export default {
             xAxisIndex: [0],
           },
         ],
-        grid: { top: 30, bottom: 165, },
+        //grid: { top: 30, bottom: 165, },
         //-------------   x轴   -------------------
         xAxis: {
           show: true, //---是否显示
@@ -255,7 +255,7 @@ export default {
             color: "#fff",
             padding: [5, 0, 0, -5], //---坐标轴名称相对位置
           },
-          nameGap: 15, //---坐标轴名称与轴线之间的距离
+          nameGap: 10, //---坐标轴名称与轴线之间的距离
           //nameRotate:270,			//---坐标轴名字旋转
 
           axisLine: {
@@ -275,12 +275,9 @@ export default {
           axisLabel: {
             //---坐标轴 标签
             show: true, //---是否显示
-            inside: false, //---是否朝内
-            rotate: 0, //---旋转角度
-            margin: 10, //---刻度标签与轴线之间的距离
-            formatter: function(value) {
-              return value.split('').join('\n');
-            },
+            //inside: false, //---是否朝内
+            rotate: 40, //---旋转角度
+            margin: 5, //---刻度标签与轴线之间的距离
           },
           splitLine: {
             //---grid 区域中的分隔线

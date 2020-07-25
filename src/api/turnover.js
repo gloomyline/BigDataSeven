@@ -12,8 +12,16 @@ export default {
     const response = await axios.get('/material/typeC', { params: { ny: date } });
     return response;
   },
-  async fetchRate(date) {
-    const response = await axios.get('/material/rateMonth', { params: { ny: date } });
+  async fetchRateA(date) {
+    const response = await axios.get('/material/rateMonthA', { params: { ny: date } });
+    return response;
+  },
+  async fetchRateB(date) {
+    const response = await axios.get('/material/rateMonthB', { params: { ny: date } });
+    return response;
+  },
+  async fetchRateC(date) {
+    const response = await axios.get('/material/rateMonthC', { params: { ny: date } });
     return response;
   },
   async fetchProjectDetails(deptId,ny) {

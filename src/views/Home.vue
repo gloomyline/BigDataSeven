@@ -1556,9 +1556,9 @@ export default {
         },
         legend: {
           data: [
-            "在用劳务队伍数量",
+            "在用劳务企业数量",
             "今年办理准入队伍数量",
-            "公司劳务队伍数量"
+            "公司劳务企业数量"
           ],
           textStyle: {
             color: "rgba(255,255,255,.5)",
@@ -1623,7 +1623,7 @@ export default {
         ],
         series: [
           {
-            name: "在用劳务队伍数量",
+            name: "在用劳务企业数量",
             type: "line",
             smooth: true,
             symbol: "circle",
@@ -1717,7 +1717,7 @@ export default {
             data: thisYearLaborCount
           },
           {
-            name: "公司劳务队伍数量",
+            name: "公司劳务企业数量",
             type: "line",
             smooth: true,
             symbol: "circle",

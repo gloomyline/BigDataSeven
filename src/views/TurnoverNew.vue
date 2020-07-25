@@ -35,14 +35,16 @@
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
           <div class="chartTit1">B类材料(单位：吨)</div>
-          <div class="chartCont1" id="barChartB"></div>
+          <div class="pie-material-b" ref="materialBPie"></div>
+          <div class="chartCont1 material-b" id="barChartB"></div>
         </div>
       </dv-border-box-10>
 
       <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
           <div class="chartTit1">C类材料(单位：吨)</div>
-          <div class="chartCont1" id="barChartC"></div>
+          <div class="pie-material-c" ref="materialCPie"></div>
+          <div class="chartCont1 material-c" id="barChartC"></div>
         </div>
       </dv-border-box-10>
     </div>
@@ -115,7 +117,9 @@ export default {
       this.drawTypeB()
       this.typeC = await turnoverApi.fetchTypeC(this.ny);
       this.drawTypeC();
-      this.pieRate = await turnoverApi.fetchRate(this.ny);
+      this.pieRateA = await turnoverApi.fetchRateA(this.ny);
+      this.pieRateB = await turnoverApi.fetchRateB(this.ny);
+      this.pieRateC = await turnoverApi.fetchRateC(this.ny);
       this._drawPie();
       loading.close();
     },
@@ -446,20 +450,93 @@ export default {
       this.$router.push({ path: "/" });
     },
     _drawPie() {
-      let isUsing = 0
-      let isUnused = 0
-      let isSealed = 0
-      if(this.pieRate && this.pieRate.data !== {}) {
-        isUsing = this.pieRate.data.isUsing
-        isUnused = this.pieRate.data.isUnused
-        isSealed = this.pieRate.data.isSealed
+      let isUsingA = 0
+      let isUnusedA = 0
+      let isSealedA= 0
+      if(this.pieRateA && this.pieRateA.data !== {}) {
+        isUsingA = this.pieRateA.data.isUsing
+        isUnusedA = this.pieRateA.data.isUnused
+        isSealedA = this.pieRateA.data.isSealed
       } else {
-        isUsing = 0
-        isUnused = 0
-        isSealed = 0
+        isUsingA = 0
+        isUnusedA = 0
+        isSealedA = 0
       }
-      const pie = echarts.init(this.$refs.materialAPie);
+      let isUsingB = 0
+      let isUnusedB = 0
+      if(this.pieRateB&& this.pieRateB.data !== {}) {
+        isUsingB = this.pieRateB.data.isUsing
+        isUnusedB = this.pieRateB.data.isUnused
+      } else {
+        isUsingB = 0
+        isUnusedB = 0
+      }
+      let isUsingC = 0
+      let isUnusedC = 0
+      if(this.pieRateC&& this.pieRateC.data !== {}) {
+        isUsingC = this.pieRateC.data.isUsing
+        isUnusedC = this.pieRateC.data.isUnused
+      } else {
+        isUsingC = 0
+        isUnusedC = 0
+      }
+      const pieA = echarts.init(this.$refs.materialAPie);
       const option = {
+        title: [
+          {
+            text: "整体利用率",
+            x: "center",
+            y: "top",
+            textStyle: {
+              color: "#2f89cf",
+              fontSize: "14"
+            }
+          }
+        ],
+        color: ["#27d08a", "#0f63d6", "#0f8cd6"],
+        series: [
+          {
+            type: "pie",
+            radius: "45%",
+            center: ["52%", "50%"],
+            selectedMode: "single",
+            // data: [
+            //   {
+            //     value: 14443,
+            //     name: "在用",
+            //   },
+            //   { value: 3636, name: "闲置", },
+            //   { value: 177, name: '封存', },
+            // ],
+            data: [{ name: '在用', value: isUsingA}, { name: '闲置', value: isUnusedA}, { name: '封存', value: isSealedA }],
+            // data: [{ name: '在用', value: (this.pieRate.data.isUsing) }, { name: '闲置', value: (this.pieRate.data.isUnused) }, { name: '封存', value: (this.pieRate.data.isSealed) }],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  formatter: "{b} : {c}\n({d}%)",
+                  // position: "inner"
+                },
+                labelLine: { show: true }
+              },
+            },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)"
+              }
+            }
+          }
+        ]
+      };
+      pieA.setOption(option);
+      window.addEventListener('resize', () => {
+        pieA.resize();
+      });
+ 
+      const pieB = echarts.init(this.$refs.materialBPie);
+      const optionB = {
         title: [
           {
             text: "整体利用率",
@@ -486,7 +563,7 @@ export default {
             //   { value: 3636, name: "闲置", },
             //   { value: 177, name: '封存', },
             // ],
-            data: [{ name: '在用', value: isUsing}, { name: '闲置', value: isUnused}, { name: '封存', value: isSealed }],
+            data: [{ name: '在用', value: isUsingB}, { name: '闲置', value: isUnusedB}],
             // data: [{ name: '在用', value: (this.pieRate.data.isUsing) }, { name: '闲置', value: (this.pieRate.data.isUnused) }, { name: '封存', value: (this.pieRate.data.isSealed) }],
             itemStyle: {
               normal: {
@@ -508,9 +585,63 @@ export default {
           }
         ]
       };
-      pie.setOption(option);
+      pieB.setOption(optionB);
       window.addEventListener('resize', () => {
-        pie.resize();
+        pieB.resize();
+      });
+      const pieC = echarts.init(this.$refs.materialCPie);
+      const optionC = {
+        title: [
+          {
+            text: "整体利用率",
+            x: "center",
+            y: "top",
+            textStyle: {
+              color: "#2f89cf",
+              fontSize: "14"
+            }
+          }
+        ],
+        color: ["#27d08a", "#0f63d6", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
+        series: [
+          {
+            type: "pie",
+            radius: "45%",
+            center: ["52%", "50%"],
+            selectedMode: "single",
+            // data: [
+            //   {
+            //     value: 14443,
+            //     name: "在用",
+            //   },
+            //   { value: 3636, name: "闲置", },
+            //   { value: 177, name: '封存', },
+            // ],
+            data: [{ name: '在用', value: isUsingC}, { name: '闲置', value: isUnusedC}],
+            // data: [{ name: '在用', value: (this.pieRate.data.isUsing) }, { name: '闲置', value: (this.pieRate.data.isUnused) }, { name: '封存', value: (this.pieRate.data.isSealed) }],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  formatter: "{b} : {c}\n({d}%)",
+                  // position: "inner"
+                },
+                labelLine: { show: true }
+              },
+            },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)"
+              }
+            }
+          }
+        ]
+      };
+      pieC.setOption(optionC);
+      window.addEventListener('resize', () => {
+        pieC.resize();
       });
     },
     drawDoubleBarChart(id, xData, legendData, seriesData, yTitle, isDouble) {
@@ -773,13 +904,29 @@ export default {
         height: 3.4rem;
         &.material-a {
           display: inline-block;
-          vertital-align: top;
+          width: 76%;
+        }
+        &.material-b {
+          display: inline-block;
+          width: 76%;
+        }
+        &.material-c {
+          display: inline-block;
           width: 76%;
         }
       }
       .pie-material-a {
         display: inline-block;
-        vertital-align: top;
+        width: 24%;
+        height: 3.4rem
+      }
+      .pie-material-b {
+        display: inline-block;
+        width: 24%;
+        height: 3.4rem
+      }
+      .pie-material-c {
+        display: inline-block;
         width: 24%;
         height: 3.4rem
       }

@@ -621,7 +621,7 @@
         var myChart = echarts.init(document.getElementById(id));
 
         var option = {
-          color: ["#2f89cf", "#0f63d6", "#0f8cd6", "#0fa0d6", "#0fb4d6","#0fc1d6"],
+          color: ["#E4111f", "#e46c11", "#1188e4", "#11E46c", "orange","#f57A82","#0fc1d6"],
           tooltip: {
             trigger: "item",
             formatter: (params)=>{

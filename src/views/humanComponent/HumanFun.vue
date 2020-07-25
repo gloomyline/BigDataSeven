@@ -230,6 +230,19 @@ export default {
                 fontSize: 14,
               },
             },
+            axisLabel: {
+              //---坐标轴 标签
+              show: true, //---是否显示
+              inside: false, //---是否朝内
+              rotate: 40, //---旋转角度
+              margin: 5, //---刻度标签与轴线之间的距离
+              interval: 0,
+              color:'white',				//---默认取轴线的颜色
+              textStyle: {
+                fontSize: 14,
+                // fontWeight: "bold",
+              }
+            },
             axisLine: {
               lineStyle: {
                 color: 'rgba(255,255,255,.2)',

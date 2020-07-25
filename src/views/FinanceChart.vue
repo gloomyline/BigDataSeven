@@ -200,7 +200,7 @@ export default {
           },
           nameGap: 15, //---坐标轴名称与轴线之间的距离
           //nameRotate:270,			//---坐标轴名字旋转
-
+          
           axisLine: {
             //---坐标轴 轴线
             show: true, //---是否显示
@@ -220,7 +220,7 @@ export default {
             show: true, //---是否显示
             interval: 0,
             inside: false, //---是否朝内
-            rotate: 0, //---旋转角度
+            rotate: 40, //---旋转角度
             margin: 5, //---刻度标签与轴线之间的距离
             //color:'red',				//---默认取轴线的颜色
           },
@@ -336,7 +336,7 @@ export default {
             //---坐标轴 标签
             show: true, //---是否显示
             inside: false, //---是否朝内
-            rotate: 0, //---旋转角度
+            rotate: 40, //---旋转角度
             margin: 5, //---刻度标签与轴线之间的距离
             //color:'red',				//---默认取轴线的颜色
           },
@@ -390,7 +390,7 @@ export default {
             //---坐标轴 标签
             show: false, //---是否显示
             inside: false, //---是否朝内
-            rotate: 0, //---旋转角度
+            rotate: 40, //---旋转角度
             margin: 8, //---刻度标签与轴线之间的距离
             //color:'red',				//---默认取轴线的颜色
           },
