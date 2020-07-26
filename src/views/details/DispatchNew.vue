@@ -566,7 +566,6 @@ export default {
       margin: 0 auto;
     }
     .chartContent {
-      height: 3.2rem;
       .chartContChild {
         height: 1.3rem;
         // line-height: 1.2rem;
@@ -609,7 +608,6 @@ export default {
       }
       .chartCont {
         width: 100%;
-        height: 2.8rem;
       }
     }
   }
