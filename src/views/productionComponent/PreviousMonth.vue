@@ -50,7 +50,6 @@ import { productionNewApi } from '@/api';
 export default {
   props:["ny"],
   data() {
-
     return {
       year: '',
       month: '',
@@ -59,29 +58,16 @@ export default {
   },
   watch:{
     ny:function(newValue,oldValue){
-      let str = newValue.substring(newValue.length-2)
-      
-      console.log("this lastMoth",str)
-      let lastMonth= `${newValue.substr(0,newValue.length-2)}${str}`
-      console.log("this lastMoth",lastMonth)
-      this.Month=str
-      this.lastMonth=lastMonth
+      this.fetchPlanfinishlMonth();      
     }
 
   },
   created() {
-    this.fetchPlanfinishlMonth()
-    const date = new Date();
-    this.year = date.getFullYear();
-    this.month = ('00' + date.getMonth()).substr(-2, 2);
-    // simulate table data
-    console.log("preousMonth",this.ny)
+    this.fetchPlanfinishlMonth();
   },
   methods: {
     async fetchPlanfinishlMonth() {
-      // const _date = new Date();
-      // let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-      const res = await productionNewApi.fetchPlanfinishlMonthData("2020-06");
+      const res = await productionNewApi.fetchPlanfinishlMonthData(this.ny);
       if(res && res.code === '000000') {
         this.tableData = res.data
       } 

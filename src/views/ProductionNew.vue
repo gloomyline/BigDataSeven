@@ -33,7 +33,7 @@
       </div>
       <!-- <div style="margin:10px 0;"></div> -->
       <keep-alive>
-        <component :is="currentComponent" :ny="ny"></component>
+        <component :is="currentComponent" :ny="date"></component>
       </keep-alive>
     </div>
   </div>
@@ -78,7 +78,12 @@ export default {
       this.ny=`${_date.getFullYear()}-${mm}`
     }
   },
-  
+  computed: {
+    date() {
+      const dateMap = [0, -1, 1];
+      return  `${this.ny.substr(0, 4)}-${('0' + (Number(this.ny.substr(-2)) + dateMap[this.current])).substr(-2)}`
+    }
+  },
   methods: {
     goBack() {
       this.$router.push({ path: "/" });
