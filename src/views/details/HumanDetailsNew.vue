@@ -12,6 +12,12 @@
         >返回</el-button>
       </div>
     </div>
+    <el-button-group>
+      <el-button type="primary" @click="goto(0)">生产明细</el-button>
+      <el-button type="primary" @click="goto(1)">周转材料</el-button>
+      <el-button type="primary" @click="goto(2)">设备情况</el-button>
+      <el-button type="primary" @click="goto(3)">人力资源</el-button>
+    </el-button-group>
 
     <div class="table boxall">
       <p class="thead">
@@ -40,23 +46,11 @@ export default {
   data() {
     return {
       tableData: [],
-      projectname:this.$route.params.projectname
+      projectname:this.$route.params.projectName,
     }
   },
   created() {
     this.initData()
-  },
-  beforeCreate() {
-    const loading = this.$loading({
-      lock: true,
-      text: "页面加载中..",
-      spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 1)"
-    });
-
-    setTimeout(() => {
-      loading.close();
-    }, 2000);
   },
   methods: {
     goBack(res) {
@@ -67,10 +61,17 @@ export default {
       }
     },
     async initData() {
+      const loading = this.$loading({
+        lock: true,
+        text: "页面加载中..",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 1)"
+      });
       const res = await HumanNewApi.fetchGetEmployeeData(this.$route.params.projectId)
       if (res && res.code === '000000') {
         this.tableData = res.data
       }
+      loading.close();
     },
     equSpanMethod({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 11) {
@@ -79,7 +80,32 @@ export default {
           colspan: 1
         };
       }
-    }
+    },
+    goto(idx) {
+      const routeMap = [
+        {
+          name: 'DispatchNew',
+          params: { id: this.$route.params.projectId, name: this.$route.params.projectName, ny: this.$route.params.ny },
+        },
+        {
+          name: 'TurnoverDetails',
+          params: { deptId: this.$route.params.projectId, ny: this.$route.params.ny },
+        },
+        {
+          name: 'BigEquipmentDetails',
+          params: { id: this.$route.params.projectId, name: this.$route.params.projectName, ny: this.$route.params.ny },
+        },
+        {
+          name: 'HumanDetailsNew',
+          params: { projectId: this.$route.params.id, projectName: this.$route.params.name, ny: this.$route.params.ny },
+        },
+      ];
+      if (idx === 3) {
+        this.initData();
+      } else {
+        this.$router.push(routeMap[idx]);
+      }
+    },
   }
 };
 </script>

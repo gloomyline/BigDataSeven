@@ -505,6 +505,7 @@ export default {
         },
         series: seriesData,
       };
+      const self = this;
       myChart.setOption(option);
       myChart.on("click", function(params) {
         let a = '{"error":1,"data":"用户不存在"}'
@@ -515,7 +516,8 @@ export default {
                 name: "BigEquipmentDetails",
                 params: {
                   name: item.name,
-                  id: item.id
+                  id: item.id,
+                  ny: self.date,
                 }
               });
             }

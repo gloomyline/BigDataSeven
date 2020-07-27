@@ -83,7 +83,7 @@ const routes = [{
     component: () => import( /* webpackChunkName: "dispatch" */ '../views/details/Dispatch.vue')
   },
   {
-    path: '/dispatchNew',
+    path: '/dispatchNew/:id/:name/:ny',
     name: 'DispatchNew',
     component: () => import( /* webpackChunkName: "dispatch" */ '../views/details/DispatchNew.vue')
   },
@@ -93,12 +93,12 @@ const routes = [{
     component: () => import( /* webpackChunkName: "humanDetails" */ '../views/details/HumanDetails.vue')
   },
   {
-    path: '/humanDetailsNew',
+    path: '/humanDetailsNew/:projectId/:projectName/:ny',
     name: 'HumanDetailsNew',
     component: () => import( /* webpackChunkName: "humanDetails" */ '../views/details/HumanDetailsNew.vue')
   },
   {
-    path: '/turnoverDetails/:deptId',
+    path: '/turnoverDetails/:deptId/:ny',
     name: 'TurnoverDetails',
     props: true,
     component: () => import( /* webpackChunkName: "turnoverDetails" */ '../views/details/TurnoverDetails.vue')
@@ -109,7 +109,7 @@ const routes = [{
     component: () => import( /* webpackChunkName: "equipmentDetails" */ '../views/details/EquipmentDetails.vue')
   },
   {
-    path: '/bigEquipmentDetails',
+    path: '/bigEquipmentDetails/:id/:name/:ny',
     name: 'BigEquipmentDetails',
     component: () => import( /* webpackChunkName: "equipmentDetails" */ '../views/details/BigEquipmentDetails.vue')
   },

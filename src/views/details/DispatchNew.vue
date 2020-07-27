@@ -13,19 +13,20 @@
         >
       </div>
     </div>
-    
+    <el-button-group>
+      <el-button type="primary" @click="goto(0)">生产明细</el-button>
+      <el-button type="primary" @click="goto(1)">周转材料</el-button>
+      <el-button type="primary" @click="goto(2)">设备情况</el-button>
+      <el-button type="primary" @click="goto(3)">人力资源</el-button>
+    </el-button-group>
     <div class="table boxall">
       <p class="thead">
         <img class="img" src="@/assets/images/u563.png" />
         <span class="tilte">{{title}}项目简介</span>
       </p>
       <div class="chartContent">
-         
-            <div class="textcolorWhite" v-html="projectinfo">{{projectinfo}}</div>
-          
-          
-        </div>
-
+        <div class="textcolorWhite" v-html="projectinfo">{{projectinfo}}</div>
+      </div>
     </div>
 
     <div class="table boxall">
@@ -33,7 +34,6 @@
         <img class="img" src="@/assets/images/u563.png" />
         <span class="tilte">计划完成情况</span>
       </p>
-
       <div class="chartBox">
         <div class="sy" id="fb1"></div>
         <div class="sy" id="fb2"></div>
@@ -100,39 +100,55 @@ export default {
   },
   created(){
     this.projectInfo()
-    
   },
   data() {
     return {
       tableData: [],
       title: this.$route.params.name,
-      projectinfo:""
+      projectinfo:"",
     };
   },
   mounted() {
-    console.log(this.$route.params)
-    this.getTableData()
-    this.finishlmonth()
-    this.getWebPreviewInfo()
-    this.$nextTick(() => {
-      // this.echarts_31();
-      // this.echarts_32();
-      // this.echarts_33();
-    });
-  },
-  beforeCreate() {
-    const loading = this.$loading({
-      lock: true,
-      text: "页面加载中...",
-      spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 1)",
-    });
-
-    setTimeout(() => {
-      loading.close();
-    }, 2000);
+    this._initData();
   },
   methods: {
+    async _initData() {
+      const loading = this.$loading({
+        lock: true,
+        text: "页面加载中...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 1)",
+      });
+      await this.getTableData()
+      await this.finishlmonth()
+      await this.getWebPreviewInfo()
+      loading.close();
+    },
+    goto(idx) {
+      const routeMap = [
+        {
+          name: 'DispatchNew',
+          params: { id: this.$route.params.id, name: this.$route.params.name, ny: this.$route.params.ny },
+        },
+        {
+          name: 'TurnoverDetails',
+          params: { deptId: this.$route.params.id, ny: this.$route.params.ny },
+        },
+        {
+          name: 'BigEquipmentDetails',
+          params: { id: this.$route.params.id, name: this.$route.params.name, ny: this.$route.params.ny },
+        },
+        {
+          name: 'HumanDetailsNew',
+          params: { projectId: this.$route.params.id, projectName: this.$route.params.name, ny: this.$route.params.ny },
+        },
+      ];
+      if (idx === 0) {
+        this._initData();
+      } else {
+        this.$router.push(routeMap[idx]);
+      }
+    },
     formatter(row) {
       let str = row.casefile.split('\\')
       return str[str.length -1]
@@ -153,8 +169,6 @@ export default {
       }else{
          this.projectinfo="暂无数据"
       }
-     
-      
     },
     async finishlmonth() {
       const res = await DispatchNewApi.fetchGetDepartProductionData(`${this.$route.params.id}`);
@@ -172,7 +186,8 @@ export default {
       if (res) {
         this.$router.push({ path: "/" });
       } else {
-        this.$router.go(-1);
+        // this.$router.go(-1);
+        this.$router.push({ name: 'ProductionNew' });
       }
     },
     echarts_31(finish, remained) {

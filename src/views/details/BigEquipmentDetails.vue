@@ -12,6 +12,12 @@
         >返回</el-button>
       </div>
     </div>
+    <el-button-group>
+      <el-button type="primary" @click="goto(0)">生产明细</el-button>
+      <el-button type="primary" @click="goto(1)">周转材料</el-button>
+      <el-button type="primary" @click="goto(2)">设备情况</el-button>
+      <el-button type="primary" @click="goto(3)">人力资源</el-button>
+    </el-button-group>
 
     <!-- 表格区域 -->
     <div class="table boxall">
@@ -76,12 +82,34 @@ export default {
     }, 2000);
   },
   methods: {
-    async _requestData(data, ny) {
-      const _date = new Date();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-      const response = await equipmentApi.fetchEquipmentsByProject(`${this.$route.params.id}`, `${_date.getFullYear()}-${mm}`);
-      console.log(response, 'woasfsdfs-----------fsdfds')
+    async _requestData() {
+      const response = await equipmentApi.fetchEquipmentsByProject(this.$route.params.id, this.$route.params.ny);
       this.tableData = response
+    },
+    goto(idx) {
+      const routeMap = [
+        {
+          name: 'DispatchNew',
+          params: { id: this.$route.params.id, name: this.$route.params.name, ny: this.$route.params.ny },
+        },
+        {
+          name: 'TurnoverDetails',
+          params: { deptId: this.$route.params.id, ny: this.$route.params.ny },
+        },
+        {
+          name: 'BigEquipmentDetails',
+          params: { id: this.$route.params.id, name: this.$route.params.name, ny: this.$route.params.ny },
+        },
+        {
+          name: 'HumanDetailsNew',
+          params: { projectId: this.$route.params.id, projectName: this.$route.params.name, ny: this.$route.params.ny },
+        },
+      ];
+      if (idx === 2) {
+        this._requestData();
+      } else {
+        this.$router.push(routeMap[idx]);
+      }
     },
     goBack(res) {
       if (res) {

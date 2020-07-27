@@ -12,7 +12,12 @@
         >返回</el-button>
       </div>
     </div>
-
+    <el-button-group>
+      <el-button type="primary" @click="goto(0)">生产明细</el-button>
+      <el-button type="primary" @click="goto(1)">周转材料</el-button>
+      <el-button type="primary" @click="goto(2)">设备情况</el-button>
+      <el-button type="primary" @click="goto(3)">人力资源</el-button>
+    </el-button-group>
     <!-- 表格区域 -->
     <div class="table boxall">
       <p class="thead">
@@ -140,11 +145,36 @@ export default {
         });
         return newItem;
       });
-      console.log(3, this.tableData3);
+    },
+    goto(idx) {
+      const routeMap = [
+        {
+          name: 'DispatchNew',
+          params: { id: this.$route.params.deptId, name: this.deptName, ny: this.$route.params.ny },
+        },
+        {
+          name: 'TurnoverDetails',
+          params: { deptId: this.$route.params.id, ny: this.$route.params.ny },
+        },
+        {
+          name: 'BigEquipmentDetails',
+          params: { id: this.$route.params.deptId, name: this.deptName, ny: this.$route.params.ny },
+        },
+        {
+          name: 'HumanDetailsNew',
+          params: { projectId: this.$route.params.deptId, projectName: this.deptName, ny: this.$route.params.ny },
+        },
+      ];
+      if (idx === 1) {
+        this._initData();
+      } else {
+        this.$router.push(routeMap[idx]);
+      }
     },
     goBack(res) {
       if (res) {
-        this.$router.go(-1);
+        // this.$router.go(-1);
+        this.$router.push({ name: 'TurnoverNew' });
       } else {
         this.$router.push({ path: "/" });
       }

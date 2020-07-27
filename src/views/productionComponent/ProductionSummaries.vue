@@ -613,7 +613,8 @@
           name: "DispatchNew",
           params: {
             id,
-            name
+            name,
+            ny: this.ny,
           }
        });
       },

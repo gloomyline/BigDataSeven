@@ -39,7 +39,7 @@ export default {
     goPro(projectId,projectname) {
       this.$router.push({
         name: 'HumanDetailsNew',
-        params: { projectId: projectId, projectname:projectname},
+        params: { projectId: projectId, projectName:projectname},
       })
     },
     async initData() {
@@ -52,8 +52,8 @@ export default {
       const groupStructure = echarts.init(this.$refs.groupStructure)
       const option = {
         tooltip: {
-            trigger: 'item',   
-            triggerOn: 'mousemove'           
+          trigger: 'item',   
+          triggerOn: 'mousemove'           
         },
         series: [
           {
@@ -118,7 +118,6 @@ export default {
         if (typeof param.seriesIndex == 'undefined') {
           return
         }
-        console.log("gopro param.data",param.data)
         if (param.type == 'click') {
           this.goPro(param.data.id,param.data.name)
         }
