@@ -635,7 +635,7 @@
             {
               name:seriesName,
               type: "pie",
-              radius: "65%",
+              radius: "55%",
               center: ["50%", "42%"],
               selectedMode: "single",
               data: pieData,
