@@ -84,8 +84,8 @@
           <div class="map4" id="map_1"></div>
           <div>
             <ul class="map-info">
-              <li class="li">在建项目数：41个</li>
-              <li class="li">收尾项目数：2个</li>
+              <li class="li">在建项目数：39个</li>
+              <li class="li">收尾项目数：0个</li>
             </ul>
           </div>
         </div>
@@ -123,7 +123,7 @@
           <div class="sb" id="jj1"></div>
           <div class="sb" id="jj2"></div>
           <!-- <div class="sb">1111</div>
-          <div class="sb">1222</div> -->
+          <div class="sb">1222</div>-->
           <span class="unit" style="right: 30px;top: 10px;">单位：万元</span>
         </dv-border-box-1>
       </li>
@@ -154,9 +154,9 @@ export default {
         bigMain: null,
         otherUsing: null,
         isUnused: null,
-        isUsing: null,
+        isUsing: null
       },
-      economy:null,
+      economy: null,
       financeVo: null,
       manPower: {
         total: 1033,
@@ -212,36 +212,40 @@ export default {
         digitalFlopStyle: {
           fontSize: 16
         }
-      },
+      }
     };
   },
   methods: {
     async fetchHomeMap() {
-      this.mapPointArr = []
-      this.provinceProJectsArr = []
-      this.mapPoint = {}
+      this.mapPointArr = [];
+      this.provinceProJectsArr = [];
+      this.mapPoint = {};
       const response = await homeApi.fetchHomeMapData();
       response.data.forEach(item => {
-        let name = item.name
-        if(item.point !== '') {
-          let pointX = Number(item.point.split(',')[0])
-          let pointY = Number(item.point.split(',')[1])
-          let pointArr = []
-          pointArr.push(pointX, pointY)
-          this.mapPoint[item.name] = pointArr
+        let name = item.name;
+        if (item.point !== "") {
+          let pointX = Number(item.point.split(",")[0]);
+          let pointY = Number(item.point.split(",")[1]);
+          let pointArr = [];
+          pointArr.push(pointX, pointY);
+          this.mapPoint[item.name] = pointArr;
           let obj = {
             city: item.city,
             name: item.name,
             dataone: item.cost,
-            datatwo: 0,
+            datatwo: item.com,
             datathree: 0
-          }
-          this.provinceProJectsArr.push(obj)
-        }      
-      })
-      if(this.mapPoint!== {} && this.provinceProJectsArr && this.provinceProJectsArr.length > 0) {
+          };
+          this.provinceProJectsArr.push(obj);
+        }
+      });
+      if (
+        this.mapPoint !== {} &&
+        this.provinceProJectsArr &&
+        this.provinceProJectsArr.length > 0
+      ) {
         this.echarts(this.mapPoint, this.provinceProJectsArr);
-      } 
+      }
     },
     _initEquipmentData(data) {
       this.equipment = data.equipmentVo;
@@ -262,12 +266,13 @@ export default {
     async initData() {
       // request home api
       const _date = new Date();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth()
-      this.ny=  `${_date.getFullYear()}-${mm}`
+      let mm =
+        _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+      this.ny = `${_date.getFullYear()}-${mm}`;
       const response = await homeApi.fetchHomeData(
         `${_date.getFullYear()}-${mm}`
       );
-      this.manpower = response.data.manpower
+      this.manpower = response.data.manpower;
       const data = response.data;
       this._initEquipmentData(data);
       this._initEconomyData(data);
@@ -280,11 +285,19 @@ export default {
       this.judgeColor(this.startConfig);
       this.sbNumConfig.color = ["#27d08a", "#066eab"];
       this.sbTypeConfig.color = ["#2f89cf", "#0f63d6"];
-      this.echarts_31(response.data.production.monthly)
-      this.echarts_32(response.data.production.yearly)
-      this.echarts_33(response.data.production.sofar)
-      this.echarts_2(response.data.materials.material, response.data.materials.rate)
-      this.echarts_1(response.data.labour.useLaborCount, response.data.labour.thisYearLaborCount, response.data.labour.allLaborCount, response.data.labour.moth);
+      this.echarts_31(response.data.production.monthly);
+      this.echarts_32(response.data.production.yearly);
+      this.echarts_33(response.data.production.sofar);
+      this.echarts_2(
+        response.data.materials.material,
+        response.data.materials.rate
+      );
+      this.echarts_1(
+        response.data.labour.useLaborCount,
+        response.data.labour.thisYearLaborCount,
+        response.data.labour.allLaborCount,
+        response.data.labour.moth
+      );
     },
     judgeColor(config) {
       if (config.data[0] >= 90) {
@@ -299,7 +312,7 @@ export default {
       }
     },
     goRouter(resName) {
-      this.$router.push({ name: resName,params: { ny: this.ny } });
+      this.$router.push({ name: resName, params: { ny: this.ny } });
     },
 
     echarts(pointArr, provinceProJectsArr) {
@@ -328,7 +341,8 @@ export default {
       var heilongjiang = "get/s/data-1528969789631-ryLHcnJbm.json";
       var hebei = "get/s/data-1528969737020-HJWMqhy-Q.json";
       var guizhou = "get/s/data-1528969712502-Hy_g92yZQ.json";
-      var guangxi = "get/s/data-1528969706270-HJMg5hdata-1528969831328-Sykuqh1bXkWQ.json";
+      var guangxi =
+        "get/s/data-1528969706270-HJMg5hdata-1528969831328-Sykuqh1bXkWQ.json";
       var guangdong = "get/s/data-1528969700634-BkT1qn1WQ.json";
       var gansu = "get/s/data-1528969694316-BJLkc2yZX.json";
       var chongqing = "get/s/data-1528969687660-r1ey9nkbX.json";
@@ -728,15 +742,14 @@ export default {
         var curGeoJson = {};
         var cityMap = {
           中国: zhongguo,
-          武汉: wuhanfengongsi,
-          湖北: hubeigongsi,
-          陕西: huabeigongsi,
-          山西: huabeigongsi,
-          甘肃: xibeigongsi,
-          青海: xibeigongsi,
-          上海: fangjiangongsi,
-          湖南: fangjiangongsi,
-          海南: fangjiangongsi,
+          湖北: hubei,
+          陕西: shanxi,
+          山西: shangxi,
+          甘肃: gansu,
+          青海: qinghai,
+          上海: shanghai,
+          湖南: hunan,
+          海南: hainan,
           香港: xianggang,
           澳门: aomen,
           房建分公司: fangjiangongsi,
@@ -745,7 +758,7 @@ export default {
           武汉分公司: wuhanfengongsi,
           华北分公司: huabeigongsi
         };
-        var geoCoordMap = pointArr
+        var geoCoordMap = pointArr;
 
         var levelColorMap = {
           "1": "rgba(241, 109, 115, .8)",
@@ -798,13 +811,18 @@ export default {
             if (n == "武汉") {
               breadcrumb = this.createBreadcrumb("武汉分公司");
             } else if (n == "山西" || n == "陕西" || n == "华北分公司") {
-              breadcrumb = this.createBreadcrumb("华北分公司");
+              breadcrumb = this.createBreadcrumb(n);
             } else if (n == "湖北" || n == "湖北分公司") {
-              breadcrumb = this.createBreadcrumb("湖北分公司");
-            } else if (n == "上海" || n == "湖南" || n == "海南" || n == "房建分公司") {
-              breadcrumb = this.createBreadcrumb("房建分公司");
+              breadcrumb = this.createBreadcrumb(n);
+            } else if (
+              n == "上海" ||
+              n == "湖南" ||
+              n == "海南" ||
+              n == "房建分公司"
+            ) {
+              breadcrumb = this.createBreadcrumb(n);
             } else if (n == "甘肃" || n == "青海" || n == "西北分公司") {
-              breadcrumb = this.createBreadcrumb("西北分公司");
+              breadcrumb = this.createBreadcrumb(n);
             }
             if (breadcrumb !== null) {
               breadcrumb.left = 265;
@@ -820,7 +838,6 @@ export default {
                 var cityData = [];
                 var cityJson;
                 for (var x = 0; x < opt.data.length; x++) {
-             
                   if (n === opt.data[x].city) {
                     $([opt.data[x]]).each(function(index, data) {
                       cityJson = {
@@ -1304,6 +1321,16 @@ export default {
                 value: 1,
                 label: "西北分公司",
                 color: "rgba(159,202,70,1)"
+              },
+              {
+                value: 2,
+                label: "武汉分公司",
+                color: "rgba(159,202,70,1)"
+              },
+              {
+                value: 6,
+                label: "城轨分公司",
+                color: "rgba(159,202,70,1)"
               }
             ],
             show: !0,
@@ -1377,15 +1404,15 @@ export default {
           var cityDot = "";
           var city = params.name;
           if (city == "甘肃" || city == "青海") {
-            params.name = "西北分公司";
+            params.name = city;
           } else if (city == "武汉") {
-            params.name = "武汉分公司";
+            params.name = city;
           } else if (city == "上海" || city == "湖南" || city == "海南") {
-            params.name = "房建分公司";
+            params.name = city;
           } else if (city == "湖北") {
-            params.name = "湖北分公司";
+            params.name = city;
           } else if (city == "山西" || city == "陕西") {
-            params.name = "华北分公司";
+            params.name = city;
           }
           if (opt.goDown && params.name !== name[idx]) {
             if (cityMap[params.name]) {
@@ -1395,8 +1422,18 @@ export default {
                 echarts.registerMap(params.name, response);
                 option.series[1].data = allCtyData;
                 option.tooltip.formatter = function(params, ticket, callback) {
-                            return '分公司：' + params.data.city + '<br/>' + '项目名称：' + params.data.name+'<br/>' + '总产值：' + params.data.dataone + '';
-                        }
+                  return (
+                    "分公司：" +
+                    params.data.datatwo +
+                    "<br/>" +
+                    "项目名称：" +
+                    params.data.name +
+                    "<br/>" +
+                    "总产值：" +
+                    params.data.dataone +
+                    ""
+                  );
+                };
                 opt.data = provinceProJects;
                 handleEvents.resetOption(_self, option, params.name);
               });
@@ -1528,7 +1565,6 @@ export default {
       $.getJSON(zhongguo, function(geoJson) {
         echarts.registerMap("china", geoJson);
         var myChart = echarts.extendsMap("map_1", {
-         
           mapName: "china", // 地图名
           text: "by:wxw",
           goDown: true, // 是否下钻
@@ -1611,7 +1647,7 @@ export default {
             axisLabel: {
               textStyle: {
                 color: "rgba(255,255,255,.6)",
-                fontSize: 12,
+                fontSize: 12
               }
             },
             splitLine: {
@@ -1773,12 +1809,12 @@ export default {
       });
     },
     echarts_2(type, rate) {
-      let typeA = type.typeA
-      let typeB = type.typeB
-      let typeC = type.typeC
-      let rateA = (Number(rate.typeA)*100).toFixed(2)
-      let rateB = (Number(rate.typeB)*100).toFixed(2)
-      let rateC = (Number(rate.typeC)*100).toFixed(2)
+      let typeA = type.typeA;
+      let typeB = type.typeB;
+      let typeC = type.typeC;
+      let rateA = (Number(rate.typeA) * 100).toFixed(2);
+      let rateB = (Number(rate.typeB) * 100).toFixed(2);
+      let rateC = (Number(rate.typeC) * 100).toFixed(2);
       // let typeB = type.typeB
       // let typeC = type.typeC
       // 基于准备好的dom，初始化echarts实例
@@ -1878,7 +1914,7 @@ export default {
                 return Number(params.data) > 0 ? params.data : "";
               }
             },
-            data: ['', '', typeA.isSealed]
+            data: ["", "", typeA.isSealed]
           }
         ]
       });
@@ -2024,20 +2060,19 @@ export default {
 
       let xData = [];
       let series = {
-        balance:[],
-        earning:[],
-        profits:[],
-        stock:[]
-      }
+        balance: [],
+        earning: [],
+        profits: [],
+        stock: []
+      };
 
-      this.financeVo.forEach((financeVo,index) => {
-        xData.push(index+1);
+      this.financeVo.forEach((financeVo, index) => {
+        xData.push(index + 1);
         series.balance.push(financeVo.balance);
         series.earning.push(financeVo.earning);
         series.profits.push(financeVo.profits);
         series.stock.push(financeVo.stock);
       });
-
 
       var option = {
         tooltip: {
@@ -2050,12 +2085,7 @@ export default {
         },
         legend: {
           top: "%",
-          data: [
-            "营业收入",
-            "营业利润",
-            "两金余额",
-            "货币存量"
-          ],
+          data: ["营业收入", "营业利润", "两金余额", "货币存量"],
           textStyle: {
             color: "rgba(255,255,255,.5)",
             fontSize: "8"
@@ -2295,10 +2325,8 @@ export default {
                 borderWidth: 12,
                 label: {
                   show: true
+                }
               }
-              },
-              
-              
             },
             data: series.stock
           }
@@ -2383,24 +2411,25 @@ export default {
 
       const MAX = [this.economy.valulation.charge];
       const VALUE = [this.economy.valulation.output];
-      let percent= parseInt((VALUE/MAX)*100)
+      let percent = parseInt((VALUE / MAX) * 100);
       var myChart = echarts.init(document.getElementById("jj1"));
 
       var option = {
-        color:["red","#49BEE5"],
+        color: ["red", "#49BEE5"],
 
-        grid: {  
-          left: '8%',  
-          right: '0',  
-          bottom: '0',  
-          containLabel: true  
+        grid: {
+          left: "8%",
+          right: "0",
+          bottom: "0",
+          containLabel: true
         },
-        legend:{
-          data:["产值","计价"],
-          textStyle: { //图例文字的样式
-              color: '#999',
-              fontSize: 12
-          },
+        legend: {
+          data: ["产值", "计价"],
+          textStyle: {
+            //图例文字的样式
+            color: "#999",
+            fontSize: 12
+          }
         },
 
         tooltip: {
@@ -2408,7 +2437,7 @@ export default {
           axisPointer: {
             type: "shadow"
           },
-          formatter: '{a0}: {c0}<br />{a1}: {c1}',
+          formatter: "{a0}: {c0}<br />{a1}: {c1}"
           // formatter: {function(params, ticket, callback) {
           //   const item = params[0];
           //   const item1 = params[1];
@@ -2423,10 +2452,8 @@ export default {
         },
         xAxis: {
           type: "category",
-          show:true,
-          data: [
-           `开累计价完成比${percent}%`
-         ],
+          show: true,
+          data: [`开累计价完成比${percent}%`],
           axisLine: {
             show: true,
             lineStyle: {
@@ -2742,17 +2769,18 @@ export default {
 
       const MAX = [this.economy.claim.planed];
       const VALUE = [this.economy.claim.finished];
-      let percent=parseInt((VALUE/MAX)*100)
+      let percent = parseInt((VALUE / MAX) * 100);
       var myChart = echarts.init(document.getElementById("jj2"));
 
       var option = (option = {
-        color:["red","#49BEE5"],
-        legend:{
-          data:["计划","完成"],
-          textStyle: { //图例文字的样式
-              color: '#999',
-              fontSize: 12
-          },
+        color: ["red", "#49BEE5"],
+        legend: {
+          data: ["计划", "完成"],
+          textStyle: {
+            //图例文字的样式
+            color: "#999",
+            fontSize: 12
+          }
         },
         tooltip: {
           trigger: "axis",
@@ -2771,11 +2799,11 @@ export default {
             );
           }
         },
-        grid: {  
-          left: '8%',  
-          right: '0',  
-          bottom: '0',  
-          containLabel: true  
+        grid: {
+          left: "8%",
+          right: "0",
+          bottom: "0",
+          containLabel: true
         },
         xAxis: {
           type: "category",
@@ -3021,28 +3049,28 @@ export default {
       });
     },
     echarts_31(monthly) {
-      let finished = Number(monthly.finished).toFixed(2)
-      let remained = Number(monthly.remained).toFixed(2)
-      let sum = Number(finished)+Number(remained)
+      let finished = Number(monthly.finished).toFixed(2);
+      let remained = Number(monthly.remained).toFixed(2);
+      let sum = Number(finished) + Number(remained);
       const self = this;
-      let str = 0
-      let rendercolor = "red" 
-      if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
-        str = 0
+      let str = 0;
+      let rendercolor = "red";
+      if (isNaN(Number(monthly.finished) / Number(monthly.remained))) {
+        str = 0;
       } else {
-        str = ((Number(monthly.finished)/(sum)) * 100).toFixed(2)
-        
-        if(str>=90){
-          rendercolor = "green"
-        }else if(str<90 && str>=70){
-          rendercolor = "yellow"
-        }else if(str<70){
-          rendercolor="red"
+        str = ((Number(monthly.finished) / sum) * 100).toFixed(2);
+
+        if (str >= 90) {
+          rendercolor = "green";
+        } else if (str < 90 && str >= 70) {
+          rendercolor = "yellow";
+        } else if (str < 70) {
+          rendercolor = "red";
         }
       }
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb1"));
-      var option= {
+      var option = {
         title: [
           {
             text: "当月完成产值",
@@ -3119,8 +3147,7 @@ export default {
               }
             }
           }
-        ],
-        
+        ]
       };
 
       // 使用刚指定的配置项和数据显示图表。
@@ -3130,21 +3157,21 @@ export default {
       });
     },
     echarts_32(monthly) {
-      let finished = Number(monthly.finished).toFixed(2)
-      let remained = Number(monthly.remained).toFixed(2)
-      let sum = Number(finished)+Number(remained)
-      let str = 0
-      let rendercolor = "red"
-      if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
-        str = 0
+      let finished = Number(monthly.finished).toFixed(2);
+      let remained = Number(monthly.remained).toFixed(2);
+      let sum = Number(finished) + Number(remained);
+      let str = 0;
+      let rendercolor = "red";
+      if (isNaN(Number(monthly.finished) / Number(monthly.remained))) {
+        str = 0;
       } else {
-        str = ((Number(monthly.finished)/(sum)) * 100).toFixed(2)
-        if(str>=90){
-          rendercolor = "green"
-        }else if(str<90 && str>=70){
-          rendercolor = "yellow"
-        }else if(str<70){
-          rendercolor="red"
+        str = ((Number(monthly.finished) / sum) * 100).toFixed(2);
+        if (str >= 90) {
+          rendercolor = "green";
+        } else if (str < 90 && str >= 70) {
+          rendercolor = "yellow";
+        } else if (str < 70) {
+          rendercolor = "red";
         }
       }
       const self = this;
@@ -3233,24 +3260,24 @@ export default {
       });
     },
     echarts_33(monthly) {
-      let finished = Number(monthly.finished).toFixed(2)
-      let remained = Number(monthly.remained).toFixed(2)
-      let sum = Number(finished)+Number(remained)
-      let str = 0
-      let rendercolor="red"
-      if(isNaN(Number(monthly.finished)/Number(monthly.remained))) {
-        str = 0
+      let finished = Number(monthly.finished).toFixed(2);
+      let remained = Number(monthly.remained).toFixed(2);
+      let sum = Number(finished) + Number(remained);
+      let str = 0;
+      let rendercolor = "red";
+      if (isNaN(Number(monthly.finished) / Number(monthly.remained))) {
+        str = 0;
       } else {
-        str = ((Number(monthly.finished)/(sum)) * 100).toFixed(2)
-        if(str>=90){
-          rendercolor = "green"
-        }else if(str<90 && str>=70){
-          rendercolor = "yellow"
-        }else if(str<70){
-          rendercolor="red"
+        str = ((Number(monthly.finished) / sum) * 100).toFixed(2);
+        if (str >= 90) {
+          rendercolor = "green";
+        } else if (str < 90 && str >= 70) {
+          rendercolor = "yellow";
+        } else if (str < 70) {
+          rendercolor = "red";
         }
       }
-     
+
       const self = this;
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("fb3"));
@@ -3364,7 +3391,7 @@ export default {
     });
   },
   created() {
-    this.fetchHomeMap()
+    this.fetchHomeMap();
     // this.initData();
     const loading = this.$loading({
       lock: true,
