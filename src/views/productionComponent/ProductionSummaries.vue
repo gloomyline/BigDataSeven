@@ -356,6 +356,7 @@
         // const _date = new Date();
         // let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
         const res = await productionNewApi .fetchSelfBusinessData(this.ny);
+        console.log("自营11111111111",res.data)
         //  产值赋值
         this.seriesData.forEach(item => {
           item.data = []
@@ -389,14 +390,30 @@
           unit: "人均产值",
           showValue: true,
         }
-        res.data.sixAverage.forEach((item, index) => {
-          let obj = {
-            name: item.deptname,
-            value: item.cost === null ? 0 : item.cost
-          }
-          averagecost.data.push(obj)
-        })
-        this.rjczConfig = {...averagecost}
+        console.log("res.data.sixAverage", res.data.sixAverage)
+        
+        if(res.data.sixAverage.length>0){
+          res.data.sixAverage.forEach((item, index) => {
+            console.log("sixAverage item",item)
+            console.log("sixAverage item cost",item.cost)
+            let obj = {
+              name: item.deptname,
+              value: item.cost === null ? 0 : item.cost
+            }
+            averagecost.data.push(obj)
+          })
+          
+        }else{
+          averagecost.data.push(
+            {name:"",value:0},
+            {name:" ",value:0},
+            {name:"  ",value:0},
+            {name:"   ",value:0},
+            {name:"    ",value:0},
+            {name:"     ",value:0},
+          ) 
+        }
+       this.rjczConfig = {...averagecost}
         let sixTotal = {
           data: [],
           colors: [
@@ -410,19 +427,32 @@
           unit: "产值",
           showValue: true,
         }
-        res.data.sixTotal.forEach((item, index) => {
+        if(res.data.sixTotal.length>0){
+          res.data.sixTotal.forEach((item, index) => {
           let obj = {
             name: item.deptname,
             value: item.cost === null ? 0 : item.cost
-          }
-          sixTotal.data.push(obj)
-        })
+            }
+            sixTotal.data.push(obj)
+          })
+          
+        }else{
+          sixTotal.data.push(
+            {name:"",value:0},
+            {name:" ",value:0},
+            {name:"  ",value:0},
+            {name:"   ",value:0},
+            {name:"    ",value:0},
+            {name:"     ",value:0},
+          )
+        }
         this.czConfig = {...sixTotal}
+        
       },
       // 联营
       async joinSupport() {
-        const _date = new Date();
-        let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+        // const _date = new Date();
+        // let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
         const res = await productionNewApi.fetchJoinSupportData(this.ny);
         console.log(res.data.proinfo, '--------res')
         this.joinSeriesData.forEach(item => {
@@ -468,7 +498,7 @@
           unit: "人均产值",
           showValue: true,
         }
-        if (res && res.data.sixAverage && res.data.sixAverage.length > 0) {
+        if (res.data.sixAverage.length > 0) {
           res.data.sixAverage.forEach((item, index) => {
             let obj = {
               name: item.deptname,
@@ -476,8 +506,19 @@
             }
             averagecost.data.push(obj)
           })
-          this.rjczConfig2 = {...averagecost}
+          
+        }else{
+           averagecost.data.push(
+            {name:"",value:0},
+            {name:" ",value:0},
+            {name:"  ",value:0},
+            {name:"   ",value:0},
+            {name:"    ",value:0},
+            {name:"     ",value:0},
+          ) 
         }
+        this.rjczConfig2 = {...averagecost}
+
         let sixTotal = {
           data: [],
           colors: [
@@ -499,8 +540,18 @@
             }
             sixTotal.data.push(obj)
           })
-          this.czConfig2 = {...sixTotal}
+          
+        }else{
+          sixTotal.data.push(
+            {name:'',value:0},
+            {name:' ',value:0},
+            {name:'  ',value:0},
+            {name:'   ',value:0},
+            {name:'    ',value:0},
+            {name:'     ',value:0}
+          )     
         }
+        this.czConfig2 = {...sixTotal}
       },
       // 滞后list
       async getLagList() {
