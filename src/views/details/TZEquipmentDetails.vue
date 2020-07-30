@@ -46,7 +46,7 @@
         </el-table-column>
         <el-table-column prop="usingState" label="使用状态">
           <template slot-scope="scope">
-            <span v-if="scope.row.usingState === 1">再用</span>
+            <span v-if="scope.row.usingState === 1">在用</span>
             <span v-if="scope.row.usingState === 2">闲置</span>
             <span v-if="scope.row.usingState === 3">长久闲置</span>
           </template>

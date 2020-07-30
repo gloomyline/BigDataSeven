@@ -33,7 +33,7 @@
       </div>
       <!-- <div style="margin:10px 0;"></div> -->
       <keep-alive>
-        <component :is="currentComponent" :ny="date"></component>
+        <component :is="currentComponent" :ny="ny"></component>
       </keep-alive>
     </div>
   </div>
@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       current: 0,
-      tabs: ['公司施工总体情况', '上月计划完成情况', '下月项目施工计划', ],
+      tabs: ['公司施工总体情况', '本月计划完成情况', '下月项目施工计划', ],
       currentComponent: 'ProductionSummaries',
       componentList: ['ProductionSummaries', 'PreviousMonth', 'CurrentMonth'],
       allCompany: {}, 
@@ -78,12 +78,12 @@ export default {
       this.ny=`${_date.getFullYear()}-${mm}`
     }
   },
-  computed: {
-    date() {
-      const dateMap = [0, -1, 1];
-      return  `${this.ny.substr(0, 4)}-${('0' + (Number(this.ny.substr(-2)) + dateMap[this.current])).substr(-2)}`
-    }
-  },
+  // computed: {
+    // date() {
+    //   const dateMap = [0, -1, 1];
+    //   return  `${this.ny.substr(0, 4)}-${('0' + (Number(this.ny.substr(-2)) + dateMap[this.current])).substr(-2)}`
+    // }
+  // },
   methods: {
     goBack() {
       this.$router.push({ path: "/" });

@@ -60,9 +60,7 @@
           </div>
           <div class="chartContentSon triples">
             <div class="chartTit">产值排名（万元）</div>
-            <dv-capsule-chart :config="czConfig" class="chartCo
-            
-            nt"></dv-capsule-chart>
+            <dv-capsule-chart :config="czConfig" class="chartCont" />
           </div>
         </div>
       </dv-border-box-10>
@@ -80,7 +78,7 @@
           </div>
           <div class="chartContentSon triples">
             <div class="chartTit">产值排名（万元）</div>
-            <dv-capsule-chart :config="czConfig2" class="chartCont"></dv-capsule-chart>
+            <dv-capsule-chart :config="czConfig2" class="chartCont" />
           </div>
         </div>
       </dv-border-box-10>
@@ -116,6 +114,8 @@
         console.log("newvalue,oldvalue",newValue,oldValue)
         if(newValue!==oldValue){
            this.initData()
+           this.selfSupport()
+           this.joinSupport()
         }
       }
     },

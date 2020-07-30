@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="current-month">
-    <h2 class="title" style="height: 0.6rem; line-height: 0.6rem; font-size: 0.32rem;color: #fff;">{{ year }}年{{ month }}月份项目计划</h2>
+    <h2 class="title" style="height: 0.6rem; line-height: 0.6rem; font-size: 0.32rem;color: #fff;">下月项目施工计划</h2>
     <div class="talble-container">
       <el-table
         :data="tableData"
@@ -39,13 +39,14 @@
       };
     },
     created() {
-      this.fetchPlannmonthData()
+      this.fetchPlannmonthData(this.ny)
     },
-    watch: {
-      ny(date) {
-        this.fetchPlannmonthData();
-      },
-    },
+    watch:{
+      ny:function(newValue,oldValue){
+        this.fetchPlannmonthData(this.ny);      
+      }
+
+  },
     methods: {
       async fetchPlannmonthData() {
         const res = await productionNewApi.fetchPlannmonthData(this.ny);

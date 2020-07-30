@@ -206,3 +206,6 @@ html::-webkit-scrollbar {
   body::-webkit-scrollbar { 
   display: none;  
 }
+.el-input__inner {
+  color:#aaa;
+}

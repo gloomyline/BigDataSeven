@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="previous-month">
-    <h2 class="title" style="height: 0.6rem; line-height: 0.6rem; font-size: 0.32rem;color: #fff;">{{ year }}年{{ month }}月份完成情况</h2>
+    <h2 class="title" style="height: 0.6rem; line-height: 0.6rem; font-size: 0.32rem;color: #fff;">本月计划完成情况</h2>
     <div class="talble-container">
       <el-table
         :data="tableData"
@@ -58,12 +58,13 @@ export default {
   },
   watch:{
     ny:function(newValue,oldValue){
-      this.fetchPlanfinishlMonth();      
+      console.log("plainfinish",newValue)
+      this.fetchPlanfinishlMonth(this.ny);      
     }
 
   },
   created() {
-    this.fetchPlanfinishlMonth();
+    this.fetchPlanfinishlMonth(this.ny);
   },
   methods: {
     async fetchPlanfinishlMonth() {

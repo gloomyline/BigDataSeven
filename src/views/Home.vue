@@ -9,6 +9,15 @@
     </div>
   </div>-->
   <div class="head">
+    <div class="left">
+      <el-date-picker
+        v-model="ny"
+        type="month"
+        :picker-options="pickerOptions"
+        value-format="yyyy-MM"
+        placeholder="选择月">
+      </el-date-picker>
+    </div>
     <h1>七公司宏观成本管理大数据</h1>
     <dv-decoration-5 class="header-svg"></dv-decoration-5>
     <div class="weather">
@@ -84,8 +93,8 @@
           <div class="map4" id="map_1"></div>
           <div>
             <ul class="map-info">
-              <li class="li">在建项目数：39个</li>
-              <li class="li">收尾项目数：0个</li>
+              <li class="li">在建项目数：{{count}}个</li>
+               <li class="li">收尾项目数：{{totalend}}个</li> 
             </ul>
           </div>
         </div>
@@ -145,6 +154,14 @@ export default {
   components: {},
   data() {
     return {
+      ny:"",
+      count:"",
+      totalend:"",
+      pickerOptions: {
+        disabledDate(time) {
+            return time >Date.now()
+        },
+      },
       manpower: {}, // 人力资源
       mapPoint: {},
       mapPointArr: [],
@@ -215,6 +232,17 @@ export default {
       }
     };
   },
+  watch:{
+    ny(newValue,oldValue){
+      console.log("home ny ",newValue,oldValue)
+      if(newValue!==oldValue){
+        this.ny=newValue
+        this.initData()
+        
+
+      }
+    }
+  },
   methods: {
     async fetchHomeMap() {
       this.mapPointArr = [];
@@ -223,6 +251,10 @@ export default {
       const response = await homeApi.fetchHomeMapData();
       response.data.forEach(item => {
         let name = item.name;
+        this.count = response.count
+        this.totalend=response.data[0]["totalend"]
+        // let enddata=response.data[0]
+        // this.totalend = enddata.totalend
         if (item.point !== "") {
           let pointX = Number(item.point.split(",")[0]);
           let pointY = Number(item.point.split(",")[1]);
@@ -248,7 +280,11 @@ export default {
       }
     },
     _initEquipmentData(data) {
+      //console.log("data.equipmentVo",data.equipmentVo)
       this.equipment = data.equipmentVo;
+      this.echarts_5()
+      this.echarts_51()
+      
     },
     _initEconomyData(data) {
       this.economy = data.economy;
@@ -265,13 +301,9 @@ export default {
     },
     async initData() {
       // request home api
-      const _date = new Date();
-      let mm =
-        _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-      this.ny = `${_date.getFullYear()}-${mm}`;
-      const response = await homeApi.fetchHomeData(
-        `${_date.getFullYear()}-${mm}`
-      );
+     
+      const response = await homeApi.fetchHomeData(this.ny);
+      console.log("responese.data",response.data)
       this.manpower = response.data.manpower;
       const data = response.data;
       this._initEquipmentData(data);
@@ -341,8 +373,7 @@ export default {
       var heilongjiang = "get/s/data-1528969789631-ryLHcnJbm.json";
       var hebei = "get/s/data-1528969737020-HJWMqhy-Q.json";
       var guizhou = "get/s/data-1528969712502-Hy_g92yZQ.json";
-      var guangxi =
-        "get/s/data-1528969706270-HJMg5hdata-1528969831328-Sykuqh1bXkWQ.json";
+      var guangxi = "get/s/data-1528969706270-HJMg5hdata-1528969831328-Sykuqh1bXkWQ.json";
       var guangdong = "get/s/data-1528969700634-BkT1qn1WQ.json";
       var gansu = "get/s/data-1528969694316-BJLkc2yZX.json";
       var chongqing = "get/s/data-1528969687660-r1ey9nkbX.json";
@@ -1310,7 +1341,7 @@ export default {
               {
                 value: 5,
                 label: "湖北分公司",
-                color: "rgba(50,100,236,1)"
+                color: "rgba(160,32,240,1)"
               },
               {
                 value: 4,
@@ -1325,12 +1356,12 @@ export default {
               {
                 value: 2,
                 label: "武汉分公司",
-                color: "rgba(159,202,70,1)"
+                color: "rgba(160,32,240,1)"
               },
               {
                 value: 6,
                 label: "城轨分公司",
-                color: "rgba(159,202,70,1)"
+                color: "rgba(160,32,240,1)"
               }
             ],
             show: !0,
@@ -1570,7 +1601,8 @@ export default {
           goDown: true, // 是否下钻
           // 下钻回调
           callback: function(name, option, instance) {
-            //console.log(name, option, instance);
+            console.log("name option instance",name, option, instance);
+          
           },
           // 数据展示
           data: areaProjects
@@ -1927,6 +1959,7 @@ export default {
     },
     echarts_5() {
       const self = this;
+      console.log("this equipment",this.equipment)
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("sb1"));
       var option = {
@@ -1969,8 +2002,8 @@ export default {
             label: { show: true },
             labelLine: { show: true },
             data: [
-              { value: self.equipment.bigMain || 107, name: "大型主要设备" },
-              { value: self.equipment.otherUsing || 54, name: "其他在场设备" }
+              { value: self.equipment.bigMain , name: "大型主要设备" },
+              { value: self.equipment.otherUsing , name: "其他在场设备" }
             ],
             itemStyle: {
               normal: {
@@ -2022,10 +2055,10 @@ export default {
             selectedMode: "single",
             data: [
               {
-                value: self.equipment.isUsing || 54,
+                value: self.equipment.isUsing ,
                 name: "在用"
               },
-              { value: self.equipment.isUnused || 67, name: "空闲" }
+              { value: self.equipment.isUnused , name: "空闲" }
             ],
             itemStyle: {
               normal: {
@@ -3391,6 +3424,9 @@ export default {
     });
   },
   created() {
+    const _date = new Date();
+    let mm =_date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+    this.ny = `${_date.getFullYear()}-${mm}`;
     this.fetchHomeMap();
     // this.initData();
     const loading = this.$loading({
@@ -3416,6 +3452,14 @@ export default {
 @import "../assets/css/comon0.css";
 </style>
 <style lang="css" scoped >
+.head {
+  position:relative;
+}
+.head .left {
+  position:absolute;
+  width:100px;
+  z-index:999
+}
 .block {
   display: block;
 }

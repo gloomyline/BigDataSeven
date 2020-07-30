@@ -8,12 +8,12 @@
           <div class="chartCont1" id="barChart1"></div>
         </div>
       </dv-border-box-10>
-      <dv-border-box-10 class="chartContainer">
+      <!-- <dv-border-box-10 class="chartContainer">
         <div class="chartContentSon1">
           <div class="chartTit1">人月均经费情况(单位:元)</div>
           <div class="chartCont1" id="barChart2"></div>
         </div>
-      </dv-border-box-10>
+      </dv-border-box-10> -->
     </div>
   </div>
 </template>
@@ -132,12 +132,12 @@ export default {
         singleBarOption.seriesData.push(financeData.monthFunding);
       });
 
-      this.drawSingleBarChart(
-        "barChart2",
-        singleBarOption.xData,
-        "经费",
-        singleBarOption.seriesData
-      );
+      // this.drawSingleBarChart(
+      //   "barChart2",
+      //   singleBarOption.xData,
+      //   "经费",
+      //   singleBarOption.seriesData
+      // );
     },
     onSubmit() {
       console.log("submit!");
@@ -482,7 +482,7 @@ export default {
     padding: 0 0.2rem 0 0.2rem;
   }
   .chartContainer {
-    height: 4rem;
+    height: 4.5rem;
     margin-bottom: 0.1rem;
     .chartContentSon {
       width: 50%;
