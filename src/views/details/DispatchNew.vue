@@ -62,11 +62,13 @@
           label="审批状态"
           min-width="150"
         >
-        <template slot-scope="scope">
-          <span v-if="scope.row.status === '0'">未评审</span>
-          <span v-if="scope.row.status === '1'">评审中</span>
-          <span v-if="scope.row.status === '2 '">已评审</span>
-        </template>
+
+         <template slot-scope="scope">
+           {{ scope.row.status | fiterStatus}} 
+          <!-- <span v-if="scope.row.status === '0'">未评审</span>
+          <span v-else-if="scope.row.status === '1'">评审中</span>
+          <span v-else-if="scope.row.status === '2 '">已评审</span>  -->
+        </template> 
         </el-table-column>
         <el-table-column
           prop="casefile"
@@ -95,6 +97,17 @@ import echarts from "echarts";
 import btnList from "@/components/BtnList.vue";
 
 export default {
+  filters:{
+    fiterStatus: function(value){
+      if(value==0){
+        return "未评审"
+      }else if(value==1){
+        return "评审中"
+      }else if(value==2){
+        return "已评审"
+      }
+    }
+  },
   components: {
     btnList,
   },
@@ -156,9 +169,11 @@ export default {
     async getWebPreviewInfo() {
       const res = await DispatchNewApi.fetchedWebPreviewInfo(`${this.$route.params.id}`);
       this.tableData = res.data
+      console.log("this.tableData",this.tableData)
     },
     async getTableData() {
       const res = await DispatchNewApi.fetchPlanfinishlMonthData1(`${this.$route.params.id}`);
+      //console.log("getTableData",res)
       // this.tableData = res.data
     },
     async projectInfo() {

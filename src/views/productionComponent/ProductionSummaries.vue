@@ -113,7 +113,7 @@
       ny:function(newValue,oldValue){
         console.log("newvalue,oldvalue",newValue,oldValue)
         if(newValue!==oldValue){
-           this.initData()
+           
            this.selfSupport()
            this.joinSupport()
         }
@@ -362,8 +362,8 @@
         //  产值赋值
         this.seriesData.forEach(item => {
           item.data = []
-          let data = [Number(res.data.proinfo.monthly.plan).toFixed(2), Number(res.data.proinfo.yearly.plan).toFixed(2), Number(res.data.proinfo.sofar.remained).toFixed(2)]
-          let downData = [Number(res.data.proinfo.monthly.finished).toFixed(2), Number(res.data.proinfo.yearly.finished).toFixed(2), Number(res.data.proinfo.sofar.finished).toFixed(2)]
+          let data = [parseInt(Number(res.data.proinfo.monthly.plan)), parseInt(Number(res.data.proinfo.yearly.plan)), parseInt(Number(res.data.proinfo.sofar.remained))]
+          let downData = [parseInt(Number(res.data.proinfo.monthly.finished)), parseInt(Number(res.data.proinfo.yearly.finished)), parseInt(Number(res.data.proinfo.sofar.finished))]
           if(item.name === '计划') {
             this.$set(item, 'data', data)
           }
@@ -459,8 +459,8 @@
         console.log(res.data.proinfo, '--------res')
         this.joinSeriesData.forEach(item => {
           item.data = []
-          let data = [Number(res.data.proinfo.monthly.plan).toFixed(2), Number(res.data.proinfo.yearly.plan).toFixed(2), Number(res.data.proinfo.sofar.remained).toFixed(2)]
-          let downData = [Number(res.data.proinfo.monthly.finished).toFixed(2), Number(res.data.proinfo.yearly.finished).toFixed(2), Number(res.data.proinfo.sofar.finished).toFixed(2)]
+          let data = [parseInt(Number(res.data.proinfo.monthly.plan)), parseInt(Number(res.data.proinfo.yearly.plan)), parseInt(Number(res.data.proinfo.sofar.remained))]
+          let downData = [parseInt(Number(res.data.proinfo.monthly.finished)), parseInt(Number(res.data.proinfo.yearly.finished)), parseInt(Number(res.data.proinfo.sofar.finished))]
           if(item.name === '计划') {
             this.$set(item, 'data', data)
           }
@@ -626,10 +626,13 @@
         this.allCompany = await productionNewApi .fetchProManData(this.ny);
         console.log("production summerallCompany",this.allCompany)
         // this.total = this.arr.reduce((n,m) => n + m);
+        this.total=0
         Object.keys(this.allCompany.data.productionValue).forEach(item => {
-          this.arr.push(Number(this.allCompany.data.productionValue[item]))
+          console.log("this.allCompany.data.productionValue[item]", parseInt(this.allCompany.data.productionValue[item]))
+          this.arr.push(parseInt(this.allCompany.data.productionValue[item]))
           this.total = this.arr.reduce((n,m) => n + m);
         })
+        console.log("this.total",this.total)
         if(this.allCompany && this.allCompany.data && this.allCompany.data.productionValue) {
           Object.keys(this.allCompany.data.productionValue).forEach(item => {
             this.DeptArr.forEach(i => {
@@ -638,7 +641,7 @@
                 if(this.total === 0 || Number(this.allCompany.data.productionValue[item] === 0)) {
                   str = 0
                 } else {
-                  str = ((this.allCompany.data.productionValue[item] / this.total) * 100).toFixed(2)
+                  str = parseInt(Number(this.allCompany.data.productionValue[item] / this.total) * 100)
                   console.log(this.allCompany.data.productionValue[item], this.total)
                   
                 }

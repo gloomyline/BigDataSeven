@@ -3161,7 +3161,8 @@ export default {
             fontSize: "12"
           },
           formatter: function(params) {
-            return params === "完成" ? `${params}:${finished}` : "";
+
+            return params === "完成" ? `${params}:${parseInt(finished)}` : "";
           }
         },
         series: [
@@ -3267,7 +3268,7 @@ export default {
           },
           selectedMode: false,
           formatter: function(params) {
-            return params === "完成" ? `${params}:${finished}` : "";
+            return params === "完成" ? `${params}:${parseInt(finished)}` : "";
           }
         },
         series: [
@@ -3371,7 +3372,7 @@ export default {
           },
           selectedMode: false,
           formatter: function(params) {
-            return params === "完成" ? `${params}:${finished}` : "";
+            return params === "完成" ? `${params}:${parseInt(finished)}` : "";
           }
         },
         series: [
