@@ -326,8 +326,10 @@
         // request home api
         const _date = new Date();
         this.DeptArr=[]
+
         productionNewApi.fetchGetDeptNumNameData().then(res => {
           if(res && res.data.length > 0 && res.code === '000000') {
+            console.log("thisDeptArr res",res)
             res.data.forEach(item => {
               let obj = {
                 name: item.selectName,
@@ -614,6 +616,7 @@
       // 公司总体施工情况，片区+施工情况
       async initData() {
         this.pieOption.pieData = []
+        this.DeptArr=[]
         // request home api
         const _date = new Date();
         this.month = _date.getMonth();
@@ -1045,6 +1048,7 @@
 
 <style lang="scss">
 .dv-capsule-chart {
+  padding:0;
   .label-column {
     text-align: left;
   }

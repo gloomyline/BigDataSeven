@@ -385,7 +385,16 @@ export default {
         tooltip: {
           trigger: "axis",
         },
-        grid: { bottom: 20 },
+        dataZoom : [
+          {
+            type: 'slider',
+            show: true,
+            start: 0,
+            end: 25,
+            // xAxisIndex: [0],
+          },
+        ],
+        grid: { bottom: 70 },
         legend: {
           type: "plain", //----图例类型，默认为'plain'，当图例很多时可使用'scroll'
           top: "1%", //----图例相对容器位置,top\bottom\left\right
@@ -434,7 +443,7 @@ export default {
             //---坐标轴 标签
             show: true, //---是否显示
             inside: false, //---是否朝内
-            rotate: 0, //---旋转角度
+            rotate: 40, //---旋转角度
             margin: 5, //---刻度标签与轴线之间的距离
             //color:'red',				//---默认取轴线的颜色
           },

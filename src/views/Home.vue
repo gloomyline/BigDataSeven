@@ -166,6 +166,8 @@ export default {
       mapPoint: {},
       mapPointArr: [],
       provinceProJectsArr: [],
+    
+     
       // equipments
       equipment: {
         bigMain: null,
@@ -301,9 +303,24 @@ export default {
     },
     async initData() {
       // request home api
-     
       const response = await homeApi.fetchHomeData(this.ny);
+       let labour={
+        useLabNum:[],
+        YearLabNum:[],
+        allLabNum:[],
+        month:[]
+      }
       console.log("responese.data",response.data)
+      let labourData=response.data.labour
+
+      for(let i=0;i< labourData.length;i++){
+        
+        labour.useLabNum.push(labourData[i].useLabNum)
+        labour.YearLabNum.push(labourData[i].yearLabNum)
+        labour.allLabNum.push(labourData[i].allLabNum)
+        labour.month.push(labourData[i].month)
+
+      }
       this.manpower = response.data.manpower;
       const data = response.data;
       this._initEquipmentData(data);
@@ -324,11 +341,12 @@ export default {
         response.data.materials.material,
         response.data.materials.rate
       );
+      console.log("this.labour", this.labour)
       this.echarts_1(
-        response.data.labour.useLaborCount,
-        response.data.labour.thisYearLaborCount,
-        response.data.labour.allLaborCount,
-        response.data.labour.moth
+        labour.useLabNum,
+        labour.YearLabNum,
+        labour.allLabNum,
+        labour.month
       );
     },
     judgeColor(config) {
