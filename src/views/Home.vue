@@ -1652,8 +1652,10 @@ export default {
           }
         },
         grid: {
+          x:"70%",
+          y:"10%",
           left: "3%",
-          top: "5%",
+          top: "30%",
           right: "5%",
           bottom: "0",
           containLabel: true
@@ -2135,7 +2137,6 @@ export default {
           }
         },
         legend: {
-          top: "%",
           data: ["营业收入", "营业利润", "两金余额", "货币存量"],
           textStyle: {
             color: "rgba(255,255,255,.5)",
@@ -2143,10 +2144,11 @@ export default {
           }
         },
         grid: {
+          x:"30%",
           left: "20",
-          top: "30",
+          top: "30%",
           right: "30",
-          bottom: "10",
+          bottom: "0",
           containLabel: true
         },
 
