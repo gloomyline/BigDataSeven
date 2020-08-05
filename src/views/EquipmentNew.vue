@@ -614,7 +614,7 @@ export default {
               },
             },
             data: seriesData,
-            color:['red', '#3CB371', '#FFD700']
+            color:['red', '#3CB371', '#EE9A00']
           },
         ],
       };

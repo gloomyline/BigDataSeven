@@ -604,7 +604,7 @@
         });
 
         this.config = {
-          header: ["项目", "滞后比"],
+          header: ["项目", "进度偏差"],
           data: newZhb,
           index: true,
           indexHeader: "排名",

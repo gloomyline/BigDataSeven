@@ -268,6 +268,7 @@ export default {
             name: item.name,
             dataone: item.cost,
             datatwo: item.com,
+            deptId: item.deptId,
             datathree: 0
           };
           this.provinceProJectsArr.push(obj);
@@ -899,7 +900,8 @@ export default {
                         region: data.region,
                         merge: data.merge,
                         dataone: data.dataone,
-                        datatwo: data.datatwo
+                        datatwo: data.datatwo,
+                        deptId: data.deptId
                       };
                       cityData.push(cityJson);
                     });
@@ -1063,7 +1065,8 @@ export default {
                   value: geoCoord.concat(data[i].value),
                   merge: data[i].merge,
                   dataone: data[i].dataone,
-                  datatwo: data[i].datatwo
+                  datatwo: data[i].datatwo,
+                  deptId: data[i].deptId
                 });
               }
             }
@@ -1192,6 +1195,7 @@ export default {
                         "在建容量：" +
                         params.data.datatwo +
                         "/MW"
+
                       );
                     };
                     option.series[1].data = allprovinceData;
@@ -1448,7 +1452,9 @@ export default {
 
         chart.setOption(option);
         // 添加事件
+        
         chart.on("click", function(params) {
+          console.log("事件params-----",params)
           var _self = this;
           var cityDot = "";
           var city = params.name;
@@ -1469,6 +1475,8 @@ export default {
               $.get(url, function(response) {
                 curGeoJson = response;
                 echarts.registerMap(params.name, response);
+                console.log("点击进入省registerMap",response )
+
                 option.series[1].data = allCtyData;
                 option.tooltip.formatter = function(params, ticket, callback) {
                   return (
@@ -1494,6 +1502,15 @@ export default {
               dataIndex: 0 //第几个tooltip
             });
           }
+          console.log("params.deptId",params.data.deptId,"name:params.name",params.name,"_this.ny",_this.ny)
+          _this.$router.push({ 
+              name: "DispatchNew",
+              params: {
+                id:params.data.deptId,
+                name:params.name,
+                ny: _this.ny
+              }
+          });
         });
 
         chart.on("mouseover", function(params) {
@@ -1611,7 +1628,9 @@ export default {
         return chart;
       };
 
-      $.getJSON(zhongguo, function(geoJson) {
+     var _this=this;
+    console.log("vuethis",_this)
+     $.getJSON(zhongguo, function(geoJson) {
         echarts.registerMap("china", geoJson);
         var myChart = echarts.extendsMap("map_1", {
           mapName: "china", // 地图名
@@ -1619,7 +1638,7 @@ export default {
           goDown: true, // 是否下钻
           // 下钻回调
           callback: function(name, option, instance) {
-            console.log("name option instance",name, option, instance);
+            console.log("name ",name, "option",option, "instance",instance);
           
           },
           // 数据展示
@@ -1997,10 +2016,10 @@ export default {
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)",
-          position: function(p) {
-            //其中p为当前鼠标的位置
-            return [p[0] + 10, p[1] - 10];
-          }
+          // position: function(p) {
+          //   //其中p为当前鼠标的位置
+          //   return [p[0] + 10, p[1] - 10];
+          // }
         },
         legend: {
           top: "75%",
@@ -2019,7 +2038,7 @@ export default {
             center: ["50%", "42%"],
             radius: ["30%", "45%"],
             color: ["#fb3232", "#066eab"],
-            label: { show: true },
+            label: { show: false },
             labelLine: { show: true },
             data: [
               { value: self.equipment.bigMain , name: "大型主要设备" },
@@ -2032,7 +2051,7 @@ export default {
                   formatter: "{b} : {c}",
                   position: "inner"
                 },
-                labelLine: { show: true }
+                //labelLine: { show: true }
               }
             }
           }
@@ -2080,16 +2099,48 @@ export default {
               },
               { value: self.equipment.isUnused , name: "空闲" }
             ],
-            itemStyle: {
-              normal: {
-                label: {
-                  show: true,
-                  formatter: "{b} : {c} ({d}%)",
-                  position: "inner"
-                },
-                labelLine: { show: true }
-              }
+            label: {
+              show: true,
+              formatter: "{b} : {c}\n({d}%)",
+              padding: 7,
+              height:15,
+              align: 'left',
+              lineHeight:14,
+              position: "inner",
+            //   formatter(v) {//此方法为核心代码，解决问题
+              
+            //     let text = Math.round(v.percent)+'%' + '' + v.name
+            //     if(text.length <= 8)
+            //     {
+            //         return text;
+            //     }else if(text.length > 8 && text.length <= 16){
+            //         return text = `${text.slice(0,8)}\n${text.slice(8)}`
+            //     }else if(text.length > 16 && text.length <= 24){
+            //         return text = `${text.slice(0,8)}\n${text.slice(8,16)}\n${text.slice(16)}`
+            //     }else if(text.length > 24 && text.length <= 30){
+            //         return text = `${text.slice(0,8)}\n${text.slice(8,16)}\n${text.slice(16,24)}\n${text.slice(24)}`
+            //     }else if(text.length > 30){
+            //         return text = `${text.slice(0,8)}\n${text.slice(8,16)}\n${text.slice(16,24)}\n${text.slice(24,30)}\n${text.slice(30)}`
+            //     }
+            // }
+              
             },
+            labelLine: {
+              show:true,
+              length:2,
+              
+              length2:0 ,
+            } ,
+            // itemStyle: {
+            //   normal: {
+            //     label: {
+            //       show: true,
+            //       formatter: "{b} : {c} ({d}%)",
+            //       position: "outside"
+            //     },
+            //     labelLine: { show: true }
+            //   }
+            // },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
