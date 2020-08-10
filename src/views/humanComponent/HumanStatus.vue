@@ -199,13 +199,13 @@ export default {
             stack: "outside",
             data: dataList[startWith]['data'][0],
           },
-          {
-            name: "定编人数",
-            type: "bar",
-            barGap: '5%',
-            barWidth: 50,
-            data: dataList[startWith]['data'][2],
-          }
+          // {
+          //   name: "定编人数",
+          //   type: "bar",
+          //   barGap: '5%',
+          //   barWidth: 50,
+          //   data: dataList[startWith]['data'][2],
+          // }
         ]
       };
 

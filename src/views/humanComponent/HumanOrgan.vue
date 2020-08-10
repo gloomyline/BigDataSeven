@@ -49,6 +49,7 @@ export default {
       }
     },
     drawGruopStructure(struData) {
+      console.log("tree数据struData",struData)
       const groupStructure = echarts.init(this.$refs.groupStructure)
       const option = {
         tooltip: {
@@ -65,6 +66,8 @@ export default {
             left: '5%',
             bottom: 150,
             right: '5%',
+            expandAndCollapse:true,
+            initialTreeDepth:2,
             symbolSize: [20, 100],
             itemStyle: {
               borderWidth: 20,

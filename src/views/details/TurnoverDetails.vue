@@ -22,7 +22,7 @@
     <div class="table boxall">
       <p class="thead">
         <img class="img" src="@/assets/images/u563.png" />
-        <span class="tilte">A类</span>
+        <span class="tilte">A类周转材料</span>
       </p>
       <el-table :data="tableData" style="width: 86%;  margin: 0 auto; min-width: 800px;">
         <el-table-column prop="title" label></el-table-column>
@@ -34,7 +34,7 @@
     <div class="table boxall">
       <p class="thead">
         <img class="img" src="@/assets/images/u563.png" />
-        <span class="tilte">B类</span>
+        <span class="tilte">B类周转材料</span>
       </p>
       <el-table :data="tableData2">
         <el-table-column prop="title" label></el-table-column>
@@ -46,7 +46,7 @@
     <div class="table boxall">
       <p class="thead">
         <img class="img" src="@/assets/images/u563.png" />
-        <span class="tilte">C类</span>
+        <span class="tilte">C类周转材料</span>
       </p>
       <el-table :data="tableData3">
         <el-table-column prop="title" label min-width="120"></el-table-column>

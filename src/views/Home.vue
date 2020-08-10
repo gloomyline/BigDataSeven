@@ -1510,7 +1510,7 @@ export default {
                 name:params.name,
                 ny: _this.ny
               }
-          });
+          }).catch(data => {});
         });
 
         chart.on("mouseover", function(params) {
@@ -1920,7 +1920,7 @@ export default {
             color: "rgba(255,255,255,.5)",
             fontSize: "12"
           },
-          data: ["闲置", "在用", "封存"]
+          data: ["在用","闲置", "封存"]
         },
         grid: {
           top: "20%",
@@ -2072,7 +2072,7 @@ export default {
       const option = {
         title: [
           {
-            text: "自有机械设备使用情况",
+            text: "自有主要机械设备使用情况",
             x: "center",
             y: "top",
             textStyle: {
@@ -2522,8 +2522,10 @@ export default {
         color: ["red", "#49BEE5"],
 
         grid: {
+          y: "40%",
           left: "8%",
           right: "0",
+          
           bottom: "0",
           containLabel: true
         },
@@ -2904,6 +2906,7 @@ export default {
           }
         },
         grid: {
+          y:"40%",
           left: "8%",
           right: "0",
           bottom: "0",
@@ -3162,7 +3165,7 @@ export default {
       if (isNaN(Number(monthly.finished) / Number(monthly.remained))) {
         str = 0;
       } else {
-        str = ((Number(monthly.finished) / sum) * 100).toFixed(2);
+        str = ((Number(monthly.finished) / sum) * 100).toFixed(1);
 
         if (str >= 90) {
           rendercolor = "green";
@@ -3270,7 +3273,7 @@ export default {
       if (isNaN(Number(monthly.finished) / Number(monthly.remained))) {
         str = 0;
       } else {
-        str = ((Number(monthly.finished) / sum) * 100).toFixed(2);
+        str = ((Number(monthly.finished) / sum) * 100).toFixed(1);
         if (str >= 90) {
           rendercolor = "green";
         } else if (str < 90 && str >= 70) {
@@ -3373,7 +3376,7 @@ export default {
       if (isNaN(Number(monthly.finished) / Number(monthly.remained))) {
         str = 0;
       } else {
-        str = ((Number(monthly.finished) / sum) * 100).toFixed(2);
+        str = ((Number(monthly.finished) / sum) * 100).toFixed(1);
         if (str >= 90) {
           rendercolor = "green";
         } else if (str < 90 && str >= 70) {

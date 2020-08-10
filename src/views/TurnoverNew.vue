@@ -148,11 +148,12 @@ export default {
             name: "在用",
           },
           {
-            name: "封存",
-          },
-          {
             name: "闲置",
           },
+          {
+            name: "封存",
+          },
+          
         ],
         seriesData: [
           {

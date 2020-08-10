@@ -232,15 +232,15 @@ export default {
              }
           }
         },
-        dataZoom : [
-          {
-            type: 'slider',
-            show: true,
-            start: 0,
-            end: 25,
-            xAxisIndex: [0],
-          },
-        ],
+        // dataZoom : [
+        //   {
+        //     type: 'slider',
+        //     show: true,
+        //     start: 0,
+        //     end: 25,
+        //     xAxisIndex: [0],
+        //   },
+        // ],
         //grid: { top: 30, bottom: 165, },
         //-------------   x轴   -------------------
         xAxis: {

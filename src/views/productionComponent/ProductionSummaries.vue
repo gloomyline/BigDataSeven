@@ -2,7 +2,7 @@
   <div class="production-summaries">
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
-        <div class="chartTitle">公司总体施工情况</div>
+        <div class="chartTitle">公司在建项目施工情况</div>
         <div class="chartContent">
           <div class="chartContentSon" style="width: 55%;">
             <div class="chartTit"></div>
@@ -47,7 +47,7 @@
         </div>
       </dv-border-box-10>
       <dv-border-box-10 class="chartContainer">
-        <div class="chartTitle">自营</div>
+        <div class="chartTitle">自营项目产值情况</div>
         <div class="chartContent">
           <div class="chartContentSon triples">
             <div class="chartTit">产值情况（万元）</div>
@@ -65,7 +65,7 @@
         </div>
       </dv-border-box-10>
       <dv-border-box-10 class="chartContainer">
-        <div class="chartTitle">联营</div>
+        <div class="chartTitle">联营项目产值情况</div>
         <div class="chartContent">
           <div class="chartContentSon triples">
             <div class="chartTit">产值情况（万元）</div>
@@ -87,14 +87,18 @@
     <div class="tableContainer">
       <dv-border-box-10 class="tableContainerSon">
         <div class="tableContainerSonTitle">
-          工期滞后排名
+          工期进度偏差排名
         </div>
-        <div class="scroll-wrap">
-          <dv-scroll-board  ref="scroll"
+        <div class="scroll-wrap" ref="rank">
+          <!-- <dv-scroll-board  ref="scroll"
             :config="config"
             class="tableContainerSonTable"
             @click="onTableClick"
-          />
+          /> -->
+          <dv-scroll-board  ref="scroll"
+            :config="config"
+            class="tableContainerSonTable"
+          /> 
         </div>
       </dv-border-box-10>
     </div>
@@ -107,11 +111,12 @@
   export default {
     props:["ny"],
     mounted(){
+      
       console.log("this.$refs.scroll",this.$refs.scroll)
     },
     watch:{
       ny:function(newValue,oldValue){
-        console.log("newvalue,oldvalue",newValue,oldValue)
+        //console.log("newvalue,oldvalue",newValue,oldValue)
         if(newValue!==oldValue){
            
            this.selfSupport()
@@ -278,7 +283,14 @@
       this.joinSupport()
     },
     mounted() {
+      //  window.addEventListener('scroll', this.handleScroll)
       this.$nextTick(() => {
+        console.log("this.$refs.rank",this.$refs.rank)
+        console.log(" this.$refs.scroll", this.$refs.scroll)
+        
+        // this.$refs.scroll.addEventListener("scroll",()=>{
+        //   console.log("scroll",this.$refs.scroll.scrollTop)
+        // })
         const option1 = {
           yAxis: ["项目一", "项目二", "项目三", "项目四", "项目五", "项目六"],
           seriesData: [500, 600, 700, 800, 900, 1000],
@@ -322,6 +334,11 @@
       });
     },
     methods: {
+      // handleScroll () {
+      //   let scrollTop =this.$refs.scroll.$el.pageYOffset || this.$refs.scroll.$el.scrollTop || 
+      //   this.$refs.scroll.$el.scrollTop
+      //   console.log("scrollTop",scrollTop)
+      // },
       getDeptNumName() {
         // request home api
         const _date = new Date();
@@ -358,7 +375,7 @@
         // const _date = new Date();
         // let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
         const res = await productionNewApi .fetchSelfBusinessData(this.ny);
-        console.log("自营11111111111",res.data)
+        //console.log("自营11111111111",res.data)
         //  产值赋值
         this.seriesData.forEach(item => {
           item.data = []
@@ -392,12 +409,12 @@
           unit: "人均产值",
           showValue: true,
         }
-        console.log("res.data.sixAverage", res.data.sixAverage)
+        //console.log("res.data.sixAverage", res.data.sixAverage)
         
         if(res.data.sixAverage.length>0){
           res.data.sixAverage.forEach((item, index) => {
-            console.log("sixAverage item",item)
-            console.log("sixAverage item cost",item.cost)
+            //console.log("sixAverage item",item)
+            //console.log("sixAverage item cost",item.cost)
             let obj = {
               name: item.deptname,
               value: item.cost === null ? 0 : item.cost
@@ -456,7 +473,7 @@
         // const _date = new Date();
         // let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
         const res = await productionNewApi.fetchJoinSupportData(this.ny);
-        console.log(res.data.proinfo, '--------res')
+        //console.log(res.data.proinfo, '--------res')
         this.joinSeriesData.forEach(item => {
           item.data = []
           let data = [parseInt(Number(res.data.proinfo.monthly.plan)), parseInt(Number(res.data.proinfo.yearly.plan)), parseInt(Number(res.data.proinfo.sofar.remained))]
@@ -581,7 +598,7 @@
               break;
             }
             if(rate >= lateRateValues[1] && rate < lateRateValues[0]) {
-              console.log(rate, '----rate')
+              //console.log(rate, '----rate')
               color = lateRateColors[1];
               break;
             }
@@ -621,18 +638,18 @@
         const _date = new Date();
         this.month = _date.getMonth();
         let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-        console.log("productionsummer 月份",mm)
+        //console.log("productionsummer 月份",mm)
         this.getDeptNumName()
         this.allCompany = await productionNewApi .fetchProManData(this.ny);
-        console.log("production summerallCompany",this.allCompany)
+        //console.log("production summerallCompany",this.allCompany)
         // this.total = this.arr.reduce((n,m) => n + m);
         this.total=0
         Object.keys(this.allCompany.data.productionValue).forEach(item => {
-          console.log("this.allCompany.data.productionValue[item]", parseInt(this.allCompany.data.productionValue[item]))
+          //console.log("this.allCompany.data.productionValue[item]", parseInt(this.allCompany.data.productionValue[item]))
           this.arr.push(parseInt(this.allCompany.data.productionValue[item]))
           this.total = this.arr.reduce((n,m) => n + m);
         })
-        console.log("this.total",this.total)
+        //console.log("this.total",this.total)
         if(this.allCompany && this.allCompany.data && this.allCompany.data.productionValue) {
           Object.keys(this.allCompany.data.productionValue).forEach(item => {
             this.DeptArr.forEach(i => {
@@ -642,7 +659,7 @@
                   str = 0
                 } else {
                   str = parseInt(Number(this.allCompany.data.productionValue[item] / this.total) * 100)
-                  console.log(this.allCompany.data.productionValue[item], this.total)
+                  //console.log(this.allCompany.data.productionValue[item], this.total)
                   
                 }
                 let obj = {
@@ -953,6 +970,9 @@
 </script>
 
 <style lang="scss">
+.dv-scroll-board .rows{
+  overflow-y: scroll;
+}
 .production-summaries {
   .table {
     margin: 0.4rem;
