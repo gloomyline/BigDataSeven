@@ -58,6 +58,7 @@ export default {
       this.drawCertificateReserve();
     },
     drawCertificateReserve(data) {
+      console.log(data,"-------------datatotal")
       // simulate data
       if(data) {
         let obj = data.certificatesInfo[0]
@@ -75,7 +76,7 @@ export default {
         ]
         const total = usings.map((item, index) => (item + unuseds[index]));
         // const total = usings.map((item, index) => (item + unuseds[index]));
-        // console.log(total, '----total')
+         console.log(total, '----total')
         const certificateReserve = echarts.init(this.$refs.certificateReserve);
         const option = {
           color: ["#fb3232", "#60c5ba", "#feee7d"],
@@ -173,6 +174,7 @@ export default {
               label: {
                 show: true,
                 formatter: function(params) {
+                  console.log("paramsparams",params)
                   if(Number.parseFloat(params.data) === 0 || Number.parseFloat(total[params.dataIndex]) === 0) {
                     return `0(0.00%)`
                   } else {

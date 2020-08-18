@@ -8,7 +8,7 @@
           <div class="chartCont1" id="barChart1"></div>
         </div>
       </dv-border-box-10>
-      <dv-border-box-10 class="chartContainer">
+      <dv-border-box-10 class="chartContainer" ref="finished">
         <div class="chartContentSon1">
           <div class="chartTit1">年度变更索赔完成情况</div>
           <div class="chartCont1" id="barChart2"></div>
@@ -23,9 +23,10 @@ import { economyApi } from "@/api";
 
 export default {
   name: "Production",
-  props: ['date'],
+  props: ['date','ishideClaim'],
   data() {
     return {
+      
       formInline: {
         user: "",
         region: ""
@@ -38,20 +39,46 @@ export default {
     date(newDate) {
       this.initData();
     },
+    ishideClaim(newValue,oldValue){
+      console.log("newValue",newValue)  
+      //this.initData();
+      if(newValue){
+        console.log("this.$refs.finished----",this.$refs.finished.$el)
+        this.$refs.finished.$el.style.display="block"
+      } else {
+        console.log("this.$refs.finished",this.$refs.finished.$el)
+        this.$refs.finished.$el.style.display="none"
+      }
+      // this.loadMeterChart();
+      // this.loadClaimChart();
+      
+    }
   },
   created(){
     this.initData();
+    console.log("ishideClaim",this.ishideClaim)
+    
+    
   },
+
   methods: {
-    initData(){
-      economyApi.fetchEconomyMeter(this.date).then((data)=>{
-        this.economyMeter = data;
-        this.loadMeterChart();
-      });
-      economyApi.fetchEconomyClaim(this.date).then((data)=>{
-        this.economyClaim = data;
-        this.loadClaimChart();
-      });
+    async initData(){
+      this.economyMeter =  await economyApi.fetchEconomyMeter(this.date)
+      console.log("this.economyMeter666666",this.economyMeter)
+      this.economyClaim =  await economyApi.fetchEconomyClaim(this.date)
+      console.log("this.loadClaimChart666666",this.economyMeter)
+      this.loadMeterChart();
+      this.loadClaimChart();
+      this.$refs.finished.$el.style.display="none"
+      // economyApi.fetchEconomyMeter(this.date).then((data)=>{
+      //   this.economyMeter = data;
+      //   this.loadMeterChart();
+      // });
+      // economyApi.fetchEconomyClaim(this.date).then((data)=>{
+      //   this.economyClaim = data;
+      //   this.loadClaimChart();
+      
+      // });
     },
     loadMeterChart(){
       const singleBarOption = {
@@ -371,9 +398,23 @@ export default {
           {
             name: seriesData[2].name,
             type: 'line',
+            label: {
+              //---图形上的文本标签
+              show: true,
+              position: [10, -10], //---相对位置
+              rotate: 0, //---旋转角度
+              color: "#ffffff",
+              fontSize: 14,
+              formatter: "{c}%",
+            },
             smooth: true,
+            //symbol:'star',//拐点样式
+            symbolSize: 8,//拐点大小
             yAxisIndex: 1,
             data: seriesData[2].value,
+            lineStyle:{
+              width:5
+            },
             markLine: {
               symbol: "none", //去掉警戒线最后面的箭头
               valueIndex: 1,

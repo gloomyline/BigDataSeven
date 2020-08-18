@@ -6,6 +6,7 @@
         :data="tableData"
         height="8.6rem"
         border
+        @row-click="openDetails"
         style="width: 100%">
         <el-table-column
           type="index"
@@ -67,6 +68,27 @@ export default {
     this.fetchPlanfinishlMonth(this.ny);
   },
   methods: {
+    openDetails(row){
+      console.log("row.projectname",row.projectname)
+      let id = ''
+        let name = ''
+        console.log("this.tableData------",this.tableData)
+        this.tableData && this.tableData.length > 0 && this.tableData.forEach((item, index) => {
+          // console.log("indexindex",index)
+          if(row.projectname === item.projectname) {
+            id = item.id
+            name = item.projectname
+          }
+        })
+        this.$router.push({ 
+          name: "DispatchNew",
+          params: {
+            id,
+            name,
+            ny: this.ny,
+          }
+       });
+    },
     async fetchPlanfinishlMonth() {
       const res = await productionNewApi.fetchPlanfinishlMonthData(this.ny);
       if(res && res.code === '000000') {

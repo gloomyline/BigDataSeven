@@ -22,6 +22,7 @@
         :data="tableData2"
         row-key="id"
         default-expand-all
+        :row-class-name="tableRowClassName"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
         <el-table-column prop="equipmentType" label="机械类别" min-width="120"></el-table-column>
@@ -70,7 +71,7 @@ export default {
     };
   },
   mounted() {
-    this._init()
+    this.initData()
   },
   beforeCreate() {
     const loading = this.$loading({
@@ -85,8 +86,9 @@ export default {
     }, 2000);
   },
   methods: {
-    async _init() {
+    async initData() {
       const response = await equipmentApi.fetchFindAllEquipmentData();
+      console.log("response",response)
       response.forEach((element, index) => {
         this.$set(element, 'id', index+1)
         this.$set(element, 'necessaryEquipment', '-')
@@ -96,8 +98,52 @@ export default {
           })
         }
       });
+      console.log("response",response)
       this.tableData2 = response
     },
+    tableRowClassName({row, rowIndex}) {
+      console.log("row",row,"rowIndex",rowIndex)
+      if(row.usingState){
+        console.log("rowIndex```````",rowIndex)
+        let curRowIndex=rowIndex
+        if(row.usingState==2){
+          if(rowIndex === curRowIndex){
+            return "textcolorYellow"
+          }
+        }else if(row.usingState==3){
+            return "textcolorRed"
+        }
+
+      }
+      
+      // if (!row.usingState && row.children && row.children.length>0){
+      // console.log("row",row.children.length)
+      
+      //  for (let i=0;i<row.children.length;i++){
+      //    if (row.children[i].usingState==2){
+      //      console.log("rowIndex------------",rowIndex)
+      //  let curentrowIndex = rowIndex
+          //  console.log("row.children[i]",row.children[i])
+          //  console.log("rowindex22222",rowIndex)
+           
+         
+          
+        //    if(rowIndex===curentrowIndex){
+        //      return "textcolorYellow"
+        //    }
+         
+        //  }else if (row.children[i].usingState==2){
+        //    return "textcolorRed"
+        //  }
+      //  }
+      // }
+        // if (rowIndex === 1) {
+        //   return 'warning-row';
+        // } else if (rowIndex === 3) {
+        //   return 'success-row';
+        // }
+        // return '';
+      },
     goBack(res) {
       if (res) {
         this.$router.go(-1);
@@ -118,6 +164,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-table__row.textcolorRed td div.cell{
+    color:rgb(236, 128, 141)
+     
+}
+::v-deep .el-table__row.textcolorGreen td div.cell{
+    color:rgb(202, 249, 130)
+     
+}
+::v-deep .el-table__row.textcolorYellow td div.cell{
+    color:rgb(250, 205, 145)
+     
+}
 .equipmentDetails {
   .head {
     height: 1.05rem;

@@ -34,8 +34,7 @@ export default {
   data() {
     return {
       financeData: [],
-      tableData: [],
-      
+      tableData: [],     
       tableData2: [
         { title: "营业收入", title1: "", region: "", date: "" },
         { title: "营业利润", title1: "", region: "", date: "" },

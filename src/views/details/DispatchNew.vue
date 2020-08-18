@@ -1,7 +1,16 @@
 <template>
   <div class="dispatch">
     <div class="head">
-      <h1>{{title}}项目部生产明细</h1>
+      <div class="left">
+        <el-date-picker
+          v-model="ny"
+          type="month"
+          :picker-options="pickerOptions"
+          value-format="yyyy-MM"
+          placeholder="选择日期">
+        </el-date-picker>
+      </div>
+      <div class="middle"><h1>{{title}}项目部生产明细</h1></div>
       <div class="weather">
         <el-button
           type="primary"
@@ -116,9 +125,15 @@ export default {
   },
   data() {
     return {
+      ny:this.$route.params.ny,
       tableData: [],
       title: this.$route.params.name,
       projectinfo:"",
+      pickerOptions: {
+        disabledDate(time) {
+            return time >Date.now()
+        },
+      }
     };
   },
   mounted() {
@@ -532,18 +547,29 @@ export default {
     background-size: 100% 100%;
     position: relative;
     z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    padding:0 1px;
+    box-sizing:border-box;
+    .left{
+      position: static;
+      width:220px;
+    }
+    .weather{
+      position: static;
+      width:220px;
+    }
     h1 {
+      flex:1;
       color: #63ecff;
       text-align: center;
       font-size: 0.4rem;
       line-height: 0.8rem;
-      .img {
-        width: 1.5rem;
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 0.2rem;
-      }
     }
+    .middle{
+      width:800px;
+    }
+    
   }
   .img-box {
     width: 92%;

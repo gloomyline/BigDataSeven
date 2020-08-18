@@ -22,46 +22,146 @@
         >
       </div>
     </div>
-    <div class="box boxall">
-      <!-- 图表 -->
-      <div class="map" id="map_l">
-        <!-- <div class="map4" id="map_l"></div> -->
+    <dv-border-box-10>
+    <div class="container">
+      <div class="partWrapper">
+        <div class="title">劳务企业参建项目情况</div>
+        <div class="contentWrapper">
+            <div class="chartcont">
+              <div class="map" id="map_l"></div>
+              <div class="maplegend">
+                  <div class="rectangle3"></div>参建项目3个以上
+              </div> 
+              <div class="maplegend">
+                  <div class="rectangle2"></div>参建项目2个
+              </div> 
+              <div class="maplegend">
+                  <div class="rectangle1"></div>参建项目1个  
+              </div>  
+            </div>
+            <div class="tablecont">
+              <el-table
+                style="width:100%"
+                :row-class-name="tableRowClassName"
+                :data="tableData"
+                border
+                size="mini"
+                height="3rem"
+              >
+                <el-table-column
+                  type="index"
+                  label="排序"
+                  width="50"
+                ></el-table-column>
+                <el-table-column prop="comname" label="劳务企业"></el-table-column>
+                <el-table-column  width="70" prop="deptidnum" label="参建项目数"></el-table-column>
+                <el-table-column prop="deptname" label="参建项目"></el-table-column>
+              </el-table>
+            </div>
+        </div>
       </div>
+      <div class="partWrapper">
+        <div class="title">劳务企业使用情况</div>
+        <div class="contentWrapper">
+            <div class="chartcont"><div class="map" id="labourusage"></div></div>
+            <div class="tablecont">
+              <el-table
+                style="width:100%"
+                height="3rem"
+                :data="LabourusagedetailData"
+                border
+                size="mini"
+                :row-class-name="tableRowClassName2"
+              >
+                <el-table-column
+                  type="index"
+                  label="序号"
+                  width="50"
+                ></el-table-column>
+                <el-table-column
+                  prop="type"
+                  min-width="150"
+                  label="劳务企业类型"
+                ></el-table-column>
+                <el-table-column
+                  prop="number"
+                  min-width="120"
+                  label="数量"
+                ></el-table-column>
+                <el-table-column prop="rate" label="占比"></el-table-column>
+          
+              </el-table>
+            </div>
+        </div>
+      </div>
+      
+    </div>
+    </dv-border-box-10>
+     <dv-border-box-10 class="box2">
+    <div class="container">
+      <div class="title">
+        公司劳动力配置情况
+      </div>
+      <div class="part1">
+        <div class="map" id="map_3"></div>
+      </div>
+      <div class="part2"> <div class="map" id="map_l1"></div></div>
+      <div class="part3">
+        <el-table
+                style="width:100%"
+                height="3rem"
+                :data="tableData2"
+                border
+                size="mini"
+                :row-class-name="tableRowClassName2"
+              >
+                <el-table-column
+                  type="index"
+                  label="序号"
+                  width="40"
+                ></el-table-column>
+                <el-table-column
+                  prop="comname"
+                  min-width="150"
+                  label="劳务企业"
+                ></el-table-column>
+                <el-table-column
+                  prop="deptname"
+                  min-width="120"
+                  label="参建项目"
+                ></el-table-column>
+                <el-table-column prop="worknum" label="作业人数"></el-table-column>
+          
+              </el-table>
+
+      </div>
+    </div>
+     </dv-border-box-10>
+
+    <!-- <div class="box boxall"> -->
+      <!-- 图表 -->
+      <!-- <div class="map" id="map_l"></div> -->
+        <!-- <div class="map4" id="map_l"></div> -->
+      
       <!-- 表格区域 -->
-      <div class="table">
+      <!-- <div class="table">
         <p class="thead">
           <span class="tilte">劳务企业参建项目数</span>
         </p>
-        <el-table
-          style="width:100%"
-          :row-class-name="tableRowClassName"
-          :data="tableData"
-          border
-          size="mini"
-          height="4rem"
-        >
-          <el-table-column
-            type="index"
-            label="排序"
-            width="120"
-          ></el-table-column>
-          <el-table-column prop="comname" label="劳务企业"></el-table-column>
-          <el-table-column prop="deptidnum" label="参建项目数"></el-table-column>
-          <el-table-column prop="deptname" label="参建项目"></el-table-column>
-        </el-table>
+        
       </div>
-      <div class="boxfoot"></div>
-    </div>
+      
+    </div> -->
 
-    <div class="box boxall m-top4">
+    <!-- <div class="box boxall m-top4"> -->
       <!-- 图表 -->
-      <div class="map" id="map_2"></div>
+      <!-- <div class="map" id="map_2"></div> -->
       <!-- 表格区域 -->
-      <div class="table">
-        <p class="thead">
+      <!-- <div class="table"> -->
+        <!-- <p class="thead">
           <span class="tilte">劳务企业作业人数占比</span>
-        </p>
-        <el-table
+        </p> -->
+        <!-- <el-table
           style="width:100%"
           height="4rem"
           :data="tableData2"
@@ -90,12 +190,12 @@
             <template slot-scope="scope">
               <span v-if="scope.row.prate">{{`${scope.row.prate}%`}}</span>
             </template>
-          <!-- <el-table-column prop="prate" label="占比" :formatter="formatter"> -->
+          <el-table-column prop="prate" label="占比" :formatter="formatter"> 
           </el-table-column>
-        </el-table>
-      </div>
-      <div class="boxfoot"></div>
-    </div>
+        </el-table> -->
+      <!-- </div> -->
+      
+    <!-- </div> -->
   </div>
 </template>
 <script>
@@ -107,6 +207,8 @@ export default {
     return {
       tableData: [],
       tableData2: [],
+      // LabourusageData:[],
+      LabourusagedetailData:[],
       date: '',
       pickerOptions: {
         disabledDate(time) {
@@ -161,7 +263,10 @@ export default {
       this.tableData2 = arr.data.right
       this._sortTableData2();
       this.echarts2(arr.data.left);
-      this.fetchedLabelteamnumData()
+      this.echarts3(arr.data.left);
+      this.fetchedLabelteamnumData();
+      this.fetchLabourusageData()
+      this.fetchLabourusagedetaiData()
     },
     // 劳务队伍作业人数占比
     async fetchedLabelteamnumData() {
@@ -169,7 +274,22 @@ export default {
       console.log("arr.data.leftleft",arr.data.left)
       this.tableData = arr.data.right
       this.echarts(arr.data.left);
+      this.echarts4(arr.data.left);
     },
+    //劳务企业使用情况
+
+    async fetchLabourusageData(){
+      let arr = await LabourServicesNewApi.fetchLabourusageData(this.date)
+      this.LabourusageData = arr.data
+      console.log("LabourusageData",this.LabourusageData)
+      this.echarts2(arr.data)
+    },
+    async fetchLabourusagedetaiData(){
+      let arr = await LabourServicesNewApi.fetchLabourusagedetailData(this.date)
+      this.LabourusagedetailData = arr.data
+      console.log("fetchLabourusagedetailData",this.fetchLabourusagedetailData)
+    },
+
     _sortTableData2() {
       this.tableData2 = this.tableData2.sort((a, b) => (b.data / b.value - a.data / a.value));
     },
@@ -212,14 +332,17 @@ export default {
       this.echarts2(resRow);
     },
     echarts(left) {
+
       console.log("leftlefteftleft",left)
       let data = []
+      let colorList=["#CAF982", "#FACD91", "#EC808D", "#0fa0d6", "#0fb4d6"]
       for(let i=0; i<left.length; i++){
         data.push(i+1)
       }
       var myChart = echarts.init(document.getElementById("map_l"));
       var option = {
         // color: ["#3398DB"],
+      
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -228,10 +351,10 @@ export default {
           },
         },
         grid: {
-          left: "2%",
-          right: "10%",
-          top: "12%",
-          bottom: "0",
+          left: "10%",
+          right: "20%",
+          top: "20%",
+          bottom: "10%",
           containLabel: true,
         },
         xAxis: [
@@ -242,6 +365,295 @@ export default {
               alignWithLabel: true,
             },
             name: "项目数",
+            nameLocation:"end",
+            axisLine: {
+              lineStyle: {
+                // 设置x轴颜色
+                color: "#fff",
+                fontSize: 14,
+              },
+            },
+          },
+        ],
+        yAxis: [
+          {
+            type: "value",
+            name: "劳务企业数",
+            splitLine: { show: false }, //去除网格线
+            axisLabel: {},
+            axisLine: {
+              lineStyle: {
+                // 设置x轴颜色
+                color: "#fff",
+                fontSize: 14,
+              },
+            },
+          },
+        ],
+        series: [
+          {
+            name: "劳务企业数",
+            type: "bar",
+            barWidth: "40%",
+            data: left,
+            itemStyle: {
+              normal: {
+                color: function(params) {
+                  // if (params.dataIndex >= 2) {
+                  //   return ["rgb(236, 128, 141)"];
+                  // } else if (params.dataIndex === 1) {
+                  //   return ["rgb(250, 205, 145)"];
+                  // } else if (params.dataIndex === 0) {
+                  //   return ["rgb(202, 249, 130)"];
+                  // }
+                  return colorList[params.dataIndex];
+                },
+                label: {
+                  show: true, //开启显示
+                  position: 'top', //在上方显示
+                  textStyle: {
+                    //数值样式
+                    color: "#fff",
+                    fontSize: 12,
+                  },
+                },
+              },
+            },
+          },
+        ],
+      };
+
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    echarts2(LabourusageData) {
+      console.log("echarts LabourusageData",LabourusageData)
+      let deptId =[]
+      let seriesData =[]
+      for(var i =0;i<LabourusageData.length;i++){
+        deptId.push(LabourusageData[i].id)
+        seriesData.push({
+          name:LabourusageData[i].deptname,
+          value:LabourusageData[i].value,
+        })
+      }
+      console.log("seriesData",seriesData)
+      var myChart = echarts.init(document.getElementById("labourusage"));
+      // var dataOpcton = left;
+      // var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数60%-85%", "参建人数小于总人数60%"];
+      // var dataOpcton = this.tableData2.map((item) => {
+      //   var resvalue = Math.floor((item.data / item.value) * 10000) / 100;
+      //   if (resvalue >= 85) {
+      //     item.color = colorList[0];
+      //   } else if (resvalue >= 60 && resvalue < 85) {
+      //     item.color = colorList[1];
+      //   } else {
+      //     item.color = colorList[2];
+      //   }
+      //   item.proportion = isNaN(resvalue) ? "" : resvalue + "%";
+      //   return item;
+      // });
+      
+
+      var option = {
+        grid:{
+          x:'20%'
+        },
+        title: {
+          
+          left: "center",
+          textStyle: {
+            color: "#fff", //颜色
+            fontWeight: "bold", //粗细
+            fontSize: 18, //大小
+            align: "center", //水平对齐
+          },
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{b}: {c} ({d}%)",
+        },
+        legend: {
+          orient: "vertical",
+          left: 10,
+          top: 40,
+          //data: [left[0].name, left[1].name, left[2].name],
+          show: false,
+          textStyle: {
+            color: "#fff", //颜色
+            fontWeight: "bold", //粗细
+            fontSize: 12, //大小
+          },
+        },
+
+        color: ["#E4111f", "#e46c11", "#11E46c", "#f57A82","#0fc1d6","#1188e4","orange", ],
+        series: [
+          {
+            type: "pie",
+            radius: "50%",
+            center: ["50%", "50%"],
+            label: {
+              fontSize: 12,
+              formatter: '{b}:{c}个',
+              position: 'outside'
+            },
+            labelLine:{
+              show:true,
+              length:5,
+              length2:5
+            },
+            // 后台name返回汉字错误，进行转换，如后台修改后，直接赋值 data: left  即可
+            // left: [{name: "参见人数占大于总人数85%", value: 49}, {name: "参见人数占比大于总人数65%-85%", value: 0},…]
+            data: seriesData,
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.1)",
+              },
+            }
+          },
+        ],
+      };
+      myChart.setOption(option);
+      var _this= this
+      myChart.on("click",function (param){
+        
+        
+        //请求数据的id
+        console.log("deptId[param.dataIndex])",deptId[param.dataIndex])
+        LabourServicesNewApi.fetchLabourusagedetailData(this.date,deptId[param.dataIndex]).then((data)=>{
+          console.log("data",data)
+        })
+        
+        console.log("deptId",deptId)
+        console.log("vuethis",_this)
+        console.log("chartthis",this)
+        console.log("我点击饼图",param)
+
+      })
+     
+      // function pieClickHandle(param){
+      //   console.log("deptId",deptId)
+      //   console.log("vuethis",_this)
+      //   console.log("chartthis",this)
+      //   console.log("我点击饼图",param)
+      // }
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+
+    },
+    
+    echarts3(left) {
+      console.log("leftleft",left)
+      var myChart = echarts.init(document.getElementById("map_3"));
+      // var dataOpcton = left;
+      var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数60%-85%", "参建人数小于总人数60%"];
+      // var dataOpcton = this.tableData2.map((item) => {
+      //   var resvalue = Math.floor((item.data / item.value) * 10000) / 100;
+      //   if (resvalue >= 85) {
+      //     item.color = colorList[0];
+      //   } else if (resvalue >= 60 && resvalue < 85) {
+      //     item.color = colorList[1];
+      //   } else {
+      //     item.color = colorList[2];
+      //   }
+      //   item.proportion = isNaN(resvalue) ? "" : resvalue + "%";
+      //   return item;
+      // });
+      var option = {
+        grid:{
+          left:'30%'
+        },
+        title: {
+          text: "劳务企业作业人数占比",
+          left: "center",
+          textStyle: {
+            color: "#fff", //颜色
+            fontWeight: "bold", //粗细
+            fontSize: 18, //大小
+            align: "center", //水平对齐
+          },
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b}: {c} ({d}%)",
+        },
+        legend: {
+          orient: "vertical",
+          left: 10,
+          top: 40,
+          //data: [left[0].name, left[1].name, left[2].name],
+          show: true,
+          textStyle: {
+            color: "#fff", //颜色
+            fontWeight: "bold", //粗细
+            fontSize: 12, //大小
+          },
+        },
+        color: ["rgb(236, 128, 141)","rgb(250, 205, 145)","rgb(202, 249, 130)"],
+        series: [
+          {
+            type: "pie",
+            radius: "55%",
+            center: ["45%", "60%"],
+            label: {
+              fontSize: 16,
+              formatter: '{c}个',
+            },
+            // 后台name返回汉字错误，进行转换，如后台修改后，直接赋值 data: left  即可
+            // left: [{name: "参见人数占大于总人数85%", value: 49}, {name: "参见人数占比大于总人数65%-85%", value: 0},…]
+            data: left,
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.1)",
+              },
+            }
+          },
+        ],
+      };
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    echarts4(left) {
+      console.log("leftlefteftleft",left)
+      let data = []
+      for(let i=0; i<left.length; i++){
+        data.push(i+1)
+      }
+      var myChart = echarts.init(document.getElementById("map_l1"));
+      var option = {
+        // color: ["#3398DB"],
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+          },
+        },
+        grid: {
+          left: "1%",
+          right: "22%",
+          top: "12%",
+          bottom: "10%",
+          containLabel: true,
+        },
+        xAxis: [
+          {
+            type: "category",
+            data,
+            axisTick: {
+              alignWithLabel: true,
+            },
+            name: "项目数",
+            nameLocation:"end",
             axisLine: {
               lineStyle: {
                 // 设置x轴颜色
@@ -304,83 +716,15 @@ export default {
         myChart.resize();
       });
     },
-    echarts2(left) {
-      console.log("leftleft",left)
-      var myChart = echarts.init(document.getElementById("map_2"));
-      // var dataOpcton = left;
-      var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数60%-85%", "参建人数小于总人数60%"];
-      // var dataOpcton = this.tableData2.map((item) => {
-      //   var resvalue = Math.floor((item.data / item.value) * 10000) / 100;
-      //   if (resvalue >= 85) {
-      //     item.color = colorList[0];
-      //   } else if (resvalue >= 60 && resvalue < 85) {
-      //     item.color = colorList[1];
-      //   } else {
-      //     item.color = colorList[2];
-      //   }
-      //   item.proportion = isNaN(resvalue) ? "" : resvalue + "%";
-      //   return item;
-      // });
-      var option = {
-        title: {
-          text: "劳务企业作业人数占比",
-          left: "center",
-          textStyle: {
-            color: "#fff", //颜色
-            fontWeight: "bold", //粗细
-            fontSize: 18, //大小
-            align: "center", //水平对齐
-          },
-        },
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b}: {c} ({d}%)",
-        },
-        legend: {
-          orient: "vertical",
-          left: 10,
-          top: 40,
-          //data: [left[0].name, left[1].name, left[2].name],
-          show: true,
-          textStyle: {
-            color: "#fff", //颜色
-            fontWeight: "bold", //粗细
-            fontSize: 12, //大小
-          },
-        },
-        color: ["rgb(236, 128, 141)","rgb(250, 205, 145)","rgb(202, 249, 130)"],
-        series: [
-          {
-            type: "pie",
-            radius: "55%",
-            center: ["45%", "60%"],
-            label: {
-              fontSize: 16,
-              formatter: '{c}个',
-            },
-            // 后台name返回汉字错误，进行转换，如后台修改后，直接赋值 data: left  即可
-            // left: [{name: "参见人数占大于总人数85%", value: 49}, {name: "参见人数占比大于总人数65%-85%", value: 0},…]
-            data: left,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.1)",
-              },
-            }
-          },
-        ],
-      };
-      myChart.setOption(option);
-      window.addEventListener("resize", function() {
-        myChart.resize();
-      });
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.dv-border-box-10.box2{
+  margin-top:0.2rem;
+  padding-bottom:0.3rem;
+}
 ::v-deep .el-table__row.textcolorRed td div.cell{
     color:rgb(236, 128, 141)
      
@@ -421,6 +765,113 @@ export default {
         margin-right: 0.2rem;
       }
     }
+  }
+  .container{
+    overflow: auto;
+    overflow-y:hidden;
+    width:100%;
+    .title {
+      color: #63ecff;
+      text-align: center;
+      font-size: 0.3rem;
+      line-height: 0.8rem;
+      padding:0.1rem 0;
+    }
+    .part1{
+      float:left;
+      width:33%;
+      .map{
+        height:3rem;
+        width:auto;
+      }
+    }
+    .part2{
+      float:left;
+      width:33%;
+      .map{
+        height:3rem;
+        width:auto;
+      }
+    }
+    .part3{
+      float:left;
+      width:33%;
+    }
+    .partWrapper{
+      float:left;
+      width:50%;
+      height:4.6rem;
+      .contentWrapper{
+        .title {
+          color: #63ecff;
+          text-align: center;
+          font-size: 0.4rem;
+          line-height: 0.8rem;
+          padding:0.5rem 0;
+        }
+         width:100%;
+        .chartcont{
+          float:left;
+          height:4.6rem;
+          width:40%;
+          box-sizing: border-box;
+          padding:0 10px;
+          .maplegend {
+            height:0.2rem;
+            font-size:0.1rem;
+            text-align: left;
+            padding-left:1rem;
+            color:#aaa;
+            .rectangle1{
+              display:inline-block;
+              
+              border-radius: 2px;
+              width: 10px;
+              background:#CAF982;
+              height:10px;
+              margin-right:10px;
+              
+            }
+            .rectangle2{
+              display:inline-block;
+              border-radius: 2px;
+              
+              width: 10px;
+              height:10px;
+              background:#FACD91;
+              margin-right:10px;
+              
+            }
+            .rectangle3{
+              display:inline-block;
+              border-radius: 2px;
+              
+              background:#EC808D;
+              width: 10px;
+              height:10px;
+              margin-right:10px;
+              
+            }
+
+            
+          }
+          .map{
+            height:2.4rem;
+            width:auto;
+          }
+        }
+        .tablecont{
+          float:left;
+          width:60%;
+          box-sizing: border-box;
+          padding:0 20px;
+
+          
+        }
+        
+      }
+    }
+
   }
   .box {
     width: 98%;

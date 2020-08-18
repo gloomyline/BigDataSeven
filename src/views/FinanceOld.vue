@@ -10,16 +10,8 @@
           placeholder="选择日期">
         </el-date-picker>
       </div>
-      <h1>工程经济</h1>
-      
+      <h1>资金管理</h1>
       <div class="weather">
-        <el-button
-          type="primary"
-          size="small"
-          round
-          @click="hideClaimHandler"
-          ><i :class="ishideClaim ? 'el-icon-top':'el-icon-bottom'"></i></el-button
-        >
         <el-button
           type="primary"
           size="small"
@@ -43,19 +35,19 @@
       </div>
       <div style="margin:10px 0;"></div>
       <keep-alive>
-        <component v-bind:is="tabView" :date="date" :ishideClaim="ishideClaim"></component>
+        <component v-bind:is="tabView" :date="date"></component>
       </keep-alive>
     </div>
   </div>
 </template>
 <script>
-import engineeringChart from "./EngineeringChart.vue";
-import engineeringTable from "./EngineeringTable.vue";
+import financeChart from "./FinanceChart.vue";
+import financeTable from "./FinanceTable.vue";
 
 export default {
   components: {
-    engineeringChart,
-    engineeringTable,
+    financeChart,
+    financeTable,
   },
   mounted() {},
   created() {
@@ -68,15 +60,15 @@ export default {
     setTimeout(() => {
       loading.close();
     }, 2000);
-    this.date = `${(new Date()).getFullYear()}-${('00' + (new Date()).getMonth()).substr(-2)}`;
+    const date = new Date();
+    this.date = `${date.getFullYear()}-${('0' + date.getMonth()).substr(-2)}`
   },
   data() {
     return {
-      ishideClaim:false,
-      tabView: "engineeringChart",
+      tabView: "financeChart",
       iscur: 0,
       tabs: [{ name: "分析视图" }, { name: "表格视图" }],
-      componentsList: ["engineeringChart", "engineeringTable"],
+      componentsList: ["financeChart", "financeTable"],
       date: '',
       pickerOptions: {
         disabledDate(time) {
@@ -86,9 +78,6 @@ export default {
     };
   },
   methods: {
-    hideClaimHandler(){
-      this.ishideClaim=!this.ishideClaim
-    },
     goBack() {
       this.$router.push({ path: "/" });
     },
@@ -100,8 +89,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.head{
-  position: relative;
+.head {
+  position: relative;  
   .left {
     position: absolute;
     left: 0;

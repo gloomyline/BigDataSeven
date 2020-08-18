@@ -55,12 +55,14 @@
           </div>
           <div class="chartContentSon triples">
             <div class="chartTit">人均产值排名（万元）</div>
-            <dv-capsule-chart :config="rjczConfig" class="chartCont" />
+            <div class="sort" @click="selfrjczSort"><i class="el-icon-sort"></i></div>
+            <dv-capsule-chart :config="rjczConfig" ref="rjcz" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;"  />
             <!-- <div class="chartCont" id="rowBarChart1"></div> -->
           </div>
           <div class="chartContentSon triples">
             <div class="chartTit">产值排名（万元）</div>
-            <dv-capsule-chart :config="czConfig" class="chartCont" />
+            <div class="sort" @click="selfczSort"><i class="el-icon-sort"></i></div>
+            <dv-capsule-chart :config="czConfig" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;" />
           </div>
         </div>
       </dv-border-box-10>
@@ -71,15 +73,17 @@
             <div class="chartTit">产值情况（万元）</div>
             <div class="chartCont" id="barChart2"></div>
           </div>
-          <div class="chartContentSon triples">
+           <div class="chartContentSon triples">
             <div class="chartTit">人均产值排名（万元）</div>
-            <dv-capsule-chart :config="rjczConfig2" class="chartCont" />
+            <div class="sort" @click="joinrjczSort"><i class="el-icon-sort"></i></div>
+            <dv-capsule-chart :config="rjczConfig2" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;" />
             <!-- <div class="chartCont" id="rowBarChart2"></div> -->
-          </div>
+          </div> 
           <div class="chartContentSon triples">
             <div class="chartTit">产值排名（万元）</div>
-            <dv-capsule-chart :config="czConfig2" class="chartCont" />
-          </div>
+            <div class="sort" @click="joinczSort"><i class="el-icon-sort"></i></div>
+            <dv-capsule-chart :config="czConfig2" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;" />
+          </div> 
         </div>
       </dv-border-box-10>
     </div>
@@ -98,6 +102,7 @@
           <dv-scroll-board  ref="scroll"
             :config="config"
             class="tableContainerSonTable"
+           
           /> 
         </div>
       </dv-border-box-10>
@@ -110,10 +115,10 @@
   import echarts from "echarts";
   export default {
     props:["ny"],
-    mounted(){
+    // mounted(){
       
-      console.log("this.$refs.scroll",this.$refs.scroll)
-    },
+    //   console.log("this.$refs.scroll",this.$refs.scroll)
+    // },
     watch:{
       ny:function(newValue,oldValue){
         //console.log("newvalue,oldvalue",newValue,oldValue)
@@ -126,6 +131,10 @@
     },
     data() {
       return {
+        isselfcjczSort:0,
+        isselfczSort:0,
+        isjoinrjczSort:0,
+        isjoinczSort:0,
         pieOption: {
           pieData: []
         },
@@ -280,22 +289,23 @@
       this.initData()
       this.getLagList()
       this.selfSupport()
+      
       this.joinSupport()
     },
     mounted() {
-      //  window.addEventListener('scroll', this.handleScroll)
+
+    
+      console.log("----$el",this.$refs.scroll.$el)
+      console.log("--this.$refs.scroll.$el.children[1]--",this.$refs.scroll.$el.children[1])
+      this.$refs.scroll.$el.addEventListener('scroll', this.handleScroll,true)
+    
+    
       this.$nextTick(() => {
-        console.log("this.$refs.rank",this.$refs.rank)
-        console.log(" this.$refs.scroll", this.$refs.scroll)
-        
-        // this.$refs.scroll.addEventListener("scroll",()=>{
-        //   console.log("scroll",this.$refs.scroll.scrollTop)
-        // })
         const option1 = {
           yAxis: ["项目一", "项目二", "项目三", "项目四", "项目五", "项目六"],
           seriesData: [500, 600, 700, 800, 900, 1000],
         };
-        console.log("props ny",this.ny)
+        //console.log("props ny",this.ny)
 
         // 人均产值排名，在项目名称前增加排序，数字为在所有自营或联营项目中进行排名(客户需求)
         this.czConfig = {
@@ -334,11 +344,131 @@
       });
     },
     methods: {
-      // handleScroll () {
-      //   let scrollTop =this.$refs.scroll.$el.pageYOffset || this.$refs.scroll.$el.scrollTop || 
-      //   this.$refs.scroll.$el.scrollTop
-      //   console.log("scrollTop",scrollTop)
-      // },
+      handleScroll () {
+        //$.this.scrollTop
+        console.log("this.$refs.scroll.$el handldScroll-----",this.$refs.scroll.$el.children[1].scrollTop)
+        let scrollTop =this.$refs.scroll.$el.children[1].scrollTop 
+        console.log("this",this)
+        //console.log("scrollTop-----------",scrollTop)
+        //console.log("this.$refs.scroll.$el.children[1].offsetHeight",this.$refs.scroll.$el.children[1].offsetHeight)
+        //console.log("this.$refs.scroll.$el.children[1]",this.$refs.scroll.$el.children[1])
+        // this.$refs.scroll.$el.children[1].style.height
+        //this.$refs.scroll.$el.children[1].scrollTop=scrollTop
+        //this.config.rowNum = scrollTop;
+        //this.$refs.scroll.animation(true)
+         var rowHeigth=this.$refs.scroll.$el.children[1].children[2].style.height
+        console.log("this.$refs.scroll.$el.children[1].children[2].style.height",this.$refs.scroll.$el.children[1].children[2].style.height)
+        console.log("scrollTop",scrollTop)
+        if(scrollTop){
+           var rowIndexnum = parseInt(scrollTop/rowHeigth)
+            console.log("rowIndexnum",rowIndexnum)
+        }   
+        this.$refs.scroll.stopAnimation();
+      },
+      selfrjczSort(e){
+        // console.log("我点击了排序",e)
+        this.isselfcjczSort = !this.isselfcjczSort
+        // this.reserveaveragecost = averagecost.data.concat()
+        // this.reserveaveragecost.sort(compare('value'));
+        let averagecost = {
+          data: [],
+          colors: [
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "#e062ae",
+            "#e062ae",
+            "#e062ae",
+          ],
+          unit: "人均产值",
+          showValue: true,
+        }
+        if(this.isselfcjczSort){
+          averagecost.data.push(...this.selfcjczReserve)
+        }else{
+          averagecost.data.push(...this.selfcjcz)
+        }
+        this.rjczConfig = {...averagecost}
+        //console.log("this.rjczConfig",this.rjczConfig)
+      },
+      selfczSort(e){
+        // console.log("我点击了排序",e)
+        this.isselfczSort = !this.isselfczSort
+        // this.reserveaveragecost = averagecost.data.concat()
+        // this.reserveaveragecost.sort(compare('value'));
+        let multTotal = {
+          data: [],
+          colors: [
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "#e062ae",
+            "#e062ae",
+            "#e062ae",
+          ],
+          unit: "产值",
+          showValue: true,
+        }
+        if(this.isselfczSort){
+          multTotal.data.push(...this.selfcjczReserve)
+        }else{
+          multTotal.data.push(...this.selfcjcz)
+        }
+        this.czConfig = {...multTotal}
+        //console.log("this.rjczConfig",this.rjczConfig)
+      },
+      joinrjczSort(e){
+        // console.log("我点击了排序",e)
+        this.isjoinrjczSort = !this.isjoinrjczSort
+        // this.reserveaveragecost = averagecost.data.concat()
+        // this.reserveaveragecost.sort(compare('value'));
+        let averagecost = {
+          data: [],
+          colors: [
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "#e062ae",
+            "#e062ae",
+            "#e062ae",
+          ],
+          unit: "人均产值",
+          showValue: true,
+        }
+        if(this.isjoinrjczSort){
+          averagecost.data.push(...this.joinrjczReserve)
+        }else{
+          averagecost.data.push(...this.joinrjcz)
+        }
+        this.rjczConfig2 = {...averagecost}
+        //console.log("this.rjczConfig",this.rjczConfig)
+      },
+      joinczSort(e){
+        // console.log("我点击了排序",e)
+        this.isjoinczSort = !this.isjoinczSort
+        // this.reserveaveragecost = averagecost.data.concat()
+        // this.reserveaveragecost.sort(compare('value'));
+        let multTotal = {
+          data: [],
+          colors: [
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "rgb(202,249,130)",
+            "#e062ae",
+            "#e062ae",
+            "#e062ae",
+          ],
+          unit: "产值",
+          showValue: true,
+        }
+        if(this.isjoinczSort){
+          multTotal.data.push(...this.joinczReserve)
+        }else{
+          multTotal.data.push(...this.joincz)
+        }
+        this.czConfig2 = {...multTotal}
+        //console.log("this.rjczConfig",this.rjczConfig)
+      },
       getDeptNumName() {
         // request home api
         const _date = new Date();
@@ -346,7 +476,7 @@
 
         productionNewApi.fetchGetDeptNumNameData().then(res => {
           if(res && res.data.length > 0 && res.code === '000000') {
-            console.log("thisDeptArr res",res)
+            //console.log("thisDeptArr res",res)
             res.data.forEach(item => {
               let obj = {
                 name: item.selectName,
@@ -357,7 +487,16 @@
           }
         })
       },
-       // 自营
+      //数组比较
+      compare(key){
+        return function(value1,value2){
+          var val1=value1[key];
+          var val2=value2[key];
+          return val1-val2;
+        }
+      },
+      
+      // 自营
       async selfSupport() {
         const barChartZYOption = {
           xData: ["月度", "年度", "开累"],
@@ -409,19 +548,19 @@
           unit: "人均产值",
           showValue: true,
         }
-        //console.log("res.data.sixAverage", res.data.sixAverage)
+        //console.log("res.data.multAverage", res.data.multAverage)
         
-        if(res.data.sixAverage.length>0){
-          res.data.sixAverage.forEach((item, index) => {
-            //console.log("sixAverage item",item)
-            //console.log("sixAverage item cost",item.cost)
+        if(res.data.multAverage.length>0){
+          res.data.multAverage.forEach((item, index) => {
+            //console.log("multAverage item",item)
+            //console.log("multAverage item cost",item.cost)
             let obj = {
               name: item.deptname,
               value: item.cost === null ? 0 : item.cost
             }
             averagecost.data.push(obj)
           })
-          
+
         }else{
           averagecost.data.push(
             {name:"",value:0},
@@ -432,8 +571,16 @@
             {name:"     ",value:0},
           ) 
         }
-       this.rjczConfig = {...averagecost}
-        let sixTotal = {
+        console.log("averagecost.data",averagecost.data)
+        
+        this.selfcjcz = averagecost.data
+        this.selfcjczReserve = averagecost.data.concat()
+        this.selfcjczReserve.sort(this.compare('value'));
+        console.log("selfcjczReserve reserveaveragecost",this.selfcjczReserve);
+        this.rjczConfig = {...averagecost}
+
+
+        let multTotal = {
           data: [],
           colors: [
             "rgb(202,249,130)",
@@ -446,17 +593,17 @@
           unit: "产值",
           showValue: true,
         }
-        if(res.data.sixTotal.length>0){
-          res.data.sixTotal.forEach((item, index) => {
+        if(res.data.multTotal.length>0){
+          res.data.multTotal.forEach((item, index) => {
           let obj = {
             name: item.deptname,
             value: item.cost === null ? 0 : item.cost
             }
-            sixTotal.data.push(obj)
+            multTotal.data.push(obj)
           })
           
         }else{
-          sixTotal.data.push(
+          multTotal.data.push(
             {name:"",value:0},
             {name:" ",value:0},
             {name:"  ",value:0},
@@ -465,8 +612,25 @@
             {name:"     ",value:0},
           )
         }
-        this.czConfig = {...sixTotal}
+
+        console.log("averagecost.data",multTotal.data)
         
+        this.selfcz = multTotal.data
+        this.selfczReserve =multTotal.data.concat()
+        this.selfczReserve.sort(this.compare('value'));
+        console.log("selfcjczReserve reserveaveragecost",this.selfczReserve);
+        this.rjczConfig = {...averagecost}
+
+
+
+        this.czConfig = {...multTotal}
+        //console.log("this.$refs.rjcz",this.$refs.rjcz)
+        //console.log("this.$refs.rjcz.$el.children[1].children[1]",this.$refs.rjcz.$el.children[1].children[1])
+        console.log("this.$refs.rjcz",this.$refs.rjcz)
+        console.log("this.$refs.rjcz.$el.children[1].children",this.$refs.rjcz.$el.children[1].firstChild.width)
+   
+        //console.log("this.$refs.rjcz",this.$refs.rjcz.$el.children[1].offsetWidth)
+        //console.log("111111",this.getStyle(this.$refs.rjcz.$el.children[1],width))
       },
       // 联营
       async joinSupport() {
@@ -517,8 +681,8 @@
           unit: "人均产值",
           showValue: true,
         }
-        if (res.data.sixAverage.length > 0) {
-          res.data.sixAverage.forEach((item, index) => {
+        if (res.data.multAverage.length > 0) {
+          res.data.multAverage.forEach((item, index) => {
             let obj = {
               name: item.deptname,
               value: item.cost === null ? 0 : item.cost
@@ -536,9 +700,15 @@
             {name:"     ",value:0},
           ) 
         }
+
+        this.joinrjcz = averagecost.data
+        this.joinrjczReserve = averagecost.data.concat()
+        this.joinrjczReserve.sort(this.compare('value'));
+        console.log("this.joinrjczReserve",this.joinrjczReserve);
+
         this.rjczConfig2 = {...averagecost}
 
-        let sixTotal = {
+        let multTotal = {
           data: [],
           colors: [
             "rgb(202,249,130)",
@@ -551,17 +721,17 @@
           unit: "产值",
           showValue: true,
         }
-        if (res && res.data.sixTotal && res.data.sixTotal.length > 0) {
-          res.data.sixTotal.forEach((item, index) => {
+        if (res && res.data.multTotal && res.data.multTotal.length > 0) {
+          res.data.multTotal.forEach((item, index) => {
             let obj = {
               name: item.deptname,
               value: item.cost === null ? 0 : item.cost
             }
-            sixTotal.data.push(obj)
+            multTotal.data.push(obj)
           })
           
         }else{
-          sixTotal.data.push(
+          multTotal.data.push(
             {name:'',value:0},
             {name:' ',value:0},
             {name:'  ',value:0},
@@ -570,7 +740,13 @@
             {name:'     ',value:0}
           )     
         }
-        this.czConfig2 = {...sixTotal}
+
+        this.joincz = multTotal.data
+        this.joinczReserve = multTotal.data.concat()
+        this.joinczReserve.sort(this.compare('value'));
+        console.log("this.joinczReserve",this.joinczReserve);
+
+        this.czConfig2 = {...multTotal}
       },
       // 滞后list
       async getLagList() {
@@ -579,8 +755,8 @@
         this.month = _date.getMonth();
         let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
         let res = await productionNewApi  .fetchLagListData(this.ny);
-        const lateRateColors = ['#fb7293', '#ffdb5c', '#9fe6b8',];
-        const lateRateValues = [20, 10, 0];
+        const lateRateColors = ['#e82e11', '#d97808', '#ddf420',];
+        const lateRateValues = [30, 20, 10];
         let zhb = []
         this.lagList = res.data
         if(res && res.data && res.data.length > 0) {
@@ -590,10 +766,10 @@
         }
         const newZhb = zhb.map((item) => {
           const rate = Number(item[1].replace(/[\%|]/g, ''));
-          // console.log(rate, '---------rate--------')
+           console.log(rate, '--newZhb-------rate--------')
           let color = '';
           for(let i = 0; i < lateRateValues.length; i += 1) {
-            if(rate > lateRateValues[0]) {
+            if(rate >= lateRateValues[0]) {
               color = lateRateColors[0];
               break;
             }
@@ -602,7 +778,7 @@
               color = lateRateColors[1];
               break;
             }
-            if(rate < lateRateValues[1]) {
+            if(rate <= lateRateValues[1]) {
               color = lateRateColors[2];
               break;
             }
@@ -627,6 +803,8 @@
           indexHeader: "排名",
           columnWidth: [50],
           rowNum: 15,
+          carousel:"single",
+          waitTime:1000,
           align: ["center"],
         };
       },
@@ -677,6 +855,7 @@
       onTableClick(row) {
         let id = ''
         let name = ''
+        console.log("this.lagList",this.lagList)
         this.lagList && this.lagList.length > 0 && this.lagList.forEach((item, index) => {
           if(row.rowIndex === index) {
             id = item.id
@@ -743,7 +922,10 @@
           grid: {
             left: '20%',
             bottom: '15%',
+
           },
+         
+          
           legend: {
             type: "plain", //----图例类型，默认为'plain'，当图例很多时可使用'scroll'
             top: "1%", //----图例相对容器位置,top\bottom\left\right
@@ -970,9 +1152,79 @@
 </script>
 
 <style lang="scss">
+// .dv-scroll-board.tableContainerSonTable{
+//   overflow:hidden;
+// }
 .dv-scroll-board .rows{
   overflow-y: scroll;
 }
+.dv-capsule-chart .label-column {
+    display:block;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding-right: 10px;
+    text-align: right;
+    font-size: 12px;
+    width: 103px;
+}
+.dv-capsule-chart .label-column div {
+    height: 21px;
+    line-height: 21px;
+    margin:0;
+    padding:0;
+    text-align:left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:103px;
+    white-space: nowrap;
+    
+}
+.dv-capsule-chart .capsule-item{
+  display:block;
+  height:18px;
+  margin:0;
+  padding:3px 0;
+  box-sizing: border-box;
+  margin:3px 0;
+}
+.dv-capsule-chart .unit-label {
+    height: 23px;
+    font-size: 12px;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top:2.3rem;
+    z-index:9990;
+    width:calc(100% - 30px - 103px);
+}
+.dv-capsule-chart .unit-text {
+    position:absolute;
+    top:2.3rem;
+    text-align: right;
+    display: flex;
+    align-items: flex-end;
+    font-size: 12px;
+    line-height: 20px;
+    z-index:9990;
+    margin-left: 10px;
+    
+}
+.dv-capsule-chart {
+    position:static;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding: 10px;
+    color: #fff;
+}
+
+.production-summaries .chartContainer .chartContentSon.triples {
+    position:relative;
+    z-index: 888;
+}
+
 .production-summaries {
   .table {
     margin: 0.4rem;
@@ -1054,6 +1306,16 @@
       &.triples {
         width: 33%;
       }
+      .sort{
+        color:#fff;
+        border:1px solid #7b93e2;
+        border-radius: 5px;
+        width:30px;
+        float:right;
+        position:absolute;
+        top:-5px;
+        right:0;
+      }
       .chartTit {
         padding: 0.01rem;
         color: #ffffff;
@@ -1062,18 +1324,11 @@
       }
       .chartCont {
         width: 100%;
-        height: 2.3rem;
+        height: 2.2rem;
       }
     }
   }
 }
-</style>
 
-<style lang="scss">
-.dv-capsule-chart {
-  padding:0;
-  .label-column {
-    text-align: left;
-  }
-}
+
 </style>

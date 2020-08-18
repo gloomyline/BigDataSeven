@@ -129,10 +129,10 @@ export default {
       let isUsing = []
       let xzDataA = []
       if(this.typeA && this.typeA.data && this.typeA.data.length > 0) {
-        isUsing = this.typeA.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2))
-        fcData = this.typeA.data.map(item => item.isSealed === 0 ? item.isSealed : (item.isSealed).toFixed(2))
+        isUsing = this.typeA.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing))
+        fcData = this.typeA.data.map(item => item.isSealed === 0 ? item.isSealed : (item.isSealed))
         xDataA = this.typeA.data.map(item => `${item.deptId}-${item.name}`)
-        xzDataA = this.typeA.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2))
+        xzDataA = this.typeA.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused))
         console.log(fcData, xDataA, '---- this.typeA.data----------')
       } else {
         fcData = []
@@ -142,6 +142,7 @@ export default {
       }
       const barChartAOption = {
         // xData: ["东心湖", "清徐", "江汉", "安九", "武大", "中南", '武嘉', '萧何', '西宁', '沈海', '童庄河', '其他'],
+        color:["#00AFD0","#B9FF78","#FC799B"],
         xData: xDataA,
         legendData: [
           {
@@ -241,10 +242,10 @@ export default {
       let name = []
       if(this.typeB && this.typeB.data && this.typeB.data.length > 0) {
         name = this.typeB.data.map(item => `${item.deptId}-${item.name}`)
-        data = this.typeB.data.map(item => item.isUsing === 0 ? 0 : (item.isUsing).toFixed(2))
+        data = this.typeB.data.map(item => item.isUsing === 0 ? 0 : (item.isUsing))
         console.log("BBBBBBBBBBBBBb",data)
-        xzDataB = this.typeB.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2))
-        lylDataB = this.typeB.data.map(item => (item.rate * 100).toFixed(2))
+        xzDataB = this.typeB.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused))
+        lylDataB = this.typeB.data.map(item => (item.rate * 100))
       } else {
         name = []
         data = []
@@ -317,10 +318,10 @@ export default {
             symbolSize: 10, //标记的大小
             itemStyle: {
                 //折线拐点标志的样式
-                color: "#058cff"
+                color: "red"
             },
             lineStyle: {
-                color: "#058cff"
+                color: "red"
             },
             areaStyle:{
                 color: "rgba(5,140,255, 0.2)"
@@ -345,9 +346,9 @@ export default {
       let lylDataC = []
       let name = []
       if(this.typeC && this.typeC.data && this.typeC.data.length > 0) {
-        data = this.typeC.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing).toFixed(2))
-        xzDataC = this.typeC.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused).toFixed(2))
-        lylDataC = this.typeC.data.map(item => (item.rate * 100).toFixed(2))
+        data = this.typeC.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing))
+        xzDataC = this.typeC.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused))
+        lylDataC = this.typeC.data.map(item => (item.rate * 100))
         name = this.typeC.data.map(item => `${item.deptId}-${item.name}`)
       } else {
         data = []
@@ -483,6 +484,7 @@ export default {
       }
       const pieA = echarts.init(this.$refs.materialAPie);
       const option = {
+        
         title: [
           {
             text: "整体利用率",
@@ -494,7 +496,7 @@ export default {
             }
           }
         ],
-        color: ["#27d08a", "#0f63d6", "#0f8cd6"],
+        color:["#00AFD0","#B9FF78","#FC799B"],
         series: [
           {
             type: "pie",
@@ -549,7 +551,7 @@ export default {
             }
           }
         ],
-        color: ["#27d08a", "#0f63d6", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
+        color:["#00AFD0","#B9FF78","#FC799B"],
         series: [
           {
             type: "pie",
@@ -603,7 +605,7 @@ export default {
             }
           }
         ],
-        color: ["#27d08a", "#0f63d6", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
+        color:["#00AFD0","#B9FF78","#FC799B"],
         series: [
           {
             type: "pie",

@@ -114,8 +114,10 @@
       <li>
         <dv-border-box-1 class="section-box">
           <div class="alltitle" @click="goRouter('Finance')">财务预算管理</div>
-          <div class="allnav" id="echart4"></div>
-          <span class="unit" style="right: 30px;top: 10px;">单位：万元</span>
+          <!-- <div class="allnav" id="financeEchart"></div> -->
+          <div class="sb" id="planMap"></div>
+          <div class="sb" id="profitMap"></div>
+          <!-- <span class="unit" style="right: 30px;top: 10px;">单位：万元</span> -->
         </dv-border-box-1>
         <dv-border-box-1 class="section-box">
           <div class="alltitle" @click="goRouter('EquipmentNew')">设备管理</div>
@@ -129,8 +131,9 @@
         </dv-border-box-1>
         <dv-border-box-1 class="section-box">
           <div class="alltitle" @click="goRouter('Engineering')">工程经济</div>
-          <div class="sb" id="jj1"></div>
-          <div class="sb" id="jj2"></div>
+          <div class="allnav" id="jj"></div>
+          <!-- <div class="sb" id="jj1"></div>
+          <div class="sb" id="jj2"></div> -->
           <!-- <div class="sb">1111</div>
           <div class="sb">1222</div>-->
           <span class="unit" style="right: 30px;top: 10px;">单位：万元</span>
@@ -148,6 +151,7 @@ import "@/assets/js/echarts.min.js";
 import $ from "jquery";
 import echarts from "echarts";
 import allCtyData from "@/assets/js/allCty.json";
+import TurnoverDetailsVue from './TurnoverDetails.vue';
 
 export default {
   name: "Home",
@@ -290,36 +294,47 @@ export default {
       
     },
     _initEconomyData(data) {
-      this.economy = data.economy;
-      this.echarts_61();
-      this.echarts_62();
+      // this.economy= {
+      //     "06": { //月份
+      //       "monthlyPricing": 35015, //每月计价
+      //       "cumulativeValuation": 35015, //年度累积计价
+      //       "proportion": 21 //开累计价完成比例
+      //     },
+      //     "07": {
+      //       "monthlyPricing": 64753,
+      //       "cumulativeValuation": 99768,
+      //       "proportion": 23
+      //     }
+      // }
+      this.economy = data.economy; //工程经济数据
+      this.echarts_economy();
+      
+      // this.echarts_61();
+      // this.echarts_62();
       console.log(this.economy);
     },
     _initFinanceData(data) {
       this.financeVo = data.financeVo;
-      this.echarts_4();
-      // this.echarts_61();
-      // this.echarts_62();
+      this.echarts_finance1()
+      this.echarts_finance2()
+      // this.echarts_4();
       // console.log(this.economy);
     },
     async initData() {
       // request home api
       const response = await homeApi.fetchHomeData(this.ny);
        let labour={
-        useLabNum:[],
-        YearLabNum:[],
-        allLabNum:[],
-        month:[]
+        yAxisArr:[],
+        seriesData:[]
+
       }
-      console.log("responese.data",response.data)
+      console.log("response.data.labour",response.data.labour)
       let labourData=response.data.labour
 
       for(let i=0;i< labourData.length;i++){
         
-        labour.useLabNum.push(labourData[i].useLabNum)
-        labour.YearLabNum.push(labourData[i].yearLabNum)
-        labour.allLabNum.push(labourData[i].allLabNum)
-        labour.month.push(labourData[i].month)
+        labour.yAxisArr.push(labourData[i].tabName)
+        labour.seriesData.push(labourData[i].tabValue)
 
       }
       this.manpower = response.data.manpower;
@@ -344,10 +359,8 @@ export default {
       );
       console.log("this.labour", this.labour)
       this.echarts_1(
-        labour.useLabNum,
-        labour.YearLabNum,
-        labour.allLabNum,
-        labour.month
+        labour.yAxisArr,
+        labour.seriesData
       );
     },
     judgeColor(config) {
@@ -1646,7 +1659,7 @@ export default {
         });
       });
     },
-    echarts_1(useLaborCount, thisYearLaborCount, allLaborCount, moth) {
+    echarts_1(yAxisArr,seriesData) {
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("echart1"));
 
@@ -1657,24 +1670,25 @@ export default {
             lineStyle: {
               color: "#dddc6b"
             }
-          }
+          },
+          formatter:"{b}:{c}"
         },
-        legend: {
-          data: [
-            "在用劳务企业数量",
-            "今年办理准入队伍数量",
-            "公司劳务企业数量"
-          ],
-          textStyle: {
-            color: "rgba(255,255,255,.5)",
-            fontSize: "12"
-          }
-        },
+        // legend: {
+        // data: [
+        //   "在用劳务企业数量",
+        //   "今年办理准入队伍数量",
+        //   "公司劳务企业数量"
+        // ],
+        // textStyle: {
+        //     color: "rgba(255,255,255,.5)",
+        //     fontSize: "12"
+        //   }
+        // },
         grid: {
           x:"70%",
           y:"10%",
           left: "3%",
-          top: "30%",
+          top: "10%",
           right: "5%",
           bottom: "0",
           containLabel: true
@@ -1682,7 +1696,7 @@ export default {
 
         xAxis: [
           {
-            type: "category",
+            type: "value",
             boundaryGap: false,
             axisLabel: {
               textStyle: {
@@ -1695,21 +1709,37 @@ export default {
                 color: "rgba(255,255,255,.2)"
               }
             },
+            splitLine: {
+                show: true,
+                lineStyle:{
+                  color: ['#315070'],
+                  width: 1,
+                  type: 'solid'
+              }
+        　　}
 
-            data: moth
           },
-          {
-            axisPointer: { show: false },
-            axisLine: { show: false },
-            position: "bottom",
-            offset: 20
-          }
+          // {
+          //   axisPointer: { show: false },
+          //   axisLine: { show: false },
+          //   position: "bottom",
+          //   offset: 20
+          // }
         ],
 
         yAxis: [
           {
-            type: "value",
+            type: "category",
+            data:yAxisArr,
             axisTick: { show: false },
+            splitLine: {
+                show: true,
+                lineStyle:{
+                  color: ['#315070'],
+                  width: 1,
+                  type: 'solid'
+              }
+        　　},
             axisLine: {
               lineStyle: {
                 color: "rgba(255,255,255,.1)"
@@ -1730,18 +1760,14 @@ export default {
         ],
         series: [
           {
-            name: "在用劳务企业数量",
-            type: "line",
+            name: "数量",
+            type: "bar",
+            data:seriesData,
             smooth: true,
             symbol: "circle",
             symbolSize: 5,
             showSymbol: true,
-            lineStyle: {
-              normal: {
-                color: "#0184d5",
-                width: 2
-              }
-            },
+            
             areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(
@@ -1767,109 +1793,17 @@ export default {
             itemStyle: {
               normal: {
                 color: "#0184d5",
-                borderColor: "rgba(221, 220, 107, .1)",
+                // borderColor: "rgba(221, 220, 107, .1)",
                 label: {
                   show: true
                 },
                 borderWidth: 12
               }
             },
-            data: useLaborCount
+            
           },
-          {
-            name: "今年办理准入队伍数量",
-            type: "line",
-            smooth: true,
-            symbol: "circle",
-            symbolSize: 5,
-            showSymbol: true,
-            lineStyle: {
-              normal: {
-                color: "#00d887",
-                width: 2
-              }
-            },
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(
-                  0,
-                  0,
-                  0,
-                  1,
-                  [
-                    {
-                      offset: 0,
-                      color: "rgba(0, 216, 135, 0.4)"
-                    },
-                    {
-                      offset: 0.8,
-                      color: "rgba(0, 216, 135, 0.1)"
-                    }
-                  ],
-                  false
-                ),
-                shadowColor: "rgba(0, 0, 0, 0.1)"
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: "#00d887",
-                borderColor: "rgba(221, 220, 107, 0.1)",
-                borderWidth: 12,
-                label: {
-                  show: true
-                }
-              }
-            },
-            data: thisYearLaborCount
-          },
-          {
-            name: "公司劳务企业数量",
-            type: "line",
-            smooth: true,
-            symbol: "circle",
-            symbolSize: 5,
-            showSymbol: true,
-            lineStyle: {
-              normal: {
-                color: "#EE6A50",
-                width: 2
-              }
-            },
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(
-                  0,
-                  0,
-                  0,
-                  1,
-                  [
-                    {
-                      offset: 0,
-                      color: "rgba(238,106,80, 0.4)"
-                    },
-                    {
-                      offset: 0.8,
-                      color: "rgba(238,106,80, 0.1)"
-                    }
-                  ],
-                  false
-                ),
-                shadowColor: "rgba(238,106,80, 0.1)"
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: "#EE6A50",
-                borderColor: "rgba(238,106,80, 0.1)",
-                borderWidth: 12,
-                label: {
-                  show: true
-                }
-              }
-            },
-            data: allLaborCount
-          }
+          
+          
         ]
       };
 
@@ -1930,7 +1864,15 @@ export default {
           containLabel: true
         },
         xAxis: {
-          type: "value"
+          type: "value",
+          splitLine: {
+                show: true,
+                lineStyle:{
+                  color: ['#315070'],
+                  width: 1,
+                  type: 'solid'
+              }
+        　　}
         },
         yAxis: {
           type: "category",
@@ -1944,7 +1886,8 @@ export default {
           },
           axisTick: { show: false },
           type: "category",
-          data: ["C类", "B类", "A类"]
+          data: ["C类", "B类", "A类"],
+          
         },
         series: [
           {
@@ -2158,1003 +2101,1424 @@ export default {
         myChart.resize();
       });
     },
-    echarts_4() {
-      // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById("echart4"));
+    //财务预算营业收入图表
+    // <div class="sb" id="planMap"></div>
+    // <div class="sb" id="profitMap"></div>
+    echarts_finance1(){
+      var myChart = echarts.init(document.getElementById("planMap"));
+      console.log("this.financeVo.planMap",this.financeVo)
+      let planMapData = this.financeVo.planMap
+      //console.log("planMapData",planMapData)
+      let xAxisarr =[]
+      let total= []
+      let completed = []
+      let percent = []
 
-      let xData = [];
-      let series = {
-        balance: [],
-        earning: [],
-        profits: [],
-        stock: []
-      };
-
-      this.financeVo.forEach((financeVo, index) => {
-        xData.push(index + 1);
-        series.balance.push(financeVo.balance);
-        series.earning.push(financeVo.earning);
-        series.profits.push(financeVo.profits);
-        series.stock.push(financeVo.stock);
-      });
-
+      for (var item in planMapData ){
+        xAxisarr.push(planMapData[item].type)
+        completed.push(planMapData[item].completed)
+        total.push(planMapData[item].total)
+        percent.push(planMapData[item].percent)
+       
+       }
+       console.log("percent",percent)
       var option = {
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            lineStyle: {
-              color: "#dddc6b"
-            }
-          }
-        },
         legend: {
-          data: ["营业收入", "营业利润", "两金余额", "货币存量"],
+          data: ['实际完成', '已完成'],
           textStyle: {
-            color: "rgba(255,255,255,.5)",
-            fontSize: "8"
+            color: "rgba(255,255,255,.6)"
           }
         },
+        color: ["#2f89cf", "#27d08a", "#e62d2d", "#0fa0d6", "#0fb4d6"],
         grid: {
-          x:"30%",
-          left: "20",
-          top: "30%",
-          right: "30",
-          bottom: "0",
-          containLabel: true
+          top:'20%',
+          left: '5%',
+          right: '5%',
+          bottom: '3%',
+          containLabel: true,
+          
         },
-
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
         xAxis: [
           {
-            type: "category",
-            boundaryGap: false,
-            axisLabel: {
+            type: 'category',
+            data: xAxisarr,
+            axisLabel:{
+              lineStyle:{
+                 color: "rgba(255,255,255,.2)"
+              },
               textStyle: {
                 color: "rgba(255,255,255,.6)",
                 fontSize: 12
               }
             },
             axisLine: {
+              //设置地名及x轴线条颜色
+              show: true,
               lineStyle: {
-                color: "rgba(255,255,255,.2)"
+                  color: "rgba(255,255,255,.2)"
               }
-            },
-
-            data: xData
-          },
-          {
-            axisPointer: { show: false },
-            axisLine: { show: false },
-            position: "bottom",
-            offset: 20
+           },
           }
         ],
-
         yAxis: [
           {
-            type: "value",
-            axisTick: { show: false },
-            axisLine: {
-              lineStyle: {
-                color: "rgba(255,255,255,.1)"
-              }
-            },
-            axisLabel: {
+            type: 'value',
+            axisLabel:{
+              lineStyle:{
+                 color: "rgba(255,255,255,.2)"
+              },
               textStyle: {
-                color: "rgba(255,255,255,.6)",
-                fontSize: 12
-              }
-            },
-
-            splitLine: {
-              lineStyle: {
-                color: "rgba(255,255,255,.1)"
-              }
-            }
-          }
-        ],
-        series: [
-          {
-            name: "营业收入",
-            type: "line",
-            smooth: true,
-            symbol: "circle",
-            symbolSize: 5,
-            showSymbol: true,
-            lineStyle: {
-              normal: {
-                color: "#0184d5",
-                width: 2
-              }
-            },
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(
-                  0,
-                  0,
-                  0,
-                  1,
-                  [
-                    {
-                      offset: 0,
-                      color: "rgba(1, 132, 213, 0.4)"
-                    },
-                    {
-                      offset: 0.8,
-                      color: "rgba(1, 132, 213, 0.1)"
-                    }
-                  ],
-                  false
-                ),
-                shadowColor: "rgba(0, 0, 0, 0.1)"
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: "#0184d5",
-                borderColor: "rgba(221, 220, 107, .1)",
-                label: {
-                  show: true
-                },
-                borderWidth: 12
-              }
-            },
-            data: series.earning
-          },
-          {
-            name: "营业利润",
-            type: "line",
-            smooth: true,
-            symbol: "circle",
-            symbolSize: 5,
-            showSymbol: true,
-            lineStyle: {
-              normal: {
-                color: "#00d887",
-                width: 2
-              }
-            },
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(
-                  0,
-                  0,
-                  0,
-                  1,
-                  [
-                    {
-                      offset: 0,
-                      color: "rgba(0, 216, 135, 0.4)"
-                    },
-                    {
-                      offset: 0.8,
-                      color: "rgba(0, 216, 135, 0.1)"
-                    }
-                  ],
-                  false
-                ),
-                shadowColor: "rgba(0, 0, 0, 0.1)"
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: "#00d887",
-                borderColor: "rgba(221, 220, 107, .1)",
-                borderWidth: 12,
-                label: {
-                  show: true
-                }
-              }
-            },
-            data: series.profits
-          },
-          {
-            name: "两金余额",
-            type: "line",
-            smooth: true,
-            symbol: "circle",
-            symbolSize: 5,
-            showSymbol: true,
-            lineStyle: {
-              normal: {
-                color: "red",
-                width: 2
-              }
-            },
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: "rgba(0, 216, 135, 0.4)"
-                  },
-                  {
-                    offset: 0.8,
-                    color: "rgba(0, 216, 135, 0.1)"
+                    color: "rgba(255,255,255,.6)",
+                    fontSize: 12
                   }
-                ]),
-                shadowColor: "rgba(0, 0, 0, 0.1)"
-              }
             },
-            itemStyle: {
-              normal: {
-                color: "red",
-                borderColor: "rgba(221, 220, 107, .1)",
-                borderWidth: 12,
-                label: {
-                  show: true
+            
+            axisLine: {
+              //设置地名及x轴线条颜色
+              show: true,
+              lineStyle: {
+                  color: "rgba(255,255,255,.2)"
+              }
+           },
+            splitLine: {
+                  // show: false,
+                  lineStyle:{
+                    color: ['#315070'],
+                    width: 1,
+                    type: 'solid'
                 }
-              }
-            },
-            data: series.balance
+          　　}
+         
           },
-          {
-            name: "货币存量",
-            type: "line",
-            smooth: true,
-            symbol: "circle",
-            symbolSize: 5,
-            showSymbol: true,
-            lineStyle: {
-              normal: {
-                color: "yellow",
-                width: 2
-              }
-            },
-            areaStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(
-                  0,
-                  0,
-                  0,
-                  1,
-                  [
-                    {
-                      offset: 0,
-                      color: "rgba(0, 216, 135, 0.4)"
-                    },
-                    {
-                      offset: 0.8,
-                      color: "rgba(0, 216, 135, 0.1)"
-                    }
-                  ],
-                  false
-                ),
-                shadowColor: "rgba(0, 0, 0, 0.1)"
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: "yellow",
-                borderColor: "rgba(221, 220, 107, .1)",
-                borderWidth: 12,
-                label: {
-                  show: true
-                }
-              }
-            },
-            data: series.stock
-          }
-        ]
-      };
-
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
-      window.addEventListener("resize", function() {
-        myChart.resize();
-      });
-    },
-    echarts_61() {
-      // 基于准备好的dom，初始化echarts实例
-      // 绘制左侧面
-      const CubeLeft = echarts.graphic.extendShape({
-        shape: {
-          x: 0,
-          y: 0,
-          w: 0
-        },
-        buildPath: function(ctx, shape) {
-          // 会canvas的应该都能看得懂，shape是从custom传入的
-          const xAxisPoint = shape.xAxisPoint;
-          const c0 = [shape.x - shape.w, shape.y];
-          const c1 = [shape.x - 13 - shape.w, shape.y - 13];
-          const c2 = [xAxisPoint[0] - 13 - shape.w, xAxisPoint[1] - 13];
-          const c3 = [xAxisPoint[0] - shape.w, xAxisPoint[1]];
-          ctx
-            .moveTo(c0[0], c0[1])
-            .lineTo(c1[0], c1[1])
-            .lineTo(c2[0], c2[1])
-            .lineTo(c3[0], c3[1])
-            .closePath();
-        }
-      });
-      // 绘制右侧面
-      const CubeRight = echarts.graphic.extendShape({
-        shape: {
-          x: 0,
-          y: 0,
-          w: 0
-        },
-        buildPath: function(ctx, shape) {
-          const xAxisPoint = shape.xAxisPoint;
-          const c1 = [shape.x - shape.w, shape.y];
-          const c2 = [xAxisPoint[0] - shape.w, xAxisPoint[1]];
-          const c3 = [xAxisPoint[0] - shape.w + 18, xAxisPoint[1] - 9];
-          const c4 = [shape.x - shape.w + 18, shape.y - 9];
-          ctx
-            .moveTo(c1[0], c1[1])
-            .lineTo(c2[0], c2[1])
-            .lineTo(c3[0], c3[1])
-            .lineTo(c4[0], c4[1])
-            .closePath();
-        }
-      });
-      // 绘制顶面
-      const CubeTop = echarts.graphic.extendShape({
-        shape: {
-          x: 0,
-          y: 0,
-          w: 0
-        },
-        buildPath: function(ctx, shape) {
-          const c1 = [shape.x - shape.w, shape.y];
-          const c2 = [shape.x - shape.w + 18, shape.y - 9];
-          const c3 = [shape.x - shape.w + 5, shape.y - 22];
-          const c4 = [shape.x - shape.w - 13, shape.y - 13];
-          ctx
-            .moveTo(c1[0], c1[1])
-            .lineTo(c2[0], c2[1])
-            .lineTo(c3[0], c3[1])
-            .lineTo(c4[0], c4[1])
-            .closePath();
-        }
-      });
-      // 注册三个面图形
-      echarts.graphic.registerShape("CubeLeft", CubeLeft);
-      echarts.graphic.registerShape("CubeRight", CubeRight);
-      echarts.graphic.registerShape("CubeTop", CubeTop);
-
-      const MAX = [this.economy.valulation.charge];
-      const VALUE = [this.economy.valulation.output];
-      let percent = parseInt((VALUE / MAX) * 100);
-      var myChart = echarts.init(document.getElementById("jj1"));
-
-      var option = {
-        color: ["red", "#49BEE5"],
-
-        grid: {
-          y: "40%",
-          left: "8%",
-          right: "0",
           
-          bottom: "0",
-          containLabel: true
-        },
-        legend: {
-          data: ["产值", "计价"],
-          textStyle: {
-            //图例文字的样式
-            color: "#999",
-            fontSize: 12
-          }
-        },
 
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "shadow"
-          },
-          formatter: "{a0}: {c0}<br />{a1}: {c1}"
-          // formatter: {function(params, ticket, callback) {
-          //   const item = params[0];
-          //   const item1 = params[1];
-          //   return (
-          //     item1.name +
-          //     "<br/>产值：" +
-          //     item.value +
-          //     "<br/>计价：" +
-          //     item1.value
-          //   );}
-          // }
-        },
-        xAxis: {
-          type: "category",
-          show: true,
-          data: [`开累计价完成比${percent}%`],
-          axisLine: {
-            show: true,
-            lineStyle: {
-              color: "rgba(255,255,255,.1)",
-              width: 1,
-              type: "solid"
-            }
-          },
-          // offset: 25,
-          // axisLabel:{
-          //   show:true
-          // },
-          // axisTick: {
-          //   show: true,
-          //   length: 9,
-          //   alignWithLabel: true,
-          //   lineStyle: {
-          //     color: "#7DFFFD"
-          //   }
-          // },
-          axisLabel: {
-            interval: 0,
-            // rotate:50,
-            show: true,
-            splitNumber: 15,
-            textStyle: {
-              color: "rgba(255,255,255,.6)",
-              fontSize: "12"
-            }
-          }
-        },
-        yAxis: [
-          {
-            type: "value",
-            axisLabel: {
-              //formatter: '{value} %'
-              show: true,
-              textStyle: {
-                color: "rgba(255,255,255,.6)",
-                fontSize: "8"
-              }
-            },
-            axisTick: {
-              show: false
-            },
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: "rgba(255,255,255,.1	)",
-                width: 1,
-                type: "solid"
-              }
-            },
-            splitLine: {
-              lineStyle: {
-                color: "rgba(255,255,255,.1)"
-              }
-            }
-          }
         ],
         series: [
           {
-            name: "产值",
-            type: "custom",
-            renderItem: function(params, api) {
-              const location = api.coord([api.value(0), api.value(1)]);
-              return {
-                type: "group",
-                children: [
-                  {
-                    type: "CubeLeft",
-                    shape: {
-                      api,
-                      x: location[0],
-                      y: location[1],
-                      w: 25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: "rgba(255,0,0,.7)"
-                    }
-                  },
-                  {
-                    type: "CubeRight",
-                    shape: {
-                      api,
-                      x: location[0],
-                      y: location[1],
-                      w: 25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: "rgba(255,0,0,.7)"
-                    }
-                  },
-                  {
-                    type: "CubeTop",
-                    shape: {
-                      api,
-                      x: location[0],
-                      y: location[1],
-                      w: 25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: "rgba(255,0,0,.7)"
-                    }
-                  }
-                ]
-              };
-            },
-            data: MAX
-          },
-          {
-            name: "计价",
-            type: "custom",
-            renderItem: (params, api) => {
-              const location = api.coord([api.value(0), api.value(1)]);
-              return {
-                type: "group",
-                children: [
-                  {
-                    type: "CubeLeft",
-                    shape: {
-                      api,
-                      xValue: api.value(0),
-                      yValue: api.value(1),
-                      x: location[0],
-                      y: location[1],
-                      w: -25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: "#3B80E2"
-                        },
-                        {
-                          offset: 1,
-                          color: "#49BEE5"
-                        }
-                      ])
-                    }
-                  },
-                  {
-                    type: "CubeRight",
-                    shape: {
-                      api,
-                      xValue: api.value(0),
-                      yValue: api.value(1),
-                      x: location[0],
-                      y: location[1],
-                      w: -25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: "#3B80E2"
-                        },
-                        {
-                          offset: 1,
-                          color: "#49BEE5"
-                        }
-                      ])
-                    }
-                  },
-                  {
-                    type: "CubeTop",
-                    shape: {
-                      api,
-                      xValue: api.value(0),
-                      yValue: api.value(1),
-                      x: location[0],
-                      y: location[1],
-                      w: -25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: "#3B80E2"
-                        },
-                        {
-                          offset: 1,
-                          color: "#49BEE5"
-                        }
-                      ])
-                    }
-                  }
-                ]
-              };
-            },
-            data: VALUE
-          },
-          {
-            type: "bar",
-            barWidth: 40,
-            label: {
-              normal: {
-                show: true,
-                position: "top",
-                fontSize: 16,
-                color: "#fff",
-                offset: [2, -25]
-              }
-            },
-            itemStyle: {
-              color: "transparent"
-            },
-            tooltip: {},
-            data: MAX
-          },
-          {
-            type: "bar",
-            barWidth: 40,
-            label: {
-              normal: {
-                show: true,
-                position: "top",
-                fontSize: 16,
-                color: "#fff",
-                offset: [2, -25]
-              }
-            },
-            itemStyle: {
-              color: "transparent"
-            },
-            tooltip: {},
-            data: VALUE
-          }
-        ]
-      };
+              name: '实际完成',
+              type: 'bar',
+              data: total,
+              label:{
+                color:"#fff",
+                position:"top",
+                show:true,
+                formatter:"{c}亿元"
+              },
+              barWidth : 30
 
-      // 使用刚指定的配置项和数据显示图表。
+          },
+          {
+              name: '已完成',
+              type: 'bar',
+              barGap: '-100%',
+              data: completed,
+              label:{
+                position:"inside",
+                show:true,
+               formatter: function(params) {
+                 console.log("我的参数",params)
+              
+                 console.log("params.dataIndex",total[params.dataIndex])
+                 var finishpercent = percent[params.dataIndex]
+                return `${params.data}(${finishpercent}%)`
+               }
+              },
+              barWidth : 30
+ 
+          },
+          
+          
+          
+        ]
+      }
+      
       myChart.setOption(option);
       window.addEventListener("resize", function() {
         myChart.resize();
       });
+       
     },
-    echarts_62() {
-      // 基于准备好的dom，初始化echarts实例
-      // 绘制左侧面
-      const CubeLeft = echarts.graphic.extendShape({
-        shape: {
-          x: 0,
-          y: 0,
-          w: 0
-        },
-        buildPath: function(ctx, shape) {
-          // 会canvas的应该都能看得懂，shape是从custom传入的
-          const xAxisPoint = shape.xAxisPoint;
-          const c0 = [shape.x - shape.w, shape.y];
-          const c1 = [shape.x - 13 - shape.w, shape.y - 13];
-          const c2 = [xAxisPoint[0] - 13 - shape.w, xAxisPoint[1] - 13];
-          const c3 = [xAxisPoint[0] - shape.w, xAxisPoint[1]];
-          ctx
-            .moveTo(c0[0], c0[1])
-            .lineTo(c1[0], c1[1])
-            .lineTo(c2[0], c2[1])
-            .lineTo(c3[0], c3[1])
-            .closePath();
-        }
-      });
-      // 绘制右侧面
-      const CubeRight = echarts.graphic.extendShape({
-        shape: {
-          x: 0,
-          y: 0,
-          w: 0
-        },
-        buildPath: function(ctx, shape) {
-          const xAxisPoint = shape.xAxisPoint;
-          const c1 = [shape.x - shape.w, shape.y];
-          const c2 = [xAxisPoint[0] - shape.w, xAxisPoint[1]];
-          const c3 = [xAxisPoint[0] - shape.w + 18, xAxisPoint[1] - 9];
-          const c4 = [shape.x - shape.w + 18, shape.y - 9];
-          ctx
-            .moveTo(c1[0], c1[1])
-            .lineTo(c2[0], c2[1])
-            .lineTo(c3[0], c3[1])
-            .lineTo(c4[0], c4[1])
-            .closePath();
-        }
-      });
-      // 绘制顶面
-      const CubeTop = echarts.graphic.extendShape({
-        shape: {
-          x: 0,
-          y: 0,
-          w: 0
-        },
-        buildPath: function(ctx, shape) {
-          const c1 = [shape.x - shape.w, shape.y];
-          const c2 = [shape.x - shape.w + 18, shape.y - 9];
-          const c3 = [shape.x - shape.w + 5, shape.y - 22];
-          const c4 = [shape.x - shape.w - 13, shape.y - 13];
-          ctx
-            .moveTo(c1[0], c1[1])
-            .lineTo(c2[0], c2[1])
-            .lineTo(c3[0], c3[1])
-            .lineTo(c4[0], c4[1])
-            .closePath();
-        }
-      });
-      // 注册三个面图形
-      echarts.graphic.registerShape("CubeLeft", CubeLeft);
-      echarts.graphic.registerShape("CubeRight", CubeRight);
-      echarts.graphic.registerShape("CubeTop", CubeTop);
+    //财务预算营业利润图表
+    echarts_finance2(){
+       var myChart = echarts.init(document.getElementById("profitMap"));
+       let profitMapData = this.financeVo.profitMap
+      console.log("profitMapData",profitMapData)
+      let xAxisarr =[]
+      let total= []
+      let completed = []
+      let percent = []
 
-      const MAX = [this.economy.claim.planed];
-      const VALUE = [this.economy.claim.finished];
-      let percent = parseInt((VALUE / MAX) * 100);
-      var myChart = echarts.init(document.getElementById("jj2"));
-
-      var option = (option = {
-        color: ["red", "#49BEE5"],
+      for (var item in profitMapData ){
+        xAxisarr.push(profitMapData[item].type)
+        completed.push(profitMapData[item].completed)
+        total.push(profitMapData[item].total)
+        percent.push(profitMapData[item].percent)
+       
+       }
+       console.log("percent",percent)
+      var option = {
         legend: {
-          data: ["计划", "完成"],
+          data: ['实际完成', '已完成'],
           textStyle: {
-            //图例文字的样式
-            color: "#999",
-            fontSize: 12
+            color: "rgba(255,255,255,.6)"
           }
         },
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "shadow"
-          },
-          formatter: function(params, ticket, callback) {
-            const item = params[0];
-            const item1 = params[1];
-            return (
-              item1.name +
-              "<br/>计划：" +
-              item.value +
-              "<br/>完成：" +
-              item1.value
-            );
-          }
-        },
+        color: ["#2f89cf", "#27d08a", "#e62d2d", "#0fa0d6", "#0fb4d6"],
         grid: {
-          y:"40%",
-          left: "8%",
-          right: "0",
-          bottom: "0",
-          containLabel: true
+            left: '5%',
+            right: '5%',
+            bottom: '3%',
+            top:'20%',
+            containLabel: true
         },
-        xAxis: {
-          type: "category",
-          data: [`变更索赔完成率${percent}%`],
-          axisLine: {
-            show: true,
-            lineStyle: {
-              color: "rgba(255,255,255,.1)",
-              width: 1,
-              type: "solid"
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
             }
-          },
-          // offset: 25,
-          // axisTick: {
-          //   show: false,
-          //   length: 9,
-          //   alignWithLabel: true,
-          //   lineStyle: {
-          //     color: "#7DFFFD"
-          //   }
-          // },
-          axisLabel: {
-            interval: 0,
-            // rotate:50,
-            show: true,
-            splitNumber: 15,
-            textStyle: {
-              color: "rgba(255,255,255,.6)",
-              fontSize: "12"
-            }
-          }
         },
-        yAxis: [
+        xAxis: [
           {
-            type: "value",
-            axisLabel: {
-              //formatter: '{value} %'
-              show: true,
+            type: 'category',
+            data: xAxisarr,
+            axisLabel:{
+              lineStyle:{
+                 color: "rgba(255,255,255,.2)"
+              },
               textStyle: {
                 color: "rgba(255,255,255,.6)",
-                fontSize: "8"
+                fontSize: 12
               }
-            },
-            axisTick: {
-              show: false
             },
             axisLine: {
+              //设置地名及x轴线条颜色
               show: true,
               lineStyle: {
-                color: "rgba(255,255,255,.1	)",
-                width: 1,
-                type: "solid"
+                  color: "rgba(255,255,255,.2)"
               }
-            },
-            splitLine: {
-              lineStyle: {
-                color: "rgba(255,255,255,.1)"
-              }
-            }
+           },
           }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            axisLabel:{
+              lineStyle:{
+                 color: "rgba(255,255,255,.2)"
+              },
+              textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize: 12
+                  }
+            },
+            
+            axisLine: {
+              //设置地名及x轴线条颜色
+              show: true,
+              lineStyle: {
+                  color: "rgba(255,255,255,.2)"
+              }
+           },
+            splitLine: {
+                  // show: false,
+                  lineStyle:{
+                    color: ['#315070'],
+                    width: 1,
+                    type: 'solid'
+                }
+          　　}
+         
+          },
+          
+
         ],
         series: [
           {
-            name: "计划",
-            type: "custom",
-            renderItem: function(params, api) {
-              const location = api.coord([api.value(0), api.value(1)]);
-              return {
-                type: "group",
-                children: [
-                  {
-                    type: "CubeLeft",
-                    shape: {
-                      api,
-                      x: location[0],
-                      y: location[1],
-                      w: 25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: "rgba(255,0,0,.7)"
-                    }
-                  },
-                  {
-                    type: "CubeRight",
-                    shape: {
-                      api,
-                      x: location[0],
-                      y: location[1],
-                      w: 25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: "rgba(255,0,0,.7)"
-                    }
-                  },
-                  {
-                    type: "CubeTop",
-                    shape: {
-                      api,
-                      x: location[0],
-                      y: location[1],
-                      w: 25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: "rgba(255,0,0,.7)"
-                    }
-                  }
-                ]
-              };
-            },
-            data: MAX
-          },
-          {
-            name: "完成",
-            type: "custom",
-            renderItem: (params, api) => {
-              const location = api.coord([api.value(0), api.value(1)]);
-              return {
-                type: "group",
-                children: [
-                  {
-                    type: "CubeLeft",
-                    shape: {
-                      api,
-                      xValue: api.value(0),
-                      yValue: api.value(1),
-                      x: location[0],
-                      y: location[1],
-                      w: -25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: "#3B80E2"
-                        },
-                        {
-                          offset: 1,
-                          color: "#49BEE5"
-                        }
-                      ])
-                    }
-                  },
-                  {
-                    type: "CubeRight",
-                    shape: {
-                      api,
-                      xValue: api.value(0),
-                      yValue: api.value(1),
-                      x: location[0],
-                      y: location[1],
-                      w: -25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: "#3B80E2"
-                        },
-                        {
-                          offset: 1,
-                          color: "#49BEE5"
-                        }
-                      ])
-                    }
-                  },
-                  {
-                    type: "CubeTop",
-                    shape: {
-                      api,
-                      xValue: api.value(0),
-                      yValue: api.value(1),
-                      x: location[0],
-                      y: location[1],
-                      w: -25,
-                      xAxisPoint: api.coord([api.value(0), 0])
-                    },
-                    style: {
-                      fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: "#3B80E2"
-                        },
-                        {
-                          offset: 1,
-                          color: "#49BEE5"
-                        }
-                      ])
-                    }
-                  }
-                ]
-              };
-            },
-            data: VALUE
-          },
-          {
-            type: "bar",
-            barWidth: 40,
-            label: {
-              normal: {
-                show: true,
-                position: "top",
-                fontSize: 16,
-                color: "#fff",
-                offset: [2, -25]
-              }
-            },
-            itemStyle: {
-              color: "transparent"
-            },
-            tooltip: {},
-            data: MAX
-          },
-          {
-            type: "bar",
-            barWidth: 40,
-            label: {
-              normal: {
-                show: true,
-                position: "top",
-                fontSize: 16,
-                color: "#fff",
-                offset: [2, -25]
-              }
-            },
-            itemStyle: {
-              color: "transparent"
-            },
-            tooltip: {},
-            data: VALUE
-          }
-        ]
-      });
+              name: '实际完成',
+              type: 'bar',
+              data: total,
+              label:{
+                color:"#fff",
+                position:"top",
+                show:true,
+                formatter:"{c}万元"
+              },
+              barWidth : 30
 
-      // 使用刚指定的配置项和数据显示图表。
+          },
+          {
+              name: '已完成',
+              type: 'bar',
+              barGap: '-100%',
+              data: completed,
+              label:{
+                position:"inside",
+                show:true,
+               formatter: function(params) {
+                 console.log("我的参数",params)
+              
+                 console.log("params.dataIndex",total[params.dataIndex])
+                 var finishpercent = percent[params.dataIndex]
+                return `${params.data}(${finishpercent}%)`
+               }
+              },
+              barWidth : 30
+ 
+          },
+          
+          
+          
+        ]
+      }
+      
       myChart.setOption(option);
       window.addEventListener("resize", function() {
         myChart.resize();
       });
+       
     },
+    //财务预算
+    // echarts_4() {
+    //   // 基于准备好的dom，初始化echarts实例
+    //   var myChart = echarts.init(document.getElementById("echart4"));
+
+    //   let xData = [];
+    //   let series = {
+    //     balance: [],
+    //     earning: [],
+    //     profits: [],
+    //     stock: []
+    //   };
+
+    //   this.financeVo.forEach((financeVo, index) => {
+    //     xData.push(index + 1);
+    //     series.balance.push(financeVo.balance);
+    //     series.earning.push(financeVo.earning);
+    //     series.profits.push(financeVo.profits);
+    //     series.stock.push(financeVo.stock);
+    //   });
+
+    //   var option = {
+    //     tooltip: {
+    //       trigger: "axis",
+    //       axisPointer: {
+    //         lineStyle: {
+    //           color: "#dddc6b"
+    //         }
+    //       }
+    //     },
+    //     legend: {
+    //       data: ["营业收入", "营业利润", "两金余额", "货币存量"],
+    //       textStyle: {
+    //         color: "rgba(255,255,255,.5)",
+    //         fontSize: "8"
+    //       }
+    //     },
+    //     grid: {
+    //       x:"30%",
+    //       left: "20",
+    //       top: "30%",
+    //       right: "30",
+    //       bottom: "0",
+    //       containLabel: true
+    //     },
+
+    //     xAxis: [
+    //       {
+    //         type: "category",
+    //         boundaryGap: false,
+    //         axisLabel: {
+    //           textStyle: {
+    //             color: "rgba(255,255,255,.6)",
+    //             fontSize: 12
+    //           }
+    //         },
+    //         axisLine: {
+    //           lineStyle: {
+    //             color: "rgba(255,255,255,.2)"
+    //           }
+    //         },
+
+    //         data: xData
+    //       },
+    //       {
+    //         axisPointer: { show: false },
+    //         axisLine: { show: false },
+    //         position: "bottom",
+    //         offset: 20
+    //       }
+    //     ],
+
+    //     yAxis: [
+    //       {
+    //         type: "value",
+    //         axisTick: { show: false },
+    //         axisLine: {
+    //           lineStyle: {
+    //             color: "rgba(255,255,255,.1)"
+    //           }
+    //         },
+    //         axisLabel: {
+    //           textStyle: {
+    //             color: "rgba(255,255,255,.6)",
+    //             fontSize: 12
+    //           }
+    //         },
+
+    //         splitLine: {
+    //           lineStyle: {
+    //             color: "rgba(255,255,255,.1)"
+    //           }
+    //         }
+    //       }
+    //     ],
+    //     series: [
+    //       {
+    //         name: "营业收入",
+    //         type: "line",
+    //         smooth: true,
+    //         symbol: "circle",
+    //         symbolSize: 5,
+    //         showSymbol: true,
+    //         lineStyle: {
+    //           normal: {
+    //             color: "#0184d5",
+    //             width: 2
+    //           }
+    //         },
+    //         areaStyle: {
+    //           normal: {
+    //             color: new echarts.graphic.LinearGradient(
+    //               0,
+    //               0,
+    //               0,
+    //               1,
+    //               [
+    //                 {
+    //                   offset: 0,
+    //                   color: "rgba(1, 132, 213, 0.4)"
+    //                 },
+    //                 {
+    //                   offset: 0.8,
+    //                   color: "rgba(1, 132, 213, 0.1)"
+    //                 }
+    //               ],
+    //               false
+    //             ),
+    //             shadowColor: "rgba(0, 0, 0, 0.1)"
+    //           }
+    //         },
+    //         itemStyle: {
+    //           normal: {
+    //             color: "#0184d5",
+    //             borderColor: "rgba(221, 220, 107, .1)",
+    //             label: {
+    //               show: true
+    //             },
+    //             borderWidth: 12
+    //           }
+    //         },
+    //         data: series.earning
+    //       },
+    //       {
+    //         name: "营业利润",
+    //         type: "line",
+    //         smooth: true,
+    //         symbol: "circle",
+    //         symbolSize: 5,
+    //         showSymbol: true,
+    //         lineStyle: {
+    //           normal: {
+    //             color: "#00d887",
+    //             width: 2
+    //           }
+    //         },
+    //         areaStyle: {
+    //           normal: {
+    //             color: new echarts.graphic.LinearGradient(
+    //               0,
+    //               0,
+    //               0,
+    //               1,
+    //               [
+    //                 {
+    //                   offset: 0,
+    //                   color: "rgba(0, 216, 135, 0.4)"
+    //                 },
+    //                 {
+    //                   offset: 0.8,
+    //                   color: "rgba(0, 216, 135, 0.1)"
+    //                 }
+    //               ],
+    //               false
+    //             ),
+    //             shadowColor: "rgba(0, 0, 0, 0.1)"
+    //           }
+    //         },
+    //         itemStyle: {
+    //           normal: {
+    //             color: "#00d887",
+    //             borderColor: "rgba(221, 220, 107, .1)",
+    //             borderWidth: 12,
+    //             label: {
+    //               show: true
+    //             }
+    //           }
+    //         },
+    //         data: series.profits
+    //       },
+    //       {
+    //         name: "两金余额",
+    //         type: "line",
+    //         smooth: true,
+    //         symbol: "circle",
+    //         symbolSize: 5,
+    //         showSymbol: true,
+    //         lineStyle: {
+    //           normal: {
+    //             color: "red",
+    //             width: 2
+    //           }
+    //         },
+    //         areaStyle: {
+    //           normal: {
+    //             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //               {
+    //                 offset: 0,
+    //                 color: "rgba(0, 216, 135, 0.4)"
+    //               },
+    //               {
+    //                 offset: 0.8,
+    //                 color: "rgba(0, 216, 135, 0.1)"
+    //               }
+    //             ]),
+    //             shadowColor: "rgba(0, 0, 0, 0.1)"
+    //           }
+    //         },
+    //         itemStyle: {
+    //           normal: {
+    //             color: "red",
+    //             borderColor: "rgba(221, 220, 107, .1)",
+    //             borderWidth: 12,
+    //             label: {
+    //               show: true
+    //             }
+    //           }
+    //         },
+    //         data: series.balance
+    //       },
+    //       {
+    //         name: "货币存量",
+    //         type: "line",
+    //         smooth: true,
+    //         symbol: "circle",
+    //         symbolSize: 5,
+    //         showSymbol: true,
+    //         lineStyle: {
+    //           normal: {
+    //             color: "yellow",
+    //             width: 2
+    //           }
+    //         },
+    //         areaStyle: {
+    //           normal: {
+    //             color: new echarts.graphic.LinearGradient(
+    //               0,
+    //               0,
+    //               0,
+    //               1,
+    //               [
+    //                 {
+    //                   offset: 0,
+    //                   color: "rgba(0, 216, 135, 0.4)"
+    //                 },
+    //                 {
+    //                   offset: 0.8,
+    //                   color: "rgba(0, 216, 135, 0.1)"
+    //                 }
+    //               ],
+    //               false
+    //             ),
+    //             shadowColor: "rgba(0, 0, 0, 0.1)"
+    //           }
+    //         },
+    //         itemStyle: {
+    //           normal: {
+    //             color: "yellow",
+    //             borderColor: "rgba(221, 220, 107, .1)",
+    //             borderWidth: 12,
+    //             label: {
+    //               show: true
+    //             }
+    //           }
+    //         },
+    //         data: series.stock
+    //       }
+    //     ]
+    //   };
+
+    //   // 使用刚指定的配置项和数据显示图表。
+    //   myChart.setOption(option);
+    //   window.addEventListener("resize", function() {
+    //     myChart.resize();
+    //   });
+    // },
+    echarts_economy(){
+      var myChart = echarts.init(document.getElementById("jj"));  
+      console.log("this.economyeconomy",this.economy)
+      let economyData = this.economy
+      let xAxis_arr = Object.keys(this.economy)
+      
+      let monthlyPricing = []
+      let cumulativeValuation=[]
+      let proportion=[]
+      for(var i in economyData){
+        //console.log("econmyData[i]",economyData[i])
+        monthlyPricing.push(economyData[i].monthlyPricing)
+        cumulativeValuation.push(economyData[i].cumulativeValuation)
+        proportion.push(economyData[i].proportion)
+      }
+
+      
+      console.log("xAxis_arr",xAxis_arr)
+      var option = {
+        grid: {
+            left: '5%',
+            right: '5%',
+            bottom: '3%',
+            containLabel: true
+        },
+        tooltip: {
+            trigger: 'axis',
+            hideDelay: '300'
+        },
+         color: ["#2f89cf", "#27d08a", "#e62d2d", "#0fa0d6", "#0fb4d6"],
+        legend: {
+            show:true,
+            textStyle: {
+              color: "rgba(255,255,255,.6)",
+              fontSize: 12
+            }
+        },
+          xAxis: {
+              type: 'category',
+              data: xAxis_arr,
+              axisLabel: {
+                textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize: 12
+                  }
+              },
+              axisLine: {
+                lineStyle: {
+                  color: "rgba(255,255,255,.2)"
+                }
+              },
+              splitLine: {
+                  show: false,
+                  lineStyle:{
+                    color: ['#315070'],
+                    width: 1,
+                    type: 'solid'
+                }
+          　　}
+              
+          },
+          yAxis: [
+            {
+              type: 'value',
+              axisLabel:{
+                width:100
+              },
+              axisLabel: {
+                textStyle: {
+                  color: "rgba(255,255,255,.6)",
+                  fontSize: 12
+                }
+              },
+              axisLine: {
+                lineStyle: {
+                  color: "rgba(255,255,255,.2)"
+                }
+              },
+              splitLine: {
+                  show: false,
+                  lineStyle:{
+                    color: ['#315070'],
+                    width: 1,
+                    type: 'solid'
+                }
+          　　}
+            },
+            {
+              type: 'value',
+              // name: '完成比例',
+              min: 60,
+              max: 90,
+              interval: 5,
+              axisLabel: {
+                formatter: '{value} %',
+                textStyle: {
+                  color: "rgba(255,255,255,.6)",
+                  fontSize: 12
+                }
+              },
+              axisLine: {
+                lineStyle: {
+                  color: "rgba(255,255,255,.2)"
+                }
+              },
+              splitLine: {
+                  show: true,
+                  lineStyle:{
+                    color: "rgba(255,255,255,.1)",
+                    width: 1,
+                    type: 'solid'
+                }
+          　　}         
+            }
+          ],
+          series: [{
+              name:"每月计价",
+              data: monthlyPricing,
+              type: 'bar'
+          },
+          { 
+              name:"年度累积计价",
+              data:  cumulativeValuation,
+              type: 'bar'
+          },
+          {
+              name:"开累计价完成比例",
+              data: proportion,
+              yAxisIndex:1,
+              type: 'line'
+          }]
+      };
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+
+    },
+    // echarts_61() {
+    //   // 基于准备好的dom，初始化echarts实例
+    //   // 绘制左侧面
+    //   const CubeLeft = echarts.graphic.extendShape({
+    //     shape: {
+    //       x: 0,
+    //       y: 0,
+    //       w: 0
+    //     },
+    //     buildPath: function(ctx, shape) {
+    //       // 会canvas的应该都能看得懂，shape是从custom传入的
+    //       const xAxisPoint = shape.xAxisPoint;
+    //       const c0 = [shape.x - shape.w, shape.y];
+    //       const c1 = [shape.x - 13 - shape.w, shape.y - 13];
+    //       const c2 = [xAxisPoint[0] - 13 - shape.w, xAxisPoint[1] - 13];
+    //       const c3 = [xAxisPoint[0] - shape.w, xAxisPoint[1]];
+    //       ctx
+    //         .moveTo(c0[0], c0[1])
+    //         .lineTo(c1[0], c1[1])
+    //         .lineTo(c2[0], c2[1])
+    //         .lineTo(c3[0], c3[1])
+    //         .closePath();
+    //     }
+    //   });
+    //   // 绘制右侧面
+    //   const CubeRight = echarts.graphic.extendShape({
+    //     shape: {
+    //       x: 0,
+    //       y: 0,
+    //       w: 0
+    //     },
+    //     buildPath: function(ctx, shape) {
+    //       const xAxisPoint = shape.xAxisPoint;
+    //       const c1 = [shape.x - shape.w, shape.y];
+    //       const c2 = [xAxisPoint[0] - shape.w, xAxisPoint[1]];
+    //       const c3 = [xAxisPoint[0] - shape.w + 18, xAxisPoint[1] - 9];
+    //       const c4 = [shape.x - shape.w + 18, shape.y - 9];
+    //       ctx
+    //         .moveTo(c1[0], c1[1])
+    //         .lineTo(c2[0], c2[1])
+    //         .lineTo(c3[0], c3[1])
+    //         .lineTo(c4[0], c4[1])
+    //         .closePath();
+    //     }
+    //   });
+    //   // 绘制顶面
+    //   const CubeTop = echarts.graphic.extendShape({
+    //     shape: {
+    //       x: 0,
+    //       y: 0,
+    //       w: 0
+    //     },
+    //     buildPath: function(ctx, shape) {
+    //       const c1 = [shape.x - shape.w, shape.y];
+    //       const c2 = [shape.x - shape.w + 18, shape.y - 9];
+    //       const c3 = [shape.x - shape.w + 5, shape.y - 22];
+    //       const c4 = [shape.x - shape.w - 13, shape.y - 13];
+    //       ctx
+    //         .moveTo(c1[0], c1[1])
+    //         .lineTo(c2[0], c2[1])
+    //         .lineTo(c3[0], c3[1])
+    //         .lineTo(c4[0], c4[1])
+    //         .closePath();
+    //     }
+    //   });
+    //   // 注册三个面图形
+    //   echarts.graphic.registerShape("CubeLeft", CubeLeft);
+    //   echarts.graphic.registerShape("CubeRight", CubeRight);
+    //   echarts.graphic.registerShape("CubeTop", CubeTop);
+
+    //   const MAX = [this.economy.valulation.charge];
+    //   const VALUE = [this.economy.valulation.output];
+    //   let percent = parseInt((VALUE / MAX) * 100);
+    //   var myChart = echarts.init(document.getElementById("jj1"));
+
+    //   var option = {
+    //     color: ["red", "#49BEE5"],
+
+    //     grid: {
+    //       y: "40%",
+    //       left: "8%",
+    //       right: "0",
+          
+    //       bottom: "0",
+    //       containLabel: true
+    //     },
+    //     legend: {
+    //       data: ["产值", "计价"],
+    //       textStyle: {
+    //         //图例文字的样式
+    //         color: "#999",
+    //         fontSize: 12
+    //       }
+    //     },
+
+    //     tooltip: {
+    //       trigger: "axis",
+    //       axisPointer: {
+    //         type: "shadow"
+    //       },
+    //       formatter: "{a0}: {c0}<br />{a1}: {c1}"
+    //       // formatter: {function(params, ticket, callback) {
+    //       //   const item = params[0];
+    //       //   const item1 = params[1];
+    //       //   return (
+    //       //     item1.name +
+    //       //     "<br/>产值：" +
+    //       //     item.value +
+    //       //     "<br/>计价：" +
+    //       //     item1.value
+    //       //   );}
+    //       // }
+    //     },
+    //     xAxis: {
+    //       type: "category",
+    //       show: true,
+    //       data: [`开累计价完成比${percent}%`],
+    //       axisLine: {
+    //         show: true,
+    //         lineStyle: {
+    //           color: "rgba(255,255,255,.1)",
+    //           width: 1,
+    //           type: "solid"
+    //         }
+    //       },
+    //       // offset: 25,
+    //       // axisLabel:{
+    //       //   show:true
+    //       // },
+    //       // axisTick: {
+    //       //   show: true,
+    //       //   length: 9,
+    //       //   alignWithLabel: true,
+    //       //   lineStyle: {
+    //       //     color: "#7DFFFD"
+    //       //   }
+    //       // },
+    //       axisLabel: {
+    //         interval: 0,
+    //         // rotate:50,
+    //         show: true,
+    //         splitNumber: 15,
+    //         textStyle: {
+    //           color: "rgba(255,255,255,.6)",
+    //           fontSize: "12"
+    //         }
+    //       }
+    //     },
+    //     yAxis: [
+    //       {
+    //         type: "value",
+    //         axisLabel: {
+    //           //formatter: '{value} %'
+    //           show: true,
+    //           textStyle: {
+    //             color: "rgba(255,255,255,.6)",
+    //             fontSize: "8"
+    //           }
+    //         },
+    //         axisTick: {
+    //           show: false
+    //         },
+    //         axisLine: {
+    //           show: true,
+    //           lineStyle: {
+    //             color: "rgba(255,255,255,.1	)",
+    //             width: 1,
+    //             type: "solid"
+    //           }
+    //         },
+    //         splitLine: {
+    //           lineStyle: {
+    //             color: "rgba(255,255,255,.1)"
+    //           }
+    //         }
+    //       }
+    //     ],
+    //     series: [
+    //       {
+    //         name: "产值",
+    //         type: "custom",
+    //         renderItem: function(params, api) {
+    //           const location = api.coord([api.value(0), api.value(1)]);
+    //           return {
+    //             type: "group",
+    //             children: [
+    //               {
+    //                 type: "CubeLeft",
+    //                 shape: {
+    //                   api,
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: 25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: "rgba(255,0,0,.7)"
+    //                 }
+    //               },
+    //               {
+    //                 type: "CubeRight",
+    //                 shape: {
+    //                   api,
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: 25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: "rgba(255,0,0,.7)"
+    //                 }
+    //               },
+    //               {
+    //                 type: "CubeTop",
+    //                 shape: {
+    //                   api,
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: 25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: "rgba(255,0,0,.7)"
+    //                 }
+    //               }
+    //             ]
+    //           };
+    //         },
+    //         data: MAX
+    //       },
+    //       {
+    //         name: "计价",
+    //         type: "custom",
+    //         renderItem: (params, api) => {
+    //           const location = api.coord([api.value(0), api.value(1)]);
+    //           return {
+    //             type: "group",
+    //             children: [
+    //               {
+    //                 type: "CubeLeft",
+    //                 shape: {
+    //                   api,
+    //                   xValue: api.value(0),
+    //                   yValue: api.value(1),
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: -25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //                     {
+    //                       offset: 0,
+    //                       color: "#3B80E2"
+    //                     },
+    //                     {
+    //                       offset: 1,
+    //                       color: "#49BEE5"
+    //                     }
+    //                   ])
+    //                 }
+    //               },
+    //               {
+    //                 type: "CubeRight",
+    //                 shape: {
+    //                   api,
+    //                   xValue: api.value(0),
+    //                   yValue: api.value(1),
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: -25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //                     {
+    //                       offset: 0,
+    //                       color: "#3B80E2"
+    //                     },
+    //                     {
+    //                       offset: 1,
+    //                       color: "#49BEE5"
+    //                     }
+    //                   ])
+    //                 }
+    //               },
+    //               {
+    //                 type: "CubeTop",
+    //                 shape: {
+    //                   api,
+    //                   xValue: api.value(0),
+    //                   yValue: api.value(1),
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: -25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //                     {
+    //                       offset: 0,
+    //                       color: "#3B80E2"
+    //                     },
+    //                     {
+    //                       offset: 1,
+    //                       color: "#49BEE5"
+    //                     }
+    //                   ])
+    //                 }
+    //               }
+    //             ]
+    //           };
+    //         },
+    //         data: VALUE
+    //       },
+    //       {
+    //         type: "bar",
+    //         barWidth: 40,
+    //         label: {
+    //           normal: {
+    //             show: true,
+    //             position: "top",
+    //             fontSize: 16,
+    //             color: "#fff",
+    //             offset: [2, -25]
+    //           }
+    //         },
+    //         itemStyle: {
+    //           color: "transparent"
+    //         },
+    //         tooltip: {},
+    //         data: MAX
+    //       },
+    //       {
+    //         type: "bar",
+    //         barWidth: 40,
+    //         label: {
+    //           normal: {
+    //             show: true,
+    //             position: "top",
+    //             fontSize: 16,
+    //             color: "#fff",
+    //             offset: [2, -25]
+    //           }
+    //         },
+    //         itemStyle: {
+    //           color: "transparent"
+    //         },
+    //         tooltip: {},
+    //         data: VALUE
+    //       }
+    //     ]
+    //   };
+
+    //   // 使用刚指定的配置项和数据显示图表。
+    //   myChart.setOption(option);
+    //   window.addEventListener("resize", function() {
+    //     myChart.resize();
+    //   });
+    // },
+    // echarts_62() {
+    //   // 基于准备好的dom，初始化echarts实例
+    //   // 绘制左侧面
+    //   const CubeLeft = echarts.graphic.extendShape({
+    //     shape: {
+    //       x: 0,
+    //       y: 0,
+    //       w: 0
+    //     },
+    //     buildPath: function(ctx, shape) {
+    //       // 会canvas的应该都能看得懂，shape是从custom传入的
+    //       const xAxisPoint = shape.xAxisPoint;
+    //       const c0 = [shape.x - shape.w, shape.y];
+    //       const c1 = [shape.x - 13 - shape.w, shape.y - 13];
+    //       const c2 = [xAxisPoint[0] - 13 - shape.w, xAxisPoint[1] - 13];
+    //       const c3 = [xAxisPoint[0] - shape.w, xAxisPoint[1]];
+    //       ctx
+    //         .moveTo(c0[0], c0[1])
+    //         .lineTo(c1[0], c1[1])
+    //         .lineTo(c2[0], c2[1])
+    //         .lineTo(c3[0], c3[1])
+    //         .closePath();
+    //     }
+    //   });
+    //   // 绘制右侧面
+    //   const CubeRight = echarts.graphic.extendShape({
+    //     shape: {
+    //       x: 0,
+    //       y: 0,
+    //       w: 0
+    //     },
+    //     buildPath: function(ctx, shape) {
+    //       const xAxisPoint = shape.xAxisPoint;
+    //       const c1 = [shape.x - shape.w, shape.y];
+    //       const c2 = [xAxisPoint[0] - shape.w, xAxisPoint[1]];
+    //       const c3 = [xAxisPoint[0] - shape.w + 18, xAxisPoint[1] - 9];
+    //       const c4 = [shape.x - shape.w + 18, shape.y - 9];
+    //       ctx
+    //         .moveTo(c1[0], c1[1])
+    //         .lineTo(c2[0], c2[1])
+    //         .lineTo(c3[0], c3[1])
+    //         .lineTo(c4[0], c4[1])
+    //         .closePath();
+    //     }
+    //   });
+    //   // 绘制顶面
+    //   const CubeTop = echarts.graphic.extendShape({
+    //     shape: {
+    //       x: 0,
+    //       y: 0,
+    //       w: 0
+    //     },
+    //     buildPath: function(ctx, shape) {
+    //       const c1 = [shape.x - shape.w, shape.y];
+    //       const c2 = [shape.x - shape.w + 18, shape.y - 9];
+    //       const c3 = [shape.x - shape.w + 5, shape.y - 22];
+    //       const c4 = [shape.x - shape.w - 13, shape.y - 13];
+    //       ctx
+    //         .moveTo(c1[0], c1[1])
+    //         .lineTo(c2[0], c2[1])
+    //         .lineTo(c3[0], c3[1])
+    //         .lineTo(c4[0], c4[1])
+    //         .closePath();
+    //     }
+    //   });
+    //   // 注册三个面图形
+    //   echarts.graphic.registerShape("CubeLeft", CubeLeft);
+    //   echarts.graphic.registerShape("CubeRight", CubeRight);
+    //   echarts.graphic.registerShape("CubeTop", CubeTop);
+
+    //   const MAX = [this.economy.claim.planed];
+    //   const VALUE = [this.economy.claim.finished];
+    //   let percent = parseInt((VALUE / MAX) * 100);
+    //   var myChart = echarts.init(document.getElementById("jj2"));
+
+    //   var option = (option = {
+    //     color: ["red", "#49BEE5"],
+    //     legend: {
+    //       data: ["计划", "完成"],
+    //       textStyle: {
+    //         //图例文字的样式
+    //         color: "#999",
+    //         fontSize: 12
+    //       }
+    //     },
+    //     tooltip: {
+    //       trigger: "axis",
+    //       axisPointer: {
+    //         type: "shadow"
+    //       },
+    //       formatter: function(params, ticket, callback) {
+    //         const item = params[0];
+    //         const item1 = params[1];
+    //         return (
+    //           item1.name +
+    //           "<br/>计划：" +
+    //           item.value +
+    //           "<br/>完成：" +
+    //           item1.value
+    //         );
+    //       }
+    //     },
+    //     grid: {
+    //       y:"40%",
+    //       left: "8%",
+    //       right: "0",
+    //       bottom: "0",
+    //       containLabel: true
+    //     },
+    //     xAxis: {
+    //       type: "category",
+    //       data: [`变更索赔完成率${percent}%`],
+    //       axisLine: {
+    //         show: true,
+    //         lineStyle: {
+    //           color: "rgba(255,255,255,.1)",
+    //           width: 1,
+    //           type: "solid"
+    //         }
+    //       },
+    //       // offset: 25,
+    //       // axisTick: {
+    //       //   show: false,
+    //       //   length: 9,
+    //       //   alignWithLabel: true,
+    //       //   lineStyle: {
+    //       //     color: "#7DFFFD"
+    //       //   }
+    //       // },
+    //       axisLabel: {
+    //         interval: 0,
+    //         // rotate:50,
+    //         show: true,
+    //         splitNumber: 15,
+    //         textStyle: {
+    //           color: "rgba(255,255,255,.6)",
+    //           fontSize: "12"
+    //         }
+    //       }
+    //     },
+    //     yAxis: [
+    //       {
+    //         type: "value",
+    //         axisLabel: {
+    //           //formatter: '{value} %'
+    //           show: true,
+    //           textStyle: {
+    //             color: "rgba(255,255,255,.6)",
+    //             fontSize: "8"
+    //           }
+    //         },
+    //         axisTick: {
+    //           show: false
+    //         },
+    //         axisLine: {
+    //           show: true,
+    //           lineStyle: {
+    //             color: "rgba(255,255,255,.1	)",
+    //             width: 1,
+    //             type: "solid"
+    //           }
+    //         },
+    //         splitLine: {
+    //           lineStyle: {
+    //             color: "rgba(255,255,255,.1)"
+    //           }
+    //         }
+    //       }
+    //     ],
+    //     series: [
+    //       {
+    //         name: "计划",
+    //         type: "custom",
+    //         renderItem: function(params, api) {
+    //           const location = api.coord([api.value(0), api.value(1)]);
+    //           return {
+    //             type: "group",
+    //             children: [
+    //               {
+    //                 type: "CubeLeft",
+    //                 shape: {
+    //                   api,
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: 25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: "rgba(255,0,0,.7)"
+    //                 }
+    //               },
+    //               {
+    //                 type: "CubeRight",
+    //                 shape: {
+    //                   api,
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: 25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: "rgba(255,0,0,.7)"
+    //                 }
+    //               },
+    //               {
+    //                 type: "CubeTop",
+    //                 shape: {
+    //                   api,
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: 25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: "rgba(255,0,0,.7)"
+    //                 }
+    //               }
+    //             ]
+    //           };
+    //         },
+    //         data: MAX
+    //       },
+    //       {
+    //         name: "完成",
+    //         type: "custom",
+    //         renderItem: (params, api) => {
+    //           const location = api.coord([api.value(0), api.value(1)]);
+    //           return {
+    //             type: "group",
+    //             children: [
+    //               {
+    //                 type: "CubeLeft",
+    //                 shape: {
+    //                   api,
+    //                   xValue: api.value(0),
+    //                   yValue: api.value(1),
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: -25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //                     {
+    //                       offset: 0,
+    //                       color: "#3B80E2"
+    //                     },
+    //                     {
+    //                       offset: 1,
+    //                       color: "#49BEE5"
+    //                     }
+    //                   ])
+    //                 }
+    //               },
+    //               {
+    //                 type: "CubeRight",
+    //                 shape: {
+    //                   api,
+    //                   xValue: api.value(0),
+    //                   yValue: api.value(1),
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: -25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //                     {
+    //                       offset: 0,
+    //                       color: "#3B80E2"
+    //                     },
+    //                     {
+    //                       offset: 1,
+    //                       color: "#49BEE5"
+    //                     }
+    //                   ])
+    //                 }
+    //               },
+    //               {
+    //                 type: "CubeTop",
+    //                 shape: {
+    //                   api,
+    //                   xValue: api.value(0),
+    //                   yValue: api.value(1),
+    //                   x: location[0],
+    //                   y: location[1],
+    //                   w: -25,
+    //                   xAxisPoint: api.coord([api.value(0), 0])
+    //                 },
+    //                 style: {
+    //                   fill: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    //                     {
+    //                       offset: 0,
+    //                       color: "#3B80E2"
+    //                     },
+    //                     {
+    //                       offset: 1,
+    //                       color: "#49BEE5"
+    //                     }
+    //                   ])
+    //                 }
+    //               }
+    //             ]
+    //           };
+    //         },
+    //         data: VALUE
+    //       },
+    //       {
+    //         type: "bar",
+    //         barWidth: 40,
+    //         label: {
+    //           normal: {
+    //             show: true,
+    //             position: "top",
+    //             fontSize: 16,
+    //             color: "#fff",
+    //             offset: [2, -25]
+    //           }
+    //         },
+    //         itemStyle: {
+    //           color: "transparent"
+    //         },
+    //         tooltip: {},
+    //         data: MAX
+    //       },
+    //       {
+    //         type: "bar",
+    //         barWidth: 40,
+    //         label: {
+    //           normal: {
+    //             show: true,
+    //             position: "top",
+    //             fontSize: 16,
+    //             color: "#fff",
+    //             offset: [2, -25]
+    //           }
+    //         },
+    //         itemStyle: {
+    //           color: "transparent"
+    //         },
+    //         tooltip: {},
+    //         data: VALUE
+    //       }
+    //     ]
+    //   });
+
+    //   // 使用刚指定的配置项和数据显示图表。
+    //   myChart.setOption(option);
+    //   window.addEventListener("resize", function() {
+    //     myChart.resize();
+    //   });
+    // },
     echarts_31(monthly) {
       let finished = Number(monthly.finished).toFixed(2);
       let remained = Number(monthly.remained).toFixed(2);
