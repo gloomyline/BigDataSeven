@@ -255,6 +255,8 @@ export default {
       this.provinceProJectsArr = [];
       this.mapPoint = {};
       const response = await homeApi.fetchHomeMapData();
+      console.log("homeMapData",response.data)
+      this.homeMapData = response
       response.data.forEach(item => {
         let name = item.name;
         this.count = response.count
@@ -419,6 +421,8 @@ export default {
       var hubeigongsi = "get/s/data-1528969822119-Bk8v93kZ7.json";
       var huabeigongsi = "get/s/data-huabeigongsi.json";
       var xibeigongsi = "get/s/data-xibeigongsi.json";
+      var _this = this
+      console.log("我是vue吗",_this)
 
       var allprovinceData = [
         {
@@ -821,8 +825,9 @@ export default {
           武汉分公司: wuhanfengongsi,
           华北分公司: huabeigongsi
         };
+        
         var geoCoordMap = pointArr;
-
+        // console.log("geoCoordMap",pointArr)
         var levelColorMap = {
           "1": "rgba(241, 109, 115, .8)",
           "2": "rgba(255, 235, 59, .7)",
@@ -1113,10 +1118,10 @@ export default {
             show: true,
             alwaysShowContent: true,
             backgroundColor: "rgba(50,50,50,0.7)",
-            hideDelay: 100,
+            hideDelay: 1000,
             triggerOn: "mousemove",
             enterable: true,
-            position: ["60%", "70%"]
+            // position: ["60%", "70%"]
           },
           graphic: [
             {
@@ -1264,7 +1269,7 @@ export default {
             zoom: 1,
             label: {
               normal: {
-                show: false,
+                show: true,
                 textStyle: {
                   color: "#fff"
                 }
@@ -1405,6 +1410,7 @@ export default {
               fontSize: "20"
             }
           },
+          //地图数据信息
           series: [
             {
               type: "effectScatter",
@@ -1445,19 +1451,50 @@ export default {
                 backgroundColor: "rgba(0,0,0,.8)",
                 borderColor: "#3574c8",
                 borderWidth: "2",
-                extraCssText:
-                  "padding:10px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);",
-                show: false,
-                formatter: function(params) {
-                  var res;
-                  if (params.value > 0) {
-                    res = params.data.value2 + "<br/>";
-                    res += params.data.value3;
-                  } else {
-                    res = "";
+                // extraCssText:
+                //   "padding:10px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);",
+                show: true,
+                formatter: function(params){
+                  console.log("formatter.homeMapData",_this.homeMapData.data)
+                  console.log('prams.tooltip',params.data.name)
+                  let homeMapData = _this.homeMapData.data
+                  let data =[]
+                  let companydata = []
+                  for (var i=0;i<homeMapData.length;i++){
+                    console.log("homeMapData[i].city",homeMapData[i].city)
+                    if(params.data.name==homeMapData[i].city){
+                      data.push(homeMapData[i])
+                    }
                   }
-                  return res;
+                  if(data.length){
+                    let temp = data[0].com
+                    companydata.push({company:data[0].com,comContent:data[0].comContent})
+                    for(var j=1;j<data.length;j++){
+                      if(temp!=data[j].com){
+                        temp = data[j].com
+                        companydata.push({company:data[j].com,comContent:data[j].comContent})
+                      }
+                    }
+                  }
+                  let companystr =""
+                  if(companydata.length){
+                    for (var k=0;k<companydata.length;k++){
+                      companystr +=`${companydata[k].company}:${companydata[k].comContent}<br>`
+                    }
+                  }
+                  return companystr
+                  
                 }
+                // formatter: function(params) {
+                //   var res;
+                //   if (params.value > 0) {
+                //     res = params.data.value2 + "<br/>";
+                //     res += params.data.value3;
+                //   } else {
+                //     res = "";
+                //   }
+                //   return res;
+                // }
               }
             }
           ]
@@ -2222,7 +2259,7 @@ export default {
                 position:"inside",
                 show:true,
                formatter: function(params) {
-                 console.log("我的参数",params)
+                //  console.log("我的参数",params)
               
                  console.log("params.dataIndex",total[params.dataIndex])
                  var finishpercent = percent[params.dataIndex]
@@ -2361,7 +2398,7 @@ export default {
                 position:"inside",
                 show:true,
                formatter: function(params) {
-                 console.log("我的参数",params)
+                //  console.log("我的参数",params)
               
                  console.log("params.dataIndex",total[params.dataIndex])
                  var finishpercent = percent[params.dataIndex]

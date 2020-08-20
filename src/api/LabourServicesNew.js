@@ -17,6 +17,15 @@ export default {
   async fetchLabourusagedetailData(date, deptId) {
     const response = await axios.get('/labour/labourusagedetail', { params: { month: date, deptId: deptId} });
     return response;
+  },
+  //公司劳动力配置情况
+  async fetchlabourconfigrateData(date) {
+    const response = await axios.get('/labour/labourconfigrate', { params: { month: date } });
+    return response;
+  },
+  async fetchlabourconfigratedetailslData(date, deptId) {
+    const response = await axios.get('/labour/labourconfigratedetails', { params: { month: date, deptId: deptId} });
+    return response;
   }
 
 }

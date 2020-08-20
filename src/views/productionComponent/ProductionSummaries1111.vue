@@ -356,14 +356,14 @@
         //this.$refs.scroll.$el.children[1].scrollTop=scrollTop
         //this.config.rowNum = scrollTop;
         //this.$refs.scroll.animation(true)
-        //  var rowHeigth=this.$refs.scroll.$el.children[1].children[2].style.height
-        // console.log("this.$refs.scroll.$el.children[1].children[2].style.height",this.$refs.scroll.$el.children[1].children[2].style.height)
-        // console.log("scrollTop",scrollTop)
-        // if(scrollTop){
-        //    var rowIndexnum = parseInt(scrollTop/rowHeigth)
-        //     console.log("rowIndexnum",rowIndexnum)
-        // }   
-        // this.$refs.scroll.stopAnimation();
+         var rowHeigth=this.$refs.scroll.$el.children[1].children[2].style.height
+        console.log("this.$refs.scroll.$el.children[1].children[2].style.height",this.$refs.scroll.$el.children[1].children[2].style.height)
+        console.log("scrollTop",scrollTop)
+        if(scrollTop){
+           var rowIndexnum = parseInt(scrollTop/36.8)
+            console.log("rowIndexnum",rowIndexnum)
+        }   
+        this.$refs.scroll.stopAnimation();
       },
       selfrjczSort(e){
         // console.log("我点击了排序",e)
@@ -782,11 +782,10 @@
               color = lateRateColors[2];
               break;
             }
-            if(rate < lateRateValues[2]) {
-              color = lateRateColors[3];
-              break;
-            }
-              
+			if(rate < lateRateValues[2]) {
+			  color = lateRateColors[3];
+			  break;
+			}
             // if(rate < lateRateValues[i] && ) {
             //   color = lateRateColors[i];
             //   break;

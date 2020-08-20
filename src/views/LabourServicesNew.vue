@@ -103,14 +103,14 @@
         公司劳动力配置情况
       </div>
       <div class="part1">
-        <div class="map" id="map_3"></div>
+        <div class="map" id="labourconfigrateWhole"></div>
       </div>
-      <div class="part2"> <div class="map" id="map_l1"></div></div>
+      <div class="part2"> <div class="map" id="labourconfigRate"></div></div>
       <div class="part3">
         <el-table
                 style="width:100%"
                 height="3rem"
-                :data="tableData2"
+                :data="labourconfigrateDetails"
                 border
                 size="mini"
                 :row-class-name="tableRowClassName2"
@@ -122,15 +122,18 @@
                 ></el-table-column>
                 <el-table-column
                   prop="comname"
-                  min-width="150"
+                  min-width="100"
                   label="劳务企业"
                 ></el-table-column>
                 <el-table-column
                   prop="deptname"
-                  min-width="120"
+                  min-width="90"
                   label="参建项目"
                 ></el-table-column>
-                <el-table-column prop="worknum" label="作业人数"></el-table-column>
+                <el-table-column min-width="70" prop="worknum" label="作业人数"></el-table-column>
+                <el-table-column min-width="70" prop="regisnum" label="需求人数"></el-table-column>
+                <el-table-column prop="prate" label="占比"></el-table-column>
+
           
               </el-table>
 
@@ -209,6 +212,7 @@ export default {
       tableData2: [],
       // LabourusageData:[],
       LabourusagedetailData:[],
+      labourconfigrateDetails:[],
       date: '',
       pickerOptions: {
         disabledDate(time) {
@@ -263,21 +267,23 @@ export default {
       this.tableData2 = arr.data.right
       this._sortTableData2();
       this.echarts2(arr.data.left);
-      this.echarts3(arr.data.left);
+  
       this.fetchedLabelteamnumData();
       this.fetchLabourusageData()
       this.fetchLabourusagedetaiData()
+      this.fetchlabourconfigrateData()
+      this.fetchlabourconfigdetailData()
     },
     // 劳务队伍作业人数占比
     async fetchedLabelteamnumData() {
       let arr = await LabourServicesNewApi.fetchedLabelteamnumData(this.date);
+
       console.log("arr.data.leftleft",arr.data.left)
       this.tableData = arr.data.right
       this.echarts(arr.data.left);
-      this.echarts4(arr.data.left);
+      // this.echarts4(arr.data.left);
     },
     //劳务企业使用情况
-
     async fetchLabourusageData(){
       let arr = await LabourServicesNewApi.fetchLabourusageData(this.date)
       this.LabourusageData = arr.data
@@ -285,10 +291,26 @@ export default {
       this.echarts2(arr.data)
     },
     async fetchLabourusagedetaiData(){
-      let arr = await LabourServicesNewApi.fetchLabourusagedetailData(this.date)
+      let arr = await LabourServicesNewApi.fetchLabourusagedetailData(this.date,"")
       this.LabourusagedetailData = arr.data
       console.log("fetchLabourusagedetailData",this.fetchLabourusagedetailData)
     },
+    //公司劳动力配置
+    async fetchlabourconfigrateData(){
+      //整个公司
+      let arr = await LabourServicesNewApi.fetchlabourconfigrateData(this.date)
+      this.labourconfigrate = arr.data
+      console.log("labourconfigrateData",this.labourconfigrateWhole)
+      this.labourconfigrateWhole(this.labourconfigrate.whole);
+      //分支公司
+      this.labourconfigRate(this.labourconfigrate.branch)
+    },
+
+     async fetchlabourconfigdetailData(){
+      let arr = await LabourServicesNewApi.fetchlabourconfigratedetailslData(this.date,"")
+      this.labourconfigrateDetails = arr.data
+      console.log("fetchlabourconfigratedetailslData111111111",this.labourconfigrateDetails)
+     },
 
     _sortTableData2() {
       this.tableData2 = this.tableData2.sort((a, b) => (b.data / b.value - a.data / a.value));
@@ -336,9 +358,9 @@ export default {
       console.log("leftlefteftleft",left)
       let data = []
       let colorList=["#CAF982", "#FACD91", "#EC808D", "#0fa0d6", "#0fb4d6"]
-      for(let i=0; i<left.length; i++){
-        data.push(i+1)
-      }
+      // for(let i=0; i<left.length; i++){
+      //   data.push(i+1)
+      // }
       var myChart = echarts.init(document.getElementById("map_l"));
       var option = {
         // color: ["#3398DB"],
@@ -360,7 +382,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data,
+            // data,
             axisTick: {
               alignWithLabel: true,
             },
@@ -439,6 +461,7 @@ export default {
           value:LabourusageData[i].value,
         })
       }
+      console.log("deptId",deptId)
       console.log("seriesData",seriesData)
       var myChart = echarts.init(document.getElementById("labourusage"));
       // var dataOpcton = left;
@@ -517,41 +540,30 @@ export default {
           },
         ],
       };
-      myChart.setOption(option);
+      myChart.off('click') 
+      myChart.setOption(option,true);
       var _this= this
       myChart.on("click",function (param){
         
         
         //请求数据的id
         console.log("deptId[param.dataIndex])",deptId[param.dataIndex])
-        LabourServicesNewApi.fetchLabourusagedetailData(this.date,deptId[param.dataIndex]).then((data)=>{
-          console.log("data",data)
+        LabourServicesNewApi.fetchLabourusagedetailData(_this.date,deptId[param.dataIndex]).then((data)=>{
+          _this.LabourusagedetailData = data.data
         })
-        
-        console.log("deptId",deptId)
-        console.log("vuethis",_this)
-        console.log("chartthis",this)
-        console.log("我点击饼图",param)
-
       })
-     
-      // function pieClickHandle(param){
-      //   console.log("deptId",deptId)
-      //   console.log("vuethis",_this)
-      //   console.log("chartthis",this)
-      //   console.log("我点击饼图",param)
-      // }
+
       window.addEventListener("resize", function() {
         myChart.resize();
       });
-
     },
     
-    echarts3(left) {
-      console.log("leftleft",left)
-      var myChart = echarts.init(document.getElementById("map_3"));
+    labourconfigrateWhole(configwhole) {
+      // console.log("leftleft",left)
+      console.log("configwholeconfigwholeconfigwhole",configwhole)
+      var myChart = echarts.init(document.getElementById("labourconfigrateWhole"));
       // var dataOpcton = left;
-      var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数60%-85%", "参建人数小于总人数60%"];
+      // var titleList = ["参建人数占大于总人数85%", "参建人数大于总人数60%-85%", "参建人数小于总人数60%"];
       // var dataOpcton = this.tableData2.map((item) => {
       //   var resvalue = Math.floor((item.data / item.value) * 10000) / 100;
       //   if (resvalue >= 85) {
@@ -564,12 +576,24 @@ export default {
       //   item.proportion = isNaN(resvalue) ? "" : resvalue + "%";
       //   return item;
       // });
+      let seriesData = []
+      seriesData.push(
+        {
+        name:"需求人数",
+        value:configwhole.existn
+        },
+        {
+        name:"作业人数",
+        value:configwhole.needn
+        },
+      )
+      console.log("config seriesData",seriesData)
       var option = {
         grid:{
           left:'30%'
         },
         title: {
-          text: "劳务企业作业人数占比",
+          text: "公司劳动力配置率",
           left: "center",
           textStyle: {
             color: "#fff", //颜色
@@ -580,7 +604,13 @@ export default {
         },
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b}: {c} ({d}%)",
+          formatter: function(a,b,c){
+            console.log("a",a)
+            // console.log("b",b)
+            // console.log("c",c)
+            let percent = parseInt(a.percent)
+            return `${a.name}:${percent}%`
+          },
         },
         legend: {
           orient: "vertical",
@@ -602,11 +632,11 @@ export default {
             center: ["45%", "60%"],
             label: {
               fontSize: 16,
-              formatter: '{c}个',
+              formatter: '{b}:{c}',
             },
             // 后台name返回汉字错误，进行转换，如后台修改后，直接赋值 data: left  即可
             // left: [{name: "参见人数占大于总人数85%", value: 49}, {name: "参见人数占比大于总人数65%-85%", value: 0},…]
-            data: left,
+            data: seriesData,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -622,13 +652,29 @@ export default {
         myChart.resize();
       });
     },
-    echarts4(left) {
-      console.log("leftlefteftleft",left)
-      let data = []
-      for(let i=0; i<left.length; i++){
-        data.push(i+1)
+    labourconfigRate(labourconfigRate) {
+      console.log("this.labourconfigRate",labourconfigRate)
+      let xData = []
+      let deptId = []
+      let seriesData = []
+      for(var i=0;i<labourconfigRate.length;i++){
+        xData.push(labourconfigRate[i].deptname)
+       
+        deptId.push(labourconfigRate[i].id)
+        seriesData.push(labourconfigRate[i].value)
       }
-      var myChart = echarts.init(document.getElementById("map_l1"));
+       console.log("xdata",xData)
+      var colorlist=["#1AE642","#E6E61A","#D83939"] 
+
+       // "#1AE642" #E6E61A  #E61A1A
+                  // if (params.dataIndex >= 2) {
+                  //   return "#D83939";
+                  // } else if (params.dataIndex === 1) {
+                  //   return "#E6E61A";
+                  // } else if (params.dataIndex === 0) {
+                  //   return "#1AE642";
+                  // }
+      var myChart = echarts.init(document.getElementById("labourconfigRate"));
       var option = {
         // color: ["#3398DB"],
         tooltip: {
@@ -648,7 +694,14 @@ export default {
         xAxis: [
           {
             type: "category",
-            data,
+            data:xData,
+            axisLabel: {
+              interval:0,
+              formatter:function(value){
+                console.log("value",value)
+                return value.split("").join("\n");
+              }
+            },
             axisTick: {
               alignWithLabel: true,
             },
@@ -683,17 +736,26 @@ export default {
             name: "劳务企业数",
             type: "bar",
             barWidth: "40%",
-            data: left,
+            data: seriesData,
             itemStyle: {
               normal: {
                 color: function(params) {
-                  if (params.dataIndex >= 2) {
-                    return ["rgb(236, 128, 141)"];
-                  } else if (params.dataIndex === 1) {
-                    return ["rgb(250, 205, 145)"];
-                  } else if (params.dataIndex === 0) {
-                    return ["rgb(202, 249, 130)"];
+                  console.log("paramsparamsparamsparamsparams",params)
+                  if (params.data>=90){
+                    return "#1AE642";    
+                  }else if (params.data<90 && params.data<=80){
+                    return "#E6E61A"
+                  }else if(params.data<80){
+                    return "#D83939"
                   }
+                  // "#1AE642" #E6E61A  #E61A1A
+                  // if (params.dataIndex >= 2) {
+                  //   return "#D83939";
+                  // } else if (params.dataIndex === 1) {
+                  //   return "#E6E61A";
+                  // } else if (params.dataIndex === 0) {
+                  //   return "#1AE642";
+                  // }
                   // return colorList[params.dataIndex];
                 },
                 label: {
@@ -710,7 +772,15 @@ export default {
           },
         ],
       };
-
+      myChart.off('click')
+      myChart.on("click", (param)=>{
+        console.log("公司配置率柱状图",param)
+        //请求数据的id
+        console.log("deptId[param.dataIndex])",deptId[param.dataIndex])
+        LabourServicesNewApi.fetchlabourconfigratedetailslData(this.date,deptId[param.dataIndex]).then((data)=>{
+          this.labourconfigrateDetails = data.data
+        })
+      })
       myChart.setOption(option);
       window.addEventListener("resize", function() {
         myChart.resize();
