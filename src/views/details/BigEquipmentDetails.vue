@@ -23,10 +23,10 @@
     <div class="table boxall">
       <p class="thead">
         <img class="img" src="@/assets/images/u563.png" />
-        <span class="tilte">项目大型机械设备分布情况</span>
+        <span class="tilte">项目机械设备台账</span>
       </p>
       <el-table :data="tableData" :span-method="equSpanMethod">
-        <el-table-column prop="id" label="管理编号"></el-table-column>
+        <el-table-column prop="number" label="管理编号"></el-table-column>
         <el-table-column prop="equipmentName" label="设备名称"></el-table-column>
         <el-table-column prop="specifications" label="型号规格"></el-table-column>
         <el-table-column prop="manufacturer" label="生产厂家"></el-table-column>
