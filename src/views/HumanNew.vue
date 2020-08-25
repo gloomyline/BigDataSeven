@@ -41,14 +41,17 @@
   </div>
 </template>
 <script>
-import humanOrgan from "./humanComponent/HumanOrgan.vue";
+import humanOrganNew from "./humanComponent/HumanOrganNew.vue";
+/* import humanOrganNew from "./org-tree/index.vue"; */
+// import humanOrgan from "./humanComponent/HumanOrgan.vue";
 import humanStatus from "./humanComponent/HumanStatus.vue";
 import humanFun from "./humanComponent/HumanFun.vue";
 import humanCre from "./humanComponent/HumanCre.vue";
 
 export default {
   components: {
-    humanOrgan,
+	humanOrganNew,
+    // humanOrgan,
     humanStatus,
     humanFun,
     humanCre,
@@ -67,11 +70,11 @@ export default {
   },
   data() {
     return {
-      tabView: "humanOrgan",
+      tabView: "humanOrganNew",
       ny:this.$route.params.ny,
       iscur: 0,
       tabs: [{ name: "组织机构" }, { name: "人员情况" }, { name: "薪酬情况" }, { name: "资质证书管理情况" }],
-      componentsList: ["humanOrgan", "humanStatus", "humanFun", "humanCre"],
+      componentsList: ["humanOrganNew", "humanStatus", "humanFun", "humanCre"],
       pickerOptions: {
          disabledDate(time) {
             return time >Date.now()

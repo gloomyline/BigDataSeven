@@ -43,6 +43,7 @@
               <el-table
                 style="width:100%"
                 :row-class-name="tableRowClassName"
+				@row-click="handleRowChange"
                 :data="tableData"
                 border
                 size="mini"
@@ -113,7 +114,8 @@
                 :data="labourconfigrateDetails"
                 border
                 size="mini"
-                :row-class-name="tableRowClassName2"
+                :row-class-name="tableRowClassName3"
+				@row-click="handleRowChange"
               >
                 <el-table-column
                   type="index"
@@ -133,10 +135,7 @@
                 <el-table-column min-width="70" prop="worknum" label="作业人数"></el-table-column>
                 <el-table-column min-width="70" prop="regisnum" label="需求人数"></el-table-column>
                 <el-table-column prop="prate" label="占比"></el-table-column>
-
-          
               </el-table>
-
       </div>
     </div>
      </dv-border-box-10>
@@ -243,6 +242,17 @@ export default {
     },
   },
   methods: {
+	handleRowChange(row){
+		this.$router.push({
+		  name: "LabourServicesDetails",
+		  params: {
+			subconid: row.subconid,
+			comname:row.comname,
+			page:1,
+			limit:10
+	      }
+	   });
+	 },
       //参比数改变字体颜色
      tableRowClassName2({row, rowIndex}) {
        //console.log("rowrowindex",row,rowIndex)
@@ -260,13 +270,30 @@ export default {
         // }
         // return '';
       },
+	  //参比数改变字体颜色
+	  tableRowClassName3({row, rowIndex}) {
+	    //console.log("rowrowindex",row,rowIndex)
+	    if(row.prate>=90){
+	      return 'textcolorGreen'
+	    }else if(row.prate<90 && row.prate>=80){
+	      return 'textcolorYellow'
+	    }else if(row.prate<80){
+	      return 'textcolorRed'
+	    }
+	     // if (rowIndex === 1) {
+	     //   return 'textcolorRed';
+	     // } else if (rowIndex === 3) {
+	     //   return 'textcolorYellow';
+	     // }
+	     // return '';
+	   },
     // 劳务队伍
     async initData() {
       const _date = new Date();
-      let arr = await LabourServicesNewApi.fetchLabelteamworkrateData(this.date);
-      this.tableData2 = arr.data.right
-      this._sortTableData2();
-      this.echarts2(arr.data.left);
+      //let arr = await LabourServicesNewApi.fetchLabelteamworkrateData(this.date);
+      //this.tableData2 = arr.data.right
+      //this._sortTableData2();
+      //this.echarts2(arr.data.left);
   
       this.fetchedLabelteamnumData();
       this.fetchLabourusageData()
@@ -312,9 +339,9 @@ export default {
       //console.log("fetchlabourconfigratedetailslData111111111",this.labourconfigrateDetails)
      },
 
-    _sortTableData2() {
-      this.tableData2 = this.tableData2.sort((a, b) => (b.data / b.value - a.data / a.value));
-    },
+    // _sortTableData2() {
+    //   this.tableData2 = this.tableData2.sort((a, b) => (b.data / b.value - a.data / a.value));
+    // },
     tableRowClassName({ row, rowIndex }) {
       //  console.log("rowrowindex",row,rowIndex)
        if(row.deptidnum==3){

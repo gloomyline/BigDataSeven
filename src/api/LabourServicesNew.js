@@ -1,10 +1,10 @@
 const { axios } = window;
 
 export default {
-  async fetchLabelteamworkrateData(date) {
+/*  async fetchLabelteamworkrateData(date) {
     const response = await axios.get('/labour/labelteamworkrate', { params: { month: date } });
     return response;
-  },
+  }, */
   async fetchedLabelteamnumData(date) {
     const response = await axios.get('/labour/labelteamnum', { params: { month: date } });
     return response;
@@ -26,6 +26,9 @@ export default {
   async fetchlabourconfigratedetailslData(date, deptId) {
     const response = await axios.get('/labour/labourconfigratedetails', { params: { month: date, deptId: deptId} });
     return response;
+  },
+  async fetchlabourconstructiondetailData(page,limit,subconid) {
+    const response = await axios.get('/labour/findSubcontractorDetailsIfId', { params: { page:page,limit:limit,subconid: subconid} });
+    return response;
   }
-
 }

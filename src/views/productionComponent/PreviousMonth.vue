@@ -60,7 +60,7 @@ export default {
   watch:{
     ny:function(newValue,oldValue){
       console.log("plainfinish",newValue)
-      this.fetchPlanfinishlMonth(this.ny);      
+      this.fetchPlanfinishlMonth(this.ny);
     }
 
   },
