@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<tree></tree>
+		<tree ref="tree"></tree>
 	</div>
 </template>
 <script>
@@ -9,6 +9,16 @@
 		name:"humanOrganNew",
 		components:{
 			tree
+		},
+		mounted(){
+			console.log("$ref tree tree",this.$refs.tree)
+			this.$nextTick(()=>{
+                setTimeout(function(){
+                    let btn=$(".org-tree-node-btn")[0]
+                    btn.click()
+                 }, 400);
+                
+            })
 		}
 	}
 </script> 

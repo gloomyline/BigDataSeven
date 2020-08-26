@@ -8,17 +8,14 @@ import '@/assets/css/Initialize.css';
 // 将自动注册所有组件为全局组件
 import dataV from '@jiaminghi/data-view';
 import { currency } from '@/assets/js/utils.js';
-import Vue2OrgTree from 'vue2-org-tree';
 
-import { directive as clickOutside } from 'v-click-outside-x';
-import OrgTree from 'v-org-tree';
-import 'v-org-tree/dist/v-org-tree.css';
- 
-Vue.use(OrgTree);
-// 下面这个在注册完Vue指令后面
-Vue.directive('clickOutside', clickOutside);
+// import OrgTree from 'v-org-tree';
+// import 'v-org-tree/dist/v-org-tree.css';
+// Vue.use(OrgTree);
+// import { directive as clickOutside } from 'v-click-outside-x';
+// // 下面这个在注册完Vue指令后面
+// Vue.directive('clickOutside', clickOutside);
 
-Vue.use(Vue2OrgTree);
 Vue.use(dataV);
 Vue.config.productionTip = false;
 var html = document.documentElement;

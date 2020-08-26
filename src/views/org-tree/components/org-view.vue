@@ -10,16 +10,21 @@
         v-if="data"
         :data="data"
         @on-node-click="handleNodeClick"
-         collapsable=true
-		:render-content="renderContent"
 		@on-expand="onExpand"
+        :collapsable="true"
+		:render-content="renderContent"
+		:horizontal="false"
+		:expandAll="expandAll"
       ></v-org-tree>
     </div>
   </div>
 </template>
- 
 <script>
 import { on, off } from '@/api/tools'
+import Vue from 'vue'
+import OrgTree from 'v-org-tree'
+import 'v-org-tree/dist/v-org-tree.css'
+Vue.use(OrgTree)
 
 const menuList = [
   {
@@ -50,6 +55,7 @@ export default {
   },
   data () {
     return {
+	  expandAll:false,
       currentContextMenuId: '',
       orgTreeOffsetLeft: 0,
       orgTreeOffsetTop: 0,
@@ -57,8 +63,10 @@ export default {
       initPageY: 0,
       oldMarginLeft: 0,
       oldMarginTop: 0,
-      canMove: false
+      canMove: false,
     }
+  },
+  created() {
   },
   computed: {
     orgTreeStyle () {
@@ -72,6 +80,45 @@ export default {
     }
   },
   methods: {
+	  onExpand(e,data) {
+		  debugger
+	        if ("expand" in data) {
+	          data.expand = !data.expand;
+	          if (!data.expand && data.children) {
+	            this.collapse(data.children);
+	          }
+	        } else {
+	          this.$set(data, "expand", true);
+	        }
+	 },
+	 collapse(list) {
+	   var _this = this;
+	   list.forEach(function(child) {
+		 if (child.expand) {
+		   child.expand = false;
+		 }
+		 child.children && _this.collapse(child.children);
+	   });
+	 },
+	  myToggleExpand(data, val) {
+	      var _this = this;
+	      if (Array.isArray(data)) {
+	          data.forEach(function(item) {
+	            _this.$set(item, "expand", val);
+	            if (item.children) {
+	              _this.myToggleExpand(item.children, val);
+	            }
+	          });
+	      } else {
+	          this.$set(data, "expand", val);
+	          if (data.children) {
+	            _this.myToggleExpand(data.children, val);
+	          }
+	      }
+	  },
+	  expandChange() {
+	    this.myToggleExpand(this.data, this.expandAll);
+	  },
     goPro(projectId,projectname) {
       this.$router.push({
         name: 'HumanDetailsNew',
@@ -81,7 +128,6 @@ export default {
     handleNodeClick (e, data, expand) {
 		console.log("e, data, expand",data);
 		this.goPro(data.id,data.label);
-      //expand()
     },
     contextmenu (data, $event) {
       let event = $event || window.event
@@ -95,6 +141,7 @@ export default {
       this.departmentData = data
     },
     mousedownView (event) {
+		debugger
       this.canMove = true
       this.initPageX = event.pageX
       this.initPageY = event.pageY
@@ -124,48 +171,13 @@ export default {
       this.$emit('on-menu-click', { data, key })
     },
 	renderContent(h, data) {
-	      return data.label;
-	},
-	onExpand(e, data) {
-		debugger
-	  if ("expand" in data) {
-		  debugger;
-		data.expand = !data.expand;
-		if (!data.expand && data.children) {
-		  this.collapse(data.children);
-		}
-	  } else {
-		this.$set(data, "expand", true);
-	  }
-	},
-	collapse(list) {
-	  var _this = this;
-	  list.forEach(function(child) {
-		if (child.expand) {
-		  child.expand = false;
-		}
-		child.children && _this.collapse(child.children);
-	  });
-	},
-	expandChange() {
-	  this.toggleExpand(this.data, this.expandAll);
-	},
-	toggleExpand(data, val) {
-	  var _this = this;
-	  if (Array.isArray(data)) {
-		data.forEach(function(item) {
-		  _this.$set(item, "expand", val);
-		  if (item.children) {
-			_this.toggleExpand(item.children, val);
-		  }
-		});
-	  } else {
-		this.$set(data, "expand", val);
-		if (data.children) {
-		  _this.toggleExpand(data.children, val);
-		}
-	  }
+	   return data.label;
 	}
+  },
+  watch: {
+	  expandAll: function expandAll(status) {
+	    this.myToggleExpand(this.data, status);
+	  }
   },
   mounted () {
     on(document, 'mousedown', this.mousedownView)

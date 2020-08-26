@@ -25,6 +25,7 @@ module.exports = {
         // target: 'http://192.168.3.16:8108',
         // target: 'http://192.168.3.10:8108',
         target: 'http://192.168.3.22:8108',
+		//target: 'http://localhost:8108/',
        
         changeOrigin: true,
         secure: false,
