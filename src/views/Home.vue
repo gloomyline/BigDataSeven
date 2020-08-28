@@ -267,6 +267,7 @@ export default {
           let pointX = Number(item.point.split(",")[0]);
           let pointY = Number(item.point.split(",")[1]);
           let pointArr = [];
+
           pointArr.push(pointX, pointY);
           this.mapPoint[item.name] = pointArr;
           let obj = {
@@ -280,6 +281,8 @@ export default {
           this.provinceProJectsArr.push(obj);
         }
       });
+      console.log("mapPoint",this.mapPoint)
+      console.log("provinceProJectsArr",this.provinceProJectsArr)
       if (
         this.mapPoint !== {} &&
         this.provinceProJectsArr &&
@@ -827,7 +830,7 @@ export default {
         };
         
         var geoCoordMap = pointArr;
-        // console.log("geoCoordMap",pointArr)
+        console.log("geoCoordMap------------------",pointArr)
         var levelColorMap = {
           "1": "rgba(241, 109, 115, .8)",
           "2": "rgba(255, 235, 59, .7)",
@@ -841,7 +844,9 @@ export default {
           activeArea: [], // 区域高亮,同echarts配置项
           data: [],
           // 下钻回调(点击的地图名、实例对象option、实例对象)
-          callback: function(name, option, instance) {}
+          callback: function(name, option, instance) {
+            console.log("name, option, instance",name, option, instance)
+          }
         };
         if (opt) opt = this.util.extend(defaultOpt, opt);
 
@@ -1072,7 +1077,7 @@ export default {
 
           // 设置effectscatter
           initSeriesData: function(data) {
-            // console.log(data, '------------------------------------', geoCoordMap)
+            console.log(data, '------------------------------------', geoCoordMap)
             var temp = [];
             for (var i = 0; i < data.length; i++) {
               var geoCoord = geoCoordMap[data[i].name];
@@ -1455,13 +1460,14 @@ export default {
                 //   "padding:10px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);",
                 show: true,
                 formatter: function(params){
+                  console.log("params.data",params.data)
                   console.log("formatter.homeMapData",_this.homeMapData.data)
-                  console.log('prams.tooltip',params.data.name)
+                  // console.log('prams.tooltip',params.data.name)
                   let homeMapData = _this.homeMapData.data
                   let data =[]
                   let companydata = []
                   for (var i=0;i<homeMapData.length;i++){
-                    console.log("homeMapData[i].city",homeMapData[i].city)
+                    // console.log("homeMapData[i].city",homeMapData[i].city)
                     if(params.data.name==homeMapData[i].city){
                       data.push(homeMapData[i])
                     }
@@ -1500,11 +1506,11 @@ export default {
           ]
         };
 
-        chart.setOption(option);
+         chart.setOption(option);
         // 添加事件
         
         chart.on("click", function(params) {
-          console.log("事件params-----",params)
+          console.log("事件事件params-----",params)
           var _self = this;
           var cityDot = "";
           var city = params.name;
@@ -1546,11 +1552,7 @@ export default {
               });
             }
             // }
-            chart.dispatchAction({
-              type: "showTip",
-              seriesIndex: 0, //第几条series
-              dataIndex: 0 //第几个tooltip
-            });
+            
           }
           console.log("params.deptId",params.data.deptId,"name:params.name",params.name,"_this.ny",_this.ny)
           _this.$router.push({ 
@@ -1562,7 +1564,167 @@ export default {
               }
           }).catch(data => {});
         });
+      // 湖北 dataIndex: 17
+      // 湖南 dataIndex: 18   海南  dataIndex: 21  上海 dataIndex: 3
+      // 陕西  dataIndex: 29  山西 dataIndex: 13
+      // 青海 dataIndex: 31     甘肃 dataIndex: 30
+      
+      
+      
 
+       var playlist = [17,18,29,31]
+      var playlistarr = [17,[18,21,2],[29,13],[31,30]]
+       let num=0
+       var timer=setInterval(function(){ 
+          chart.dispatchAction({
+              type: 'hideTip',
+              dataIndex: 17,
+          })
+          chart.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 1,
+              dataIndex: 17,
+          })
+          chart.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 1,
+              dataIndex:  18,
+          })
+          chart.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 1,
+              dataIndex:  21,
+          })
+          chart.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 1,
+              dataIndex: 3,
+          })
+          chart.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 1,
+              dataIndex: 29,
+          })
+          chart.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 1,
+              dataIndex: 13,
+          })
+          chart.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 1,
+              dataIndex: 31,
+          })
+          chart.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 1,
+              dataIndex: 30,
+          })
+          
+          let playlistnum =  playlist[num]
+        //   for (var i in playlistarr[num]){
+        //     console.log("我的playlistarr",playlistarr[num][i])
+        //     chart.dispatchAction({
+        //       type: 'downplay',
+        //       // 可选，系列 index，可以是一个数组指定多个系列
+        //       seriesIndex: 1,
+        //       // 可选，系列名称，可以是一个数组指定多个系列
+        //       // seriesName: string|Array,
+        //       // 可选，数据的 index
+        //       dataIndex: playlistarr[num][i],
+        //   })
+         
+        //  }
+          
+          console.log("num",num)
+          switch (playlistnum) {
+          case 17:
+               chart.dispatchAction({
+                  type: "highlight",
+                  dataIndex:17
+              });
+
+              chart.dispatchAction({
+                    type: "showTip",
+                    // name: "青海"
+                    seriesIndex:1,
+                    dataIndex:17
+              });
+              break;
+          case 18:
+               chart.dispatchAction({
+                  type: "highlight",
+                  dataIndex:18
+              });
+               chart.dispatchAction({
+                  type: "highlight",
+                  dataIndex:21
+              });
+              chart.dispatchAction({
+                  type: "highlight",
+                  dataIndex:3
+              });
+              chart.dispatchAction({
+                    type: "showTip",
+                    // name: "青海"
+                    seriesIndex:1,
+                    dataIndex:18
+              });
+              break;
+          case 29:
+              chart.dispatchAction({
+                  type: "highlight",
+                  dataIndex:29
+              });
+              chart.dispatchAction({
+                  type: "highlight",
+                  dataIndex:13
+              });
+              chart.dispatchAction({
+                    type: "showTip",
+                    seriesIndex:1,
+                    dataIndex:29
+              });
+              break;
+          case 31:
+               chart.dispatchAction({
+                  type: "highlight",
+                  dataIndex:31
+              });
+               chart.dispatchAction({
+                  type: "highlight",
+                  dataIndex:30
+              });
+              chart.dispatchAction({
+                    type: "showTip",
+                    // name: "青海"
+                    seriesIndex:1,
+                    dataIndex:30
+              });
+              break;
+         
+      } 
+      
+      num++
+      if(num == 4){
+        num =0
+      }
+
+
+
+          // chart.dispatchAction({
+          //         type: "highlight",
+          //         dataIndex:13
+          //     });
+          // chart.dispatchAction({
+          //       type: "showTip",
+          //       // name: "青海"
+          //       seriesIndex:1,
+          //       dataIndex:13
+          // });
+
+       }, 3000);
+      
         chart.on("mouseover", function(params) {
           var city = params.name;
           if (city == "甘肃" || city == "青海") {
@@ -1675,7 +1837,11 @@ export default {
           }
         };
 
-        return chart;
+
+
+       
+
+        // return chart;
       };
 
      var _this=this;
@@ -1695,6 +1861,7 @@ export default {
           data: areaProjects
         });
       });
+     
     },
     echarts_1(yAxisArr,seriesData) {
       // 基于准备好的dom，初始化echarts实例
@@ -2148,12 +2315,14 @@ export default {
       //console.log("planMapData",planMapData)
       let xAxisarr =[]
       let total= []
+      let undone= []
       let completed = []
       let percent = []
 
       for (var item in planMapData ){
         xAxisarr.push(planMapData[item].type)
         completed.push(planMapData[item].completed)
+        undone.push(planMapData[item].undone)
         total.push(planMapData[item].total)
         percent.push(planMapData[item].percent)
        
@@ -2238,37 +2407,64 @@ export default {
         ],
         series: [
           {
-              name: '实际完成',
+              name: '总完成',
               type: 'bar',
+              barGap: '-100%',
+              // stack: "num",
               data: total,
               label:{
+                position: ['120%', '50%'],
+                show:true,
+              //  formatter: function(params) {
+              //   //  console.log("我的参数",params)
+              
+              //   //  console.log("params.dataIndex",total[params.dataIndex])
+              //    var finishpercent = percent[params.dataIndex]
+              //    return `${params.data}(${finishpercent}%)`
+              //   return `${params.data}(${finishpercent}%)`
+              //  }
+              },
+              barWidth : 30
+ 
+          },
+          {
+              name: '实际完成',
+              type: 'bar',
+              stack: "num",
+              data: completed,
+              label:{
+                position:"inside",
                 color:"#fff",
-                position:"top",
+                position:"inside",
+                show:true,
+                // formatter:"{c}亿元"
+                formatter: function(params) {
+                //  console.log("我的参数",params)
+              
+                //  console.log("params.dataIndex",total[params.dataIndex])
+                 var finishpercent = percent[params.dataIndex]
+                 return `${params.data}(${finishpercent}%)`
+                return `${params.data}(${finishpercent}%)`
+               }
+              },
+              barWidth : 30
+
+          },
+          {
+              name: '未完成',
+              type: 'bar',
+              stack: "num",
+              data: undone,
+              label:{
+                color:"#fff",
+                position:"inside",
                 show:true,
                 formatter:"{c}亿元"
               },
               barWidth : 30
 
           },
-          {
-              name: '已完成',
-              type: 'bar',
-              barGap: '-100%',
-              data: completed,
-              label:{
-                position:"inside",
-                show:true,
-               formatter: function(params) {
-                //  console.log("我的参数",params)
-              
-                 console.log("params.dataIndex",total[params.dataIndex])
-                 var finishpercent = percent[params.dataIndex]
-                return `${params.data}(${finishpercent}%)`
-               }
-              },
-              barWidth : 30
- 
-          },
+          
           
           
           
@@ -2400,7 +2596,7 @@ export default {
                formatter: function(params) {
                 //  console.log("我的参数",params)
               
-                 console.log("params.dataIndex",total[params.dataIndex])
+                //  console.log("params.dataIndex",total[params.dataIndex])
                  var finishpercent = percent[params.dataIndex]
                 return `${params.data}(${finishpercent}%)`
                }

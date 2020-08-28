@@ -5,7 +5,7 @@
         <zoom-controller v-model="zoom" :min="20" :max="200"></zoom-controller>
       </div>
       <div class="view-box">
-        <org-view
+        <org-view 
           v-if="data"
           :data="data"
           :zoom-handled="zoomHandled"
@@ -51,6 +51,15 @@ export default {
 		  console.log("this.data",this.data)
 	  })
   },
+  mounted(){
+      console.log("viewbo哈哈哈x")
+      console.log("view-box",$(".view-box"))
+      let btn=$(".org-tree-node-btn")[0]
+      console.log("btn77777777777777777",btn)
+      btn.click()
+    
+  },
+
   data() {
     return {
       data: {
