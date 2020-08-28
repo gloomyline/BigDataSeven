@@ -1,5 +1,4 @@
 <template>
-  <Card shadow style="height: 100%;width: 100%;overflow:hidden">
     <div class="department-outer">
       <div class="zoom-box">
         <zoom-controller v-model="zoom" :min="20" :max="200"></zoom-controller>
@@ -12,7 +11,6 @@
         ></org-view>
       </div>
     </div>
-  </Card>
 </template>
  
 <script>

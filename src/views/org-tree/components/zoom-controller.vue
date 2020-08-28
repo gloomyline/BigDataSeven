@@ -1,11 +1,11 @@
 <template>
   <div class="zoom-wrapper">
     <button class="zoom-button" @click="scale('down')">
-      <Icon type="md-remove" :size="14" color="#fff"/>
+     
     </button>
     <span class="zoom-number">{{ value }}%</span>
     <button class="zoom-button" @click="scale('up')">
-      <Icon type="md-add" :size="14" color="#fff"/>
+
     </button>
   </div>
 </template>
