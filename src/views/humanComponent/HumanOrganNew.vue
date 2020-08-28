@@ -10,8 +10,8 @@
 		components:{
 			tree
 		},
-		updated(){
-			//console.log("$ref tree tree",this.$refs.tree)
+		mounted(){
+
 			this.$nextTick(()=>{
                 setTimeout(function(){
                     let btn=$(".org-tree-node-btn")[0]
