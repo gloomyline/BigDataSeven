@@ -1,16 +1,20 @@
 <template>
+  <!-- <Card shadow style="height: 100%;width: 100%;overflow:hidden"> -->
     <div class="department-outer">
       <div class="zoom-box">
         <zoom-controller v-model="zoom" :min="20" :max="200"></zoom-controller>
       </div>
       <div class="view-box">
-        <org-view 
+        <org-view
           v-if="data"
           :data="data"
           :zoom-handled="zoomHandled"
+		   :horizontal="horizontal"
+		   :collapsable="collapsable"
         ></org-view>
       </div>
     </div>
+ <!-- </Card> -->
 </template>
  
 <script>
@@ -34,99 +38,62 @@ export default {
     OrgView,
     ZoomController
   },
-  methods:{
-	  goPro(projectId,projectname) {
-		this.$router.push({
-		  name: 'HumanDetailsNew',
-		  params: { projectId: projectId, projectName:projectname},
-		})
-	  },
-  },
-  created() {
-	  console.log("asdfasdf")
+  beforeCreate () {
 	  HumanNewApi.fetchGetEmpOrganizationData().then((res)=>{
 		  this.data= res.data[0]
-		  console.log("this.data",this.data)
 	  })
   },
-  mounted(){
-      console.log("viewbo哈哈哈x")
-      console.log("view-box",$(".view-box"))
-      let btn=$(".org-tree-node-btn")[0]
-      console.log("btn77777777777777777",btn)
-      btn.click()
-    
-  },
-
   data() {
-    return {
-      data: {
-        id: 0,
-        label: '中铁大桥局第七工程有限公司',
-		expand: true,
-        children: [
-			{
-            id: 2,
-            label: '武汉分公司',
-			
-          },
-          {
-            id: 3,
-            label: '华北分公司',
-          },
-          {
-            id: 4,
-            label: '湖北分公司'
-          },
-          {
-            id: 6,
-            label: '城轨分公司'
-          },
-          {
-            id: 77,
-            label: '房建分公司'
-          },
-          {
-            id: 98,
-            label: '西北分公司'
-          },
-          {
-            id: 114,
-            label: '独立项目部'
-          }
-        ]
-      },
-      zoom: 100
-    }
-  },
+	return {
+		expandAll: true,
+		horizontal: false,
+		collapsable: true,
+		data: {
+			id: 0,
+			label: '大桥局七公司',
+			expand: true,
+			children: [
+				{
+				id: 2,
+				label: '武汉分公司',
+			  },
+			  {
+				id: 3,
+				label: '华北分公司',
+			  },
+			  {
+				id: 4,
+				label: '湖北分公司',
+			  },
+			  {
+				id: 6,
+				label: '城轨分公司',
+			  },
+			  {
+				id: 77,
+				label: '房建分公司',
+			  },
+			  {
+				id: 98,
+				label: '西北分公司',
+			  },
+			  {
+				id: 114,
+				label: '独立项目部',
+			  }
+			]
+		  },
+		  zoom: 100
+		}
+	},
   computed: {
     zoomHandled() {
       return this.zoom / 100
     }
   },
-  methods: {
-    setDepartmentData(data) {
-      data.isRoot = true
-      return data
-    },
-
-/*    handleMenuClick({ data, key }) {
-      console.log("gsdgfsdgf",data, key)
-	  //this.goPro(data.id,data.name);
-      this.$Message.success({
-        duration: 5,
-        content: `点击了《${data.label}》节点的'${menuDic[key]}'菜单`
-      })
-    }, */
-    /* getDepartmentData() {
-      getOrgData().then(res => {
-        const { data } = res
-        this.data = data
-      })
-    } */
+  mounted () {
   },
-  mounted() {
-    //this.getDepartmentData()
+  methods:{
   }
 }
 </script>
