@@ -1298,6 +1298,8 @@ export default {
                 textStyle: {
                   color: "#fff",
                   fontSize:12,
+                 
+            
                 },
                 
                 itemStyle:{  
@@ -1334,12 +1336,11 @@ export default {
                 shadowBlur: 10
               },
               emphasis: {
-                // areaColor: "rgba(249,157,51, .9)",
-                areaColor: "#ffb248",
+                areaColor: "rgba(249,157,51, .9)",
                 // borderWidth: 1,
                 borderColor: "rgba(249,157,51, .9)",
                 shadowColor:"#000",
-                shadowOffsetX: 2,
+                shadowOffsetX: -2,
                 shadowOffsetY: 2,
               }
             },

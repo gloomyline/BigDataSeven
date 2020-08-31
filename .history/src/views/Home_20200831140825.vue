@@ -1296,13 +1296,7 @@ export default {
               },
               emphasis: {
                 textStyle: {
-                  color: "#fff",
-                  fontSize:12,
-                },
-                
-                itemStyle:{  
-                  shadowColor:"#000",
-                  shadowOffsetX: 30
+                  color: "#fff"
                 }
               }
             },
@@ -1334,13 +1328,8 @@ export default {
                 shadowBlur: 10
               },
               emphasis: {
-                // areaColor: "rgba(249,157,51, .9)",
-                areaColor: "#ffb248",
-                // borderWidth: 1,
-                borderColor: "rgba(249,157,51, .9)",
-                shadowColor:"#000",
-                shadowOffsetX: 2,
-                shadowOffsetY: 2,
+                areaColor: "rgba(249,157,51, .9)",
+                borderWidth: 0
               }
             },
             regions: opt.activeArea.map(function(item) {
@@ -1467,26 +1456,21 @@ export default {
               type: "map",
               mapType: "china",
               geoIndex: 0,
-              
-              hoverAnimation: true,
-              data: allprovinceData,
-              itemStyle: {
-                  normal: {
-                      areaColor: '#0C1564',
-                      borderColor: '#00effc',
-                      borderWidth: 1.5,
-                      label: {
-                          show: true,
-                          color: '#fff',
-                      },
-
-                      emphasis: {
-                          label: {
-                              show: true
-                          }
-                      }
-                  }
+              emphasis:{
+                label:{
+                  color:'#000',
+                  fontSize:18;
+                }
               },
+              label: {
+                normal: {
+                  show: true
+                },
+                emphasis: {
+                  show: true
+                }
+              },
+              data: allprovinceData,
               tooltip: {
                 trigger: "item",
                 triggerOn: "mousemove",

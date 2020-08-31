@@ -1134,6 +1134,7 @@ export default {
 
         var option = {
           backgroundColor: "",
+          zoom:12,
           tooltip: {
             show: false,
             alwaysShowContent: true,
@@ -1296,13 +1297,7 @@ export default {
               },
               emphasis: {
                 textStyle: {
-                  color: "#fff",
-                  fontSize:12,
-                },
-                
-                itemStyle:{  
-                  shadowColor:"#000",
-                  shadowOffsetX: 30
+                  color: "#fff"
                 }
               }
             },
@@ -1334,13 +1329,8 @@ export default {
                 shadowBlur: 10
               },
               emphasis: {
-                // areaColor: "rgba(249,157,51, .9)",
-                areaColor: "#ffb248",
-                // borderWidth: 1,
-                borderColor: "rgba(249,157,51, .9)",
-                shadowColor:"#000",
-                shadowOffsetX: 2,
-                shadowOffsetY: 2,
+                areaColor: "rgba(249,157,51, .9)",
+                borderWidth: 0
               }
             },
             regions: opt.activeArea.map(function(item) {
@@ -1467,26 +1457,15 @@ export default {
               type: "map",
               mapType: "china",
               geoIndex: 0,
-              
-              hoverAnimation: true,
-              data: allprovinceData,
-              itemStyle: {
-                  normal: {
-                      areaColor: '#0C1564',
-                      borderColor: '#00effc',
-                      borderWidth: 1.5,
-                      label: {
-                          show: true,
-                          color: '#fff',
-                      },
-
-                      emphasis: {
-                          label: {
-                              show: true
-                          }
-                      }
-                  }
+              label: {
+                normal: {
+                  show: true
+                },
+                emphasis: {
+                  show: true
+                }
               },
+              data: allprovinceData,
               tooltip: {
                 trigger: "item",
                 triggerOn: "mousemove",
@@ -1638,43 +1617,56 @@ export default {
         // console.log("item map",item)
       })
      //分公司轮播
-    function companyCarousel(){ 
-        var num =0 
-        var timerCarousel = function(){ 
+     var num =0
+      function companyCarousel(){ 
+          
+        let timerCarousel = setInterval(function(){ 
 
           for(var i=0;i<provincesDataIndex[num].length;i++){
-          // console.log("provincesDataIndex[num]",provincesDataIndex[num][i])
+          console.log("provincesDataIndex[num]",provincesDataIndex[num][i])
           chart.dispatchAction({
             type: "downplay",
             dataIndex:provincesDataIndex[num][i]
           })
         }
+      
+          $("#comconent").html("")
+          $("#comconent").html(`<div style="text-align:center;font-size:18px;">${comName[num]}</div><br>${comContent[num]}`)
           num = num+1
           if(num >=comContent.length){
             num =0
           }
-          $("#comconent").html("")
-          $("#comconent").html(`<div style="text-align:center;font-size:18px;">${comName[num]}</div><br>${comContent[num]}`)
-
 
           for(var i=0;i<provincesDataIndex[num].length;i++){
+          console.log("provincesDataIndex[num]",provincesDataIndex[num][i])
           chart.dispatchAction({
             type: "highlight",
             dataIndex:provincesDataIndex[num][i]
           })
-    
         }
-          return timerCarousel;
-        }
-        setInterval(timerCarousel(),5000)
-        //timerCarousel()
+
+        },8000)
+        
+ 
       }
 
     companyCarousel()
+      
 
 
-    console.log("provincesDataInde--------x",provincesDataIndex)
-    console.log("comName,comName",comName,comContent,provinces)
+
+
+
+
+
+
+
+
+     console.log("provincesDataInde--------x",provincesDataIndex)
+
+
+
+      console.log("comName,comName",comName,comContent,provinces)
 
       // chart.dispatchAction({
       //   type: "highlight",

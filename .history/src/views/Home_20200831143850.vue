@@ -1296,13 +1296,7 @@ export default {
               },
               emphasis: {
                 textStyle: {
-                  color: "#fff",
-                  fontSize:12,
-                },
-                
-                itemStyle:{  
-                  shadowColor:"#000",
-                  shadowOffsetX: 30
+                  color: "#fff"
                 }
               }
             },
@@ -1334,13 +1328,8 @@ export default {
                 shadowBlur: 10
               },
               emphasis: {
-                // areaColor: "rgba(249,157,51, .9)",
-                areaColor: "#ffb248",
-                // borderWidth: 1,
-                borderColor: "rgba(249,157,51, .9)",
-                shadowColor:"#000",
-                shadowOffsetX: 2,
-                shadowOffsetY: 2,
+                areaColor: "rgba(249,157,51, .9)",
+                borderWidth: 0
               }
             },
             regions: opt.activeArea.map(function(item) {
@@ -1462,84 +1451,84 @@ export default {
               },
               data: handleEvents.initSeriesData(opt.data)
             },
-            {
-              name: "map",
-              type: "map",
-              mapType: "china",
-              geoIndex: 0,
+            // {
+            //   name: "map",
+            //   type: "map",
+            //   mapType: "china",
+            //   geoIndex: 0,
               
-              hoverAnimation: true,
-              data: allprovinceData,
-              itemStyle: {
-                  normal: {
-                      areaColor: '#0C1564',
-                      borderColor: '#00effc',
-                      borderWidth: 1.5,
-                      label: {
-                          show: true,
-                          color: '#fff',
-                      },
+            //   hoverAnimation: true,
+            //   data: allprovinceData,
+            //   itemStyle: {
+            //       normal: {
+            //           areaColor: '#0C1564',
+            //           borderColor: '#00effc',
+            //           borderWidth: 1.5,
+            //           label: {
+            //               show: true,
+            //               color: '#fff',
+            //           },
 
-                      emphasis: {
-                          label: {
-                              show: true
-                          }
-                      }
-                  }
-              },
-              tooltip: {
-                trigger: "item",
-                triggerOn: "mousemove",
-                backgroundColor: "rgba(0,0,0,.8)",
-                borderColor: "#3574c8",
-                borderWidth: "2",
-                // extraCssText:
-                //   "padding:10px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);",
-                show: false,
-                formatter: function(params){
-                  // console.log("params.data",params.data)
-                  // console.log("formatter.homeMapData",_this.homeMapData.data)
-                  // console.log('prams.tooltip',params.data.name)
-                  let homeMapData = _this.homeMapData.data
-                  let data =[]
-                  let companydata = []
-                  for (var i=0;i<homeMapData.length;i++){
-                    // console.log("homeMapData[i].city",homeMapData[i].city)
-                    if(params.data.name==homeMapData[i].city){
-                      data.push(homeMapData[i])
-                    }
-                  }
-                  if(data.length){
-                    let temp = data[0].com
-                    companydata.push({company:data[0].com,comContent:data[0].comContent})
-                    for(var j=1;j<data.length;j++){
-                      if(temp!=data[j].com){
-                        temp = data[j].com
-                        companydata.push({company:data[j].com,comContent:data[j].comContent})
-                      }
-                    }
-                  }
-                  let companystr =""
-                  if(companydata.length){
-                    for (var k=0;k<companydata.length;k++){
-                      companystr +=`${companydata[k].company}:${companydata[k].comContent}<br>`
-                    }
-                  }
-                  return companystr
+            //           emphasis: {
+            //               label: {
+            //                   show: true
+            //               }
+            //           }
+            //       }
+            //   },
+            //   tooltip: {
+            //     trigger: "item",
+            //     triggerOn: "mousemove",
+            //     backgroundColor: "rgba(0,0,0,.8)",
+            //     borderColor: "#3574c8",
+            //     borderWidth: "2",
+            //     // extraCssText:
+            //     //   "padding:10px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);",
+            //     show: false,
+            //     formatter: function(params){
+            //       // console.log("params.data",params.data)
+            //       // console.log("formatter.homeMapData",_this.homeMapData.data)
+            //       // console.log('prams.tooltip',params.data.name)
+            //       let homeMapData = _this.homeMapData.data
+            //       let data =[]
+            //       let companydata = []
+            //       for (var i=0;i<homeMapData.length;i++){
+            //         // console.log("homeMapData[i].city",homeMapData[i].city)
+            //         if(params.data.name==homeMapData[i].city){
+            //           data.push(homeMapData[i])
+            //         }
+            //       }
+            //       if(data.length){
+            //         let temp = data[0].com
+            //         companydata.push({company:data[0].com,comContent:data[0].comContent})
+            //         for(var j=1;j<data.length;j++){
+            //           if(temp!=data[j].com){
+            //             temp = data[j].com
+            //             companydata.push({company:data[j].com,comContent:data[j].comContent})
+            //           }
+            //         }
+            //       }
+            //       let companystr =""
+            //       if(companydata.length){
+            //         for (var k=0;k<companydata.length;k++){
+            //           companystr +=`${companydata[k].company}:${companydata[k].comContent}<br>`
+            //         }
+            //       }
+            //       return companystr
                   
-                }
-                // formatter: function(params) {
-                //   var res;
-                //   if (params.value > 0) {
-                //     res = params.data.value2 + "<br/>";
-                //     res += params.data.value3;
-                //   } else {
-                //     res = "";
-                //   }
-                //   return res;
-                // }
-              }
-            }
+            //     }
+            //     // formatter: function(params) {
+            //     //   var res;
+            //     //   if (params.value > 0) {
+            //     //     res = params.data.value2 + "<br/>";
+            //     //     res += params.data.value3;
+            //     //   } else {
+            //     //     res = "";
+            //     //   }
+            //     //   return res;
+            //     // }
+            //   }
+            // }
           ]
         };
 

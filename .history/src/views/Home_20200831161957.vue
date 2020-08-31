@@ -1335,7 +1335,7 @@ export default {
               },
               emphasis: {
                 // areaColor: "rgba(249,157,51, .9)",
-                areaColor: "#ffb248",
+                areaColor: "#d95850",
                 // borderWidth: 1,
                 borderColor: "rgba(249,157,51, .9)",
                 shadowColor:"#000",

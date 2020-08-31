@@ -1297,12 +1297,8 @@ export default {
               emphasis: {
                 textStyle: {
                   color: "#fff",
-                  fontSize:12,
-                },
-                
-                itemStyle:{  
-                  shadowColor:"#000",
-                  shadowOffsetX: 30
+                  fontSize:13,
+            
                 }
               }
             },
@@ -1334,13 +1330,8 @@ export default {
                 shadowBlur: 10
               },
               emphasis: {
-                // areaColor: "rgba(249,157,51, .9)",
-                areaColor: "#ffb248",
-                // borderWidth: 1,
-                borderColor: "rgba(249,157,51, .9)",
-                shadowColor:"#000",
-                shadowOffsetX: 2,
-                shadowOffsetY: 2,
+                areaColor: "rgba(249,157,51, .9)",
+                borderWidth: 0
               }
             },
             regions: opt.activeArea.map(function(item) {
