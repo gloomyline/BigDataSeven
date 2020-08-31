@@ -1642,6 +1642,7 @@ export default {
         var num =0 
         var timerCarousel = function(){ 
 
+
           for(var i=0;i<provincesDataIndex[num].length;i++){
           // console.log("provincesDataIndex[num]",provincesDataIndex[num][i])
           chart.dispatchAction({
