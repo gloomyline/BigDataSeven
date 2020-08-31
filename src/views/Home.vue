@@ -1619,7 +1619,7 @@ export default {
      var num =0
       function companyCarousel(){ 
           
-        let timerCarousel = setInterval(function(){
+        let timerCarousel = setInterval(function(){ 
 
           for(var i=0;i<provincesDataIndex[num].length;i++){
           console.log("provincesDataIndex[num]",provincesDataIndex[num][i])
