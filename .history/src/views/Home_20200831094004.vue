@@ -1135,13 +1135,13 @@ export default {
         var option = {
           backgroundColor: "",
           tooltip: {
-            show: false,
+            show: true,
             alwaysShowContent: true,
             backgroundColor: "rgba(50,50,50,0.7)",
             hideDelay: 1000,
             triggerOn: "mousemove",
             enterable: true,
-            position: ["60%", "70%"]
+            // position: ["60%", "70%"]
           },
           graphic: [
             {
@@ -1473,7 +1473,7 @@ export default {
                 borderWidth: "2",
                 // extraCssText:
                 //   "padding:10px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);",
-                show: false,
+                show: true,
                 formatter: function(params){
                   // console.log("params.data",params.data)
                   // console.log("formatter.homeMapData",_this.homeMapData.data)
@@ -1644,7 +1644,7 @@ export default {
           })
         }
 
-        },8000)
+        },3000)
         
  
       }

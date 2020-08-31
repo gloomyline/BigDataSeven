@@ -1473,7 +1473,7 @@ export default {
                 borderWidth: "2",
                 // extraCssText:
                 //   "padding:10px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);",
-                show: false,
+                show: true,
                 formatter: function(params){
                   // console.log("params.data",params.data)
                   // console.log("formatter.homeMapData",_this.homeMapData.data)

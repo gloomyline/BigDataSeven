@@ -1135,13 +1135,13 @@ export default {
         var option = {
           backgroundColor: "",
           tooltip: {
-            show: false,
+            show: true,
             alwaysShowContent: true,
             backgroundColor: "rgba(50,50,50,0.7)",
             hideDelay: 1000,
             triggerOn: "mousemove",
             enterable: true,
-            position: ["60%", "70%"]
+            // position: ["60%", "70%"]
           },
           graphic: [
             {
@@ -1473,7 +1473,7 @@ export default {
                 borderWidth: "2",
                 // extraCssText:
                 //   "padding:10px;box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);",
-                show: false,
+                show: true,
                 formatter: function(params){
                   // console.log("params.data",params.data)
                   // console.log("formatter.homeMapData",_this.homeMapData.data)
@@ -1589,7 +1589,7 @@ export default {
         '海南':21,
         '上海':3,
         '陕西':29,
-        '山西':13,
+        '山西' : 13,
         '青海': 31,
         '甘肃': 30      
       }
@@ -1644,7 +1644,7 @@ export default {
           })
         }
 
-        },8000)
+        },3000)
         
  
       }
@@ -1667,10 +1667,10 @@ export default {
 
       console.log("comName,comName",comName,comContent,provinces)
 
-      // chart.dispatchAction({
-      //   type: "highlight",
-      //   dataIndex:19
-      // })
+      chart.dispatchAction({
+        type: "highlight",
+        dataIndex:19
+      })
       // for(var i=0;i<arrlist.length;i++){
       //   console.log("arrlist",arrlist[i])
       //    chart.dispatchAction({
