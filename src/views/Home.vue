@@ -1617,7 +1617,7 @@ export default {
       })
      //分公司轮播
      var num =0
-      function companyCarousel(){
+      function companyCarousel(){ 
           
         let timerCarousel = setInterval(function(){
 
