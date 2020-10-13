@@ -2,7 +2,7 @@
   <div class="production-summaries">
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
-        <div class="chartTitle">公司在建项目施工情况</div>
+        <div class="chartTitle">施工情况简报</div>
         <div class="chartContent">
           <div class="chartContentSon" style="width: 55%;">
             <div class="chartTit"></div>
@@ -11,10 +11,7 @@
           <div class="chartContentSon" style="width: 45%;">
             <div class="chartTit">施工情况简报</div>
             <div class="chartCont">
-              <dv-border-box-10
-                class="chartContChild"
-                style="margin-bottom:0.1rem"
-              >
+              <dv-border-box-10 class="chartContChild" style="margin-bottom:0.1rem">
                 <p>
                   公司在建项目总数<span class="sred">{{allCompany.data && (allCompany.data.constructionDigest.isBuilding !== '' ? allCompany.data.constructionDigest.isBuilding : 0)}}</span>个，自营项目<span
                     class="sred"
@@ -50,7 +47,7 @@
         <div class="chartTitle">自营项目产值情况</div>
         <div class="chartContent">
           <div class="chartContentSon triples">
-            <div class="chartTit">产值情况（万元）</div>
+            <div class="chartTit">自营产值情况（万元）</div>
             <div class="chartCont" id="barChart1"></div>
           </div>
           <div class="chartContentSon triples">
@@ -70,7 +67,7 @@
         <div class="chartTitle">联营项目产值情况</div>
         <div class="chartContent">
           <div class="chartContentSon triples">
-            <div class="chartTit">产值情况（万元）</div>
+            <div class="chartTit">联营产值情况（万元）</div>
             <div class="chartCont" id="barChart2"></div>
           </div>
            <div class="chartContentSon triples">
@@ -885,7 +882,8 @@
           tooltip: {
             trigger: "item",
             formatter: (params)=>{
-              return seriesName+'<br>'+params.name.slice(0,5)+'：'+params.data.value+'万元（'+ params.percent+"%）"
+              // return seriesName+'<br>'+params.name.slice(0,5)+'：'+params.data.value+'万元（'+ params.percent+"%）"
+              return params.name.slice(0,5)+'：'+params.data.value+'万元（'+ params.percent+"%）"
             },
           },
           grid:{
@@ -900,7 +898,9 @@
               selectedMode: "single",
               data: pieData,
               label: {
-                formatter: '{b}',
+                formatter: (params)=>{
+                  return params.name.slice(0,5)+'('+ params.percent+"%）"
+                },
               },
               emphasis: {
                 itemStyle: {

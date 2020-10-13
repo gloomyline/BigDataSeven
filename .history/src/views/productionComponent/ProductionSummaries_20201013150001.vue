@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <div class="production-summaries">
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
@@ -50,7 +50,7 @@
         <div class="chartTitle">自营项目产值情况</div>
         <div class="chartContent">
           <div class="chartContentSon triples">
-            <div class="chartTit">产值情况（万元）</div>
+            <div class="chartTit">自营产值情况（万元）</div>
             <div class="chartCont" id="barChart1"></div>
           </div>
           <div class="chartContentSon triples">
@@ -70,7 +70,7 @@
         <div class="chartTitle">联营项目产值情况</div>
         <div class="chartContent">
           <div class="chartContentSon triples">
-            <div class="chartTit">产值情况（万元）</div>
+            <div class="chartTit">联营产值情况（万元）</div>
             <div class="chartCont" id="barChart2"></div>
           </div>
            <div class="chartContentSon triples">
@@ -900,7 +900,7 @@
               selectedMode: "single",
               data: pieData,
               label: {
-                formatter: '{b}',
+                formatter: '{a}:{d}%',
               },
               emphasis: {
                 itemStyle: {

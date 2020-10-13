@@ -850,7 +850,7 @@
                   name: `${i.name}:${this.allCompany.data.productionValue[item]}(${str}%)`
                 }
                 this.pieOption.pieData.push(obj)
-                // this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
+                this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
               } 
             })
           })

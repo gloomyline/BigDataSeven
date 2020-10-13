@@ -5,7 +5,16 @@
         <div class="chartTitle">施工情况简报</div>
         <div class="chartContent">
           <div class="chartContentSon" style="width: 55%;">
-            <dv-border-box-10 class="chartContChild" style="margin-bottom:0.1rem">
+            <div class="chartTit"></div>
+            <div class="chartCont" id="pieChart"></div>
+          </div>
+          <div class="chartContentSon" style="width: 45%;">
+            <div class="chartTit">施工情况简报</div>
+            <div class="chartCont">
+              <dv-border-box-10
+                class="chartContChild"
+                style="margin-bottom:0.1rem"
+              >
                 <p>
                   公司在建项目总数<span class="sred">{{allCompany.data && (allCompany.data.constructionDigest.isBuilding !== '' ? allCompany.data.constructionDigest.isBuilding : 0)}}</span>个，自营项目<span
                     class="sred"
@@ -16,11 +25,7 @@
                   >个停工项目，<span class="sred">{{allCompany.data && (allCompany.data.constructionDigest.newest !== '' ? allCompany.data.constructionDigest.newest : 0)}}</span>个新上项目。
                 </p>
               </dv-border-box-10>
-            <div class="chartTit"></div>
-            <div class="chartCont" id="pieChart"></div>
-          </div>
-          <div class="chartContentSon" style="width: 45%;">
-            <dv-border-box-10 class="chartContChild">
+              <dv-border-box-10 class="chartContChild">
                 <p>
                   <span>{{allCompany.data && (allCompany.data.constructionDigest.month ? allCompany.data.constructionDigest.month : this.month)}}</span>月对<span class="sred">{{allCompany.data && (allCompany.data.constructionDigest.planed !== '' ? allCompany.data.constructionDigest.planed : 0)}}个</span>项目下达计划，<span
                     class="sgreen"
@@ -37,10 +42,6 @@
                   >无产值。
                 </p>
               </dv-border-box-10>
-            <div class="chartTit">施工情况简报</div>
-            <div class="chartCont">
-              
-              
             </div>
           </div>
         </div>
@@ -850,7 +851,7 @@
                   name: `${i.name}:${this.allCompany.data.productionValue[item]}(${str}%)`
                 }
                 this.pieOption.pieData.push(obj)
-                // this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
+                this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
               } 
             })
           })

@@ -2,7 +2,7 @@
   <div class="production-summaries">
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
-        <div class="chartTitle">公司在建项目施工情况</div>
+        <div class="chartTitle">施工情况简报</div>
         <div class="chartContent">
           <div class="chartContentSon" style="width: 55%;">
             <div class="chartTit"></div>
@@ -11,7 +11,7 @@
           <div class="chartContentSon" style="width: 45%;">
             <div class="chartTit">施工情况简报</div>
             <div class="chartCont">
-              <dv-border-box-10
+              <!-- <dv-border-box-10
                 class="chartContChild"
                 style="margin-bottom:0.1rem"
               >
@@ -24,8 +24,8 @@
                     >{{allCompany.data && (allCompany.data.constructionDigest.shutDown !== '' ? allCompany.data.constructionDigest.shutDown : 0)}}</span
                   >个停工项目，<span class="sred">{{allCompany.data && (allCompany.data.constructionDigest.newest !== '' ? allCompany.data.constructionDigest.newest : 0)}}</span>个新上项目。
                 </p>
-              </dv-border-box-10>
-              <dv-border-box-10 class="chartContChild">
+              </dv-border-box-10> -->
+              <!-- <dv-border-box-10 class="chartContChild">
                 <p>
                   <span>{{allCompany.data && (allCompany.data.constructionDigest.month ? allCompany.data.constructionDigest.month : this.month)}}</span>月对<span class="sred">{{allCompany.data && (allCompany.data.constructionDigest.planed !== '' ? allCompany.data.constructionDigest.planed : 0)}}个</span>项目下达计划，<span
                     class="sgreen"
@@ -41,7 +41,7 @@
                     >{{allCompany.data && (allCompany.data.constructionDigest.purple !== '' ? allCompany.data.constructionDigest.purple : 0)}}个项目</span
                   >无产值。
                 </p>
-              </dv-border-box-10>
+              </dv-border-box-10> -->
             </div>
           </div>
         </div>
@@ -50,40 +50,40 @@
         <div class="chartTitle">自营项目产值情况</div>
         <div class="chartContent">
           <div class="chartContentSon triples">
-            <div class="chartTit">产值情况（万元）</div>
+            <div class="chartTit">自营产值情况（万元）</div>
             <div class="chartCont" id="barChart1"></div>
           </div>
-          <div class="chartContentSon triples">
+          <!-- <div class="chartContentSon triples">
             <div class="chartTit">人均产值排名（万元）</div>
             <div class="sort" @click="selfrjczSort"><i class="el-icon-sort"></i></div>
             <dv-capsule-chart :config="rjczConfig" ref="rjcz" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;"  />
-            <!-- <div class="chartCont" id="rowBarChart1"></div> -->
-          </div>
-          <div class="chartContentSon triples">
+        
+          </div> -->
+          <!-- <div class="chartContentSon triples">
             <div class="chartTit">产值排名（万元）</div>
             <div class="sort" @click="selfczSort"><i class="el-icon-sort"></i></div>
             <dv-capsule-chart :config="czConfig" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;" />
-          </div>
+          </div> -->
         </div>
       </dv-border-box-10>
       <dv-border-box-10 class="chartContainer">
         <div class="chartTitle">联营项目产值情况</div>
         <div class="chartContent">
           <div class="chartContentSon triples">
-            <div class="chartTit">产值情况（万元）</div>
+            <div class="chartTit">联营产值情况（万元）</div>
             <div class="chartCont" id="barChart2"></div>
           </div>
-           <div class="chartContentSon triples">
+           <!-- <div class="chartContentSon triples">
             <div class="chartTit">人均产值排名（万元）</div>
             <div class="sort" @click="joinrjczSort"><i class="el-icon-sort"></i></div>
             <dv-capsule-chart :config="rjczConfig2" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;" />
-            <!-- <div class="chartCont" id="rowBarChart2"></div> -->
-          </div> 
-          <div class="chartContentSon triples">
+
+          </div>  -->
+          <!-- <div class="chartContentSon triples">
             <div class="chartTit">产值排名（万元）</div>
             <div class="sort" @click="joinczSort"><i class="el-icon-sort"></i></div>
             <dv-capsule-chart :config="czConfig2" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;" />
-          </div> 
+          </div>  -->
         </div>
       </dv-border-box-10>
     </div>
@@ -885,7 +885,8 @@
           tooltip: {
             trigger: "item",
             formatter: (params)=>{
-              return seriesName+'<br>'+params.name.slice(0,5)+'：'+params.data.value+'万元（'+ params.percent+"%）"
+
+              return params.name.slice(0,5)+'：'+params.data.value+'万元（'+ params.percent+"%）"
             },
           },
           grid:{
@@ -900,7 +901,9 @@
               selectedMode: "single",
               data: pieData,
               label: {
-                formatter: '{d}',
+                formatter: (params)=>{
+                  return params.name.slice(0,5)+'：'+params.data.value+'万元（'+ params.percent+"%）"
+                }
               },
               emphasis: {
                 itemStyle: {
@@ -1240,12 +1243,11 @@
     background-color: #0c2456 !important;
   }
   .chartContainerFather {
-    width: 80%;
+    width:70%;
     float: left;
     padding: 0 0.1rem 0 0.1rem;
   }
   .tableContainer {
-    width: 20%;
     float: right;
     padding: 0 0.1rem 0 0;
     .tableContainerSon {
