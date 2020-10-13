@@ -120,18 +120,21 @@ export default {
         },
       ]
       const option = {
-        color: ["#a5dff9", "#3398DB", "#60c5ba", "#feee7d"],
+        color: ["#a5dff9", "#3398DB", "rgb(1,1,1,0)", "#feee7d"],
         tooltip: {
           trigger: "axis",
           axisPointer: {
             // 坐标轴指示器，坐标轴触发有效
-            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-          }
+            type: "shadow" ,// 默认为直线，可选为：'line' | 'shadow'
+			
+          },
+		  formatter:`{a}:{c}<br>{a1}:{c1}`
+		  
         },
         legend: {
           x: "center",
           y: "bottom",
-          data: ["一类劳务人员", "局聘", "定编人数"],
+          data: ["一类劳务人员", "局聘"],
           textStyle: { color: "rgba(255, 255, 255, .6)", fontSize: 12 }
         },
         grid: {
@@ -186,6 +189,12 @@ export default {
           }
         ],
         series: [
+			{
+			  name: "一类劳务人员",
+			  type: "bar",
+			  stack: "outside",
+			  data: dataList[startWith]['data'][0],
+			},
           {
             name: "局聘",
             type: "bar",
@@ -193,19 +202,15 @@ export default {
             stack: "outside",
             data: dataList[startWith]['data'][1],
           },
+          
           {
-            name: "一类劳务人员",
+            name: "",
             type: "bar",
-            stack: "outside",
-            data: dataList[startWith]['data'][0],
-          },
-          // {
-          //   name: "定编人数",
-          //   type: "bar",
-          //   barGap: '5%',
-          //   barWidth: 50,
-          //   data: dataList[startWith]['data'][2],
-          // }
+			barWidth:666666,
+            barGap: '5%',
+            barWidth: 50,
+            data: dataList[startWith]['data'][2],
+          }
         ]
       };
 
@@ -234,6 +239,7 @@ export default {
 
         option.xAxis[0].data = dataList[self.count].projectNames;
         dataList[self.count].data.forEach((item, index) => {
+			
           option.series[index].data = item;
         });
 

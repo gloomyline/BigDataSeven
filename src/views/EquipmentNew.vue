@@ -241,7 +241,7 @@ export default {
         //     xAxisIndex: [0],
         //   },
         // ],
-        //grid: { top: 30, bottom: 165, },
+        grid: { top: 100, bottom: 99, },
         //-------------   x轴   -------------------
         xAxis: {
           show: true, //---是否显示
