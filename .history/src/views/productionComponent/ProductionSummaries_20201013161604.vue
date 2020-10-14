@@ -3,9 +3,9 @@
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
         <div class="chartTitle">施工情况简报</div>
-        <div class="chartContent" style="height:1.6rem">
+        <div class="chartContent">
           <div class="chartContentSon" style="width: 50%;">
-            <dv-border-box-10 class="chartContChild" style="margin-bottom:0.1rem;">
+            <dv-border-box-10 class="chartContChild" style="margin-bottom:0.1rem">
                 <p>
                   公司在建项目总数<span class="sred">{{allCompany.data && (allCompany.data.constructionDigest.isBuilding !== '' ? allCompany.data.constructionDigest.isBuilding : 0)}}</span>个，自营项目<span
                     class="sred"
@@ -45,63 +45,59 @@
           </div>
         </div>
       </dv-border-box-10>
-      <div class="container">
-        <div class="left">
-          <dv-border-box-10 class="wrapper">
-            <div class="chartTitle">
-              工期进度偏差排名
-            </div>
-            <div class="scroll-wrap" ref="rank">
-              <dv-scroll-board  ref="scroll"
-                :config="config"
-                class="tableContainerSonTable"
-              
-              ></dv-scroll-board> 
-            </div>
-          </dv-border-box-10>
+      <dv-border-box-10 class="chartContainer">
+        <div class="chartTitle">自营项目产值情况</div>
+        <div class="chartContent">
+          <div class="chartContentSon triples">
+            <div class="chartTit">自营产值情况（万元）</div>
+            <div class="chartCont" id="barChart1"></div>
+          </div>
+          <div class="chartContentSon triples">
+            <div class="chartTit">人均产值排名（万元）</div>
+            <div class="sort" @click="selfrjczSort"><i class="el-icon-sort"></i></div>
+            <dv-capsule-chart :config="rjczConfig" ref="rjcz" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;"  />
+            <!-- <div class="chartCont" id="rowBarChart1"></div> -->
+          </div>
+          <div class="chartContentSon triples">
+            <div class="chartTit">产值排名（万元）</div>
+            <div class="sort" @click="selfczSort"><i class="el-icon-sort"></i></div>
+            <dv-capsule-chart :config="czConfig" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;" />
+          </div>
         </div>
-        <div class="right">
-          <dv-border-box-10 class="wrapper">
-            <div class="chartTitle">片区公司产值情况</div>
-            <div class="chartContent">
-              <div class="chartContentSon triples" style="height:3.5rem;">
-                <!-- <div class="chartTit">自营产值情况（万元）</div> -->
-                <div class="chartCont" id="pieChart" style="height:100%;widht:100%"></div>
-              </div>
-            </div>
-          </dv-border-box-10>
-          <dv-border-box-10 class="wrapper">
-            <div class="chartTitle">自营项目产值情况</div>
-            <div class="chartContent">
-              <div class="chartContentSon triples" style="height:3.5rem;">
-                <!-- <div class="chartTit">自营产值情况（万元）</div> -->
-                <div class="chartCont" id="barChart1" style="height:100%"></div>
-              </div>
-            </div>
-          </dv-border-box-10>
-          <dv-border-box-10 class="wrapper" >
-            <div class="chartTitle">联营项目产值情况</div>
-            <div class="chartContent">
-              <div class="chartContentSon triples" style="height:3.5rem;">
-                <!-- <div class="chartTit">联营产值情况（万元）</div> -->
-                <div class="chartCont" id="barChart2" style="height:100%"></div>
-              </div>
-            </div>
-          </dv-border-box-10>
+      </dv-border-box-10>
+      <dv-border-box-10 class="chartContainer">
+        <div class="chartTitle">联营项目产值情况</div>
+        <div class="chartContent">
+          <div class="chartContentSon triples">
+            <div class="chartTit">联营产值情况（万元）</div>
+            <div class="chartCont" id="barChart2"></div>
+          </div>
+           <div class="chartContentSon triples">
+            <div class="chartTit">人均产值排名（万元）</div>
+            <div class="sort" @click="joinrjczSort"><i class="el-icon-sort"></i></div>
+            <dv-capsule-chart :config="rjczConfig2" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;" />
+            <!-- <div class="chartCont" id="rowBarChart2"></div> -->
+          </div> 
+          <div class="chartContentSon triples">
+            <div class="chartTit">产值排名（万元）</div>
+            <div class="sort" @click="joinczSort"><i class="el-icon-sort"></i></div>
+            <dv-capsule-chart :config="czConfig2" class="chartCont" style="overflow-y:scroll;overflow-x:hidden;padding-left:12px;padding-right:30px;" />
+          </div> 
         </div>
-
-      </div>
-
-
-      
+      </dv-border-box-10>
     </div>
-<!-- 
-    <!-- <div class="tableContainer">
+
+    <div class="tableContainer">
       <dv-border-box-10 class="tableContainerSon">
         <div class="tableContainerSonTitle">
           工期进度偏差排名
         </div>
         <div class="scroll-wrap" ref="rank">
+          <!-- <dv-scroll-board  ref="scroll"
+            :config="config"
+            class="tableContainerSonTable"
+            @click="onTableClick"
+          /> -->
           <dv-scroll-board  ref="scroll"
             :config="config"
             class="tableContainerSonTable"
@@ -109,7 +105,7 @@
           /> 
         </div>
       </dv-border-box-10>
-    </div> --> -->
+    </div>
   </div>
 </template>
 
@@ -299,8 +295,8 @@
     mounted() {
 
     
-      // console.log("----$el",this.$refs.scroll.$el)
-      // console.log("--this.$refs.scroll.$el.children[1]--",this.$refs.scroll.$el.children[1])
+      console.log("----$el",this.$refs.scroll.$el)
+      console.log("--this.$refs.scroll.$el.children[1]--",this.$refs.scroll.$el.children[1])
       this.$refs.scroll.$el.addEventListener('scroll', this.handleScroll,true)
     
     
@@ -630,8 +626,8 @@
         this.czConfig = {...multTotal}
         //console.log("this.$refs.rjcz",this.$refs.rjcz)
         //console.log("this.$refs.rjcz.$el.children[1].children[1]",this.$refs.rjcz.$el.children[1].children[1])
-        // console.log("this.$refs.rjcz",this.$refs.rjcz)
-        // console.log("this.$refs.rjcz.$el.children[1].children",this.$refs.rjcz.$el.children[1].firstChild.width)
+        console.log("this.$refs.rjcz",this.$refs.rjcz)
+        console.log("this.$refs.rjcz.$el.children[1].children",this.$refs.rjcz.$el.children[1].firstChild.width)
    
         //console.log("this.$refs.rjcz",this.$refs.rjcz.$el.children[1].offsetWidth)
         //console.log("111111",this.getStyle(this.$refs.rjcz.$el.children[1],width))
@@ -854,7 +850,7 @@
                   name: `${i.name}:${this.allCompany.data.productionValue[item]}(${str}%)`
                 }
                 this.pieOption.pieData.push(obj)
-                this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
+                // this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
               } 
             })
           })
@@ -900,7 +896,7 @@
               name:seriesName,
               type: "pie",
               radius: "55%",
-              center: ["50%", "50%"],
+              center: ["50%", "42%"],
               selectedMode: "single",
               data: pieData,
               label: {
@@ -1270,6 +1266,7 @@
     }
   }
   .chartContainer {
+    height: 3.05rem;
     margin-bottom: 0.1rem;
     .chartTitle {
       padding: 0.2rem;
@@ -1279,7 +1276,6 @@
     }
     .chartContent {
       .chartContChild {
-        height: 1.05rem;
         // line-height: 1.2rem;
         width: 90%;
         margin: 0 auto;
@@ -1338,36 +1334,6 @@
     }
   }
 }
-.chartTitle {
-      padding: 0.2rem;
-      color: #ffffff;
-      font-size: 0.2rem;
-      font-weight: bold;
-}
-.container{
-  .left {
-    width:66%;
-    float:left;
-    margin:0 1% 0 0;
-    .wrapper {
-      height:12.2rem;
-    }
-  }
-  .right {
-    width:33%;
-    float:left;
-    .wrapper {
-      height:4rem;
-      margin-bottom:0.1rem;
-    }
-  }
-}
-.scroll-wrap {
-    width:100%;
-    height:11.5rem;
-    
-      box-sizing: border-box;
-      padding:0 0.2rem 0.2rem 0.2rem;
-}
+
 
 </style>

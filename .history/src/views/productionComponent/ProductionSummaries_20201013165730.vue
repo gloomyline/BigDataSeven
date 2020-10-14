@@ -47,30 +47,18 @@
       </dv-border-box-10>
       <div class="container">
         <div class="left">
-          <dv-border-box-10 class="wrapper">
-            <div class="chartTitle">
-              工期进度偏差排名
-            </div>
-            <div class="scroll-wrap" ref="rank">
-              <dv-scroll-board  ref="scroll"
-                :config="config"
-                class="tableContainerSonTable"
-              
-              ></dv-scroll-board> 
-            </div>
-          </dv-border-box-10>
         </div>
         <div class="right">
-          <dv-border-box-10 class="wrapper">
-            <div class="chartTitle">片区公司产值情况</div>
+          <dv-border-box-10 style="height:4rem">
+            <div class="chartTitle">自营项目产值情况</div>
             <div class="chartContent">
               <div class="chartContentSon triples" style="height:3.5rem;">
                 <!-- <div class="chartTit">自营产值情况（万元）</div> -->
-                <div class="chartCont" id="pieChart" style="height:100%;widht:100%"></div>
+                <div class="chartCont" id="pieChart" style="height:100%"></div>
               </div>
             </div>
           </dv-border-box-10>
-          <dv-border-box-10 class="wrapper">
+          <dv-border-box-10 style="height:4rem">
             <div class="chartTitle">自营项目产值情况</div>
             <div class="chartContent">
               <div class="chartContentSon triples" style="height:3.5rem;">
@@ -79,7 +67,7 @@
               </div>
             </div>
           </dv-border-box-10>
-          <dv-border-box-10 class="wrapper" >
+          <dv-border-box-10 style="height:4rem" >
             <div class="chartTitle">联营项目产值情况</div>
             <div class="chartContent">
               <div class="chartContentSon triples" style="height:3.5rem;">
@@ -95,7 +83,7 @@
 
       
     </div>
-<!-- 
+
     <!-- <div class="tableContainer">
       <dv-border-box-10 class="tableContainerSon">
         <div class="tableContainerSonTitle">
@@ -109,7 +97,7 @@
           /> 
         </div>
       </dv-border-box-10>
-    </div> --> -->
+    </div> -->
   </div>
 </template>
 
@@ -1346,28 +1334,11 @@
 }
 .container{
   .left {
-    width:66%;
-    float:left;
-    margin:0 1% 0 0;
-    .wrapper {
-      height:12.2rem;
-    }
+    width:67%
   }
   .right {
-    width:33%;
-    float:left;
-    .wrapper {
-      height:4rem;
-      margin-bottom:0.1rem;
-    }
+    width:33%
   }
-}
-.scroll-wrap {
-    width:100%;
-    height:11.5rem;
-    
-      box-sizing: border-box;
-      padding:0 0.2rem 0.2rem 0.2rem;
 }
 
 </style>

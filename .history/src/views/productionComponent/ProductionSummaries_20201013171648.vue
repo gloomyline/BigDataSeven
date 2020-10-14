@@ -47,18 +47,8 @@
       </dv-border-box-10>
       <div class="container">
         <div class="left">
-          <dv-border-box-10 class="wrapper">
-            <div class="chartTitle">
-              工期进度偏差排名
-            </div>
-            <div class="scroll-wrap" ref="rank">
-              <dv-scroll-board  ref="scroll"
-                :config="config"
-                class="tableContainerSonTable"
-              
-              ></dv-scroll-board> 
-            </div>
-          </dv-border-box-10>
+          <dv-border-box-10>
+            </dv-border-box-10>
         </div>
         <div class="right">
           <dv-border-box-10 class="wrapper">
@@ -95,7 +85,7 @@
 
       
     </div>
-<!-- 
+
     <!-- <div class="tableContainer">
       <dv-border-box-10 class="tableContainerSon">
         <div class="tableContainerSonTitle">
@@ -109,7 +99,7 @@
           /> 
         </div>
       </dv-border-box-10>
-    </div> --> -->
+    </div> -->
   </div>
 </template>
 
@@ -1348,26 +1338,17 @@
   .left {
     width:66%;
     float:left;
+    background:red;
     margin:0 1% 0 0;
-    .wrapper {
-      height:12.2rem;
-    }
   }
   .right {
     width:33%;
     float:left;
     .wrapper {
       height:4rem;
-      margin-bottom:0.1rem;
+      margin-bottom:0.1rem
     }
   }
-}
-.scroll-wrap {
-    width:100%;
-    height:11.5rem;
-    
-      box-sizing: border-box;
-      padding:0 0.2rem 0.2rem 0.2rem;
 }
 
 </style>

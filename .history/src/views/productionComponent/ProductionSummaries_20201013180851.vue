@@ -48,7 +48,7 @@
       <div class="container">
         <div class="left">
           <dv-border-box-10 class="wrapper">
-            <div class="chartTitle">
+            <div class="tableContainerSonTitle">
               工期进度偏差排名
             </div>
             <div class="scroll-wrap" ref="rank">
@@ -1358,16 +1358,12 @@
     float:left;
     .wrapper {
       height:4rem;
-      margin-bottom:0.1rem;
+      margin-bottom:0.1rem
     }
   }
 }
 .scroll-wrap {
-    width:100%;
-    height:11.5rem;
-    
-      box-sizing: border-box;
-      padding:0 0.2rem 0.2rem 0.2rem;
+    height: 12rem;
 }
 
 </style>

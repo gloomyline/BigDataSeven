@@ -47,55 +47,33 @@
       </dv-border-box-10>
       <div class="container">
         <div class="left">
-          <dv-border-box-10 class="wrapper">
-            <div class="chartTitle">
-              工期进度偏差排名
-            </div>
-            <div class="scroll-wrap" ref="rank">
-              <dv-scroll-board  ref="scroll"
-                :config="config"
-                class="tableContainerSonTable"
-              
-              ></dv-scroll-board> 
-            </div>
-          </dv-border-box-10>
         </div>
         <div class="right">
-          <dv-border-box-10 class="wrapper">
-            <div class="chartTitle">片区公司产值情况</div>
-            <div class="chartContent">
-              <div class="chartContentSon triples" style="height:3.5rem;">
-                <!-- <div class="chartTit">自营产值情况（万元）</div> -->
-                <div class="chartCont" id="pieChart" style="height:100%;widht:100%"></div>
-              </div>
-            </div>
-          </dv-border-box-10>
-          <dv-border-box-10 class="wrapper">
-            <div class="chartTitle">自营项目产值情况</div>
-            <div class="chartContent">
-              <div class="chartContentSon triples" style="height:3.5rem;">
-                <!-- <div class="chartTit">自营产值情况（万元）</div> -->
-                <div class="chartCont" id="barChart1" style="height:100%"></div>
-              </div>
-            </div>
-          </dv-border-box-10>
-          <dv-border-box-10 class="wrapper" >
-            <div class="chartTitle">联营项目产值情况</div>
-            <div class="chartContent">
-              <div class="chartContentSon triples" style="height:3.5rem;">
-                <!-- <div class="chartTit">联营产值情况（万元）</div> -->
-                <div class="chartCont" id="barChart2" style="height:100%"></div>
-              </div>
-            </div>
-          </dv-border-box-10>
         </div>
 
       </div>
 
 
-      
+      <dv-border-box-10 style="height:2rem">
+        <div class="chartTitle">自营项目产值情况</div>
+        <div class="chartContent">
+          <div class="chartContentSon triples">
+            <div class="chartTit">自营产值情况（万元）</div>
+            <div class="chartCont" id="barChart1"></div>
+          </div>
+        </div>
+      </dv-border-box-10>
+      <dv-border-box-10 style="height:2rem" >
+        <div class="chartTitle">联营项目产值情况</div>
+        <div class="chartContent">
+          <div class="chartContentSon triples">
+            <div class="chartTit">联营产值情况（万元）</div>
+            <div class="chartCont" id="barChart2" style="height:100%"></div>
+          </div>
+        </div>
+      </dv-border-box-10>
     </div>
-<!-- 
+
     <!-- <div class="tableContainer">
       <dv-border-box-10 class="tableContainerSon">
         <div class="tableContainerSonTitle">
@@ -109,7 +87,7 @@
           /> 
         </div>
       </dv-border-box-10>
-    </div> --> -->
+    </div> -->
   </div>
 </template>
 
@@ -299,8 +277,8 @@
     mounted() {
 
     
-      // console.log("----$el",this.$refs.scroll.$el)
-      // console.log("--this.$refs.scroll.$el.children[1]--",this.$refs.scroll.$el.children[1])
+      console.log("----$el",this.$refs.scroll.$el)
+      console.log("--this.$refs.scroll.$el.children[1]--",this.$refs.scroll.$el.children[1])
       this.$refs.scroll.$el.addEventListener('scroll', this.handleScroll,true)
     
     
@@ -630,8 +608,8 @@
         this.czConfig = {...multTotal}
         //console.log("this.$refs.rjcz",this.$refs.rjcz)
         //console.log("this.$refs.rjcz.$el.children[1].children[1]",this.$refs.rjcz.$el.children[1].children[1])
-        // console.log("this.$refs.rjcz",this.$refs.rjcz)
-        // console.log("this.$refs.rjcz.$el.children[1].children",this.$refs.rjcz.$el.children[1].firstChild.width)
+        console.log("this.$refs.rjcz",this.$refs.rjcz)
+        console.log("this.$refs.rjcz.$el.children[1].children",this.$refs.rjcz.$el.children[1].firstChild.width)
    
         //console.log("this.$refs.rjcz",this.$refs.rjcz.$el.children[1].offsetWidth)
         //console.log("111111",this.getStyle(this.$refs.rjcz.$el.children[1],width))
@@ -854,7 +832,7 @@
                   name: `${i.name}:${this.allCompany.data.productionValue[item]}(${str}%)`
                 }
                 this.pieOption.pieData.push(obj)
-                this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
+                // this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
               } 
             })
           })
@@ -900,7 +878,7 @@
               name:seriesName,
               type: "pie",
               radius: "55%",
-              center: ["50%", "50%"],
+              center: ["50%", "42%"],
               selectedMode: "single",
               data: pieData,
               label: {
@@ -1338,36 +1316,14 @@
     }
   }
 }
-.chartTitle {
-      padding: 0.2rem;
-      color: #ffffff;
-      font-size: 0.2rem;
-      font-weight: bold;
-}
+
 .container{
   .left {
-    width:66%;
-    float:left;
-    margin:0 1% 0 0;
-    .wrapper {
-      height:12.2rem;
-    }
+    width:75%
   }
   .right {
-    width:33%;
-    float:left;
-    .wrapper {
-      height:4rem;
-      margin-bottom:0.1rem;
-    }
+    width:25%
   }
-}
-.scroll-wrap {
-    width:100%;
-    height:11.5rem;
-    
-      box-sizing: border-box;
-      padding:0 0.2rem 0.2rem 0.2rem;
 }
 
 </style>
