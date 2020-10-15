@@ -156,6 +156,7 @@ import $ from "jquery";
 import echarts from "echarts";
 import allCtyData from "@/assets/js/allCty.json";
 import TurnoverDetailsVue from './TurnoverDetails.vue';
+import bigMainEquipmentVue from './Equipment/bigMainEquipment.vue';
 
 export default {
   name: "Home",
@@ -2055,6 +2056,12 @@ export default {
       myChart.setOption(option);
       window.addEventListener("resize", function() {
         myChart.resize();
+      });
+      myChart.on('click', function (param){
+        var name=param.name;
+        if(name=="大型主要设备"){
+          self.$router.push({ name: 'bigMainEquipment'}).catch(data => {});
+        }        	
       });
     },
     echarts_51() {
