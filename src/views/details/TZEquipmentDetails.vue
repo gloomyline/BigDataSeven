@@ -22,15 +22,16 @@
           <el-button type="primary" round @click="usingData">在用</el-button>
           <el-button type="primary" round @click="freeData">空闲</el-button>
         </div>
-        <div style="display:inline-block;width:5rem;float:right;margin-right:1rem">
-        <div style="float:left;width:3rem;"> 
-          <el-input
-            placeholder="请输入设备名称"
-            prefix-icon="el-icon-search"
-            >
-          </el-input>
-        </div>
-        <el-button type="primary" icon="el-icon-search">搜索</el-button>
+        <div style="display:inline-block;width:2rem;float:right;margin-right:1rem;line-height:40px;">
+          <!-- <div style="float:left;width:3rem;"> 
+            <el-input
+              placeholder="请输入设备名称"
+              prefix-icon="el-icon-search"
+              >
+            </el-input>
+          </div>
+          <el-button type="primary" icon="el-icon-search">搜索</el-button> -->
+          <a href="http://211.149.184.113:8218/index" target="_blank">链接后台搜索入口</a>
         </div>
 
       </div>
