@@ -180,7 +180,7 @@ export default {
           }
         }
       ]
-      this.drawPie("together",pieData,"合作资产")
+      this.drawPie("together",pieData,"合同资产")
     },
     stock(){
       console.log("this.stockData",this.stockData)

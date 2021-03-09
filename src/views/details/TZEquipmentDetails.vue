@@ -31,7 +31,7 @@
             </el-input>
           </div>
           <el-button type="primary" icon="el-icon-search">搜索</el-button> -->
-          <a href="http://211.149.184.113:8218/index" target="_blank">链接后台搜索入口</a>
+          <a :href="hostname" target="_blank">链接后台搜索入口</a>
         </div>
 
       </div>
@@ -88,12 +88,16 @@ export default {
   },
   data() {
     return {
+      hostname:"",
       tableData2: [],
       allEquipment: [],
       usingEquipment:[],
       freeEquipment:[],
 
     };
+  },
+  created() {
+    this.hostname = `http://${ window.location.hostname}:8218/index`
   },
   mounted() {
     this.initData()

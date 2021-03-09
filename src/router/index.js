@@ -94,6 +94,16 @@ const routes = [{
     component: () => import( /* webpackChunkName: "engineering" */ '../views/Engineering.vue')
   },
   {
+    path: '/EngineeringDetail/:deptId/:ny/:projectName',
+    name: 'EngineeringDetail',
+    component: () => import( /* webpackChunkName: "dispatch" */ '../views/details/EngineeringDetail.vue')
+  },
+  {
+    path: '/EngineeringTableDetail/:deptId/:projectName',
+    name: 'EngineeringTableDetail',
+    component: () => import( /* webpackChunkName: "dispatch" */ '../views/details/EngineeringTableDetail.vue')
+  },
+  {
     path: '/dispatch',
     name: 'Dispatch',
     component: () => import( /* webpackChunkName: "dispatch" */ '../views/details/Dispatch.vue')
@@ -118,6 +128,17 @@ const routes = [{
     name: 'HumanInfoDetail',
     component: () => import( /* webpackChunkName: "HumanInfoDetail" */ '../views/details/HumanInfoDetail.vue')
   },
+
+  //可调配人员名单个人信息详情
+  {
+    // path:'/HumanPersonInfoDetail/:deptId/:deptName/:projectname/:job',
+    path:'/HumanPersonInfoDetail',
+    name:'HumanPersonInfoDetail',
+    component: () => import( /* webpackChunkName: "HumanInfoDetail" */ '../views/details/HumanPersonInfoDetail.vue')
+  },
+  
+
+
   {
     path: '/humanDetailsNew/:id/:name/:ny',
     name: 'HumanDetailsNew',

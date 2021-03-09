@@ -42,7 +42,7 @@
       </div>
       <div class="partWrapper">
         <div class="goto">
-            <a href="http://211.149.184.113:8218/index" target="_blank">链接后台搜索入口</a>
+            <a :href="hostname" target="_blank">链接后台搜索入口</a>
          </div>
         <div class="title">劳务企业使用情况</div>
         <div class="contentWrapper">
@@ -142,6 +142,7 @@ export default {
   props:["date"],
   data() {
     return {
+      hostname:"",
       tableData: [],
       tableData2: [],
       conStatistics:"",
@@ -157,6 +158,7 @@ export default {
     };
   },
   beforeCreate() {
+    
     const loading = this.$loading({
       lock: true,
       text: "页面加载中...",
@@ -170,6 +172,8 @@ export default {
   created() {
     const _date = new Date()
     this.date = `${_date.getFullYear()}-${('0' + _date.getMonth()).substr(-2)}`
+    // http://219.139.193.50:8218/index
+    this.hostname = `http://${ window.location.hostname}:8218/index`
     
   },
   mounted(){

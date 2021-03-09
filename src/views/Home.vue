@@ -18,7 +18,7 @@
         placeholder="选择月">
       </el-date-picker>
     </div>
-    <h1>七公司宏观成本管理大数据</h1>
+    <h1 ><a :href="hostname" target="_blank">七公司宏观成本管理大数据</a></h1>
     <dv-decoration-5 class="header-svg"></dv-decoration-5>
     <div class="weather">
       <img src="../assets/picture/weather.png" />
@@ -163,6 +163,7 @@ export default {
   components: {},
   data() {
     return {
+      hostname:'',
       ny:"",
       count:"",
       totalend:"",
@@ -331,8 +332,6 @@ export default {
       // console.log(this.economy);
     },
     
-
-
     async initData() {
       // request home api
       const response = await homeApi.fetchHomeData(this.ny);
@@ -433,13 +432,15 @@ export default {
       var hubeigongsi = "get/s/data-1528969822119-Bk8v93kZ7.json";
       var huabeigongsi = "get/s/data-huabeigongsi.json";
       var xibeigongsi = "get/s/data-xibeigongsi.json";
+      //华南分公司
+      var huanangongsi = "get/s/data-huanangongsi.json";
       var _this = this
       console.log("我是vue吗",_this)
        //地图分公司信息
        this.homeMapCompanyData = await homeApi.fetchHomeMapCompanyData().then((res)=>{
          return res.data
        });
-      //  console.log("this.homeMapCompanyDataasdfasdfasdfasddf--------数据",this.homeMapCompanyData)
+      console.log("this.homeMapCompanyDataasdfasdfasdfasddf--------数据",this.homeMapCompanyData)
 
       var allprovinceData = [
         {
@@ -528,7 +529,7 @@ export default {
         },
         {
           name: "海南",
-          value: 3
+          value: 0
         },
         {
           name: "香港",
@@ -810,7 +811,7 @@ export default {
         },
         {
           city: "海南",
-          name: "房建分公司",
+          name: "华南分公司",
           merge: (Math.random() * 100).toFixed(2),
           dataone: (Math.random() * 100).toFixed(2),
           datatwo: (Math.random() * 100).toFixed(2)
@@ -841,7 +842,8 @@ export default {
           西北分公司: xibeigongsi,
           湖北分公司: hubeigongsi,
           武汉分公司: wuhanfengongsi,
-          华北分公司: huabeigongsi
+          华北分公司: huabeigongsi,
+          华南分公司: huanangongsi,
         };
         
         var geoCoordMap = pointArr;
@@ -907,7 +909,7 @@ export default {
             } else if (
               n == "上海" ||
               n == "湖南" ||
-              n == "海南" ||
+              // n == "海南" ||
               n == "房建分公司"
             ) {
               breadcrumb = this.createBreadcrumb(n);
@@ -1024,7 +1026,9 @@ export default {
               房建分公司: "fangjiangongsi",
               湖北分公司: "hubeigongsi",
               武汉分公司: "wuhanfengongsi",
-              华北分公司: "huabeigongsi"
+              华北分公司: "huabeigongsi",
+              华南分公司: "huanangongsi"
+
             };
 
             var breadcrumb = {
@@ -1431,11 +1435,17 @@ export default {
                 label: "武汉分公司",
                 color: "rgba(160,32,240,1)"
               },
+             
               {
                 value: 6,
                 label: "城轨分公司",
                 color: "rgba(160,32,240,1)"
-              }
+              },
+               {
+                value: 0,
+                label: "华南分公司",
+                color: "rgba(255,40,70,1)"
+              },
             ],
             show: !0,
             textStyle: {
@@ -1560,7 +1570,8 @@ export default {
             params.name = city;
           } else if (city == "武汉") {
             params.name = city;
-          } else if (city == "上海" || city == "湖南" || city == "海南") {
+          // } else if (city == "上海" || city == "湖南" || city == "海南") {
+            } else if (city == "上海" || city == "湖南" ) {
             params.name = city;
           } else if (city == "湖北") {
             params.name = city;
@@ -1618,7 +1629,31 @@ export default {
         '陕西':29,
         '山西':13,
         '青海': 31,
-        '甘肃': 30      
+        '甘肃': 30,
+        '山东':9,
+        "新疆":33,
+        "内蒙古":15,
+        "西藏":28,
+        "宁夏":32,
+        "四川":25,
+        "重庆":24,
+        "云南":27,
+        "贵州":26,
+        "广西":20,
+        "黑龙江":0,
+        "吉林":1,
+        "辽宁":2,
+        "河北":14,
+        "天津":12,
+        "山东":9,
+        "河南":16,
+        "江苏":4,
+        "安徽":6,
+        "浙江":5,
+        "江西":8,
+        "福建":7,
+        "台湾":10,
+        "广东":19
       }
 
       // console.log("provincesIndex湖南",provincesIndex["湖南"])
@@ -1627,13 +1662,15 @@ export default {
       var comName = []
       var provinces=[]
       var comContent = []
+      
+      
       for(var index in MapCompanyData){
         console.log(`MapCompanyData[${index}]`,MapCompanyData[index])
         comName.push(MapCompanyData[index].comName)
         comContent.push(MapCompanyData[index].comContent)
         provinces.push(MapCompanyData[index].provinces)
       }
-
+      
       let provincesDataIndex = provinces.map((item)=>{
         var itemlist =item.map((provinces)=>{
             // console.log("provinces",provinces)
@@ -1642,12 +1679,19 @@ export default {
         return itemlist
         // console.log("item map",item)
       })
+
      //分公司轮播
 
     var num =0 
     var Carousel = function(){ 
+      console.log("comName",comName)
+      console.log("provinces",provinces)
+      console.log("provinces[num]",provinces[num])
       for(var i=0;i<provincesDataIndex[num].length;i++){
-      // console.log("provincesDataIndex[num]",provincesDataIndex[num][i])
+      
+      console.log("provincesDataIndex[num]",provincesDataIndex[num][i])
+      console.log("provincesDataIndex[num]",provincesDataIndex[num])
+      
       chart.dispatchAction({
         type: "downplay",
         dataIndex:provincesDataIndex[num][i]
@@ -2084,7 +2128,7 @@ export default {
             }
           }
         ],
-        color: ["#27d08a", "#0f63d6", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
+        color: ["#27d08a", "#ffcc5d", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
         // tooltip: {
         //   trigger: "item",
         //   formatter: "{b} : {c} ({d}%)"
@@ -2670,28 +2714,28 @@ export default {
           
           },
           {
-              name: '已完',
-              type: 'bar',
-              stack:'num',
-              data: completedABS,
-              label:{
-                position:"inside",
-                show:true,
-               formatter: function(params) {
-                //  console.log("我的参数",params)
-                 console.log("params.dataIndex",completed[params.dataIndex])
+            name: '已完',
+            type: 'bar',
+            stack:'num',
+            data: completedABS,
+            label:{
+              position:"inside",
+              show:true,
+              formatter: function(params) {
+              //  console.log("我的参数",params)
+                console.log("params.dataIndex",completed[params.dataIndex])
 
-                if(params.value>0){
-                  var finishpercent = percent[params.dataIndex]
-                  finishpercent = finishpercent > 100 ?100:finishpercent
-                  return `${finishpercent}%`
-                }else{
-                  return ''
-                }
-                 
-               }
-              },
-              barWidth : 30
+              if(params.value>0){
+                var finishpercent = percent[params.dataIndex]
+                finishpercent = finishpercent > 100 ?100:finishpercent
+                return `${finishpercent}%`
+              }else{
+                return ''
+              }
+                
+              }
+            },
+            barWidth : 30
           },
           {
             name: '未完',
@@ -3070,7 +3114,23 @@ export default {
               fontSize: 12
             }
         },
-          xAxis: {
+        dataZoom:[
+            {
+                type:"slider",//slider表示有滑动块的，
+                show:true,
+                xAxisIndex:[0],//表示x轴折叠
+                start:1,//数据窗口范围的起始百分比,表示1%
+                end:95//数据窗口范围的结束百分比,表示35%坐标
+            },
+            // {
+            //         type:"inside",//           
+            //     yAxisIndex:[0],//表示y轴折叠
+            //     start:1,
+            //     end:35
+            // },
+        ],
+
+        xAxis: {
               type: 'category',
               data: xAxis_arr,
               axisLabel: {
@@ -3897,6 +3957,7 @@ export default {
       let planed = Number(monthly.planed);
       console.log("planed",planed)
       let sum = Number(finished) + Number(remained);
+     
       const self = this;
       let str = 0;
       let rendercolor = "red";
@@ -4110,8 +4171,9 @@ export default {
       let finished = Number(monthly.finished).toFixed(2);
       let remained = Number(monthly.remained).toFixed(2);
       let planed = Number(monthly.planed);
-      console.log("333333",planed)
+      
       let sum = Number(finished) + Number(remained);
+      // console.log("value",)
       let str = 0;
       let rendercolor = "red";
       if (isNaN(Number(monthly.finished) / Number(monthly.remained))) {
@@ -4240,9 +4302,49 @@ export default {
     });
   },
   created() {
-    const _date = new Date();
-    let mm =_date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-    this.ny = `${_date.getFullYear()}-${mm}`;
+    // const _date = new Date();
+    // let mm =_date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
+    // this.ny = `${_date.getFullYear()}-${mm}`;
+    this.hostname = `http://${ window.location.hostname}:8218/index`
+
+      const _date = new Date();
+      var month = _date.getMonth();
+      var year = _date.getFullYear();
+      var day = _date.getDate()
+      var mm
+      if(day<25){
+         if(month==0){
+            month = 12
+             mm = month < 10 ? `0${month}` : month;
+            year=year-1
+          } else {
+            mm = month < 10 ? `0${month}` : month;
+          }
+
+      }else{
+        if(month==0){
+            month = 1
+            mm = month < 10 ? `0${month}` : month; 
+        }else{
+            month = month+1
+            mm = month < 10 ? `0${month}` : month; 
+        }
+
+      }
+
+      console.log("day",day)
+
+      // console.log("month",this.month)
+      // console.log("year",this.year)
+      console.log("ny月1",mm)
+      this.date=`${year}-${mm}`
+      this.ny=`${year}-${mm}`
+      // this.ny="2020-12"
+      
+      console.log("ny11111111",this.ny)
+  
+
+    
     this.fetchHomeMap();
     // this.initData();
     const loading = this.$loading({

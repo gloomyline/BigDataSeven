@@ -24,9 +24,22 @@ export default {
     const response = await axios.get('/material/rateMonthC', { params: { ny: date } });
     return response;
   },
-  async fetchProjectDetails(deptId,ny) {
+
+  //ABC类所有信息
+
+  async materialAll(date,mkind) {
+    const response = await axios.get('/material/materialAll', { params: { ny: date ,mkind:mkind} });
+    return response.data;
+  },
+
+  async fetchProjectDetails(deptId,ny,mkind) {
     console.log("fechprojectdate",ny)
-    const response = await axios.get('/material/threePage', { params: { deptId:deptId,ny:ny } });
+    const response = await axios.get('/material/threePage', { params: { deptId:deptId,ny:ny,mkind } });
     return response;
-  }
+  },
+  // async fetchProjectDetails2(deptId,ny) {
+  //   console.log("fechprojectdate",ny)
+  //   const response = await axios.get('/material/threePage', { params: { deptId:deptId,ny:ny } });
+  //   return response;
+  // }
 }

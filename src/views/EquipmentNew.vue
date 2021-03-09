@@ -87,7 +87,7 @@ export default {
         // 长期闲置
         isIdle: null,
       },
-      date: '',
+      date: this.$route.params.ny,
       pickerOptions: {
         disabledDate(time) {
           return time >Date.now();
@@ -115,7 +115,41 @@ export default {
       spinner: "el-icon-loading",
       background: "rgba(0, 0, 0, 1)",
     });
-    this.date = `${(new Date()).getFullYear()}-${('00' + (new Date()).getMonth()).substr(-2)}`;
+    // this.date = `${(new Date()).getFullYear()}-${('00' + (new Date()).getMonth()).substr(-2)}`;
+    if(!this.date){
+      const _date = new Date();
+      var month = _date.getMonth();
+      var year = _date.getFullYear();
+      var day = _date.getDate()
+      var mm
+      if(day<25){
+         if(month==0){
+            month = 12
+             mm = month < 10 ? `0${month}` : month;
+            year=year-1
+          } else {
+            mm = month < 10 ? `0${month}` : month;
+          }
+
+      }else{
+        if(month==0){
+            month = 1
+            mm = month < 10 ? `0${month}` : month; 
+        }else{
+            month = month+1
+            mm = month < 10 ? `0${month}` : month; 
+        }
+
+      }
+      
+
+      this.date=`${year}-${mm}`
+      this.ny=`${year}-${mm}`
+      // this.ny="2020-12"
+      console.log("ny",this.ny)
+    }
+
+
     await this._requestData();
     loading.close();
     this.$nextTick(() => {

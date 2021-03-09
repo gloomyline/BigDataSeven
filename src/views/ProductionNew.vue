@@ -71,11 +71,37 @@ export default {
     setTimeout(() => {
       loading.close();
     }, 2000);
-    if(!this.ny){
+    if(!this.date){
       const _date = new Date();
-      this.month = _date.getMonth();
-      let mm = _date.getMonth() < 10 ? `0${_date.getMonth()}` : _date.getMonth();
-      this.ny=`${_date.getFullYear()}-${mm}`
+      var month = _date.getMonth();
+      var year = _date.getFullYear();
+     var day = _date.getDate()
+     var mm
+      if(day<25){
+         if(month==0){
+            month = 12
+             mm = month < 10 ? `0${month}` : month;
+            year=year-1
+          } else {
+            mm = month < 10 ? `0${month}` : month;
+          }
+
+      }else{
+        if(month==0){
+            month = 1
+            mm = month < 10 ? `0${month}` : month; 
+        }else{
+            month = month+1
+            mm = month < 10 ? `0${month}` : month; 
+        }
+
+      }
+      
+
+      this.date=`${year}-${mm}`
+      this.ny=`${year}-${mm}`
+      // this.ny="2020-12"
+      console.log("ny",this.ny)
     }
   },
   // computed: {

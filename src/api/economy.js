@@ -23,5 +23,14 @@ export default {
     const response = await axios.get('/economy/findProfitandjiechao', { params: { ny: date } });
     return response.data;
   },
-  
+  //年度索赔明细
+  async fetchAnnualclaimdetails(ny,deptId) {
+    const response = await axios.get('/economy/findClaimByDeptId', { params: { ny: ny,deptId:deptId } });
+    return response.data;
+  },
+  //劳务分包信息
+  async fetchLaborByDeptId(deptId) {
+    const response = await axios.get('/economy/findEcoLaborByDeptId', { params: { deptId:deptId } });
+    return response.data;
+  },
 }

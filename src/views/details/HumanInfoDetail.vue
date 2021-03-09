@@ -32,7 +32,8 @@
             :row-key="getRowKeys"
             :expand-row-keys="expands"
             :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-            :cell-class-name="tableCellClassName">
+            :cell-class-name="tableCellClassName"
+             @cell-click="cellClickEvent">
             <el-table-column
               prop="pro"
               label="专业"
@@ -48,14 +49,25 @@
             <el-table-column
               prop="deputyChief"
               label="副科级及以上">
+               <!-- <template slot-scope="scope">
+                 <template v-if="scope.row.deputyChief==0">{{scope.row.deputyChief}}</template>
+                 <template v-else><a >{{scope.row.deputyChief}}</a></template>
+                
+              </template>  -->
             </el-table-column>
             <el-table-column
               prop="first"
               label="一级科员">
+
             </el-table-column>
             <el-table-column
               prop="second"
               label="二级科员">
+              <!-- <template slot-scope="scope">
+                 <template v-if="scope.row.deputyChief == 0">{{scope.row.second}}</template>
+                 <template v-else><div style="color:red">{{scope.row.second}}</div></template>
+                
+              </template>  -->
             </el-table-column>
             <el-table-column
               prop="headcount"
@@ -118,6 +130,18 @@ export default {
     }
   },
   methods: {
+    cellClickEvent(row,column,event,cell){
+      // console.log("row",row)
+      // console.log("column",column)
+      // console.log("event",event)
+      // console.log("cell",cell)
+      // console.log("column.property",column.property)
+      if(row[column.property]!=0 && typeof row[column.property] == 'number'){
+         this.$router.push({ path: '/HumanPersonInfoDetail',query:{deptId:row.deptId,deptName:row.deptName,pro:row.projectname,job:column.property}})
+      }
+
+     
+    },
     goBack() {
       this.$router.push({ path: "/" });
     },
@@ -125,8 +149,8 @@ export default {
         return row.id;
     },
     tableCellClassName({row, column, rowIndex, columnIndex}) {
-      console.log("row cxolumn,rowIndex,columnIndex",row, column, rowIndex, columnIndex)
-       console.log("```````````````````")
+      // console.log("row cxolumn,rowIndex,columnIndex",row, column, rowIndex, columnIndex)
+      //  console.log("```````````````````")
       if(row.first>0){
         if(columnIndex===3){
           return "cellColorGreen"
@@ -155,6 +179,7 @@ export default {
       // }
       // return '';
     },
+
     async dispatchHumanDetail(){
       const res = await HumanNewApi.fetchDispatchHumanDetailData1();
       console.log("fetchDispatchHumanDetailData",res)
@@ -176,7 +201,9 @@ export default {
           })
           childrenlist =childrenlist.map((item)=>{
             return {id:item.id,
+              deptId:item.deptId,
               pro:null,
+              projectname:item.pro,
               deptName:item.deptName,
               deputyChief:item.deputyChief,
               first: item.first,
@@ -192,8 +219,7 @@ export default {
             deptName:null,
             deputyChief:null,
             first:null ,
-            headcount: null,
-            
+            headcount: null,        
             second: null,
             children:childrenlist
           }
@@ -246,6 +272,11 @@ export default {
     font-weight: 100 !important;
 }
 ::v-deep .cellColorGreen .cell{
-  color:#15ff00
+  color:#15ff00;
+}
+::v-deep .cellColorGreen .cell:hover{
+  // color:#15ff00;
+  cursor: pointer;
+  text-decoration: underline;
 }
 </style>

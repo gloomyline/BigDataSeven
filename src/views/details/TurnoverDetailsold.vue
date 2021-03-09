@@ -23,37 +23,6 @@
     <div class="table boxall">
       <p class="thead">
         <img class="img" src="@/assets/images/u563.png" />
-        <span class="tilte">周转材料</span>
-      </p>
-      <el-table :data="tableData4" style="width: 86%;  margin: 0 auto; min-width: 800px;">
-        <el-table-column prop="projectName" label='项目名称' width=""></el-table-column>
-        <el-table-column prop="mname" label='材料名称' width=""></el-table-column>
-        <el-table-column prop="msmname" label='规格型号' width=""></el-table-column>
-        <el-table-column prop="mnumberStore" label='数量（片.件.米.平方）' width=""></el-table-column>
-        <el-table-column prop="mnumberUsage" label='数量（吨）' width=""></el-table-column>
-        <el-table-column prop="mmoney" label='金额' width=""></el-table-column>
-        <el-table-column prop="mcondition" label='质量状况' width=""></el-table-column>
-        <el-table-column prop="mstadesc" label='在用/闲置' width=""></el-table-column>
-        <el-table-column prop="mudesc" label='备注' width=""></el-table-column>
-        <el-table-column prop="mkind" label='类别' width="">
-          <template slot-scope="scope">
-            <div v-if="scope.row.mkind == '1'">A类</div>
-            <div v-if="scope.row.mkind == '2'">B类</div>
-            <div v-if="scope.row.mkind == '3'">C类</div>
-            
-            <!-- {{scope.row.mkind}} -->
-          </template>
-        </el-table-column>
-
-        
-      </el-table>
-      <div class="boxfoot"></div>
-    </div>
-
-
-    <!-- <div class="table boxall">
-      <p class="thead">
-        <img class="img" src="@/assets/images/u563.png" />
         <span class="tilte">A类周转材料</span>
       </p>
       <el-table :data="tableData" style="width: 86%;  margin: 0 auto; min-width: 800px;">
@@ -61,8 +30,8 @@
         <el-table-column v-for="(item, index) in typeAList" :label="item.materialName" :prop="item.materialName" :key="index"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
-    </div> -->
-<!-- 
+    </div>
+
     <div class="table boxall">
       <p class="thead">
         <img class="img" src="@/assets/images/u563.png" />
@@ -73,9 +42,9 @@
         <el-table-column v-for="(item, index) in typeBList" :prop="item.materialName" :label="item.materialName" :key="index"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
-    </div> -->
+    </div>
 
-    <!-- <div class="table boxall">
+    <div class="table boxall">
       <p class="thead">
         <img class="img" src="@/assets/images/u563.png" />
         <span class="tilte">C类周转材料</span>
@@ -85,7 +54,7 @@
         <el-table-column v-for="(item, index) in typeCList" :prop="item.materialName" :label="item.materialName" :key="index"></el-table-column>
       </el-table>
       <div class="boxfoot"></div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -104,7 +73,6 @@ export default {
     return {
       deptName: '',
       ny:this.$route.params.ny,
-      tableData4:[],
       typeAList: [],
       typeBList: [],
       typeCList: [],
@@ -133,8 +101,6 @@ export default {
         background: "rgba(0, 0, 0, 1)"
       });
       const response = await turnoverApi.fetchProjectDetails(this.deptId,this.ny);
-      console.log("response",response)
-      this.tableData4= response.data
       this.deptName = response.data.deptName;
       this.typeAList = response.data.typeA;
       this.typeBList = response.data.typeB;

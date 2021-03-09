@@ -24,7 +24,7 @@
     </div>
     <!-- 内容区域 -->
     <div class="goto">
-      <a href="http://211.149.184.113:8218/index" target="_blank">链接后台搜索入口</a>
+      <a :href="hostname" target="_blank">链接后台搜索入口</a>
     </div>
     <div class="chartContainerFather">
       <dv-border-box-10 class="chartContainer">
@@ -61,6 +61,7 @@ export default {
   name: "Production",
   data() {
     return {
+      hostname:"",
       typeA: [],
       typeB: [],
       typeC: [],
@@ -72,12 +73,13 @@ export default {
       ny:this.$route.params.ny,
       pickerOptions: {
         disabledDate(time) {
-            return time >Date.now()
+          return time >Date.now()
         },
       }
     };
   },
   created() {
+    this.hostname = `http://${ window.location.hostname}:8218/index`
     this._initData();
   },
   mounted() {
@@ -105,24 +107,69 @@ export default {
         background: "rgba(0, 0, 0, 1)",
       });
       const date = new Date()
-      this.parmadate=`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`
+      // this.parmadate=`${date.getFullYear()}-${date.getMonth()>9?'':'0'}${date.getMonth()}`
       console.log(" this.parmadate", this.parmadate)
       console.log("this.ny", this.ny)
       console.log("boleanthis.ny", Boolean(this.ny))
+
       if(!this.ny){
-        this.ny= this.parmadate
+      const _date = new Date();
+      var month = _date.getMonth();
+      var year = _date.getFullYear();var day = _date.getDate()
+      var mm
+      if(day<25){
+         if(month==0){
+            month = 12
+             mm = month < 10 ? `0${month}` : month;
+            year=year-1
+          } else {
+            mm = month < 10 ? `0${month}` : month;
+          }
+
+      }else{
+        if(month==0){
+            month = 1
+            mm = month < 10 ? `0${month}` : month; 
+        }else{
+            month = month+1
+            mm = month < 10 ? `0${month}` : month; 
+        }
+
       }
+      
+
+      this.date=`${year}-${mm}`
+      this.ny=`${year}-${mm}`
+      // this.ny="2020-12"
+      console.log("ny",this.ny)
+    }
+
       console.log("this.ny", this.ny)
-      this.typeA = await turnoverApi.fetchTypeA(this.ny);
+      this.materialA = await turnoverApi.materialAll(this.ny,1);
+      this.materialB = await turnoverApi.materialAll(this.ny,2);
+      this.materialC = await turnoverApi.materialAll(this.ny,3);
+      console.log("materialA``````````", this.materialA.materialAll)
+       console.log("materialAll``````````", this.materialA.materialAll)
+      // this.typeA = await turnoverApi.fetchTypeA(this.ny);
+      this.typeA = this.materialA.materialAll.typeA;
+      console.log("typeA",this.typeA)
       this.drawTypeA();
-      this.typeB = await turnoverApi.fetchTypeB(this.ny);
+      // this.typeB = await turnoverApi.fetchTypeB(this.ny);
+      this.typeB = this.materialB.materialAll.typeB;
       //console.log("typeB",typeB)
       this.drawTypeB()
-      this.typeC = await turnoverApi.fetchTypeC(this.ny);
+      // this.typeC = await turnoverApi.fetchTypeC(this.ny);
+      this.typeC = this.materialC.materialAll.typeC;
       this.drawTypeC();
-      this.pieRateA = await turnoverApi.fetchRateA(this.ny);
-      this.pieRateB = await turnoverApi.fetchRateB(this.ny);
-      this.pieRateC = await turnoverApi.fetchRateC(this.ny);
+      // this.pieRateA = await turnoverApi.fetchRateA(this.ny);
+     
+      // this.pieRateB = await turnoverApi.fetchRateB(this.ny);
+      // this.pieRateC = await turnoverApi.fetchRateC(this.ny);
+      this.pieRateA = this.materialA.materialAll.rateMonthA;
+       console.log("pieRateA",this.pieRateA)
+      this.pieRateB = this.materialB.materialAll.rateMonthB;
+      this.pieRateC = this.materialC.materialAll.rateMonthC;
+
       this._drawPie();
       loading.close();
     },
@@ -131,12 +178,13 @@ export default {
       let xDataA = []
       let isUsing = []
       let xzDataA = []
-      if(this.typeA && this.typeA.data && this.typeA.data.length > 0) {
-        isUsing = this.typeA.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing))
-        fcData = this.typeA.data.map(item => item.isSealed === 0 ? item.isSealed : (item.isSealed))
-        xDataA = this.typeA.data.map(item => `${item.deptId}-${item.name}`)
-        xzDataA = this.typeA.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused))
-        console.log(fcData, xDataA, '---- this.typeA.data----------')
+      console.log("bartype",this.typeA)
+      if(this.typeA && this.typeA.length > 0) {
+        isUsing = this.typeA.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing))
+        fcData = this.typeA.map(item => item.isSealed === 0 ? item.isSealed : (item.isSealed))
+        xDataA = this.typeA.map(item => `${item.deptId}-${item.name}`)
+        xzDataA = this.typeA.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused))
+        console.log("fcdata",fcData, xDataA)
       } else {
         fcData = []
         xDataA = []
@@ -243,12 +291,12 @@ export default {
       let lylDataB = []
       let xzDataB = []
       let name = []
-      if(this.typeB && this.typeB.data && this.typeB.data.length > 0) {
-        name = this.typeB.data.map(item => `${item.deptId}-${item.name}`)
-        data = this.typeB.data.map(item => item.isUsing === 0 ? 0 : (item.isUsing))
+      if(this.typeB && this.typeB.length > 0) {
+        name = this.typeB.map(item => `${item.deptId}-${item.name}`)
+        data = this.typeB.map(item => item.isUsing === 0 ? 0 : (item.isUsing))
         console.log("BBBBBBBBBBBBBb",data)
-        xzDataB = this.typeB.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused))
-        lylDataB = this.typeB.data.map(item => (item.rate * 100))
+        xzDataB = this.typeB.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused))
+        lylDataB = this.typeB.map(item => (item.rate * 100).toFixed(2))
       } else {
         name = []
         data = []
@@ -348,11 +396,11 @@ export default {
       let xzDataC = []
       let lylDataC = []
       let name = []
-      if(this.typeC && this.typeC.data && this.typeC.data.length > 0) {
-        data = this.typeC.data.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing))
-        xzDataC = this.typeC.data.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused))
-        lylDataC = this.typeC.data.map(item => (item.rate * 100))
-        name = this.typeC.data.map(item => `${item.deptId}-${item.name}`)
+      if(this.typeC  && this.typeC.length > 0) {
+        data = this.typeC.map(item => item.isUsing === 0 ? item.isUsing : (item.isUsing))
+        xzDataC = this.typeC.map(item => item.isUnused === 0 ? item.isUnused : (item.isUnused))
+        lylDataC = this.typeC.map(item => (item.rate * 100).toFixed(2))
+        name = this.typeC.map(item => `${item.deptId}-${item.name}`)
       } else {
         data = []
         xzDataC = []
@@ -458,10 +506,10 @@ export default {
       let isUsingA = 0
       let isUnusedA = 0
       let isSealedA= 0
-      if(this.pieRateA && this.pieRateA.data !== {}) {
-        isUsingA = this.pieRateA.data.isUsing
-        isUnusedA = this.pieRateA.data.isUnused
-        isSealedA = this.pieRateA.data.isSealed
+      if(this.pieRateA ) {
+        isUsingA = this.pieRateA.isUsing
+        isUnusedA = this.pieRateA.isUnused
+        isSealedA = this.pieRateA.isSealed
       } else {
         isUsingA = 0
         isUnusedA = 0
@@ -469,18 +517,18 @@ export default {
       }
       let isUsingB = 0
       let isUnusedB = 0
-      if(this.pieRateB&& this.pieRateB.data !== {}) {
-        isUsingB = this.pieRateB.data.isUsing
-        isUnusedB = this.pieRateB.data.isUnused
+      if(this.pieRateB) {
+        isUsingB = this.pieRateB.isUsing
+        isUnusedB = this.pieRateB.isUnused
       } else {
         isUsingB = 0
         isUnusedB = 0
       }
       let isUsingC = 0
       let isUnusedC = 0
-      if(this.pieRateC&& this.pieRateC.data !== {}) {
-        isUsingC = this.pieRateC.data.isUsing
-        isUnusedC = this.pieRateC.data.isUnused
+      if(this.pieRateC) {
+        isUsingC = this.pieRateC.isUsing
+        isUnusedC = this.pieRateC.isUnused
       } else {
         isUsingC = 0
         isUnusedC = 0
@@ -839,7 +887,7 @@ export default {
           const deptId = params.value.split('-')[0]
           const ny=_that.parmadate
           console.log( " ny",ny)
-          _that.$router.push({ name: "TurnoverDetails", params: { deptId:deptId,ny:ny} });
+          _that.$router.push({ name: "TurnoverDetails", params: { deptId:deptId,ny:_that.ny} });
         }
       });
       window.addEventListener("resize", function() {

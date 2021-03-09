@@ -38,7 +38,7 @@ export default {
       // person details request from server
       personInfo: [],
       // interval for every companies data bar display, unit is mileseconds
-      intervalTime: 5000,
+      intervalTime: 10000,
     };
   },
   async mounted() {
@@ -51,6 +51,7 @@ export default {
   watch: {
     currentCompany(val) {
       this.count = this.companies.indexOf(val);
+      // console.log('',this.companies.indexOf(val));
       this.drawHumanDetails(this.count);
     },
   },
@@ -84,12 +85,16 @@ export default {
         // 局聘
         const filteredJs = filteredProjects.map(item => item.countJnum);
         // 定编
-        const filteredDs = filteredProjects.map(item => item.countDnum);
+       // const filteredDs = filteredProjects.map(item => item.countDnum);
+       //定编一类劳务人员
+        const filtererbo = filteredProjects.map(item => item.resDBeanOne);
+       // 定编局聘
+       const filtererjp = filteredProjects.map(item => item.resDBeanJPin);
         // 在岗
         const filteredOnJob = filteredProjects.map(item => item.isOnTheJob);
         // 不在岗
         const filteredNotOnJob = filteredProjects.map(item => item.NotOnTheJob);
-        return [filteredOs, filteredJs, filteredDs,filteredOnJob,filteredNotOnJob];
+        return [filteredOs, filteredJs,filtererbo,filtererjp,filteredOnJob,filteredNotOnJob];
       }
     },
     drawHumanDetails(startWith = 0) {
@@ -134,22 +139,35 @@ export default {
           data: self._filterCompany('湖北分公司', false),
         },
       ]
+      console.log('dataList[startWith]',dataList[startWith].data);
       const option = {
-        color: ["#a5dff9", "#3398DB", "#6096E6", "#9ADFBF","#BFBFBF"],
+        color: ["#a5dff9", "#3398DB", "#6096E6", "#9ADFBF","#55ab84","#f18870"],
         tooltip: {
           trigger: "axis",
+          show:true,
           axisPointer: {
             // 坐标轴指示器，坐标轴触发有效
             type: "shadow" ,// 默认为直线，可选为：'line' | 'shadow'
 			
           },
-		      formatter:`{a}:{c}<br>{a1}:{c1}<br>{a2}:{c2}<br>{a3}:{c3}<br>{a4}:{c4}`
+          
+          // formatter(params){
+          //   params.push({
+          //     seriesName: '定编一类',
+          //     value:10
+          //   })
+          //   console.log('params',params);
+          // },
+          // formatter:`{a}:{c}<br>{a1}:{c1}<br>{a2}:{c2}<br>{a3}:{c3}<br>{a4}:{c4}<br>{a5}:{c5}` 
+          // formatter:function(params){
+          //   console.log("params提示",params)
+          // }
 		  
         },
         legend: {
           x: "center",
           y: "bottom",
-          data: ["一类劳务人员", "局聘", "定员定编"],
+          data: ["一类劳务人员", "局聘", "定编一类劳务", "定编局聘", "在岗", "不在岗"],
           textStyle: { color: "rgba(255, 255, 255, 1)", fontSize: 12 }
         },
         grid: {
@@ -207,6 +225,7 @@ export default {
 		    	{
             name: "一类劳务人员",
             type: "bar",
+            barWidth: 50,
             stack: "outside",
             data: dataList[startWith]['data'][0],
 		    	},
@@ -218,25 +237,43 @@ export default {
             data: dataList[startWith]['data'][1],
           },
           
+          // {
+          //   name: "定员定编",
+          //   type: "bar",
+          //   barGap: '5%',
+          //   barWidth: 50,
+          //    stack: "delimit",
+          //   data: dataList[startWith]['data'][2],
+          // },
           {
-            name: "定员定编",
+            name: "定编一类劳务",
             type: "bar",
             barGap: '5%',
             barWidth: 50,
+            stack: "delimit",
             data: dataList[startWith]['data'][2],
+          },
+               {
+            name: "定编局聘",
+            type: "bar",
+            barGap: '5%',
+            barWidth: 50,
+            stack: "delimit",
+            data: dataList[startWith]['data'][3],
           },
           {
             name: "在岗",
             type: "bar",
+            barWidth: 50,
             stack: "onjob",
-            data: dataList[startWith]['data'][3],
+            data: dataList[startWith]['data'][4],
 		    	},
           {
             name: "不在岗",
             type: "bar",
             barWidth: 50,
             stack: "onjob",
-            data: dataList[startWith]['data'][4],
+            data: dataList[startWith]['data'][5],
           },
         ]
       };

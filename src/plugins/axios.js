@@ -16,12 +16,20 @@ axios.defaults.transformRequest = [function(data) {
   return ret;
 }];
 
+var hostname = window.location.hostname
+
+// console.log("wqqqqqqq",protocol, hostname)
+// var name = `http://${hostname}:8218`
+// console.log("namenamenamenamename",name)
+
 let config = {
   baseURL: process.env.NODE_ENV === 'development'
     // env for development
     ? '/api'
     // env for production
-    : 'http://211.149.184.113:8218',
+
+    // : `http://219.139.193.50:8218`,
+    : `http://${hostname}:8218`
 };
 
 const _axios = axios.create(config);

@@ -6,7 +6,7 @@
         <div class="chartContentSon1">
           <div class="chartTit1">年度考核</div>
           <div class="goto">
-            <a href="http://211.149.184.113:8218/index" target="_blank"
+            <a href="http://10.14.102.199/8190/index" target="_blank"
               >年度考核评价查询入口</a
             >
           </div>

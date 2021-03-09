@@ -48,7 +48,7 @@
             <div class="chartTitle">
               工期进度偏差排名
               <div class="goto">
-                <a href="http://211.149.184.113:8218/index" target="_blank">链接后台搜索入口</a>
+                <a :href="hostname" target="_blank">链接后台搜索入口</a>
               </div>
             </div>
             <div class="scroll-wrap" ref="rank">
@@ -136,6 +136,7 @@
     },
     data() {
       return {
+        hostname:"",
         isselfcjczSort:0,
         isselfczSort:0,
         isjoinrjczSort:0,
@@ -289,7 +290,7 @@
       };
     },
     created() {
-      
+      this.hostname = `http://${ window.location.hostname}:8218/index`
     },
     activated() {
       // this.initData()

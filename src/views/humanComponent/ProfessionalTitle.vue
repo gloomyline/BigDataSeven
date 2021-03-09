@@ -62,27 +62,34 @@ export default {
                         show:true,
                         trigger :'axis',
                       formatter: function (params, ticket, callback) {
+                          console.log(params);
+                          console.log(data.rstj);
+                          let paramsValue=[];
+                          params.forEach(item=>{
+                              paramsValue.push(item.value);
+                          })
+                          paramsValue=paramsValue.reverse();
                         var str =""
                         params.forEach(item => {
                            if(item.axisValue == "工程类"){
                                  if(gc[item.seriesIndex] != undefined){
-                                     str += `${gc[item.seriesIndex]} ${item.value} <br />`
+                                     str += `${gc[item.seriesIndex]} ${paramsValue[item.seriesIndex]} <br />`
                                 }
                             } else if(item.axisValue =="经济类"){
                                 if(jj[item.seriesIndex] != undefined){
-                                    str += `${jj[item.seriesIndex]} ${item.value} <br />`
+                                    str += `${jj[item.seriesIndex]}  ${paramsValue[item.seriesIndex]} <br />`
                                 }
                             }else if(item.axisValue =="政工类"){
                                   if(zgl[item.seriesIndex] != undefined){
-                                    str += `${zgl[item.seriesIndex]} ${item.value} <br />`
+                                    str += `${zgl[item.seriesIndex]}  ${paramsValue[item.seriesIndex]} <br />`
                                 }
                           }else if(item.axisValue =="会计类"){
                                   if(kj[item.seriesIndex] != undefined){
-                                    str += `${kj[item.seriesIndex]} ${item.value} <br />`
+                                    str += `${kj[item.seriesIndex]}  ${paramsValue[item.seriesIndex]} <br />`
                                 }
                             }else if(item.axisValue =="工人类"){
                                   if(gr[item.seriesIndex] != undefined){
-                                    str += `${gr[item.seriesIndex]} ${item.value} <br />`
+                                    str += `${gr[item.seriesIndex]}  ${paramsValue[item.seriesIndex]} <br />`
                                 }
                             } 
                         })
@@ -118,23 +125,10 @@ export default {
                     // Declare several bar series, each will be mapped
                     // to a column of dataset.source by default.
                     series: [
-                        {
+                          { 
                             type: 'bar',
                             stack:"smail",
-                            data:zgjgcs,
-                            barWidth:"50"
-                        },
-                        {
-                            
-                            type: 'bar',
-                            stack:"smail",
-                            data:gjgcs
-                        },
-                        {
-                           
-                            type: 'bar',
-                            stack:"smail",
-                            data:gcs
+                            data:jsy
                         },
                         {
                             
@@ -142,11 +136,21 @@ export default {
                             stack:"smail",
                             data:zg
                         },
-                        {
-                            
+                        { 
                             type: 'bar',
                             stack:"smail",
-                            data:jsy
+                            data:gcs
+                        },
+                          {
+                            type: 'bar',
+                            stack:"smail",
+                            data:gjgcs
+                        },
+                        {
+                            type: 'bar',
+                            stack:"smail",
+                            data:zgjgcs,
+                            barWidth:"50"
                         },
                     ]
                 }

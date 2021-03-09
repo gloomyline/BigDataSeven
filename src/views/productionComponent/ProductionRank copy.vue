@@ -26,7 +26,7 @@
       <el-table-column
       prop="pkeyrodeday"
       label="关键线路状态(天)"
-      sortable="true"
+      sortable
       width="100">
       </el-table-column>
       <el-table-column
@@ -57,7 +57,7 @@
       <el-table-column
         prop="diffday"
         label="偏差(%)"
-        sortable="true"
+        sortable
         width="100">
       </el-table-column>
     </el-table-column>
@@ -119,8 +119,6 @@ export default {
   },
   methods:{
     sortChange:function(column){
-        
-        console.log("colum",column)
         let _this = this;
 
         let tempTableList = []
@@ -129,38 +127,31 @@ export default {
         let fieldName = column.prop;
         let sortingType = column.order;        
         
-        // debugger
+        debugger
 
         tempTableList = Object.assign([], _this.tableData.filter(el => (el[fieldName] === ''  || el[fieldName] === null || el[fieldName] === undefined)))
         // 过滤出符合排序的数据形成新数组，再对该数组进行常规排序
         tempTableData = Object.assign([], _this.tableData.filter(el => (el[fieldName] !== '' && el[fieldName] !== null && el[fieldName] !== undefined)))
        
-        //  tempTableData.forEach(t=>{
-        //     switch (t[fieldName]){
-        //     case 'A': t[fieldName] = 1;break;
-        //     case 'B': t[fieldName] = 2;break;
-        //     case 'C': t[fieldName] = 3;break;
-        //     }
-        //     })
+         tempTableData.forEach(t=>{
+            switch (t[fieldName]){
+            case 'A': t[fieldName] = 1;break;
+            case 'B': t[fieldName] = 2;break;
+            case 'C': t[fieldName] = 3;break;
+            }
+            })
        if (sortingType !== null) {
         if (sortingType === 'descending') {
           // 冒泡排序新数组
-          // tempTableData = tempTableData.sort((a, b) => b[fieldName] - a[fieldName])
-          tempTableData = tempTableData.sort((a, b) => {
-            if(a[fieldName] > b[fieldName]){
-              return -1
-            }else{
-              return 0
-            }
-          })
+          tempTableData = tempTableData.sort((a, b) => b[fieldName] - a[fieldName])
           // 将不符合排序的数组重新放入排序完成的数组末尾，保证数据完整
-            // tempTableData.forEach(t=>{
-            // switch (t[fieldName]){
-            // case 1: t[fieldName] = 'A';break;
-            // case 2: t[fieldName] = 'B';break;
-            // case 3: t[fieldName] = 'C';break;
-            // }
-            // })
+            tempTableData.forEach(t=>{
+            switch (t[fieldName]){
+            case 1: t[fieldName] = 'A';break;
+            case 2: t[fieldName] = 'B';break;
+            case 3: t[fieldName] = 'C';break;
+            }
+            })
           // tempTableData.reverse()
           // tempTableList.forEach(el => {
           //   tempTableData.push(el)
@@ -169,44 +160,36 @@ export default {
           // tempTableData.reverse()
         } else { // 按照升序排序
           // 冒泡排序新数组
-          // tempTableData = tempTableData.sort((a, b) => a[fieldName] - b[fieldName])
-          tempTableData = tempTableData.sort((a, b) => {
-            console.log("a[fieldName] - b[fieldName]","为正",a[fieldName] >[fieldName])
-            if(a[fieldName] < b[fieldName]){
-              return -1
-            }else{
-              return 0
-            }
-          })
+          tempTableData = tempTableData.sort((a, b) => a[fieldName] - b[fieldName])
           // 将不符合排序的数组重新放入排序完成的数组末尾，保证数据完整
-          //  tempTableData.forEach(t=>{
-          //   switch (t[fieldName]){
-          //   case 1: t[fieldName] = 'A';break;
-          //   case 2: t[fieldName] = 'B';break;
-          //   case 3: t[fieldName] = 'C';break;
-          //   }
-          //   })
+           tempTableData.forEach(t=>{
+            switch (t[fieldName]){
+            case 1: t[fieldName] = 'A';break;
+            case 2: t[fieldName] = 'B';break;
+            case 3: t[fieldName] = 'C';break;
+            }
+            })
           // tempTableList.forEach(el => {
           //   tempTableData.push(el)
           // })
-            tempTableData = tempTableData.concat(tempTableList);
+            tempTableData = tempTableList.concat(tempTableData);
         }
           _this.tableData = Object.assign([], tempTableData)
         } else {
           // 如果是取消排序，则将数据还原成接口返回的数据
-          // _this.tableData = Object.assign([], _this.allTableData)
+          _this.tableData = Object.assign([], _this.allTableData)
         }
         
         
     },
-    // sortByData(data1,data2,type){
-    //   console.log("sortdata",data1,data2,type)
-    //   if (type == 'asc') {
-    //       return data1 > data2? -1 : 1
-    //   } else {
-    //       return data1 > data2? -1 : 1  
-    //   }
-    // },
+    sortByData(data1,data2,type){
+      console.log("sortdata",data1,data2,type)
+      if (type == 'asc') {
+          return data1 > data2? -1 : 1
+      } else {
+          return data1 > data2? -1 : 1  
+      }
+    },
    async initData() {
       console.log("ny------",this.ny)
       productionNewApi.fetchRankListData(this.ny).then((response)=>{
@@ -224,7 +207,7 @@ export default {
 
     },
     tableRowClassName({row, rowIndex}) {
-      // console.log("rowrowrow",row)
+      console.log("rowrowrow",row)
       if(row.pkeyrodeday<0){
         return "rowcolorred"
       }

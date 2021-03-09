@@ -210,36 +210,42 @@ export default {
      var deptid = []
      var deptName = []
      var reality=[]
-     var plan = []
+     //var plan = []
      var costing = []
-     var useFee=[]
+    // var useFee=[]
      self.bigCompare.map(item => {
        deptid.push(item.deptid)
        deptName.push(item.deptName)
-       reality.push(item.reality)
-       plan.push(item.plan)
-       costing.push(item.costing)
-       useFee.push(item.useFee)
+       reality.push(Math.ceil(item.reality/item.plan*100))
+       //plan.push(item.plan)
+       if (item.costing==0){
+         costing.push(0)
+       }else{
+         costing.push(Math.ceil(item.useFee/item.costing*100))
+       }
+       
+       //useFee.push(item.useFee)
      })
+     console.log('reality',reality);
      const compareOption = {
         xData: deptName,
         legendData: [
           {
-            name: "现场配置",
+            name: "现场配置/计划配置",
           },
           {
-            name: "计划配置",
+            name: "机械使用费/机械责任成本",
           },
-          {
-            name: "机械使用费",
-          },
-          {
-            name: "机械责任成本",
-          },
+          // {
+          //   name: "机械使用费",
+          // },
+          // {
+          //   name: "机械责任成本",
+          // },
         ],
         seriesData: [
           {
-            name: "现场配置",
+            name: "现场配置/计划配置",
             type: "bar",
             data: reality,
             barWidth: "20", //---柱形宽度
@@ -251,6 +257,7 @@ export default {
               rotate: 0, //---旋转角度
               color: "#ffffff",
               fontSize: 16,
+              formatter: '{c}%'
             },
             yAxisIndex:1,
             itemStyle: {
@@ -260,9 +267,9 @@ export default {
             },
           },
           {
-            name: "计划配置",
+            name: "机械使用费/机械责任成本",
             type: "bar",
-            data:plan,
+            data:costing,
             barWidth: "20", //---柱形宽度
             // barCategoryGap: "20%", //---柱形间距
             label: {
@@ -272,6 +279,7 @@ export default {
               rotate: 0, //---旋转角度
               color: "#ffffff",
               fontSize: 16,
+                formatter: '{c}%'
             },
             yAxisIndex:1,
             itemStyle: {
@@ -280,46 +288,46 @@ export default {
               barBorderRadius: [15, 15, 0, 0],
             },
           },
-          {
-            name: "机械使用费",
-            type: "bar",
-            data: costing,
-            barWidth: "20", //---柱形宽度
-            // barCategoryGap: "20%", //---柱形间距
-            label: {
-              //---图形上的文本标签
-              show: true,
-              position: "top", //---相对位置
-              rotate: 0, //---旋转角度
-              color: "#ffffff",
-              fontSize: 16,
-            },
-            itemStyle: {
-              //---图形形状
+          // {
+          //   name: "机械使用费",
+          //   type: "bar",
+          //   data: costing,
+          //   barWidth: "20", //---柱形宽度
+          //   // barCategoryGap: "20%", //---柱形间距
+          //   label: {
+          //     //---图形上的文本标签
+          //     show: true,
+          //     position: "top", //---相对位置
+          //     rotate: 0, //---旋转角度
+          //     color: "#ffffff",
+          //     fontSize: 16,
+          //   },
+          //   itemStyle: {
+          //     //---图形形状
               
-              barBorderRadius: [15, 15, 0, 0],
-            },
-          },
-          {
-            name: "机械责任成本",
-            type: "bar",
-            data: useFee,
-            barWidth: "20", //---柱形宽度
-            // barCategoryGap: "20%", //---柱形间距
-            label: {
-              //---图形上的文本标签
-              show: true,
-              position: "top", //---相对位置
-              rotate: 0, //---旋转角度
-              color: "#ffffff",
-              fontSize: 16,
-            },
-            itemStyle: {
-              //---图形形状
+          //     barBorderRadius: [15, 15, 0, 0],
+          //   },
+          // },
+          // {
+          //   name: "机械责任成本",
+          //   type: "bar",
+          //   data: useFee,
+          //   barWidth: "20", //---柱形宽度
+          //   // barCategoryGap: "20%", //---柱形间距
+          //   label: {
+          //     //---图形上的文本标签
+          //     show: true,
+          //     position: "top", //---相对位置
+          //     rotate: 0, //---旋转角度
+          //     color: "#ffffff",
+          //     fontSize: 16,
+          //   },
+          //   itemStyle: {
+          //     //---图形形状
               
-              barBorderRadius: [15, 15, 0, 0],
-            },
-          },
+          //     barBorderRadius: [15, 15, 0, 0],
+          //   },
+          // },
         ],
         arr,
       };
@@ -668,9 +676,10 @@ export default {
       var myChart = echarts.init(document.getElementById(id));
       var _that = this;
       var option = {
-        color:["#CAF982","#56CA95","#36A9CE","#FFBA55"],
+        color:["#e62d2d","#2ae497"],
         tooltip: {
           trigger: "axis",
+          formatter:`{b}<br>{a}{c}%<br>{a1}{c1}%`
         },
         dataZoom : [
           {
@@ -754,7 +763,7 @@ export default {
             position: "left", //---y轴位置
             offset: 0, //---y轴相对于默认位置的偏移
             type: "value", //---轴类型，默认'category'
-            name: "万元", //---轴名称
+            //name: "万元", //---轴名称
             nameLocation: "end", //---轴名称相对位置value
             nameTextStyle: {
               //---坐标轴名称样式
@@ -802,10 +811,10 @@ export default {
           },
           {
             show: true, //---是否显示
-            position: "right", //---y轴位置
+            position: "left", //---y轴位置
             offset: 0, //---y轴相对于默认位置的偏移
             type: "value", //---轴类型，默认'category'
-            name: "数量(台数)", //---轴名称
+            // name: "数量(台数)", //---轴名称
             nameLocation: "end", //---轴名称相对位置value
             nameTextStyle: {
               //---坐标轴名称样式

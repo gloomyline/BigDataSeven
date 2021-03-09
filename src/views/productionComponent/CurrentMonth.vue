@@ -6,8 +6,10 @@
         :data="tableData"
         height="8.6rem"
         border
+        class="customTable"
         @row-click="openDetails"
-        style="width: 100%">
+        style="width: 100%"
+        show-summary>
         <el-table-column
           type="index"
           label="序号"
@@ -18,9 +20,16 @@
           label="项目名称"
           min-width="180">
         </el-table-column>
+        
+        
         <el-table-column
           prop="plan"
           label="计划产值"
+          min-width="180">
+        </el-table-column>
+        <el-table-column
+          prop="progess"
+          label="主要形象进度"
           min-width="180">
         </el-table-column>
       </el-table>     
@@ -42,6 +51,9 @@
     created() {
       this.fetchPlannmonthData(this.ny)
     },
+    mounted(){
+      this.showSummariesPosition()
+    },
     watch:{
       ny:function(newValue,oldValue){
         this.fetchPlannmonthData(this.ny);      
@@ -49,6 +61,13 @@
 
   },
     methods: {
+      showSummariesPosition() {
+        const table = document.querySelector('.customTable')  // customTable这个是在el-table定义的类名
+        const footer = document.querySelector('.customTable .el-table__footer-wrapper')
+        const body = document.querySelector('.customTable .el-table__body-wrapper')
+        table.removeChild(footer)  // 移除表格最下方的合计行
+        table.insertBefore(footer, body) // 把合计行插入到表格body的上面
+      },
       async fetchPlannmonthData() {
         const res = await productionNewApi.fetchPlannmonthData(this.ny);
         this.tableData = res.data;
@@ -80,4 +99,12 @@
   }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+::v-deep .el-table__footer-wrapper tbody td, .el-table__header-wrapper tbody td {
+    background-color: transparent;
+    color: #606266;
+}
+.talble-container{
+  margin-bottom:50px;
+}
+</style>

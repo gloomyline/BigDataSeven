@@ -70,9 +70,37 @@ export default {
   mounted() {},
   created() {
     console.log("this.ny",this.ny)
-    if (!this.ny){
-      const date = new Date();
-      this.ny = `${date.getFullYear()}-${('0' + date.getMonth()).substr(-2)}`
+    if(!this.ny){
+      const _date = new Date();
+      var month = _date.getMonth();
+      var year = _date.getFullYear();
+      var day = _date.getDate()
+      var mm
+      if(day<25){
+         if(month==0){
+            month = 12
+             mm = month < 10 ? `0${month}` : month;
+            year=year-1
+          } else {
+            mm = month < 10 ? `0${month}` : month;
+          }
+
+      }else{
+        if(month==0){
+            month = 1
+            mm = month < 10 ? `0${month}` : month; 
+        }else{
+            month = month+1
+            mm = month < 10 ? `0${month}` : month; 
+        }
+
+      }
+      
+
+      this.date=`${year}-${mm}`
+      this.ny=`${year}-${mm}`
+      // this.ny="2020-12"
+      console.log("ny11111",this.ny)
     }
     this.initData()
     const loading = this.$loading({

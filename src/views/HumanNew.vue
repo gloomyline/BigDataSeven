@@ -51,7 +51,6 @@ import humanYear from "./humanComponent/HumanYear.vue";
 import professionalTitle from "./humanComponent/ProfessionalTitle"
 
 export default {
-  provide:["ny"],
   components: {
 	humanOrganNew,
     // humanOrgan,
@@ -62,7 +61,38 @@ export default {
     professionalTitle
   },
   mounted() {
-    this.ny = `${(new Date()).getFullYear()}-${('00' + (new Date()).getMonth()).substr(-2)}`;
+
+    // this.ny = `${(new Date()).getFullYear()}-${('00' + (new Date()).getMonth()).substr(-2)}`;
+    if(!this.ny){
+      const _date = new Date();
+      var month = _date.getMonth();
+      var year = _date.getFullYear();
+      var day = _date.getDate()
+      var mm
+      if(day<25){
+         if(month==0){
+            month = 12
+             mm = month < 10 ? `0${month}` : month;
+            year=year-1
+          } else {
+            mm = month < 10 ? `0${month}` : month;
+          }
+
+      }else{
+        if(month==0){
+            month = 1
+            mm = month < 10 ? `0${month}` : month; 
+        }else{
+            month = month+1
+            mm = month < 10 ? `0${month}` : month; 
+        }
+      }
+
+      this.date=`${year}-${mm}`
+      this.ny=`${year}-${mm}`
+      // this.ny="2020-12"
+      console.log("ny11111",this.ny)
+    }
   },
   created() {
     const loading = this.$loading({

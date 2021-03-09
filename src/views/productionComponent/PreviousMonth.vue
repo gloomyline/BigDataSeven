@@ -20,26 +20,44 @@
         </el-table-column>
         <el-table-column
           prop="plan"
-          label="计划产值"
-          min-width="180">
+          label="计划产值">
         </el-table-column>
         <el-table-column
           prop="finish"
-          label="完成产值"
-          min-width="180">
+          label="完成产值">
         </el-table-column>
         <el-table-column
           prop="finishrate"
-          label="完成比例"
-          min-width="180">
+          label="完成比例">
           <template slot-scope="scope">
             <span v-if="scope.row.finishrate">{{`${scope.row.finishrate}%`}}</span>
           </template>
         </el-table-column>
+
+        <el-table-column
+          prop="lastunfinish"
+          label="上月未完成">
+        </el-table-column>
+        <el-table-column
+          prop="scoreproduct"
+          label="产值得分">
+        </el-table-column>
+        <el-table-column
+          prop="scoreprogress"
+          label="形象进度得分">
+        </el-table-column>
+        <el-table-column
+          prop="scorenode"
+          label="节点工期得分">
+        </el-table-column>
+        <el-table-column
+          prop="scoretotal"
+          label="总得分">
+        </el-table-column>
+
         <el-table-column
           prop="score"
-          label="类别"
-          min-width="180">
+          label="类别">
         </el-table-column>
       </el-table>     
     </div>

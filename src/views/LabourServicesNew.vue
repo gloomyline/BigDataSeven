@@ -181,6 +181,7 @@ export default {
   data() {
     return {
       ny:this.$route.params.ny,
+      date:this.$route.params.ny,
       current: 0,
       tabs: ['综合管理', '台帐管理' ],
       currentComponent: 'IntegratedManagement',
@@ -190,7 +191,7 @@ export default {
       // LabourusageData:[],
       LabourusagedetailData:[],
       labourconfigrateDetails:[],
-      date: '',
+      // date: '',
       pickerOptions: {
         disabledDate(time) {
           return time >Date.now();
@@ -210,8 +211,37 @@ export default {
     }, 2000);
   },
   created() {
-    const _date = new Date()
-    this.date = `${_date.getFullYear()}-${('0' + _date.getMonth()).substr(-2)}`
+    if(!this.date){
+      const _date = new Date();
+      var month = _date.getMonth();
+      var year = _date.getFullYear();
+      var day = _date.getDate()
+      var mm
+      if(day<25){
+         if(month==0){
+            month = 12
+             mm = month < 10 ? `0${month}` : month;
+            year=year-1
+          } else {
+            mm = month < 10 ? `0${month}` : month;
+          }
+
+      }else{
+        if(month==0){
+            month = 1
+            mm = month < 10 ? `0${month}` : month; 
+        }else{
+            month = month+1
+            mm = month < 10 ? `0${month}` : month; 
+        }
+      }
+      this.date=`${year}-${mm}`
+      this.ny=`${year}-${mm}`
+      // this.ny="2020-12"
+      console.log("ny",this.ny)
+    }
+    // const _date = new Date()
+    // this.date = `${_date.getFullYear()}-${('0' + _date.getMonth()).substr(-2)}`
     // this.initData()
   },
   // watch: {

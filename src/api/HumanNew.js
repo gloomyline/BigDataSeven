@@ -43,6 +43,11 @@ export default {
       const response = await axios.get('/emp/deptAllocate')
       return response.data;
     },
+    //调配人员信息详情每科室人员详情deptAllocateDetails?deptId=57&pro=办公室事务管理&job=second
+    async fetchPersonInfoDetail(deptId,pro,job){
+      const response = await axios.get('/emp/deptAllocateDetails',{params:{deptId:deptId,pro:pro,job:job}})
+      return response.data;
+    },
     //年度绩效
     async fetchDispatchHumanDetailData(date){
       const response = await axios.get('/emp/findPerformance',{params:{ny:date}})
