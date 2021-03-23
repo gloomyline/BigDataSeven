@@ -26,11 +26,11 @@ module.exports = {
         // target: 'http://192.168.3.21:8109',
         // target: 'http://192.168.3.22:8108',
         // target: 'http://192.168.3.16:8108',
-        target: 'http://192.168.3.16:8108',
+        // target: 'http://192.168.3.16:8108',
         // target: 'http://192.168.3.10:8108',
         // target: 'http://192.168.3.115:8108',
         // target: 'http://219.139.193.50:8218',
-        // target: 'http://219.139.193.50:8218',
+        target: 'http://219.139.193.50:8218',
         changeOrigin: true,
         secure: false,
         pathRewrite: {

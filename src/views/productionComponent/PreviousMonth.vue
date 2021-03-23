@@ -59,6 +59,10 @@
           prop="score"
           label="类别">
         </el-table-column>
+        <el-table-column
+          prop="statusdesc"
+          label="状态">
+        </el-table-column>
       </el-table>     
     </div>
   </div>
