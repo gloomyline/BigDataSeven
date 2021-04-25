@@ -879,6 +879,7 @@
             
                 
           })
+          console.log("this.pieOption==",this.pieOption.pieData)
           console.log("this.pieOption.pieData",this.pieOption.pieData)
           this.drawPieChart("pieChart", this.pieOption.pieData,'片区公司产值情况');
         }
@@ -927,6 +928,7 @@
               selectedMode: "single",
               data: pieData,
               label: {
+                fontWeight:'bolder',
                 formatter: (params)=>{
                   return params.name.slice(0,5)+'('+ params.percent+"%）"
                 },
@@ -1323,7 +1325,8 @@
           }
           span.sgreen {
             // font-size: 0.3rem;
-            color: green;
+            // color: green;
+            color: #30F606;
           }
           span.syellow {
             // font-size: 0.3rem;

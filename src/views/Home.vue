@@ -18,7 +18,7 @@
         placeholder="选择月">
       </el-date-picker>
     </div>
-    <h1 ><a :href="hostname" target="_blank">七公司宏观成本管理大数据</a></h1>
+    <h1 ><a :href="hostname" class="homepage-title" target="_blank">七公司宏观成本管理大数据</a></h1>
     <dv-decoration-5 class="header-svg"></dv-decoration-5>
     <div class="weather">
       <img src="../assets/picture/weather.png" />
@@ -29,13 +29,15 @@
   <div class="mainbox">
     <ul class="clearfix">
       <li>
-        <dv-border-box-1 class="section-box">
+        <dv-border-box-1 class="section-box" >
           <div class="alltitle" @click="goRouter('ProductionNew')">
             生产管理
             <!-- <dv-decoration-3 style="margin:0 40%;width:20%;height:30px;" /> -->
           </div>
-
-          <div class="sy" id="fb1"></div>
+       <div id="homeProduction" class="home-production-border" @click="layerOpen('homeProduction','生产管理')">
+          <div class="sy home-production-height"  id="fb1">
+           
+          </div>
           <!-- <div class="content">
             <a class="block " :class="[judgeColor(monthConfig)]" href="">当月完成产值</a>
             <a class="block " :class="[judgeColor(yearConfig)]" href="">年累完成产值</a>
@@ -43,12 +45,13 @@
             <dv-water-level-pond :config="monthConfig" class="sy"  />
             <dv-water-level-pond :config="yearConfig" class="sy"  />
             <dv-water-level-pond :config="startConfig" class="sy"  />
-          </div>-->
+          </div> @click="layerOpen('fb2','生产管理')"-->
 
-          <div class="sy" id="fb2"></div>
-          <div class="sy" id="fb3"></div>
+          <div class="sy home-production-height"  id="fb2"></div>
+          <div class="sy home-production-height"  id="fb3"></div>
           <span class="unit" style="right: 20px;top: 20px;">单位：万元</span>
           <!-- <div class="boxfoot"></div> -->
+          </div>
         </dv-border-box-1>
         <dv-border-box-1 class="section-box">
           <div class="alltitle" @click="goRouter('LabourServicesNew')">劳务管理</div>
@@ -152,7 +155,10 @@
 <script>
 import { homeApi } from "@/api";
 import "@/assets/js/echarts.min.js";
+
 import $ from "jquery";
+
+
 import echarts from "echarts";
 import allCtyData from "@/assets/js/allCty.json";
 import TurnoverDetailsVue from './TurnoverDetails.vue';
@@ -163,6 +169,7 @@ export default {
   components: {},
   data() {
     return {
+      showLayer:-1,
       hostname:'',
       ny:"",
       count:"",
@@ -1702,8 +1709,7 @@ export default {
         num =0
       }
       $("#comconent").html("")
-      $("#comconent").html(`<div style="text-align:center;font-size:18px;">${comName[num]}</div><br>${comContent[num]}`)
-
+      $("#comconent").html(`<div style="text-align:center;font-size:18px;display:block;">${comName[num]}</div><div style="display:block">${comContent[num]}</div>`)
 
       for(var i=0;i<provincesDataIndex[num].length;i++){
       chart.dispatchAction({
@@ -4012,7 +4018,8 @@ export default {
           data: ["完成"],
           selectedMode: false, // disable symbol selected mode
           textStyle: {
-            color: "rgba(255,255,255,.5)",
+            // color: "rgba(255,255,255,.5)",
+             color: "rgba(255,255,255,1)",
             fontSize: "12"
           },
           formatter: function(params) {
@@ -4119,7 +4126,8 @@ export default {
           itemHeight: 10,
           data: ["完成"],
           textStyle: {
-            color: "rgba(255,255,255,.5)",
+            // color: "rgba(255,255,255,.5)",
+            color: "rgba(255,255,255,1)",
             fontSize: "12"
           },
           selectedMode: false,
@@ -4226,7 +4234,8 @@ export default {
           itemHeight: 10,
           data: ["完成"],
           textStyle: {
-            color: "rgba(255,255,255,.5)",
+            // color: "rgba(255,255,255,.5)",
+            color: "rgba(255,255,255,1)",
             fontSize: "12"
           },
           selectedMode: false,
@@ -4283,6 +4292,42 @@ export default {
       var s = dt.getSeconds(); //获取秒
       this.time =
         y + "年" + mt + "月" + day + "-" + h + "时" + m + "分" + s + "秒";
+    },
+    
+    layerOpen(id,title){
+      this.showLayer++;
+      
+      if(this.showLayer>0)return;
+      let that = this;
+      layer.open({
+      type: 1 //Page层类型
+      ,area: ['100%', '100%']
+      ,title: title
+      ,shade: 0.6 //遮罩透明度
+      ,maxmin: false//允许全屏最小化
+      ,anim: -1 //0-6的动画形式，-1不开启
+      ,move: false
+      ,content: $('#'+id)
+      ,success: function (layero, index) {
+          $('#'+id).addClass("homepage-layer-div")  
+           var myChart1 = echarts.init(document.getElementById('fb1'));
+           myChart1.resize();
+            var myChart2 = echarts.init(document.getElementById('fb2'));
+           myChart2.resize();
+            var myChart3 = echarts.init(document.getElementById('fb3'));
+           myChart3.resize();
+       }
+      ,end: function(index, layero){ 
+          $('#'+id).removeClass("homepage-layer-div")
+         var myChart1 = echarts.init(document.getElementById('fb1'));
+           myChart1.resize();
+            var myChart2 = echarts.init(document.getElementById('fb2'));
+           myChart2.resize();
+            var myChart3 = echarts.init(document.getElementById('fb3'));
+           myChart3.resize();
+          that.showLayer=-1;
+      }   
+      });    
     }
   },
   async mounted() {
@@ -4375,7 +4420,7 @@ export default {
 </style>
 <style lang="css" scoped >
 .map{
-  height:5rem
+  height:4.7rem
 }
 .map4{height:5rem}
 .comconent_wrapper{
@@ -4387,7 +4432,8 @@ export default {
   height:100%;
   background:rgb(255,255,255,0);
   width:100%;
-  top:12px;
+  /* top:12px; */
+   top:0.05rem;
   overflow:hidden;
   text-align:left;
   color:#fff;
@@ -4488,7 +4534,8 @@ export default {
   height: 2.2rem;
 }
 .dv-border-box-13.bar {
-  height: 2.2rem;
+  /* height: 2.2rem; */
+  height: 2.5rem;
 }
 
 .boxfoot:before,
@@ -4508,6 +4555,21 @@ export default {
 }
 .map3 img{
   height:4rem;
+}
+
+.homepage-title{
+  color:#fff;
+}
+.homepage-layer-div{
+  width:100% !important;
+  height:90% !important;
+}
+.home-production-border{
+  width:100%;
+  height: 2.65rem;
+}
+.home-production-height{
+  height:98%!important;
 }
 </style>
 

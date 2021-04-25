@@ -16,6 +16,7 @@
     "element-ui": "^2.13.2",
     "express": "^4.17.1",
     "jquery": "^3.5.1",
+    "layui-layer": "^1.0.9",
     "v-click-outside-x": "^4.1.0",
     "v-org-tree": "^1.0.12",
     "vue": "^2.6.11",

@@ -31,6 +31,7 @@ module.exports = {
         // target: 'http://192.168.3.115:8108',
         // target: 'http://219.139.193.50:8218',
         target: 'http://219.139.193.50:8218',
+        //  target: 'http://192.168.3.17:8108',
         changeOrigin: true,
         secure: false,
         pathRewrite: {

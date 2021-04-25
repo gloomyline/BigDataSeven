@@ -19,7 +19,15 @@ body {
 }
 
 body {
-    background: #000d4a url(~@/assets/images/bg.jpg) center top;
+    /* background: #000d4a url(~@/assets/images/bg.jpg) center top; */
+    /* background: #000d4a url(~@/assets/images/project_bg.png) center top; */
+    /* background: #055DC7; */
+    /* background: #1b476a; */
+    
+    /* background: #75C8F3; */
+    /* background: #D1F4F6; */
+    /* background: #072673; */
+    background: #061F5D;
     background-size: cover;
     color: #666;
     font-size: .1rem;

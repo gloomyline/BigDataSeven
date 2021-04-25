@@ -63,8 +63,8 @@
 <script>
 import echarts from "echarts";
 import { equipmentApi } from '@/api';
-import EquipmentPresence from '@/views/equipment/EquipmentPresence'
-import EquipmentUsage from '@/views/equipment/EquipmentUsage'
+import EquipmentPresence from '@/views/Equipment/EquipmentPresence'
+import EquipmentUsage from '@/views/Equipment/EquipmentUsage'
 
 
 export default {

@@ -315,7 +315,7 @@ export default {
 }
 
 ::v-deep .blink .cell {
-  font-size: 22px;
+  font-size: 22px!important;
   font-weight: bold;
   background: linear-gradient(to right, red, red);
   -webkit-background-clip: text;
@@ -357,7 +357,10 @@ export default {
 	background-color:rgba(2,2,2,0)
 }
 ::v-deep tbody tr.el-table__row.rowcolorred > td >div.cell {
+  // color:#F45853 !important;
   color:#F45853 !important;
+  font-weight: bold !important;
+  font-size: 15px ;
 } 
 
 </style>

@@ -30,7 +30,7 @@ Vue.use(ElementUI);
 Vue.prototype.$utils = {
   currency,
 }
-
+import layer from "layui-layer";
 new Vue({
   router,
   filters: {
