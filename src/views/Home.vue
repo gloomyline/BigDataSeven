@@ -2071,7 +2071,7 @@ export default {
           itemHeight: 10,
           data: ["大型主要设备", "其他在场设备"],
           textStyle: {
-            color: "rgba(255,255,255,.5)",
+            color: "rgba(255,255,255,1)",
             fontSize: "12"
           }
         },
@@ -2088,11 +2088,14 @@ export default {
               { value: self.equipment.bigMain , name: "大型主要设备" },
               { value: self.equipment.otherUsing , name: "其他在场设备" }
             ],
+            avoidLabelOverlap:true,
             itemStyle: {
               normal: {
                 label: {
+                  color:'#fff',
+                   fontWeight:'bold',
                   show: true,
-                  formatter: "{b} : {c}",
+                  formatter: "{b}\n{c}",
                   position: "inner"
                 },
                 //labelLine: { show: true }
@@ -2134,8 +2137,9 @@ export default {
             }
           }
         ],
-        color: ["#27d08a", "#ffcc5d", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
-        // tooltip: {
+        // color: ["#27d08a", "#ffcc5d", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
+           color: ["#159963", "#CD9E38", "#0f8cd6", "#0fa0d6", "#0fb4d6"],
+        // tooltip: {#FDA303
         //   trigger: "item",
         //   formatter: "{b} : {c} ({d}%)"
         // },
@@ -2145,6 +2149,7 @@ export default {
             radius: "45%",
             center: ["50%", "42%"],
             selectedMode: "single",
+            avoidLabelOverlap:true,
             data: [
               {
                 value: self.equipment.isUsing ,
@@ -2154,13 +2159,15 @@ export default {
               // { value: self.equipment.netValue , name: "净值" }
             ],
             label: {
+              color:'#fff',
+              fontWeight:'bold',
               show: true,
               // formatter: "{b} : {c}\n({d}%)",
               formatter:function(params){
                 console.log("哈哈哈",params)
-                return `${params.name}:${params.value}\n净值比:${netWorth[params.dataIndex]}%`
+                return `${params.name}:${params.value}\n净值比\n${netWorth[params.dataIndex]}%`
               },
-              padding: 7,
+              padding:7,
               height:15,
               align: 'left',
               lineHeight:14,
