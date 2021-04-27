@@ -26,11 +26,14 @@
   }
 }
 .layui-layer.layui-layer-page{
-   background: #061F5D !important;
+   background: #07329A !important;
 }
 .layui-layer .layui-layer-title{
-   background: rgba(0,0,0,0.1) !important;
+  //  background: rgba(196, 125, 125, 0.1) !important;
+    background: #072F8F !important;
    color:#fff;
+   font-weight: bold;
+   font-size:0.3rem;
 }
 
 

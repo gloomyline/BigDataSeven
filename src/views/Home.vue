@@ -49,7 +49,7 @@
 
           <div class="sy home-production-height"  id="fb2"></div>
           <div class="sy home-production-height"  id="fb3"></div>
-          <span class="unit" style="right: 20px;top: 20px;">单位：万元</span>
+          <span class="unit" id="homeproductUnit" style="right: 20px;top: 20px;">单位：万元</span>
           <!-- <div class="boxfoot"></div> -->
           </div>
         </dv-border-box-1>
@@ -4159,6 +4159,7 @@ export default {
               normal: {
                 label: {
                   show: false,
+                  fontSize:12,
                   //"{b} : {c}",
                   formatter: function(params) {
                     if (params.name === "完成") {
@@ -4317,24 +4318,58 @@ export default {
       ,content: $('#'+id)
       ,success: function (layero, index) {
           $('#'+id).addClass("homepage-layer-div")  
-           var myChart1 = echarts.init(document.getElementById('fb1'));
-           myChart1.resize();
-            var myChart2 = echarts.init(document.getElementById('fb2'));
-           myChart2.resize();
-            var myChart3 = echarts.init(document.getElementById('fb3'));
-           myChart3.resize();
+           $('#homeproductUnit').addClass("homepage-layer-unit") 
+          //  var myChart1 = echarts.init(document.getElementById('fb1'));
+          //  myChart1.resize();
+          //   var myChart2 = echarts.init(document.getElementById('fb2'));
+          //  myChart2.resize();
+          //   var myChart3 = echarts.init(document.getElementById('fb3'));
+          //  myChart3.resize();
+          that.layerSetFontChart('fb1')
+          that.layerSetFontChart('fb2')
+          that.layerSetFontChart('fb3')
        }
       ,end: function(index, layero){ 
           $('#'+id).removeClass("homepage-layer-div")
-         var myChart1 = echarts.init(document.getElementById('fb1'));
-           myChart1.resize();
-            var myChart2 = echarts.init(document.getElementById('fb2'));
-           myChart2.resize();
-            var myChart3 = echarts.init(document.getElementById('fb3'));
-           myChart3.resize();
-          that.showLayer=-1;
+           $('#homeproductUnit').removeClass("homepage-layer-unit") 
+        //  var myChart1 = echarts.init(document.getElementById('fb1'));
+        //    myChart1.resize();
+        //     var myChart2 = echarts.init(document.getElementById('fb2'));
+        //    myChart2.resize();
+        //     var myChart3 = echarts.init(document.getElementById('fb3'));
+        //    myChart3.resize();
+         
+         that.layerResetChart('fb1')
+          that.layerResetChart('fb2')
+          that.layerResetChart('fb3')
+           that.showLayer=-1;
       }   
       });    
+    },
+    layerSetFontChart(id){
+       let myChart1 = echarts.init(document.getElementById(id));
+       if(!myChart1)return;
+       
+       let option = myChart1.getOption();
+       if(!option)return;
+       option.title[0].textStyle.fontSize = 23;
+        option.title[1].textStyle.fontSize = 22;
+        option.series[0].label.fontSize = 20
+        option.legend[0].textStyle.fontSize = 20
+        myChart1.setOption(option)
+        myChart1.resize();
+    },
+    layerResetChart(id){
+       let myChart1 = echarts.init(document.getElementById(id));
+         if(!myChart1)return;
+       let option = myChart1.getOption();
+       if(!option)return;
+       option.title[0].textStyle.fontSize = 15;
+        option.title[1].textStyle.fontSize = 14;
+        option.series[0].label.fontSize = 12
+         option.legend[0].textStyle.fontSize = 12
+        myChart1.setOption(option)
+        myChart1.resize();
     }
   },
   async mounted() {
@@ -4577,6 +4612,9 @@ export default {
 }
 .home-production-height{
   height:98%!important;
+}
+.homepage-layer-unit{
+  font-size:0.3rem;
 }
 </style>
 
