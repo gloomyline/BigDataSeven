@@ -3997,7 +3997,7 @@ export default {
             textStyle: {
               // color: "#57D1C9",
               color: "#ff0000",
-              fontSize: "15"
+              fontSize: this.showLayer==-1?"15":"23"
             }
           },
           {
@@ -4006,7 +4006,7 @@ export default {
             left: "center",
             textStyle: {
               color: "#57D1C9",
-              fontSize: "14"
+              fontSize: this.showLayer==-1?"14":"22"
             }
           }
         ],
@@ -4027,7 +4027,7 @@ export default {
           textStyle: {
             // color: "rgba(255,255,255,.5)",
              color: "rgba(255,255,255,1)",
-            fontSize: "12"
+            fontSize: this.showLayer==-1?"12":"20"
           },
           formatter: function(params) {
 
@@ -4051,6 +4051,7 @@ export default {
               normal: {
                 label: {
                   show: false,
+                  fontSize: this.showLayer==-1?"12":"20",
                   formatter: function(params) {
                     if (params.name === "完成") {
                       return (
@@ -4106,7 +4107,7 @@ export default {
             left: "center",
             textStyle: {
               color: "#FFE869",
-              fontSize: "15"
+              fontSize: this.showLayer==-1?"15":"23"
             }
           },
           {
@@ -4115,7 +4116,7 @@ export default {
             left: "center",
             textStyle: {
               color: "#FFE869",
-              fontSize: "14"
+              fontSize: this.showLayer==-1?"14":"22"
             }
           }
         ],
@@ -4135,7 +4136,7 @@ export default {
           textStyle: {
             // color: "rgba(255,255,255,.5)",
             color: "rgba(255,255,255,1)",
-            fontSize: "12"
+            fontSize: this.showLayer==-1?"12":"20"
           },
           selectedMode: false,
           formatter: function(params) {
@@ -4159,7 +4160,7 @@ export default {
               normal: {
                 label: {
                   show: false,
-                  fontSize:12,
+                   fontSize: this.showLayer==-1?"12":"20",
                   //"{b} : {c}",
                   formatter: function(params) {
                     if (params.name === "完成") {
@@ -4215,7 +4216,7 @@ export default {
             left: "center",
             textStyle: {
               color: "#EE6A50",
-              fontSize: "15"
+              fontSize: this.showLayer==-1?"15":"23"
             }
           },
           {
@@ -4224,7 +4225,7 @@ export default {
             left: "center",
             textStyle: {
               color: "#EE6A50",
-              fontSize: "14"
+              fontSize: this.showLayer==-1?"14":"22"
             }
           }
         ],
@@ -4244,7 +4245,7 @@ export default {
           textStyle: {
             // color: "rgba(255,255,255,.5)",
             color: "rgba(255,255,255,1)",
-            fontSize: "12"
+            fontSize: this.showLayer==-1?"12":"20"
           },
           selectedMode: false,
           formatter: function(params) {
@@ -4268,6 +4269,7 @@ export default {
               normal: {
                 label: {
                   show: false,
+                  fontSize: this.showLayer==-1?"12":"20",
                   formatter: function(params) {
                     if (params.name === "完成") {
                       return params.name + "：" + params.data.value;
