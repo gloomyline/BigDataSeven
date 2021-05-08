@@ -51,7 +51,7 @@
                 <a :href="hostname" target="_blank">链接后台搜索入口</a>
               </div>
             </div>
-            <div class="scroll-wrap" ref="rank" id="productionTableOne" @click="layerTableOpen('productionTableOne','工期进度偏差排名')">
+            <div class="scroll-wrap" ref="rank" >
               <!--<dv-scroll-board  ref="scroll"  :config="config" class="tableContainerSonTable">
               </dv-scroll-board>-->
               <production-rank :ny="ny"></production-rank>
@@ -135,7 +135,6 @@ export default {
   },
   data() {
     return {
-      showLayer: -1,
       hostname: "",
       isselfcjczSort: 0,
       isselfczSort: 0,
@@ -1223,29 +1222,7 @@ export default {
       };
       myChart.setOption(option);
     },
-    layerTableOpen(id, title) {
-      this.showLayer++;
-
-      if (this.showLayer > 0) return;
-      let that = this;
-      layer.open({
-        type: 1, //Page层类型
-        area: ["100%", "100%"],
-        title: title,
-        shade: 0.6, //遮罩透明度
-        maxmin: false, //允许全屏最小化
-        anim: -1, //0-6的动画形式，-1不开启
-        move: false,
-        content: $("#" + id),
-        success: function(layero, index) {
-           $('#'+id).addClass("product_layer_table_padding")  
-        },
-        end: function(index, layero) {
-            $('#'+id).removeClass("product_layer_table_padding")
-          that.showLayer = -1;
-        }
-      });
-    }
+   
   },
   deactivated() {
     console.log("this.pieOption.pieData", this.pieOption.pieData);
@@ -1465,7 +1442,5 @@ export default {
 ::v-deep .goto a:hover {
   text-decoration: underline;
 }
-.product_layer_table_padding{
-   padding: 0.2rem !important;
-}
+
 </style>

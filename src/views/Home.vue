@@ -4074,6 +4074,7 @@ export default {
 
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
+        myChart.resize();
       window.addEventListener("resize", function() {
         myChart.resize();
       });
@@ -4180,6 +4181,7 @@ export default {
 
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
+        myChart.resize();
       window.addEventListener("resize", function() {
         myChart.resize();
       });
@@ -4288,6 +4290,7 @@ export default {
 
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
+        myChart.resize();
       window.addEventListener("resize", function() {
         myChart.resize();
       });
@@ -4321,12 +4324,7 @@ export default {
       ,success: function (layero, index) {
           $('#'+id).addClass("homepage-layer-div")  
            $('#homeproductUnit').addClass("homepage-layer-unit") 
-          //  var myChart1 = echarts.init(document.getElementById('fb1'));
-          //  myChart1.resize();
-          //   var myChart2 = echarts.init(document.getElementById('fb2'));
-          //  myChart2.resize();
-          //   var myChart3 = echarts.init(document.getElementById('fb3'));
-          //  myChart3.resize();
+       
           that.layerSetFontChart('fb1')
           that.layerSetFontChart('fb2')
           that.layerSetFontChart('fb3')
@@ -4334,12 +4332,7 @@ export default {
       ,end: function(index, layero){ 
           $('#'+id).removeClass("homepage-layer-div")
            $('#homeproductUnit').removeClass("homepage-layer-unit") 
-        //  var myChart1 = echarts.init(document.getElementById('fb1'));
-        //    myChart1.resize();
-        //     var myChart2 = echarts.init(document.getElementById('fb2'));
-        //    myChart2.resize();
-        //     var myChart3 = echarts.init(document.getElementById('fb3'));
-        //    myChart3.resize();
+       
          
          that.layerResetChart('fb1')
           that.layerResetChart('fb2')
@@ -4349,9 +4342,10 @@ export default {
       });    
     },
     layerSetFontChart(id){
-       let myChart1 = echarts.init(document.getElementById(id));
+      let dom = document.getElementById(id);
+      if(!dom) return;
+       let myChart1 = echarts.init(dom);
        if(!myChart1)return;
-       
        let option = myChart1.getOption();
        if(!option)return;
        option.title[0].textStyle.fontSize = 23;
@@ -4362,7 +4356,9 @@ export default {
         myChart1.resize();
     },
     layerResetChart(id){
-       let myChart1 = echarts.init(document.getElementById(id));
+      let dom = document.getElementById(id);
+      if(!dom) return;
+         let myChart1 = echarts.init(dom);
          if(!myChart1)return;
        let option = myChart1.getOption();
        if(!option)return;

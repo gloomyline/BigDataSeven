@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div id="productionTableOne" @click="layerTableOpen('productionTableOne','工期进度偏差排名')">
       <el-table
     :data="tableData"
     row-key="pprojectid"
-    style="width: 100%"
+    style="width: 100%;background: #07329A!important;"
     height="11.2rem"
     ref= "tableList"
     @sort-change="sortChange"
@@ -95,7 +95,8 @@ export default {
   props:["ny"],
   data() {
     return {
-      tableData: []
+      tableData: [],
+        showLayer: -1,
     }
   },
   created(){
@@ -199,6 +200,36 @@ export default {
         
         
     },
+     layerTableOpen(id, title) {
+      this.showLayer++;
+
+      if (this.showLayer > 0) return;
+      let that = this;
+      layer.open({
+        type: 1, //Page层类型
+        area: ["100%", "100%"],
+        title: title,
+        shade: 0.6, //遮罩透明度
+        maxmin: false, //允许全屏最小化
+        anim: -1, //0-6的动画形式，-1不开启
+        move: false,
+        content: $("#" + id),
+        success: function(layero, index) {
+          //  $('#'+id).addClass("product_layer_table_padding")   
+            $('#'+id).css("padding","20px")   
+           $('#'+id +' .el-table .cell').addClass("product_layer_cell_fontsize") 
+              $('#'+id +' .blink .cell').addClass("product_layer_redcell_fontsize") 
+              
+        },
+        end: function(index, layero) {
+            // $('#'+id).removeClass("product_layer_table_padding")
+             $('#'+id).css("padding","0px")   
+            $('#'+id +' .el-table .cell').removeClass("product_layer_cell_fontsize") 
+                 $('#'+id +' .blink .cell').removeClass("product_layer_redcell_fontsize") 
+          that.showLayer = -1;
+        }
+      });
+    },
     // sortByData(data1,data2,type){
     //   console.log("sortdata",data1,data2,type)
     //   if (type == 'asc') {
@@ -212,6 +243,16 @@ export default {
       productionNewApi.fetchRankListData(this.ny).then((response)=>{
       console.log("排名数据",response.data)
       this.tableData = response.data
+
+      if(this.showLayer > -1){
+      
+        this.$nextTick(() => {
+         $('#productionTableOne .el-table .cell').addClass("product_layer_cell_fontsize") 
+         $('#productionTableOne .blink .cell').addClass("product_layer_redcell_fontsize") 
+       })
+       
+      }
+          
       // this.$refs.tableList.bodyWrapper.scrollTop =this.$refs.tableList.bodyWrapper.scrollHeight
 
       // console.log("scrollTop",this.$refs.tableList.bodyWrapper.scrollTop)
@@ -363,4 +404,13 @@ export default {
   font-size: 15px ;
 } 
 
+::v-deep .product_layer_table_padding{
+   padding: 20px !important;
+}
+::v-deep .product_layer_cell_fontsize{
+   font-size:0.2rem !important;
+}
+::v-deep .product_layer_redcell_fontsize{
+   font-size:0.3rem !important;
+}
 </style>
